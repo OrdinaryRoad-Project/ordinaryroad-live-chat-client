@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: ordinaryroad-bilibili-live-chat-example
+tech:
+  ordinaryroad:
+    bilibili:
+      live:
+        chat:
+          client:
+            config:
+              # TODO ????id
+              roomId: 7777
+              # TODO ??Cookie
+              cookie: ${cookie:}
+logging:
+  level:
+    tech.ordinaryroad: DEBUG
+    io.netty: DEBUG
