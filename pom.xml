@@ -5,9 +5,29 @@
     <artifactId>live-chat-client</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-
     <name>ordinaryroad-live-chat-client</name>
+    <description>Live room WebSocket chat client</description>
     <url>https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client</url>
+    <licenses>
+        <license>
+            <name>The MIT License</name>
+            <url>https://opensource.org/license/mit/</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <scm>
+        <url>https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client</url>
+        <connection>scm:git:https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client.git</connection>
+        <developerConnection>scm:git:https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client</developerConnection>
+    </scm>
+    <developers>
+        <developer>
+            <name>OrdinaryRoad</name>
+            <email>or-mjz@qq.com</email>
+            <url>https://github.com/1962247851</url>
+            <timezone>UTC+08:00</timezone>
+        </developer>
+    </developers>
 
     <modules>
         <module>live-chat-client-commons</module>
