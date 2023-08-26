@@ -38,7 +38,7 @@ public interface IBaseMsgListener<CmdEnum extends Enum<CmdEnum>> {
     /**
      * 收到消息（所有消息）
      *
-     * @param msg BaseMsg
+     * @param msg IMsg
      */
     default void onMsg(IMsg msg) {
         // ignore
