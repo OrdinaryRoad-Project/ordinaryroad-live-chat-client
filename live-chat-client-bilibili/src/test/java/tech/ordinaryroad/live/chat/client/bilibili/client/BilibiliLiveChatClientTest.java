@@ -94,7 +94,7 @@ class BilibiliLiveChatClientTest {
 
             @Override
             public void onMsg(IMsg msg) {
-                log.debug("收到消息 {}", msg);
+                log.debug("收到{}消息 {}", msg.getClass(), msg);
             }
 
             @Override
