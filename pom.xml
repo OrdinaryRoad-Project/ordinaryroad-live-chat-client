@@ -78,6 +78,12 @@
             </dependency>
 
             <dependency>
+                <groupId>tech.ordinaryroad</groupId>
+                <artifactId>live-chat-client-bilibili</artifactId>
+                <version>${live-chat-client.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>com.aayushatharva.brotli4j</groupId>
                 <artifactId>brotli4j</artifactId>
                 <version>${brotli4j.version}</version>
