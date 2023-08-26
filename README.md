@@ -12,7 +12,7 @@ Live room WebSocket chat client
 
 ### Examples
 
-see `live-chat-client-examples`
+see [live-chat-client-examples](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/tree/main/live-chat-client-examples)
 
 ```xml
 
