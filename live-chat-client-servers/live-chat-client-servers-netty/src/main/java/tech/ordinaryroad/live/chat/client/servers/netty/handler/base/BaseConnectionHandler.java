@@ -94,9 +94,7 @@ public abstract class BaseConnectionHandler<ConnectionHandler extends BaseConnec
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         log.debug("userEventTriggered {}", evt.getClass());
-        if (evt instanceof ChannelInputShutdownReadComplete) {
-            // TODO
-        } else if (evt instanceof SslHandshakeCompletionEvent) {
+        if (evt instanceof SslHandshakeCompletionEvent) {
             heartbeatCancel();
             heartbeatStart(ctx);
             if (this.listener != null) {
