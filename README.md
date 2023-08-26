@@ -10,6 +10,10 @@ Live room WebSocket chat client
 > - [ ] Huya
 > - [ ] ...
 
+### Examples
+
+see `live-chat-client-examples`
+
 ```xml
 
 <dependency>
