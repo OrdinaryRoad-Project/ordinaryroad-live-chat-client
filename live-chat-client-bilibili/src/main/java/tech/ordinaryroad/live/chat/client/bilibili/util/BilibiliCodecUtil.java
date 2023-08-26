@@ -56,6 +56,8 @@ import java.util.zip.Inflater;
 @Slf4j
 public class BilibiliCodecUtil {
 
+    public static int sequence = 0;
+
     public static final short FRAME_HEADER_LENGTH = 16;
 
     public static ByteBuf encode(BaseBilibiliMsg msg) {
@@ -74,7 +76,7 @@ public class BilibiliCodecUtil {
         out.writeShort(FRAME_HEADER_LENGTH);
         out.writeShort(msg.getProtoverEnum().getCode());
         out.writeInt(msg.getOperationEnum().getCode());
-        out.writeInt(BaseBilibiliMsg.sequence++);
+        out.writeInt(sequence++);
         out.writeBytes(bodyBytes);
         return out;
     }
