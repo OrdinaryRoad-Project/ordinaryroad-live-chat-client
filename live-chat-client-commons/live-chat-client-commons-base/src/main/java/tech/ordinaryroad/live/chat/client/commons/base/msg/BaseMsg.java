@@ -44,9 +44,6 @@ public abstract class BaseMsg implements IMsg {
 
     public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-    // FIXME: 测试该字段
-    public static int sequence = 0;
-
     /**
      * 未知属性都放在这
      */
