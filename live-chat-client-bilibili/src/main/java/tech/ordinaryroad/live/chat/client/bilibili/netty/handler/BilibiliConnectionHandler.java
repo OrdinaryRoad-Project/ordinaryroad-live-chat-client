@@ -35,7 +35,7 @@ import tech.ordinaryroad.live.chat.client.bilibili.config.BilibiliLiveChatClient
 import tech.ordinaryroad.live.chat.client.bilibili.constant.ProtoverEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.frame.factory.BilibiliWebSocketFrameFactory;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
-import tech.ordinaryroad.live.chat.client.servers.netty.handler.base.BaseConnectionHandler;
+import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyLiveChatClientConnectionHandler;
 
 
 /**
@@ -46,27 +46,22 @@ import tech.ordinaryroad.live.chat.client.servers.netty.handler.base.BaseConnect
  */
 @Slf4j
 @ChannelHandler.Sharable
-public class BilibiliConnectionHandler extends BaseConnectionHandler<BilibiliConnectionHandler> {
+public class BilibiliConnectionHandler extends BaseNettyLiveChatClientConnectionHandler<BilibiliLiveChatClient, BilibiliConnectionHandler> {
 
-    private final BilibiliLiveChatClient client;
-    private final long roomId;
-
-    public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, IBaseConnectionListener<BilibiliConnectionHandler> listener, BilibiliLiveChatClient client) {
-        super(handshaker, listener);
-        this.roomId = roomId;
-        this.client = client;
+    public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, IBaseConnectionListener<BilibiliConnectionHandler> listener, BilibiliLiveChatClient client, long roomId) {
+        super(handshaker, listener, client, roomId);
     }
 
-    public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, IBaseConnectionListener<BilibiliConnectionHandler> listener, long roomId) {
-        this(handshaker, roomId, listener, null);
+    public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, IBaseConnectionListener<BilibiliConnectionHandler> listener, BilibiliLiveChatClient client) {
+        super(handshaker, listener, client);
+    }
+
+    public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, BilibiliLiveChatClient client) {
+        super(handshaker, client);
     }
 
     public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, long roomId) {
-        this(handshaker, roomId, null, null);
-    }
-
-    private long getRoomId(){
-        return client == null ? roomId : client.getConfig().getRoomId();
+        super(handshaker, roomId);
     }
 
     private ProtoverEnum getProtoverEnum() {
