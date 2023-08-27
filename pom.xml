@@ -56,7 +56,7 @@
     <modules>
         <module>live-chat-client-commons</module>
         <module>live-chat-client-servers</module>
-        <module>live-chat-client-bilibili</module>
+        <module>live-chat-clients</module>
     </modules>
 
     <properties>

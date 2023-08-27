@@ -34,4 +34,15 @@ import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseCmdMsg;
  */
 public abstract class BaseBilibiliCmdMsg extends BaseCmdMsg<BilibiliCmdEnum> implements IBilibiliMsg {
 
+    private String cmd;
+
+    @Override
+    public String getCmd() {
+        return this.cmd;
+    }
+
+    @Override
+    public void setCmd(String cmd) {
+        this.cmd = cmd;
+    }
 }

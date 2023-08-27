@@ -35,8 +35,6 @@ import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseCmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 /**
  * @author mjz
  * @date 2023/8/26
