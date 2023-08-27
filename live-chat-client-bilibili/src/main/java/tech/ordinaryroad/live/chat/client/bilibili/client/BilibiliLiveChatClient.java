@@ -57,12 +57,10 @@ public class BilibiliLiveChatClient extends BaseNettyLiveChatClient<
         > {
 
     private final IBilibiliSendSmsReplyMsgListener msgListener;
-    private final IBaseConnectionListener<BilibiliConnectionHandler> connectionListener;
 
     public BilibiliLiveChatClient(BilibiliLiveChatClientConfig config, IBilibiliSendSmsReplyMsgListener msgListener, IBaseConnectionListener<BilibiliConnectionHandler> connectionListener, EventLoopGroup workerGroup) {
         super(config, workerGroup, connectionListener);
         this.msgListener = msgListener;
-        this.connectionListener = connectionListener;
 
         // 初始化
         this.init();
@@ -93,29 +91,5 @@ public class BilibiliLiveChatClient extends BaseNettyLiveChatClient<
     @Override
     public BilibiliBinaryFrameHandler initBinaryFrameHandler() {
         return new BilibiliBinaryFrameHandler(this.msgListener);
-    }
-
-    @Override
-    public void onConnected() {
-        super.onConnected();
-        if (this.connectionListener != null) {
-            this.connectionListener.onConnected();
-        }
-    }
-
-    @Override
-    public void onConnectFailed(BilibiliConnectionHandler bilibiliConnectionHandler) {
-        super.onConnectFailed(bilibiliConnectionHandler);
-        if (this.connectionListener != null) {
-            this.connectionListener.onConnectFailed(bilibiliConnectionHandler);
-        }
-    }
-
-    @Override
-    public void onDisconnected(BilibiliConnectionHandler bilibiliConnectionHandler) {
-        super.onDisconnected(bilibiliConnectionHandler);
-        if (this.connectionListener != null) {
-            this.connectionListener.onDisconnected(bilibiliConnectionHandler);
-        }
     }
 }
