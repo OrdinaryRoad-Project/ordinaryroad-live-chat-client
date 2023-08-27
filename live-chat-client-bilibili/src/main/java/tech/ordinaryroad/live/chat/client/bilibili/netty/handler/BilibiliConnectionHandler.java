@@ -53,7 +53,7 @@ public class BilibiliConnectionHandler extends BaseConnectionHandler<BilibiliCon
 
     public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, IBaseConnectionListener<BilibiliConnectionHandler> listener, BilibiliLiveChatClient client) {
         super(handshaker, listener);
-        this.roomId = client == null ? roomId : client.getConfig().getRoomId();
+        this.roomId = roomId;
         this.client = client;
     }
 
@@ -63,6 +63,10 @@ public class BilibiliConnectionHandler extends BaseConnectionHandler<BilibiliCon
 
     public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, long roomId) {
         this(handshaker, roomId, null, null);
+    }
+
+    private long getRoomId(){
+        return client == null ? roomId : client.getConfig().getRoomId();
     }
 
     private ProtoverEnum getProtoverEnum() {
@@ -88,7 +92,7 @@ public class BilibiliConnectionHandler extends BaseConnectionHandler<BilibiliCon
     public void sendAuthRequest(Channel channel) {
         // 5s内认证
         log.debug("发送认证包");
-        channel.writeAndFlush(BilibiliWebSocketFrameFactory.getInstance(getProtoverEnum()).createAuth(this.roomId));
+        channel.writeAndFlush(BilibiliWebSocketFrameFactory.getInstance(getProtoverEnum()).createAuth(getRoomId()));
     }
 
     @Override
