@@ -29,6 +29,7 @@ import tech.ordinaryroad.live.chat.client.commons.client.config.BaseLiveChatClie
 import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
 
 import java.util.Objects;
+import java.util.function.Consumer;
 
 /**
  * @author mjz
@@ -68,6 +69,16 @@ public abstract class BaseLiveChatClient<Config extends BaseLiveChatClientConfig
     public abstract void destroy();
 
     public abstract void send(Object msg);
+
+    public abstract void send(Object msg, Runnable success, Consumer<Throwable> failed);
+
+    public void send(Object msg, Runnable success) {
+        this.send(msg, success, null);
+    }
+
+    public void send(Object msg, Consumer<Throwable> failed) {
+        this.send(msg, null, failed);
+    }
 
     protected abstract void tryReconnect();
 

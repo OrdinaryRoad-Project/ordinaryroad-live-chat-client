@@ -49,6 +49,7 @@ import javax.net.ssl.SSLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 /**
  * @author mjz
@@ -220,6 +221,24 @@ public abstract class BaseNettyLiveChatClient
     @Override
     public void send(Object msg) {
         this.channel.writeAndFlush(msg);
+    }
+
+    @Override
+    public void send(Object msg, Runnable success, Consumer<Throwable> failed) {
+        ChannelFuture future = this.channel.writeAndFlush(msg);
+        if (success != null || failed != null) {
+            future.addListener((ChannelFutureListener) channelFuture -> {
+                if (channelFuture.isSuccess()) {
+                    if (success != null) {
+                        success.run();
+                    }
+                } else {
+                    if (failed != null) {
+                        failed.accept(channelFuture.cause());
+                    }
+                }
+            });
+        }
     }
 
     @Override
