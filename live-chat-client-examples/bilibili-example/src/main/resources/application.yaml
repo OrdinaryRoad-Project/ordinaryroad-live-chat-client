@@ -8,9 +8,9 @@ tech:
         chat:
           client:
             config:
-              # TODO ????id
+              # TODO 直播间id
               roomId: 7777
-              # TODO ??Cookie
+              # TODO 浏览器Cookie
               cookie: ${cookie:}
 logging:
   level:

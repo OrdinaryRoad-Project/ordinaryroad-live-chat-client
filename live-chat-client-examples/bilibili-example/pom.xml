@@ -14,12 +14,13 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>bilibili-live-chat-example</name>
     <description>bilibili-live-chat-example</description>
+
     <properties>
         <java.version>17</java.version>
         <ordinaryroad-live-chat-client.version>0.0.1-SNAPSHOT</ordinaryroad-live-chat-client.version>
     </properties>
-    <dependencies>
 
+    <dependencies>
         <dependency>
             <groupId>tech.ordinaryroad</groupId>
             <artifactId>live-chat-client-bilibili</artifactId>
@@ -56,6 +57,7 @@
     </dependencies>
 
     <build>
+        <finalName>ordinaryroad-bilibili-live-chat-example</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
