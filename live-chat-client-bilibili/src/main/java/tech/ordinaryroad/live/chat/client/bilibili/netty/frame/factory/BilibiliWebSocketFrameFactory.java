@@ -67,7 +67,7 @@ public class BilibiliWebSocketFrameFactory {
             String uid = BilibiliApis.getCookie("DedeUserID", () -> "0");
             JsonNode data = BilibiliApis.roomInit(roomId);
             JsonNode danmuInfo = BilibiliApis.getDanmuInfo(roomId, 0);
-            int realRoomId = data.get("room_id").asInt();
+            long realRoomId = data.get("room_id").asLong();
             AuthMsg authMsg = new AuthMsg(realRoomId, this.protover.getCode(), buvid3, danmuInfo.get("token").asText());
             authMsg.setUid(NumberUtil.parseLong(uid));
             return new AuthWebSocketFrame(BilibiliCodecUtil.encode(authMsg));
