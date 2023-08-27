@@ -12,6 +12,6 @@
         <java.version>17</java.version>
     </properties>
     <modules>
-        <module>bilibili-live-chat-example</module>
+        <module>bilibili-example</module>
     </modules>
 </project>
