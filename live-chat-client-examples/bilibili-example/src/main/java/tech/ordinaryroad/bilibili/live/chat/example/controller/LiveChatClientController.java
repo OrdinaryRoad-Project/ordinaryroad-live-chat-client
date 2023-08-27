@@ -1,10 +1,7 @@
 package tech.ordinaryroad.bilibili.live.chat.example.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import tech.ordinaryroad.live.chat.client.bilibili.client.BilibiliLiveChatClient;
 
 /**
@@ -36,6 +33,11 @@ public class LiveChatClientController {
     @GetMapping("disconnect/{cancelReconnect}")
     public void disconnect(@PathVariable Boolean cancelReconnect) {
         client.disconnect(cancelReconnect);
+    }
+
+    @GetMapping("cookie")
+    public void cookie(@RequestParam String cookie) {
+        client.getConfig().setCookie(cookie);
     }
 
 }
