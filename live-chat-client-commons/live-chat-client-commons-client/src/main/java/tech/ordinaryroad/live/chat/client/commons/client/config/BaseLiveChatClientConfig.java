@@ -77,5 +77,5 @@ public abstract class BaseLiveChatClientConfig {
      * 心跳包发送周期（秒）
      */
     @Builder.Default
-    private long HeartbeatPeriod = DEFAULT_HEARTBEAT_PERIOD;
+    private long heartbeatPeriod = DEFAULT_HEARTBEAT_PERIOD;
 }
