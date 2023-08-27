@@ -20,5 +20,10 @@
             <groupId>tech.ordinaryroad</groupId>
             <artifactId>live-chat-client-commons-base</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+        </dependency>
     </dependencies>
 </project>

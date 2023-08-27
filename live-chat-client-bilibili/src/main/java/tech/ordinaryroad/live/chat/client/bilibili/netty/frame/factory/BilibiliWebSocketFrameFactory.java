@@ -28,12 +28,14 @@ import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.NumberUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import tech.ordinaryroad.live.chat.client.bilibili.api.BilibiliApis;
+import tech.ordinaryroad.live.chat.client.bilibili.config.BilibiliLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.ProtoverEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.AuthMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.HeartbeatMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.frame.AuthWebSocketFrame;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.frame.HeartbeatWebSocketFrame;
 import tech.ordinaryroad.live.chat.client.bilibili.util.BilibiliCodecUtil;
+import tech.ordinaryroad.live.chat.client.commons.client.utils.CookieUtil;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -63,8 +65,8 @@ public class BilibiliWebSocketFrameFactory {
      */
     public AuthWebSocketFrame createAuth(long roomId) {
         try {
-            String buvid3 = BilibiliApis.getCookie("buvid3", () -> UUID.randomUUID().toString());
-            String uid = BilibiliApis.getCookie("DedeUserID", () -> "0");
+            String buvid3 = CookieUtil.getCookieByName(BilibiliLiveChatClientConfig.cookieMap, "buvid3", () -> UUID.randomUUID().toString());
+            String uid = CookieUtil.getCookieByName(BilibiliLiveChatClientConfig.cookieMap, "DedeUserID", () -> "0");
             JsonNode data = BilibiliApis.roomInit(roomId);
             JsonNode danmuInfo = BilibiliApis.getDanmuInfo(roomId, 0);
             long realRoomId = data.get("room_id").asLong();

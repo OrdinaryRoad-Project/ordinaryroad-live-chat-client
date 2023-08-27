@@ -77,7 +77,7 @@ public class BilibiliLiveChatClient extends BaseNettyLiveChatClient<
     @Override
     public void init() {
         super.init();
-        BilibiliApis.cookies = getConfig().getCookie();
+        BilibiliApis.init(super.getConfig());
     }
 
     @Override

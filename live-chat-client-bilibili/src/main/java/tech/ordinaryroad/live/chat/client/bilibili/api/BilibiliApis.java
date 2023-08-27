@@ -24,7 +24,6 @@
 
 package tech.ordinaryroad.live.chat.client.bilibili.api;
 
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
@@ -33,10 +32,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Cleanup;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Supplier;
+import tech.ordinaryroad.live.chat.client.bilibili.config.BilibiliLiveChatClientConfig;
 
 /**
  * B站API简易版
@@ -47,10 +43,13 @@ import java.util.function.Supplier;
 @Slf4j
 public class BilibiliApis {
 
-    public static String cookies;
-    public static Map<String, String> cookieMap;
-
     public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
+    private static BilibiliLiveChatClientConfig config;
+
+    public static void init(BilibiliLiveChatClientConfig config) {
+        BilibiliApis.config = config;
+    }
 
     public static JsonNode roomInit(long roomId) {
         @Cleanup
@@ -96,7 +95,7 @@ public class BilibiliApis {
 
     public static HttpRequest createGetRequest(String url) {
         return HttpUtil.createGet(url)
-                .cookie(cookies);
+                .cookie(config.getCookie());
     }
 
     private static JsonNode responseInterceptor(String responseString) {
@@ -112,29 +111,6 @@ public class BilibiliApis {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public static String getCookie(String name, Supplier<String> defaultValue) {
-        if (cookieMap == null) {
-            Map<String, String> map = new HashMap<>();
-            if (StrUtil.isNotBlank(cookies) && !StrUtil.isNullOrUndefined(cookies)) {
-                try {
-                    String[] split = cookies.split("; ");
-                    for (String s : split) {
-                        String[] split1 = s.split("=");
-                        map.put(split1[0], split1[1]);
-                    }
-                } catch (Exception e) {
-                    log.error("cookie解析失败 " + cookies, e);
-                }
-            }
-            cookieMap = map;
-        }
-        return cookieMap.getOrDefault(name, defaultValue != null ? defaultValue.get() : null);
-    }
-
-    public static String getCookie(String name) {
-        return getCookie(name, null);
     }
 
 }
