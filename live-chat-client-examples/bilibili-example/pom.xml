@@ -35,7 +35,7 @@
     <packaging>jar</packaging>
     <groupId>tech.ordinaryroad</groupId>
     <artifactId>bilibili-example</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.3-SNAPSHOT</version>
     <name>bilibili-live-chat-example</name>
     <description>bilibili-live-chat-example</description>
 
