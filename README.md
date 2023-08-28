@@ -25,6 +25,8 @@ Live room WebSocket chat client
 
 ### Install
 
+#### B站
+
 ```xml
 
 <dependency>
@@ -34,6 +36,8 @@ Live room WebSocket chat client
     <version>${ordinaryroad-live-chat-client.version}</version>
 </dependency>
 ```  
+
+#### 斗鱼
 
 ```xml
 
