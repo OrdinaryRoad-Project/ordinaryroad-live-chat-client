@@ -32,7 +32,9 @@ import io.netty.buffer.Unpooled;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.utils.OrLiveChatReflectUtil;
 import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
-import tech.ordinaryroad.live.chat.client.douyu.msg.*;
+import tech.ordinaryroad.live.chat.client.douyu.msg.DouyuCmdMsg;
+import tech.ordinaryroad.live.chat.client.douyu.msg.HeartbeatMsg;
+import tech.ordinaryroad.live.chat.client.douyu.msg.HeartbeatReplyMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.base.BaseDouyuCmdMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.base.IDouyuMsg;
 
@@ -246,11 +248,11 @@ public class DouyuCodecUtil {
         if (douyuCmdEnum == null) {
             return (Class<T>) DouyuCmdMsg.class;
         }
+
         Class<?> msgClass;
-        switch (douyuCmdEnum) {
-            case loginreq -> msgClass = LoginreqMsg.class;
-            case loginres -> msgClass = LoginresMsg.class;
-            case mrkl -> {
+        Class<?> tClass = douyuCmdEnum.getTClass();
+        if (tClass == null) {
+            if (douyuCmdEnum == DouyuCmdEnum.mrkl) {
                 if (msgType == MSG_TYPE_RECEIVE) {
                     msgClass = HeartbeatReplyMsg.class;
                 } else if (msgType == MSG_TYPE_SEND) {
@@ -258,9 +260,11 @@ public class DouyuCodecUtil {
                 } else {
                     msgClass = null;
                 }
+            } else {
+                msgClass = DouyuCmdMsg.class;
             }
-            case mapkb -> msgClass = MapkbMsg.class;
-            default -> msgClass = DouyuCmdMsg.class;
+        } else {
+            msgClass = tClass;
         }
         return (Class<T>) msgClass;
     }
