@@ -51,7 +51,7 @@ class DouyuLiveChatClientTest {
         String cookie = System.getenv("cookie");
         log.error("cookie: {}", cookie);
         DouyuLiveChatClientConfig config = DouyuLiveChatClientConfig.builder()
-                // TODO 浏览器Cookie
+                // FIXME: 暂不支持浏览器Cookie
                 .cookie(cookie)
                 // FIXME: 暂不支持短id
                 .roomId(3168536)
