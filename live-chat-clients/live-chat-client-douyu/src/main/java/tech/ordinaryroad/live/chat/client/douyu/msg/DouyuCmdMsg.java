@@ -24,13 +24,17 @@
 
 package tech.ordinaryroad.live.chat.client.douyu.msg;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyu.msg.base.BaseDouyuCmdMsg;
 
 /**
  * type@=chatmsg/rid@=7750753/uid@=549977/nn@=一闪一闪亮品品/txt@=冷门歌手哎，声音独特哎/cid@=044c3bf3074b483275a44e0000000000/ic@=avatar@Sdefault@S08/level@=29/sahf@=0/nl@=7/cst@=1693107871294/bnn@=/bl@=0/brid@=0/hc@=/lk@=/dms@=8/pdg@=26/pdk@=86/ext@=/
  *
+ * @see tech.ordinaryroad.live.chat.client.douyu.util.DouyuCodecUtil#getDouyuMsgClassByType(DouyuCmdEnum, short)
  * @author mjz
  * @date 2023/1/6
  */

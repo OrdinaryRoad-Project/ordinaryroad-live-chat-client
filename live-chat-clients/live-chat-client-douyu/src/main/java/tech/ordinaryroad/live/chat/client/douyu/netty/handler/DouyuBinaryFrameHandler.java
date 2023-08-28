@@ -30,8 +30,8 @@ import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseCmdMsg;
 import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuDouyuCmdMsgListener;
+import tech.ordinaryroad.live.chat.client.douyu.msg.ChatmsgMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.DouyuCmdMsg;
-import tech.ordinaryroad.live.chat.client.douyu.msg.LoginresMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.base.IDouyuMsg;
 import tech.ordinaryroad.live.chat.client.douyu.util.DouyuCodecUtil;
 import tech.ordinaryroad.live.chat.client.servers.netty.handler.base.BaseBinaryFrameHandler;
@@ -55,20 +55,19 @@ public class DouyuBinaryFrameHandler extends BaseBinaryFrameHandler<DouyuCmdEnum
 
     @Override
     public void onCmdMsg(DouyuCmdEnum cmd, BaseCmdMsg<DouyuCmdEnum> cmdMsg) {
-        super.onCmdMsg(cmd, cmdMsg);
-
         if (super.listener == null) {
             return;
         }
 
-        if (!(cmdMsg instanceof DouyuCmdMsg)) {
-            return;
-        }
-
-        DouyuCmdMsg douyuCmdMsg = (DouyuCmdMsg) cmdMsg;
         switch (cmd) {
-            case chatmsg -> listener.onDanmuMsg(douyuCmdMsg);
-            default -> super.listener.onOtherCmdMsg(cmd, cmdMsg);
+            case chatmsg -> listener.onDanmuMsg((ChatmsgMsg) cmdMsg);
+            default -> {
+                if (!(cmdMsg instanceof DouyuCmdMsg)) {
+                    log.debug("非DouyuCmdMsg {}", cmdMsg.getClass());
+                    return;
+                }
+                super.listener.onOtherCmdMsg(cmd, cmdMsg);
+            }
         }
     }
 

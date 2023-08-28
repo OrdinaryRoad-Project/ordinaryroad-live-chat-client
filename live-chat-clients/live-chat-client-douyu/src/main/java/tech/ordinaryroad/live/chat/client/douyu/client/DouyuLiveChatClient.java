@@ -30,6 +30,7 @@ import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshakerFactory;
 import io.netty.handler.codec.http.websocketx.WebSocketVersion;
 import lombok.extern.slf4j.Slf4j;
+import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseCmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
@@ -37,12 +38,9 @@ import tech.ordinaryroad.live.chat.client.douyu.api.DouyuApis;
 import tech.ordinaryroad.live.chat.client.douyu.config.DouyuLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuDouyuCmdMsgListener;
-import tech.ordinaryroad.live.chat.client.douyu.msg.DouyuCmdMsg;
-import tech.ordinaryroad.live.chat.client.douyu.msg.HeartbeatMsg;
+import tech.ordinaryroad.live.chat.client.douyu.msg.ChatmsgMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.LoginresMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.base.IDouyuMsg;
-import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
-import tech.ordinaryroad.live.chat.client.douyu.netty.frame.HeartbeatWebSocketFrame;
 import tech.ordinaryroad.live.chat.client.douyu.netty.frame.factory.DouyuWebSocketFrameFactory;
 import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuConnectionHandler;
@@ -119,18 +117,14 @@ public class DouyuLiveChatClient extends BaseNettyLiveChatClient<
     }
 
     @Override
-    public void onDanmuMsg(DouyuCmdMsg cmdMsg) {
+    public void onDanmuMsg(ChatmsgMsg msg) {
         if (this.msgListener != null) {
-            this.msgListener.onDanmuMsg(cmdMsg);
+            this.msgListener.onDanmuMsg(msg);
         }
     }
 
     @Override
     public void onCmdMsg(DouyuCmdEnum cmd, BaseCmdMsg<DouyuCmdEnum> cmdMsg) {
-        if (!(cmdMsg instanceof DouyuCmdMsg)) {
-            log.debug("非DouyuCmdMsg {}", cmdMsg.getClass());
-            return;
-        }
         if (this.msgListener != null) {
             this.msgListener.onCmdMsg(cmd, cmdMsg);
         }

@@ -22,49 +22,50 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.douyu.listener;
+package tech.ordinaryroad.live.chat.client.douyu.msg;
 
-import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener;
+import com.fasterxml.jackson.databind.JsonNode;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
-import tech.ordinaryroad.live.chat.client.douyu.msg.ChatmsgMsg;
+import tech.ordinaryroad.live.chat.client.douyu.msg.base.BaseDouyuCmdMsg;
+
+import java.util.List;
 
 /**
  * @author mjz
- * @date 2023/1/7
+ * @date 2023/8/28
  */
-public interface IDouyuDouyuCmdMsgListener extends IBaseMsgListener<DouyuCmdEnum> {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class ChatmsgMsg extends BaseDouyuCmdMsg {
 
-    /**
-     * <pre>{@code
-     * {
-     * 	"type": "chatmsg",
-     * 	"cmdEnum": "chatmsg",
-     * 	"cmd": "chatmsg",
-     * 	"nn": "宋老二929",
-     * 	"ext": null,
-     * 	"bnn": null,
-     * 	"level": "1",
-     * 	"cst": "1693213418102",
-     * 	"brid": "0",
-     * 	"bl": "0",
-     * 	"dms": "5",
-     * 	"rid": "3168536",
-     * 	"uid": "396023456",
-     * 	"txt": "666",
-     * 	"pdg": "47",
-     * 	"pdk": "89",
-     * 	"sahf": "0",
-     * 	"ic": ["avatar_v3", "202101", "45daf5ceb475414293e3da4559552655"],
-     * 	"hb": ["2719"],
-     * 	"hc": null,
-     * 	"cid": "0b37e26cccd54f7c4d73590000000000",
-     * 	"lk": null
-     * }
-     * }</pre>
-     *
-     * @param msg ChatmsgMsg
-     */
-    default void onDanmuMsg(ChatmsgMsg msg) {
-        // ignore
+    private String nn;
+    private String ext;
+    private String bnn;
+    private String level;
+    private String cst;
+    private String brid;
+    private String bl;
+    private String dms;
+    private long rid;
+    private long uid;
+    private String txt;
+    private String pdg;
+    private String pdk;
+    private String sahf;
+    private List<String> ic;
+    private List<String> hb;
+    private String hc;
+    private String cid;
+    private JsonNode lk;
+
+    @Override
+    public String getType() {
+        return DouyuCmdEnum.chatmsg.name();
     }
 }

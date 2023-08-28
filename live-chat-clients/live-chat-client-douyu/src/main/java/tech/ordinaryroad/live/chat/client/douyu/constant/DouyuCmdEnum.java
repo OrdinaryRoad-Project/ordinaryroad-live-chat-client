@@ -24,8 +24,10 @@
 
 package tech.ordinaryroad.live.chat.client.douyu.constant;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import tech.ordinaryroad.live.chat.client.douyu.msg.*;
 
 /**
  * <a href='https://open.douyu.com/source/api/63'>文档</a>
@@ -34,6 +36,7 @@ import lombok.RequiredArgsConstructor;
  * @date 2023/1/6
  */
 @Getter
+@AllArgsConstructor
 @RequiredArgsConstructor
 public enum DouyuCmdEnum {
     /**
@@ -43,7 +46,7 @@ public enum DouyuCmdEnum {
      * type@=loginreq/roomid@=58839/aid@=yihanTest/token@=4c8421535f9639d8c1ad35d1fa421f36/time@=1574850339/auth@=45619bb990e6b76db06a66d5a8a446d7/
      * }</pre>
      */
-    loginreq,
+    loginreq(LoginreqMsg.class),
     /**
      * 登录响应消息
      * <pre>{@code
@@ -51,13 +54,13 @@ public enum DouyuCmdEnum {
      * type@=loginresp/msg@=ok/rid@=77614265/
      * }</pre>
      */
-    loginres,
+    loginres(LoginresMsg.class),
     /**
      * 入组
      * type@=joingroup/rid@=59872/aid@=yourapplicaitonID/token@=4c8421535f9639d8c1ad35d1fa421f36/time@=1574850339/auth@=xxxxxxxxxxxx/
      * Auth 生成方式为 md5({secret}_{aid}_{time}_{token}), secret为aid对应的秘钥
      */
-    joingroup,
+    joingroup(JoingroupMsg.class),
     /**
      * 客户端旧版心跳、心跳回复
      * <pre>{@code
@@ -76,7 +79,7 @@ public enum DouyuCmdEnum {
      * 订阅贵族排行变动
      * type@=sub/mt@=online_vip_list/
      */
-    sub,
+    sub(SubMsg.class),
     subres,
     noble_num_info,
     oni,
@@ -86,7 +89,7 @@ public enum DouyuCmdEnum {
      * type@=chatmsg/rid@=7750753/uid@=549977/nn@=一闪一闪亮品品/txt@=冷门歌手哎，声音独特哎/cid@=044c3bf3074b483275a44e0000000000/ic@=avatar@Sdefault@S08/level@=29/sahf@=0/nl@=7/cst@=1693107871294/bnn@=/bl@=0/brid@=0/hc@=/lk@=/dms@=8/pdg@=26/pdk@=86/ext@=/
      * type@=chatmsg/rid@=58839/ct@=8/hashid@=9LA18ePx4dqW/nn@=test/txt@=666/cid@=1111/ic@=icon/sahf@=0/level@=1/nl@=0/nc@=0/cmt@=0/gt@=0/col@=0/rg@=0/pg@=0/dlv@=0/dc@=0/bdlv@=0/gatin@=0/ chtin@=0/repin@=0/bnn@=test/bl@=0/brid@=58839/hc@=0/ol@=0/rev@=0/hl@=0/ifs@=0/p2p@=0/el@=eid@AA=1@ASetp@AA=1@ASsc@AA=1@AS/
      */
-    chatmsg,
+    chatmsg(ChatmsgMsg.class),
     pingreq,
     /**
      * 登出
@@ -173,8 +176,10 @@ public enum DouyuCmdEnum {
      * type@=rri/rid@=1/rn@=cate_rank/cate_id@=5/uid@=10005/sc@=100 00/idx@=10/bcr@=1/ibc@=1/an@=test/rktype@=1/tag_id@=1200/gif t_id@=100/
      */
     rri,
-    mapkb,
+    mapkb(MapkbMsg.class),
     ;
+
+    private Class<?> tClass;
 
     public static DouyuCmdEnum getByString(String cmd) {
         try {

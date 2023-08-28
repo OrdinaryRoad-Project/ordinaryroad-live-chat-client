@@ -33,7 +33,7 @@ import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 import tech.ordinaryroad.live.chat.client.douyu.config.DouyuLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuDouyuCmdMsgListener;
-import tech.ordinaryroad.live.chat.client.douyu.msg.DouyuCmdMsg;
+import tech.ordinaryroad.live.chat.client.douyu.msg.ChatmsgMsg;
 import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuConnectionHandler;
 
 /**
@@ -64,8 +64,8 @@ class DouyuLiveChatClientTest {
             }
 
             @Override
-            public void onDanmuMsg(DouyuCmdMsg cmdMsg) {
-                log.info("收到弹幕消息 {}", cmdMsg);
+            public void onDanmuMsg(ChatmsgMsg msg) {
+                log.info("收到弹幕 {}({})：{}", msg.getNn(), msg.getUid(), msg.getTxt());
             }
 
             @Override
