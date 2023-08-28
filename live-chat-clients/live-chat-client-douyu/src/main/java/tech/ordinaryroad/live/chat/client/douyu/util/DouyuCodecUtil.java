@@ -27,15 +27,10 @@ package tech.ordinaryroad.live.chat.client.douyu.util;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.node.TextNode;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.extern.slf4j.Slf4j;
-import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseMsg;
+import tech.ordinaryroad.live.chat.client.commons.base.utils.OrLiveChatReflectUtil;
 import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyu.msg.*;
 import tech.ordinaryroad.live.chat.client.douyu.msg.base.BaseDouyuCmdMsg;
@@ -56,19 +51,14 @@ import java.util.*;
 public class DouyuCodecUtil {
 
     public static final String[] IGNORE_PROPERTIES = {"OBJECT_MAPPER", "unknownProperties"};
-
     public static final short MSG_TYPE_SEND = 689;
     public static final short MSG_TYPE_RECEIVE = 690;
-
-    public static int sequence = 0;
-
     public static final short FRAME_HEADER_LENGTH = 8;
 
     public static ByteBuf encode(BaseDouyuCmdMsg msg) {
         ByteBuf out = Unpooled.buffer(FRAME_HEADER_LENGTH);
-        String bodyDouyuSttString = StrUtil.nullToEmpty(toDouyuSttString(msg));
+        String bodyDouyuSttString = StrUtil.nullToEmpty(toDouyuSttString(msg)) + SUFFIX;
         byte[] bodyBytes = bodyDouyuSttString.getBytes(StandardCharsets.UTF_8);
-        // TODO length
         int length = bodyBytes.length + FRAME_HEADER_LENGTH;
         out.writeIntLE(length);
         out.writeIntLE(length);
@@ -113,11 +103,11 @@ public class DouyuCodecUtil {
         byte[] inputBytes = new byte[contentLength];
         in.readBytes(inputBytes);
         if (in.readableBytes() != 0) {
-            log.error("in.readableBytes() {}", in.readableBytes());
+            // log.error("in.readableBytes() {}", in.readableBytes());
             pendingByteBuf.offer(in);
         }
 
-        String bodyDouyuSttString = new String(inputBytes);
+        String bodyDouyuSttString = new String(inputBytes, 0, inputBytes.length - 1);
         return Optional.ofNullable(parseDouyuSttString(bodyDouyuSttString, msgType));
     }
 
@@ -132,7 +122,8 @@ public class DouyuCodecUtil {
      * @return
      */
     public static String escape(String string) {
-        return string == null ? StrUtil.EMPTY : (string.replaceAll("/", "@S").replaceAll("@", "@A"));
+//        return string == null ? StrUtil.EMPTY : (string.replaceAll("/", "@S").replaceAll("@", "@A"));
+        return string == null ? StrUtil.EMPTY : (string.replaceAll("@", "@A").replaceAll("/", "@S"));
     }
 
     /**
@@ -142,42 +133,48 @@ public class DouyuCodecUtil {
      * @return
      */
     public static String unescape(String string) {
-        return string == null ? StrUtil.EMPTY : (string.replaceAll("@A", "@").replaceAll("@S", "/"));
+        return string == null ? StrUtil.EMPTY : (string.replaceAll("@S", "/").replaceAll("@A", "@"));
     }
 
     public static String toDouyuSttString(Object object) {
         StringBuffer sb = new StringBuffer();
-        Class<?> objectClass = object.getClass();
-        Field[] fields = ReflectUtil.getFields(objectClass, field -> !ArrayUtil.contains(IGNORE_PROPERTIES, field.getName()));
-        for (Field field : fields) {
-            String key = field.getName();
-            Method method = ReflectUtil.getMethod(objectClass, true, "get" + key);
-            Object value = ReflectUtil.invoke(object, method);
-//            Object value = ReflectUtil.getFieldValue(object, field);
-            sb.append(escape(key))
-                    .append(SPLITTER);
-            if (value instanceof Iterable<?> iterable) {
+        if (object instanceof IDouyuMsg) {
+            Class<?> objectClass = object.getClass();
+            Field[] fields = ReflectUtil.getFields(objectClass, field -> !ArrayUtil.contains(IGNORE_PROPERTIES, field.getName()));
+            for (Field field : fields) {
+                String key = field.getName();
+                Method method = OrLiveChatReflectUtil.getGetterMethod(objectClass, key);
+                Object value = ReflectUtil.invoke(object, method);
+                String douyuSttString = toDouyuSttString(value);
+                String escape = escape(douyuSttString);
+                sb.append(escape(key))
+                        .append(SPLITTER)
+                        .append(escape)
+                        .append(END);
+            }
+        } else {
+            if (object instanceof Iterable<?> iterable) {
                 StringBuffer iterableStringBuffer = new StringBuffer();
                 for (Object o : iterable) {
-                    iterableStringBuffer.append(escape(StrUtil.toStringOrNull(o)))
+                    String douyuSttString = toDouyuSttString(o);
+                    String escape = escape(douyuSttString);
+                    iterableStringBuffer.append(escape)
                             .append(END);
                 }
-                sb.append(escape(iterableStringBuffer.toString()));
-            } else if (value instanceof Map<?, ?> map) {
+                sb.append((iterableStringBuffer.toString()));
+            } else if (object instanceof Map<?, ?> map) {
                 StringBuffer mapStringBuffer = new StringBuffer();
                 map.forEach((mapKey, mapValue) -> {
                     mapStringBuffer.append(escape(StrUtil.toStringOrNull(mapKey)))
                             .append(SPLITTER)
-                            .append(escape(StrUtil.toStringOrNull(mapValue)))
+                            .append(escape(toDouyuSttString(mapValue)))
                             .append(END);
                 });
-                sb.append(escape(mapStringBuffer.toString()));
+                sb.append((mapStringBuffer.toString()));
             } else {
-                sb.append(escape(StrUtil.toStringOrNull(value)))
-                        .append(END);
+                sb.append((StrUtil.toStringOrNull(object)));
             }
         }
-        sb.append(SUFFIX);
         return sb.toString();
     }
 
@@ -186,15 +183,9 @@ public class DouyuCodecUtil {
         String type = (String) stringObjectMap.get("type");
         DouyuCmdEnum cmdEnum = DouyuCmdEnum.getByString(type);
 
-        if (cmdEnum == null) {
-            // TODO 不支持
-            log.warn("暂不支持 type {}", type);
-            return null;
-        }
-
         Class<IDouyuMsg> msgClass = getDouyuMsgClassByType(cmdEnum, msgType);
         if (msgClass == null) {
-            // TODO 不支持
+            // TODO 不支持的cmdEnum
             log.warn("暂不支持 cmdEnum {}, msgType {}", cmdEnum, msgType);
             return null;
         }
@@ -204,26 +195,39 @@ public class DouyuCodecUtil {
             Field field = ReflectUtil.getField(t.getClass(), key);
             // 未知key
             if (field == null) {
-                if (value instanceof Iterable<?> iterable) {
-                    ArrayNode arrayNode = JsonNodeFactory.instance.arrayNode();
-                    iterable.forEach(o -> arrayNode.add((String) o));
-                    ((BaseDouyuCmdMsg) t).getUnknownProperties().put(key, arrayNode);
-                } else if (value instanceof Map<?, ?> map) {
-                    ObjectNode objectNode = JsonNodeFactory.instance.objectNode();
-                    map.forEach((o, o2) -> {
-                        objectNode.put((String) o, (String) o2);
-                    });
-                    ((BaseDouyuCmdMsg) t).getUnknownProperties().put(key, objectNode);
-                } else {
-                    TextNode textNode = JsonNodeFactory.instance.textNode((String) value);
-                    ((BaseDouyuCmdMsg) t).getUnknownProperties().put(key, textNode);
-                }
-                log.debug("未知key {} {}，已存放于unknownProperties中", msgClass, key);
+                // Object -> JsonNode
+                ((BaseDouyuCmdMsg) t).getUnknownProperties().put(key, BaseDouyuCmdMsg.OBJECT_MAPPER.valueToTree(value));
+                // log.debug("未知key {} {}，已存放于unknownProperties中", msgClass, key);
             } else {
                 ReflectUtil.setFieldValue(t, field, value);
             }
         });
         return t;
+    }
+
+    public static Object parseDouyuSttStringToObject(String value) {
+        Object valueObject;
+        if (StrUtil.isBlank(value)) {
+            return null;
+        }
+        if (value.contains(SPLITTER) && value.contains(END)) {
+            // log.debug("map valueObject {}", value);
+            valueObject = parseDouyuSttStringToMap(value);
+        }
+        // List<Object>
+        else if (!value.contains(SPLITTER) && value.contains(END)) {
+            // log.debug("list valueObject {}", value);
+            List<Object> list = new ArrayList<>();
+            for (String s : value.split(END)) {
+                list.add(parseDouyuSttStringToObject(unescape(s)));
+            }
+            valueObject = list;
+        }
+        // String
+        else {
+            valueObject = value;
+        }
+        return valueObject;
     }
 
     public static Map<String, Object> parseDouyuSttStringToMap(String string) {
@@ -232,40 +236,7 @@ public class DouyuCodecUtil {
             String[] entry = s.split(SPLITTER);
             String key = unescape(entry[0]);
             String value = unescape(ArrayUtil.get(entry, 1));
-            Object valueObject = null;
-            if (value != null && value.endsWith(END)) {
-                for (String valueSplit : value.split(END)) {
-                    String valueSplitUnescape = unescape(valueSplit);
-                    if (StrUtil.isBlank(valueSplitUnescape)) {
-                        continue;
-                    }
-                    // Map
-                    if (valueSplitUnescape.contains(END)) {
-                        log.info("Map {}", valueSplitUnescape);
-                        if (valueObject == null) {
-                            valueObject = new HashMap<String, String>();
-                        }
-                        String[] valueSplitUnescapeSplit = unescape(valueSplitUnescape).split(END);
-                        for (String s1 : valueSplitUnescapeSplit) {
-                            if (StrUtil.isBlank(s1)) {
-                                continue;
-                            }
-                            String[] split = s1.split(SPLITTER);
-                            ((Map<String, String>) valueObject).put(unescape(split[0]), unescape(split[1]));
-                        }
-                    }
-                    // List
-                    else {
-                        log.info("List {}", valueSplitUnescape);
-                        if (valueObject == null) {
-                            valueObject = new ArrayList<String>();
-                        }
-                        ((List<String>) valueObject).add(unescape(valueSplitUnescape));
-                    }
-                }
-            } else {
-                valueObject = value;
-            }
+            Object valueObject = parseDouyuSttStringToObject(value);
             stringObjectMap.put(key, valueObject);
         }
         return stringObjectMap;
@@ -273,16 +244,12 @@ public class DouyuCodecUtil {
 
     public static <T extends IDouyuMsg> Class<T> getDouyuMsgClassByType(DouyuCmdEnum douyuCmdEnum, short msgType) {
         if (douyuCmdEnum == null) {
-            return null;
+            return (Class<T>) DouyuCmdMsg.class;
         }
         Class<?> msgClass;
         switch (douyuCmdEnum) {
-            case loginreq -> {
-                msgClass = LoginreqMsg.class;
-            }
-            case loginres -> {
-                msgClass = LoginresMsg.class;
-            }
+            case loginreq -> msgClass = LoginreqMsg.class;
+            case loginres -> msgClass = LoginresMsg.class;
             case mrkl -> {
                 if (msgType == MSG_TYPE_RECEIVE) {
                     msgClass = HeartbeatReplyMsg.class;
@@ -292,9 +259,8 @@ public class DouyuCodecUtil {
                     msgClass = null;
                 }
             }
-            default -> {
-                msgClass = DouyuCmdMsg.class;
-            }
+            case mapkb -> msgClass = MapkbMsg.class;
+            default -> msgClass = DouyuCmdMsg.class;
         }
         return (Class<T>) msgClass;
     }
