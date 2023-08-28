@@ -24,18 +24,15 @@
 
 package tech.ordinaryroad.live.chat.client.commons.base.msg;
 
-import lombok.Getter;
-import lombok.Setter;
-
 /**
  * @author mjz
  * @date 2023/8/26
  */
-@Getter
-@Setter
 public abstract class BaseCmdMsg<CmdEnum extends Enum<CmdEnum>> extends BaseMsg {
 
-    private String cmd;
+    public abstract String getCmd();
+
+    public abstract void setCmd(String cmd);
 
     public abstract CmdEnum getCmdEnum();
 
