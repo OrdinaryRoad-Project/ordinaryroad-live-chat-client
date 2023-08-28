@@ -65,12 +65,10 @@ public class DouyuBinaryFrameHandler extends BaseBinaryFrameHandler<DouyuCmdEnum
             return;
         }
 
-        DouyuCmdMsg sendSmsReplyMsg = (DouyuCmdMsg) cmdMsg;
+        DouyuCmdMsg douyuCmdMsg = (DouyuCmdMsg) cmdMsg;
         switch (cmd) {
-            case chatmsg -> listener.onDanmuMsg(sendSmsReplyMsg);
-            default -> {
-                super.listener.onOtherCmdMsg(cmd, cmdMsg);
-            }
+            case chatmsg -> listener.onDanmuMsg(douyuCmdMsg);
+            default -> super.listener.onOtherCmdMsg(cmd, cmdMsg);
         }
     }
 

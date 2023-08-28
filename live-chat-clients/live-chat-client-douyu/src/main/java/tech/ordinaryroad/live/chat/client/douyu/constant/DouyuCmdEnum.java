@@ -173,6 +173,7 @@ public enum DouyuCmdEnum {
      * type@=rri/rid@=1/rn@=cate_rank/cate_id@=5/uid@=10005/sc@=100 00/idx@=10/bcr@=1/ibc@=1/an@=test/rktype@=1/tag_id@=1200/gif t_id@=100/
      */
     rri,
+    mapkb,
     ;
 
     public static DouyuCmdEnum getByString(String cmd) {

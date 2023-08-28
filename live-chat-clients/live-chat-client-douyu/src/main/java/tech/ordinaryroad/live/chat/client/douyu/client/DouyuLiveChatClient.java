@@ -119,6 +119,13 @@ public class DouyuLiveChatClient extends BaseNettyLiveChatClient<
     }
 
     @Override
+    public void onDanmuMsg(DouyuCmdMsg cmdMsg) {
+        if (this.msgListener != null) {
+            this.msgListener.onDanmuMsg(cmdMsg);
+        }
+    }
+
+    @Override
     public void onCmdMsg(DouyuCmdEnum cmd, BaseCmdMsg<DouyuCmdEnum> cmdMsg) {
         if (!(cmdMsg instanceof DouyuCmdMsg)) {
             log.debug("非DouyuCmdMsg {}", cmdMsg.getClass());
@@ -142,4 +149,5 @@ public class DouyuLiveChatClient extends BaseNettyLiveChatClient<
             this.msgListener.onUnknownCmd(cmdString, msg);
         }
     }
+
 }

@@ -34,7 +34,7 @@ import tech.ordinaryroad.live.chat.client.douyu.msg.DouyuCmdMsg;
  */
 public interface IDouyuDouyuCmdMsgListener extends IBaseMsgListener<DouyuCmdEnum> {
 
-    default void onDanmuMsg(DouyuCmdMsg sendSmsReplyMsg) {
+    default void onDanmuMsg(DouyuCmdMsg cmdMsg) {
         // ignore
     }
 }
