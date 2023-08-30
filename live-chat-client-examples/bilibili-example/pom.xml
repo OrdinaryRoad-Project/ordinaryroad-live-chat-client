@@ -35,13 +35,13 @@
     <packaging>jar</packaging>
     <groupId>tech.ordinaryroad</groupId>
     <artifactId>bilibili-example</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.3-SNAPSHOT</version>
     <name>bilibili-live-chat-example</name>
     <description>bilibili-live-chat-example</description>
 
     <properties>
         <java.version>17</java.version>
-        <ordinaryroad-live-chat-client.version>0.0.2-SNAPSHOT</ordinaryroad-live-chat-client.version>
+        <ordinaryroad-live-chat-client.version>0.0.3-SNAPSHOT</ordinaryroad-live-chat-client.version>
     </properties>
 
     <dependencies>

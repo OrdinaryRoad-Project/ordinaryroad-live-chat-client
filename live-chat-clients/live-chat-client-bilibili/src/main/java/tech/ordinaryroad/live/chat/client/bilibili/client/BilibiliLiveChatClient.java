@@ -30,7 +30,6 @@ import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshakerFactory;
 import io.netty.handler.codec.http.websocketx.WebSocketVersion;
 import lombok.extern.slf4j.Slf4j;
-import tech.ordinaryroad.live.chat.client.bilibili.api.BilibiliApis;
 import tech.ordinaryroad.live.chat.client.bilibili.config.BilibiliLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.BilibiliCmdEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliSendSmsReplyMsgListener;
@@ -38,7 +37,7 @@ import tech.ordinaryroad.live.chat.client.bilibili.msg.base.IBilibiliMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliConnectionHandler;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
-import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyLiveChatClient;
+import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
 
 /**
  * B站直播间弹幕客户端
@@ -47,7 +46,7 @@ import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyLiv
  * @date 2023/8/20
  */
 @Slf4j
-public class BilibiliLiveChatClient extends BaseNettyLiveChatClient<
+public class BilibiliLiveChatClient extends BaseNettyClient<
         BilibiliLiveChatClientConfig,
         BilibiliCmdEnum,
         IBilibiliMsg,
@@ -75,12 +74,6 @@ public class BilibiliLiveChatClient extends BaseNettyLiveChatClient<
     }
 
     @Override
-    public void init() {
-        super.init();
-        BilibiliApis.init(super.getConfig());
-    }
-
-    @Override
     public BilibiliConnectionHandler initConnectionHandler(IBaseConnectionListener<BilibiliConnectionHandler> clientConnectionListener) {
         return new BilibiliConnectionHandler(
                 WebSocketClientHandshakerFactory.newHandshaker(getWebsocketUri(), WebSocketVersion.V13, null, true, new DefaultHttpHeaders()),
@@ -90,6 +83,6 @@ public class BilibiliLiveChatClient extends BaseNettyLiveChatClient<
 
     @Override
     public BilibiliBinaryFrameHandler initBinaryFrameHandler() {
-        return new BilibiliBinaryFrameHandler(this.msgListener);
+        return new BilibiliBinaryFrameHandler(BilibiliLiveChatClient.this.msgListener, BilibiliLiveChatClient.this);
     }
 }

@@ -52,7 +52,15 @@ public abstract class BaseLiveChatClient<Config extends BaseLiveChatClientConfig
 
     public abstract void init();
 
-    public abstract void connect();
+    public abstract void connect(Runnable success, Consumer<Throwable> failed);
+
+    public void connect(Runnable success) {
+        this.connect(success, null);
+    }
+
+    public void connect() {
+        this.connect(null, null);
+    }
 
     /**
      * 手动断开连接

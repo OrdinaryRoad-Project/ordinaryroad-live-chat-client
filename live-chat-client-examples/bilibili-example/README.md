@@ -38,3 +38,8 @@ tech:
 
 > 更新cookie（清空）
 > http://localhost:8080/client/cookie?cookie=
+
+## 支持同时监听多个直播间
+
+> http://localhost:8080/client/multiply/newClientAndStart/7777
+> http://localhost:8080/client/multiply/newClientAndStart/6

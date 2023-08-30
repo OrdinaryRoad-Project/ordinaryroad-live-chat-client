@@ -27,15 +27,14 @@ package tech.ordinaryroad.live.chat.client.bilibili.netty.handler;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import lombok.extern.slf4j.Slf4j;
+import tech.ordinaryroad.live.chat.client.bilibili.client.BilibiliLiveChatClient;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.BilibiliCmdEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliSendSmsReplyMsgListener;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.SendSmsReplyMsg;
-import tech.ordinaryroad.live.chat.client.bilibili.msg.base.BaseBilibiliMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.base.IBilibiliMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.util.BilibiliCodecUtil;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseCmdMsg;
-import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseMsg;
-import tech.ordinaryroad.live.chat.client.servers.netty.handler.base.BaseBinaryFrameHandler;
+import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientBinaryFrameHandler;
 
 import java.util.List;
 
@@ -48,10 +47,14 @@ import java.util.List;
  */
 @Slf4j
 @ChannelHandler.Sharable
-public class BilibiliBinaryFrameHandler extends BaseBinaryFrameHandler<BilibiliCmdEnum, IBilibiliMsg, IBilibiliSendSmsReplyMsgListener> {
+public class BilibiliBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<BilibiliLiveChatClient, BilibiliBinaryFrameHandler, BilibiliCmdEnum, IBilibiliMsg, IBilibiliSendSmsReplyMsgListener> {
 
-    public BilibiliBinaryFrameHandler(IBilibiliSendSmsReplyMsgListener listener) {
-        super(listener);
+    public BilibiliBinaryFrameHandler(IBilibiliSendSmsReplyMsgListener listener, BilibiliLiveChatClient client) {
+        super(listener, client);
+    }
+
+    public BilibiliBinaryFrameHandler(IBilibiliSendSmsReplyMsgListener listener, long roomId) {
+        super(listener, roomId);
     }
 
     @Override
@@ -64,35 +67,35 @@ public class BilibiliBinaryFrameHandler extends BaseBinaryFrameHandler<BilibiliC
 
         SendSmsReplyMsg sendSmsReplyMsg = (SendSmsReplyMsg) cmdMsg;
         switch (cmd) {
-            case DANMU_MSG -> listener.onDanmuMsg(sendSmsReplyMsg);
-            case SEND_GIFT -> listener.onSendGift(sendSmsReplyMsg);
-            case INTERACT_WORD -> listener.onEnterRoom(sendSmsReplyMsg);
-            case ENTRY_EFFECT -> listener.onEntryEffect(sendSmsReplyMsg);
-            case WATCHED_CHANGE -> listener.onWatchedChange(sendSmsReplyMsg);
-            case LIKE_INFO_V3_CLICK -> listener.onClickLike(sendSmsReplyMsg);
-            case LIKE_INFO_V3_UPDATE -> listener.onClickUpdate(sendSmsReplyMsg);
+            case DANMU_MSG -> listener.onDanmuMsg(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg);
+            case SEND_GIFT -> listener.onSendGift(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg);
+            case INTERACT_WORD -> listener.onEnterRoom(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg);
+            case ENTRY_EFFECT -> listener.onEntryEffect(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg);
+            case WATCHED_CHANGE -> listener.onWatchedChange(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg);
+            case LIKE_INFO_V3_CLICK -> listener.onClickLike(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg);
+            case LIKE_INFO_V3_UPDATE -> listener.onClickUpdate(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg);
             case HOT_RANK_CHANGED_V2 -> {
                 // TODO 主播实时活动排名变化
-                listener.onOtherCmdMsg(cmd, cmdMsg);
+                listener.onOtherCmdMsg(BilibiliBinaryFrameHandler.this, cmd, sendSmsReplyMsg);
             }
             case ONLINE_RANK_COUNT -> {
                 // TODO 高能榜数量更新
-                listener.onOtherCmdMsg(cmd, cmdMsg);
+                listener.onOtherCmdMsg(BilibiliBinaryFrameHandler.this, cmd, sendSmsReplyMsg);
             }
             case ROOM_REAL_TIME_MESSAGE_UPDATE -> {
                 // TODO 主播粉丝信息更新
-                listener.onOtherCmdMsg(cmd, cmdMsg);
+                listener.onOtherCmdMsg(BilibiliBinaryFrameHandler.this, cmd, sendSmsReplyMsg);
             }
             case STOP_LIVE_ROOM_LIST -> {
                 // TODO 停止直播的房间ID列表
-                listener.onOtherCmdMsg(cmd, cmdMsg);
+                listener.onOtherCmdMsg(BilibiliBinaryFrameHandler.this, cmd, sendSmsReplyMsg);
             }
             case ONLINE_RANK_V2 -> {
                 // TODO 高能用户排行榜 更新
-                listener.onOtherCmdMsg(cmd, cmdMsg);
+                listener.onOtherCmdMsg(BilibiliBinaryFrameHandler.this, cmd, sendSmsReplyMsg);
             }
             default -> {
-                listener.onOtherCmdMsg(cmd, cmdMsg);
+                listener.onOtherCmdMsg(BilibiliBinaryFrameHandler.this, cmd, cmdMsg);
             }
         }
     }

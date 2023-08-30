@@ -24,10 +24,13 @@
 
 package tech.ordinaryroad.live.chat.client.bilibili.config;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.ProtoverEnum;
-import tech.ordinaryroad.live.chat.client.servers.netty.client.config.BaseNettyLiveChatClientConfig;
+import tech.ordinaryroad.live.chat.client.servers.netty.client.config.BaseNettyClientConfig;
 
 /**
  * B站直播间弹幕客户端配置
@@ -39,7 +42,7 @@ import tech.ordinaryroad.live.chat.client.servers.netty.client.config.BaseNettyL
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder(toBuilder = true)
-public class BilibiliLiveChatClientConfig extends BaseNettyLiveChatClientConfig {
+public class BilibiliLiveChatClientConfig extends BaseNettyClientConfig {
 
     /**
      * @see ProtoverEnum

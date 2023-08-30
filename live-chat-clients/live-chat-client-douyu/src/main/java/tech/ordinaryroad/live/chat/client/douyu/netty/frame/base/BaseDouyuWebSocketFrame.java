@@ -33,8 +33,6 @@ import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
  */
 public abstract class BaseDouyuWebSocketFrame extends BinaryWebSocketFrame {
 
-    public static int sequence = 0;
-
     public BaseDouyuWebSocketFrame(ByteBuf byteBuf) {
         super(byteBuf);
     }

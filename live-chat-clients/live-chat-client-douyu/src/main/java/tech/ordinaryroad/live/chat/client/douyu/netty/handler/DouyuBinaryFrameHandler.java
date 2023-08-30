@@ -28,13 +28,14 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseCmdMsg;
+import tech.ordinaryroad.live.chat.client.douyu.client.DouyuLiveChatClient;
 import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuDouyuCmdMsgListener;
 import tech.ordinaryroad.live.chat.client.douyu.msg.ChatmsgMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.DouyuCmdMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.base.IDouyuMsg;
 import tech.ordinaryroad.live.chat.client.douyu.util.DouyuCodecUtil;
-import tech.ordinaryroad.live.chat.client.servers.netty.handler.base.BaseBinaryFrameHandler;
+import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientBinaryFrameHandler;
 
 import java.util.List;
 
@@ -47,10 +48,14 @@ import java.util.List;
  */
 @Slf4j
 @ChannelHandler.Sharable
-public class DouyuBinaryFrameHandler extends BaseBinaryFrameHandler<DouyuCmdEnum, IDouyuMsg, IDouyuDouyuCmdMsgListener> {
+public class DouyuBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<DouyuLiveChatClient, DouyuBinaryFrameHandler, DouyuCmdEnum, IDouyuMsg, IDouyuDouyuCmdMsgListener> {
 
-    public DouyuBinaryFrameHandler(IDouyuDouyuCmdMsgListener listener) {
-        super(listener);
+    public DouyuBinaryFrameHandler(IDouyuDouyuCmdMsgListener listener, DouyuLiveChatClient client) {
+        super(listener, client);
+    }
+
+    public DouyuBinaryFrameHandler(IDouyuDouyuCmdMsgListener listener, long roomId) {
+        super(listener, roomId);
     }
 
     @Override
@@ -60,13 +65,13 @@ public class DouyuBinaryFrameHandler extends BaseBinaryFrameHandler<DouyuCmdEnum
         }
 
         switch (cmd) {
-            case chatmsg -> listener.onDanmuMsg((ChatmsgMsg) cmdMsg);
+            case chatmsg -> listener.onDanmuMsg(DouyuBinaryFrameHandler.this, (ChatmsgMsg) cmdMsg);
             default -> {
                 if (!(cmdMsg instanceof DouyuCmdMsg)) {
                     log.debug("非DouyuCmdMsg {}", cmdMsg.getClass());
                     return;
                 }
-                super.listener.onOtherCmdMsg(cmd, cmdMsg);
+                super.listener.onOtherCmdMsg(DouyuBinaryFrameHandler.this, cmd, cmdMsg);
             }
         }
     }

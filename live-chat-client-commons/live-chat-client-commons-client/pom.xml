@@ -28,7 +28,7 @@
     <parent>
         <groupId>tech.ordinaryroad</groupId>
         <artifactId>live-chat-client-commons</artifactId>
-        <version>0.0.2-SNAPSHOT</version>
+        <version>0.0.3-SNAPSHOT</version>
     </parent>
     <packaging>jar</packaging>
 
@@ -41,8 +41,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
+            <groupId>tech.ordinaryroad</groupId>
+            <artifactId>live-chat-client-commons-util</artifactId>
         </dependency>
     </dependencies>
 </project>

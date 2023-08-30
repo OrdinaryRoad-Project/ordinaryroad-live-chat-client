@@ -22,39 +22,29 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.commons.client.utils;
+package tech.ordinaryroad.live.chat.client.commons.util;
 
-import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.util.ReflectUtil;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Supplier;
+import java.lang.reflect.Method;
 
 /**
  * @author mjz
- * @date 2023/8/27
+ * @date 2023/8/28
  */
-public class CookieUtil {
+public class OrLiveChatReflectUtil extends ReflectUtil {
 
-    public static Map<String, String> parseCookieString(String cookies) {
-        Map<String, String> map = new HashMap<>();
-        if (StrUtil.isNotBlank(cookies) && !StrUtil.isNullOrUndefined(cookies)) {
-            try {
-                String[] split = cookies.split("; ");
-                for (String s : split) {
-                    String[] split1 = s.split("=");
-                    map.put(split1[0], split1[1]);
-                }
-            } catch (Exception e) {
-                throw new RuntimeException("cookie解析失败 " + cookies, e);
+    public static Method getGetterMethod(Class<?> objectClass, String key) {
+        Method method;
+        if (key.startsWith("is")) {
+            method = ReflectUtil.getMethodByNameIgnoreCase(objectClass, key);
+            if (method == null) {
+                ReflectUtil.getMethodByNameIgnoreCase(objectClass, "get" + key);
             }
+        } else {
+            method = ReflectUtil.getMethodByNameIgnoreCase(objectClass, "get" + key);
         }
-        return map;
+        return method;
     }
 
-    public static String getCookieByName(Map<String, String> cookieMap, String name, Supplier<String> supplier) {
-        String str = MapUtil.getStr(cookieMap, name);
-        return str == null ? supplier.get() : str;
-    }
 }

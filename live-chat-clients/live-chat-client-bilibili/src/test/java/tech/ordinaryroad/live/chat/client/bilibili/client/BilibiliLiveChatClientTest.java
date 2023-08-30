@@ -31,6 +31,7 @@ import tech.ordinaryroad.live.chat.client.bilibili.config.BilibiliLiveChatClient
 import tech.ordinaryroad.live.chat.client.bilibili.constant.BilibiliCmdEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliSendSmsReplyMsgListener;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.SendSmsReplyMsg;
+import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseCmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
@@ -57,18 +58,18 @@ class BilibiliLiveChatClientTest {
 
         client = new BilibiliLiveChatClient(config, new IBilibiliSendSmsReplyMsgListener() {
             @Override
-            public void onDanmuMsg(SendSmsReplyMsg msg) {
+            public void onDanmuMsg(BilibiliBinaryFrameHandler binaryFrameHandler, SendSmsReplyMsg msg) {
                 JsonNode info = msg.getInfo();
                 JsonNode jsonNode1 = info.get(1);
                 String danmuText = jsonNode1.asText();
                 JsonNode jsonNode2 = info.get(2);
                 Long uid = jsonNode2.get(0).asLong();
                 String uname = jsonNode2.get(1).asText();
-                log.info("收到弹幕 {}({})：{}", uname, uid, danmuText);
+                log.info("{} 收到弹幕 {}({})：{}", binaryFrameHandler, uname, uid, danmuText);
             }
 
             @Override
-            public void onSendGift(SendSmsReplyMsg msg) {
+            public void onSendGift(BilibiliBinaryFrameHandler binaryFrameHandler, SendSmsReplyMsg msg) {
                 JsonNode data = msg.getData();
                 String action = data.get("action").asText();
                 String giftName = data.get("giftName").asText();

@@ -25,11 +25,11 @@
 package tech.ordinaryroad.live.chat.client.commons.client.config;
 
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import tech.ordinaryroad.live.chat.client.commons.client.utils.CookieUtil;
-
-import java.util.Map;
 
 /**
  * 直播间弹幕客户端配置
@@ -43,7 +43,6 @@ import java.util.Map;
 @SuperBuilder(toBuilder = true)
 public abstract class BaseLiveChatClientConfig {
 
-    public static Map<String, String> cookieMap;
     public static final long DEFAULT_HEARTBEAT_INITIAL_DELAY = 15;
     public static final long DEFAULT_HEARTBEAT_PERIOD = 25;
 
@@ -82,9 +81,4 @@ public abstract class BaseLiveChatClientConfig {
      */
     @Builder.Default
     private long heartbeatPeriod = DEFAULT_HEARTBEAT_PERIOD;
-
-    public void setCookie(String cookie) {
-        this.cookie = cookie;
-        BaseLiveChatClientConfig.cookieMap = CookieUtil.parseCookieString(cookie);
-    }
 }

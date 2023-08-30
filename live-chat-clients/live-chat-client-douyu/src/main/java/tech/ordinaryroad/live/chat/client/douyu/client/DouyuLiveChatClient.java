@@ -34,7 +34,6 @@ import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionL
 import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseCmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
-import tech.ordinaryroad.live.chat.client.douyu.api.DouyuApis;
 import tech.ordinaryroad.live.chat.client.douyu.config.DouyuLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuDouyuCmdMsgListener;
@@ -44,7 +43,7 @@ import tech.ordinaryroad.live.chat.client.douyu.msg.base.IDouyuMsg;
 import tech.ordinaryroad.live.chat.client.douyu.netty.frame.factory.DouyuWebSocketFrameFactory;
 import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuConnectionHandler;
-import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyLiveChatClient;
+import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
 
 /**
  * 直播间弹幕客户端
@@ -53,7 +52,7 @@ import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyLiv
  * @date 2023/8/20
  */
 @Slf4j
-public class DouyuLiveChatClient extends BaseNettyLiveChatClient<
+public class DouyuLiveChatClient extends BaseNettyClient<
         DouyuLiveChatClientConfig,
         DouyuCmdEnum,
         IDouyuMsg,
@@ -63,10 +62,12 @@ public class DouyuLiveChatClient extends BaseNettyLiveChatClient<
         > implements IDouyuDouyuCmdMsgListener {
 
     private final IDouyuDouyuCmdMsgListener msgListener;
+    private final DouyuWebSocketFrameFactory webSocketFrameFactory;
 
     public DouyuLiveChatClient(DouyuLiveChatClientConfig config, IDouyuDouyuCmdMsgListener msgListener, IBaseConnectionListener<DouyuConnectionHandler> connectionListener, EventLoopGroup workerGroup) {
         super(config, workerGroup, connectionListener);
         this.msgListener = msgListener;
+        this.webSocketFrameFactory = DouyuWebSocketFrameFactory.getInstance(config.getRoomId(), config.getVer(), config.getAver(), config.getCookie());
 
         // 初始化
         this.init();
@@ -81,12 +82,6 @@ public class DouyuLiveChatClient extends BaseNettyLiveChatClient<
     }
 
     @Override
-    public void init() {
-        super.init();
-        DouyuApis.init(super.getConfig());
-    }
-
-    @Override
     public DouyuConnectionHandler initConnectionHandler(IBaseConnectionListener<DouyuConnectionHandler> clientConnectionListener) {
         return new DouyuConnectionHandler(
                 WebSocketClientHandshakerFactory.newHandshaker(getWebsocketUri(), WebSocketVersion.V13, null, true, new DefaultHttpHeaders()),
@@ -96,52 +91,51 @@ public class DouyuLiveChatClient extends BaseNettyLiveChatClient<
 
     @Override
     public DouyuBinaryFrameHandler initBinaryFrameHandler() {
-        return new DouyuBinaryFrameHandler(DouyuLiveChatClient.this);
+        return new DouyuBinaryFrameHandler(DouyuLiveChatClient.this, DouyuLiveChatClient.this);
     }
 
     @Override
-    public void onMsg(IMsg msg) {
+    public void onMsg(DouyuBinaryFrameHandler binaryFrameHandler, IMsg msg) {
         if (msg instanceof LoginresMsg) {
             // 1 type@=joingroup/rid@=4615502/gid@=1/
-            send(DouyuWebSocketFrameFactory.getInstance().createJoingroup(getConfig().getRoomId()), () -> {
+            send(webSocketFrameFactory.createJoingroup(), () -> {
                 // 2 type@=mrkl/
-                send(DouyuWebSocketFrameFactory.getInstance().createHeartbeat(), () -> {
+                send(webSocketFrameFactory.createHeartbeat(), () -> {
                     // 3 type@=sub/mt@=dayrk/
-                    send(DouyuWebSocketFrameFactory.getInstance().createSub());
+                    send(webSocketFrameFactory.createSub());
                 });
             });
         }
         if (this.msgListener != null) {
-            this.msgListener.onMsg(msg);
+            this.msgListener.onMsg(binaryFrameHandler, msg);
         }
     }
 
     @Override
-    public void onDanmuMsg(ChatmsgMsg msg) {
+    public void onDanmuMsg(DouyuBinaryFrameHandler binaryFrameHandler, ChatmsgMsg msg) {
         if (this.msgListener != null) {
-            this.msgListener.onDanmuMsg(msg);
+            this.msgListener.onDanmuMsg(binaryFrameHandler, msg);
         }
     }
 
     @Override
-    public void onCmdMsg(DouyuCmdEnum cmd, BaseCmdMsg<DouyuCmdEnum> cmdMsg) {
+    public void onCmdMsg(DouyuBinaryFrameHandler binaryFrameHandler, DouyuCmdEnum cmd, BaseCmdMsg<DouyuCmdEnum> cmdMsg) {
         if (this.msgListener != null) {
-            this.msgListener.onCmdMsg(cmd, cmdMsg);
+            this.msgListener.onCmdMsg(binaryFrameHandler, cmd, cmdMsg);
         }
     }
 
     @Override
-    public void onOtherCmdMsg(DouyuCmdEnum cmd, BaseCmdMsg<DouyuCmdEnum> cmdMsg) {
+    public void onOtherCmdMsg(DouyuBinaryFrameHandler binaryFrameHandler, DouyuCmdEnum cmd, BaseCmdMsg<DouyuCmdEnum> cmdMsg) {
         if (this.msgListener != null) {
-            this.msgListener.onOtherCmdMsg(cmd, cmdMsg);
+            this.msgListener.onOtherCmdMsg(binaryFrameHandler, cmd, cmdMsg);
         }
     }
 
     @Override
-    public void onUnknownCmd(String cmdString, BaseMsg msg) {
+    public void onUnknownCmd(DouyuBinaryFrameHandler binaryFrameHandler, String cmdString, BaseMsg msg) {
         if (this.msgListener != null) {
-            this.msgListener.onUnknownCmd(cmdString, msg);
+            this.msgListener.onUnknownCmd(binaryFrameHandler, cmdString, msg);
         }
     }
-
 }

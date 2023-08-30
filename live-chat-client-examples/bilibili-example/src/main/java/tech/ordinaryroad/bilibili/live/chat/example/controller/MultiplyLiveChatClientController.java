@@ -22,10 +22,16 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.bilibili.live.chat.example.config;
+package tech.ordinaryroad.bilibili.live.chat.example.controller;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import tech.ordinaryroad.live.chat.client.bilibili.client.BilibiliLiveChatClient;
+import tech.ordinaryroad.live.chat.client.bilibili.config.BilibiliLiveChatClientConfig;
+import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliSendSmsReplyMsgListener;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliConnectionHandler;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 
@@ -33,22 +39,22 @@ import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionL
  * @author mjz
  * @date 2023/8/21
  */
-@Slf4j
-@Service
-public class BilibiliConnectionListener implements IBaseConnectionListener<BilibiliConnectionHandler> {
+@RestController
+@RequestMapping("client/multiply")
+public class MultiplyLiveChatClientController {
 
-    @Override
-    public void onConnected(BilibiliConnectionHandler connectionHandler) {
-        log.info("{} onConnected", connectionHandler.getRoomId());
+    @Autowired
+    private IBilibiliSendSmsReplyMsgListener bilibiliSendSmsReplyMsgListener;
+    @Autowired
+    private IBaseConnectionListener<BilibiliConnectionHandler> bilibiliConnectionListener;
+
+    @GetMapping("newClientAndStart/{roomId}")
+    public void newClientAndStart(@PathVariable Long roomId) {
+        BilibiliLiveChatClientConfig config = BilibiliLiveChatClientConfig.builder()
+                .roomId(roomId)
+                .build();
+        new BilibiliLiveChatClient(config, bilibiliSendSmsReplyMsgListener, bilibiliConnectionListener)
+                .connect();
     }
 
-    @Override
-    public void onConnectFailed(BilibiliConnectionHandler connectionHandler) {
-        log.info("{} onConnectFailed", connectionHandler.getRoomId());
-    }
-
-    @Override
-    public void onDisconnected(BilibiliConnectionHandler connectionHandler) {
-        log.info("{} onDisconnected", connectionHandler.getRoomId());
-    }
 }

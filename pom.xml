@@ -27,7 +27,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>tech.ordinaryroad</groupId>
     <artifactId>live-chat-client</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.3-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>ordinaryroad-live-chat-client</name>
     <description>Live room WebSocket chat client</description>
@@ -60,7 +60,7 @@
     </modules>
 
     <properties>
-        <live-chat-client.version>0.0.2-SNAPSHOT</live-chat-client.version>
+        <live-chat-client.version>0.0.3-SNAPSHOT</live-chat-client.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -80,6 +80,12 @@
             <dependency>
                 <groupId>tech.ordinaryroad</groupId>
                 <artifactId>live-chat-client-commons-base</artifactId>
+                <version>${live-chat-client.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>tech.ordinaryroad</groupId>
+                <artifactId>live-chat-client-commons-util</artifactId>
                 <version>${live-chat-client.version}</version>
             </dependency>
 

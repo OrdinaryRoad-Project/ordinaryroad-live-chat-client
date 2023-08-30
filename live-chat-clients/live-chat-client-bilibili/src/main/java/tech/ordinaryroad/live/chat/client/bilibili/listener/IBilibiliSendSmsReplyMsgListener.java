@@ -26,19 +26,25 @@ package tech.ordinaryroad.live.chat.client.bilibili.listener;
 
 import tech.ordinaryroad.live.chat.client.bilibili.constant.BilibiliCmdEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.SendSmsReplyMsg;
+import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener;
 
 /**
  * @author mjz
  * @date 2023/1/7
  */
-public interface IBilibiliSendSmsReplyMsgListener extends IBaseMsgListener<BilibiliCmdEnum> {
+public interface IBilibiliSendSmsReplyMsgListener extends IBaseMsgListener<BilibiliBinaryFrameHandler, BilibiliCmdEnum> {
 
     /**
      * 收到弹幕
      *
-     * @param msg SendSmsReplyMsg
+     * @param binaryFrameHandler BilibiliBinaryFrameHandler
+     * @param msg                SendSmsReplyMsg
      */
+    default void onDanmuMsg(BilibiliBinaryFrameHandler binaryFrameHandler, SendSmsReplyMsg msg) {
+        this.onDanmuMsg(msg);
+    }
+
     default void onDanmuMsg(SendSmsReplyMsg msg) {
         // ignore
     }
@@ -46,8 +52,13 @@ public interface IBilibiliSendSmsReplyMsgListener extends IBaseMsgListener<Bilib
     /**
      * 收到礼物
      *
-     * @param msg SendSmsReplyMsg
+     * @param binaryFrameHandler BilibiliBinaryFrameHandler
+     * @param msg                SendSmsReplyMsg
      */
+    default void onSendGift(BilibiliBinaryFrameHandler binaryFrameHandler, SendSmsReplyMsg msg) {
+        this.onSendGift(msg);
+    }
+
     default void onSendGift(SendSmsReplyMsg msg) {
         // ignore
     }
@@ -55,8 +66,13 @@ public interface IBilibiliSendSmsReplyMsgListener extends IBaseMsgListener<Bilib
     /**
      * 普通用户进入直播间
      *
-     * @param msg SendSmsReplyMsg
+     * @param binaryFrameHandler BilibiliBinaryFrameHandler
+     * @param msg                SendSmsReplyMsg
      */
+    default void onEnterRoom(BilibiliBinaryFrameHandler binaryFrameHandler, SendSmsReplyMsg msg) {
+        this.onEnterRoom(msg);
+    }
+
     default void onEnterRoom(SendSmsReplyMsg msg) {
         // ignore
     }
@@ -64,8 +80,13 @@ public interface IBilibiliSendSmsReplyMsgListener extends IBaseMsgListener<Bilib
     /**
      * 入场效果（高能用户）
      *
-     * @param sendSmsReplyMsg SendSmsReplyMsg
+     * @param binaryFrameHandler BilibiliBinaryFrameHandler
+     * @param sendSmsReplyMsg    SendSmsReplyMsg
      */
+    default void onEntryEffect(BilibiliBinaryFrameHandler binaryFrameHandler, SendSmsReplyMsg sendSmsReplyMsg) {
+        this.onEntryEffect(sendSmsReplyMsg);
+    }
+
     default void onEntryEffect(SendSmsReplyMsg sendSmsReplyMsg) {
         // ignore
     }
@@ -73,8 +94,13 @@ public interface IBilibiliSendSmsReplyMsgListener extends IBaseMsgListener<Bilib
     /**
      * 观看人数变化
      *
-     * @param msg SendSmsReplyMsg
+     * @param binaryFrameHandler BilibiliBinaryFrameHandler
+     * @param msg                SendSmsReplyMsg
      */
+    default void onWatchedChange(BilibiliBinaryFrameHandler binaryFrameHandler, SendSmsReplyMsg msg) {
+        this.onWatchedChange(msg);
+    }
+
     default void onWatchedChange(SendSmsReplyMsg msg) {
         // ignore
     }
@@ -82,8 +108,13 @@ public interface IBilibiliSendSmsReplyMsgListener extends IBaseMsgListener<Bilib
     /**
      * 为主播点赞
      *
-     * @param msg SendSmsReplyMsg
+     * @param binaryFrameHandler BilibiliBinaryFrameHandler
+     * @param msg                SendSmsReplyMsg
      */
+    default void onClickLike(BilibiliBinaryFrameHandler binaryFrameHandler, SendSmsReplyMsg msg) {
+        this.onClickLike(msg);
+    }
+
     default void onClickLike(SendSmsReplyMsg msg) {
         // ignore
     }
@@ -91,8 +122,13 @@ public interface IBilibiliSendSmsReplyMsgListener extends IBaseMsgListener<Bilib
     /**
      * 点赞数更新
      *
-     * @param msg SendSmsReplyMsg
+     * @param binaryFrameHandler BilibiliBinaryFrameHandler
+     * @param msg                SendSmsReplyMsg
      */
+    default void onClickUpdate(BilibiliBinaryFrameHandler binaryFrameHandler, SendSmsReplyMsg msg) {
+        this.onClickUpdate(msg);
+    }
+
     default void onClickUpdate(SendSmsReplyMsg msg) {
         // ignore
     }

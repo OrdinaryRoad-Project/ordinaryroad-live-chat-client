@@ -30,7 +30,7 @@ import cn.hutool.core.util.StrUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.extern.slf4j.Slf4j;
-import tech.ordinaryroad.live.chat.client.commons.base.utils.OrLiveChatReflectUtil;
+import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatReflectUtil;
 import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyu.msg.DouyuCmdMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.HeartbeatMsg;

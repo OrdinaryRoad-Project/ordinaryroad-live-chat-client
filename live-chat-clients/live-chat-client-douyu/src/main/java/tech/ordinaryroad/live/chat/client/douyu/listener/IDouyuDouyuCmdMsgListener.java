@@ -27,12 +27,13 @@ package tech.ordinaryroad.live.chat.client.douyu.listener;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener;
 import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyu.msg.ChatmsgMsg;
+import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuBinaryFrameHandler;
 
 /**
  * @author mjz
  * @date 2023/1/7
  */
-public interface IDouyuDouyuCmdMsgListener extends IBaseMsgListener<DouyuCmdEnum> {
+public interface IDouyuDouyuCmdMsgListener extends IBaseMsgListener<DouyuBinaryFrameHandler, DouyuCmdEnum> {
 
     /**
      * <pre>{@code
@@ -64,7 +65,7 @@ public interface IDouyuDouyuCmdMsgListener extends IBaseMsgListener<DouyuCmdEnum
      *
      * @param msg ChatmsgMsg
      */
-    default void onDanmuMsg(ChatmsgMsg msg) {
+    default void onDanmuMsg(DouyuBinaryFrameHandler binaryFrameHandler, ChatmsgMsg msg) {
         // ignore
     }
 }

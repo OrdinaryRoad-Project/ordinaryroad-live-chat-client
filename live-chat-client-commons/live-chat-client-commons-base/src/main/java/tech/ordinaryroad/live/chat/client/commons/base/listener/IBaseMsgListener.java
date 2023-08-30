@@ -33,13 +33,17 @@ import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
  * @author mjz
  * @date 2023/8/26
  */
-public interface IBaseMsgListener<CmdEnum extends Enum<CmdEnum>> {
+public interface IBaseMsgListener<T, CmdEnum extends Enum<CmdEnum>> {
 
     /**
      * 收到消息（所有消息）
      *
      * @param msg IMsg
      */
+    default void onMsg(T t, IMsg msg) {
+        this.onMsg(msg);
+    }
+
     default void onMsg(IMsg msg) {
         // ignore
     }
@@ -47,9 +51,13 @@ public interface IBaseMsgListener<CmdEnum extends Enum<CmdEnum>> {
     /**
      * 收到cmd消息（所有cmd）
      *
-     * @param cmd CmdEnum
+     * @param cmd    CmdEnum
      * @param cmdMsg BaseCmdMsg
      */
+    default void onCmdMsg(T t, CmdEnum cmd, BaseCmdMsg<CmdEnum> cmdMsg) {
+        this.onCmdMsg(cmd, cmdMsg);
+    }
+
     default void onCmdMsg(CmdEnum cmd, BaseCmdMsg<CmdEnum> cmdMsg) {
         // ignore
     }
@@ -57,9 +65,13 @@ public interface IBaseMsgListener<CmdEnum extends Enum<CmdEnum>> {
     /**
      * 收到其他cmd消息（存在Enum，但Listener没有对应的回调）
      *
-     * @param cmd CmdEnum
+     * @param cmd    CmdEnum
      * @param cmdMsg BaseCmdMsg
      */
+    default void onOtherCmdMsg(T t, CmdEnum cmd, BaseCmdMsg<CmdEnum> cmdMsg) {
+        this.onOtherCmdMsg(cmd, cmdMsg);
+    }
+
     default void onOtherCmdMsg(CmdEnum cmd, BaseCmdMsg<CmdEnum> cmdMsg) {
         // ignore
     }
@@ -70,6 +82,10 @@ public interface IBaseMsgListener<CmdEnum extends Enum<CmdEnum>> {
      * @param cmdString 实际收到的cmd字符串
      * @param msg       BaseMsg
      */
+    default void onUnknownCmd(T t, String cmdString, BaseMsg msg) {
+        this.onUnknownCmd(cmdString, msg);
+    }
+
     default void onUnknownCmd(String cmdString, BaseMsg msg) {
         // ignore
     }
