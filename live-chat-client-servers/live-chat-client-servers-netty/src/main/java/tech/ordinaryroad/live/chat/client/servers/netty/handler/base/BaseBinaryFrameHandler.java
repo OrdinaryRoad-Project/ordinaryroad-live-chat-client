@@ -29,6 +29,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseCmdMsg;
@@ -45,14 +46,17 @@ import java.util.List;
  * @date 2023/1/4
  */
 @Slf4j
-public abstract class BaseBinaryFrameHandler<CmdEnum extends Enum<CmdEnum>, Msg extends IMsg, MsgListener extends IBaseMsgListener<CmdEnum>>
+public abstract class BaseBinaryFrameHandler<T extends BaseBinaryFrameHandler<?, ?, ?, ?>, CmdEnum extends Enum<CmdEnum>, Msg extends IMsg, MsgListener extends IBaseMsgListener<T, CmdEnum>>
         extends SimpleChannelInboundHandler<BinaryWebSocketFrame>
-        implements IBaseMsgListener<CmdEnum> {
+        implements IBaseMsgListener<T, CmdEnum> {
 
+    @Getter
+    private final long roomId;
     protected final MsgListener listener;
 
-    public BaseBinaryFrameHandler(MsgListener listener) {
+    public BaseBinaryFrameHandler(MsgListener listener, long roomId) {
         this.listener = listener;
+        this.roomId = roomId;
         if (listener == null) {
             log.warn("listener not set");
         }
@@ -70,13 +74,13 @@ public abstract class BaseBinaryFrameHandler<CmdEnum extends Enum<CmdEnum>, Msg 
         ByteBuf byteBuf = message.content();
         List<Msg> msgList = this.decode(byteBuf);
         for (Msg msg : msgList) {
-            this.onMsg(msg);
+            this.onMsg((T) BaseBinaryFrameHandler.this, msg);
             if (msg instanceof BaseCmdMsg<?> cmdMsg) {
                 Enum<?> cmdEnum = cmdMsg.getCmdEnum();
                 if (cmdEnum == null) {
-                    this.onUnknownCmd(cmdMsg.getCmd(), cmdMsg);
+                    this.onUnknownCmd((T) BaseBinaryFrameHandler.this, cmdMsg.getCmd(), cmdMsg);
                 } else {
-                    this.onCmdMsg((CmdEnum) cmdEnum, (BaseCmdMsg<CmdEnum>) cmdMsg);
+                    this.onCmdMsg((T) BaseBinaryFrameHandler.this, (CmdEnum) cmdEnum, (BaseCmdMsg<CmdEnum>) cmdMsg);
                 }
             }
         }
@@ -92,29 +96,33 @@ public abstract class BaseBinaryFrameHandler<CmdEnum extends Enum<CmdEnum>, Msg 
     }
 
     @Override
-    public void onMsg(IMsg msg) {
+    public void onMsg(T t, IMsg msg) {
+        IBaseMsgListener.super.onMsg(t, msg);
         if (this.listener != null) {
-            this.listener.onMsg(msg);
+            this.listener.onMsg(t, msg);
         }
     }
 
     /**
-     * 重写该方法，判断CMD，或者调用{@link IBaseMsgListener#onOtherCmdMsg(Enum, BaseCmdMsg)}
+     * 重写该方法，判断CMD，或者调用{@link IBaseMsgListener#onOtherCmdMsg(Object, Enum, BaseCmdMsg)}
      *
+     * @param t      BaseBinaryFrameHandler
      * @param cmd    CmdEnum
      * @param cmdMsg BaseMsg
      */
     @Override
-    public void onCmdMsg(CmdEnum cmd, BaseCmdMsg<CmdEnum> cmdMsg) {
+    public void onCmdMsg(T t, CmdEnum cmd, BaseCmdMsg<CmdEnum> cmdMsg) {
+        IBaseMsgListener.super.onCmdMsg(t, cmd, cmdMsg);
         if (this.listener != null) {
-            this.listener.onCmdMsg(cmd, cmdMsg);
+            this.listener.onCmdMsg(t, cmd, cmdMsg);
         }
     }
 
     @Override
-    public void onUnknownCmd(String cmdString, BaseMsg msg) {
+    public void onUnknownCmd(T t, String cmdString, BaseMsg msg) {
+        IBaseMsgListener.super.onUnknownCmd(t, cmdString, msg);
         if (this.listener != null) {
-            this.listener.onUnknownCmd(cmdString, msg);
+            this.listener.onUnknownCmd(t, cmdString, msg);
         }
     }
 }

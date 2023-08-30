@@ -36,7 +36,7 @@ public interface IBaseConnectionListener<T> {
     /**
      * 连接建立成功
      */
-    default void onConnected() {
+    default void onConnected(T t) {
         // ignore
     }
 

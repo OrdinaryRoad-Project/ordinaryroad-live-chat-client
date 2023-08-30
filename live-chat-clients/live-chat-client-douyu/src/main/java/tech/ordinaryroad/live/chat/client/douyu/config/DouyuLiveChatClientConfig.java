@@ -29,7 +29,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import tech.ordinaryroad.live.chat.client.servers.netty.client.config.BaseNettyLiveChatClientConfig;
+import tech.ordinaryroad.live.chat.client.servers.netty.client.config.BaseNettyClientConfig;
 
 /**
  * Douyu直播间弹幕客户端配置
@@ -41,7 +41,7 @@ import tech.ordinaryroad.live.chat.client.servers.netty.client.config.BaseNettyL
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder(toBuilder = true)
-public class DouyuLiveChatClientConfig extends BaseNettyLiveChatClientConfig {
+public class DouyuLiveChatClientConfig extends BaseNettyClientConfig {
 
     @Builder.Default
     private String ver = "20220825";

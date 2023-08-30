@@ -32,7 +32,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Cleanup;
 import lombok.extern.slf4j.Slf4j;
-import tech.ordinaryroad.live.chat.client.bilibili.config.BilibiliLiveChatClientConfig;
 
 /**
  * B站API简易版
@@ -45,15 +44,9 @@ public class BilibiliApis {
 
     public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-    private static BilibiliLiveChatClientConfig config;
-
-    public static void init(BilibiliLiveChatClientConfig config) {
-        BilibiliApis.config = config;
-    }
-
-    public static JsonNode roomInit(long roomId) {
+    public static JsonNode roomInit(long roomId, String cookie) {
         @Cleanup
-        HttpResponse response = createGetRequest("https://api.live.bilibili.com/room/v1/Room/room_init?id=" + roomId).execute();
+        HttpResponse response = createGetRequest("https://api.live.bilibili.com/room/v1/Room/room_init?id=" + roomId, cookie).execute();
         return responseInterceptor(response.body());
     }
 
@@ -87,15 +80,15 @@ public class BilibiliApis {
      * }
      * }</pre>
      */
-    public static JsonNode getDanmuInfo(long roomId, int type) {
+    public static JsonNode getDanmuInfo(long roomId, int type, String cookie) {
         @Cleanup
-        HttpResponse response = createGetRequest("https://api.live.bilibili.com/xlive/web-room/v1/index/getDanmuInfo?id=" + roomId + "&type=" + type).execute();
+        HttpResponse response = createGetRequest("https://api.live.bilibili.com/xlive/web-room/v1/index/getDanmuInfo?id=" + roomId + "&type=" + type, cookie).execute();
         return responseInterceptor(response.body());
     }
 
-    public static HttpRequest createGetRequest(String url) {
+    public static HttpRequest createGetRequest(String url, String cookies) {
         return HttpUtil.createGet(url)
-                .cookie(config.getCookie());
+                .cookie(cookies);
     }
 
     private static JsonNode responseInterceptor(String responseString) {

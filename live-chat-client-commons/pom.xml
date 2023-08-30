@@ -37,6 +37,7 @@
 
     <modules>
         <module>live-chat-client-commons-base</module>
+        <module>live-chat-client-commons-util</module>
         <module>live-chat-client-commons-client</module>
     </modules>
 </project>

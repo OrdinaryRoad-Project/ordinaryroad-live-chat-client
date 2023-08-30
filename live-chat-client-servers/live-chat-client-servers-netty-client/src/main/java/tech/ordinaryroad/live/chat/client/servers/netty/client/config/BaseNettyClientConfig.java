@@ -22,29 +22,31 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.commons.base.utils;
+package tech.ordinaryroad.live.chat.client.servers.netty.client.config;
 
-import cn.hutool.core.util.ReflectUtil;
-
-import java.lang.reflect.Method;
+import io.netty.handler.codec.http.HttpObjectAggregator;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import tech.ordinaryroad.live.chat.client.commons.client.config.BaseLiveChatClientConfig;
 
 /**
  * @author mjz
- * @date 2023/8/28
+ * @date 2023/8/26
  */
-public class OrLiveChatReflectUtil extends ReflectUtil {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder(toBuilder = true)
+public abstract class BaseNettyClientConfig extends BaseLiveChatClientConfig {
 
-    public static Method getGetterMethod(Class<?> objectClass, String key) {
-        Method method;
-        if (key.startsWith("is")) {
-            method = ReflectUtil.getMethodByNameIgnoreCase(objectClass, key);
-            if (method == null) {
-                ReflectUtil.getMethodByNameIgnoreCase(objectClass, "get" + key);
-            }
-        } else {
-            method = ReflectUtil.getMethodByNameIgnoreCase(objectClass, "get" + key);
-        }
-        return method;
-    }
-
+    /**
+     * 聚合器允许的最大消息体长度，默认 64*1024 byte
+     *
+     * @see HttpObjectAggregator#HttpObjectAggregator(int)
+     */
+    @Builder.Default
+    private int aggregatorMaxContentLength = 64 * 1024;
 }

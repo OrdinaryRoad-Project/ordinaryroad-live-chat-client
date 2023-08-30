@@ -34,6 +34,7 @@ import tech.ordinaryroad.live.chat.client.douyu.config.DouyuLiveChatClientConfig
 import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuDouyuCmdMsgListener;
 import tech.ordinaryroad.live.chat.client.douyu.msg.ChatmsgMsg;
+import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuConnectionHandler;
 
 /**
@@ -59,43 +60,53 @@ class DouyuLiveChatClientTest {
 
         client = new DouyuLiveChatClient(config, new IDouyuDouyuCmdMsgListener() {
             @Override
-            public void onMsg(IMsg msg) {
-                // log.info("收到{}消息 {}", msg.getClass(), msg);
+            public void onMsg(DouyuBinaryFrameHandler binaryFrameHandler, IMsg msg) {
+                IDouyuDouyuCmdMsgListener.super.onMsg(binaryFrameHandler, msg);
+
+                log.debug("{} 收到{}消息 {}", binaryFrameHandler.getRoomId(), msg.getClass(), msg);
             }
 
             @Override
-            public void onDanmuMsg(ChatmsgMsg msg) {
-                log.info("收到弹幕 {}({})：{}", msg.getNn(), msg.getUid(), msg.getTxt());
+            public void onDanmuMsg(DouyuBinaryFrameHandler binaryFrameHandler, ChatmsgMsg msg) {
+                IDouyuDouyuCmdMsgListener.super.onDanmuMsg(binaryFrameHandler, msg);
+
+                log.info("{} 收到弹幕 {}({})：{}", binaryFrameHandler.getRoomId(), msg.getNn(), msg.getUid(), msg.getTxt());
             }
 
             @Override
-            public void onCmdMsg(DouyuCmdEnum cmd, BaseCmdMsg<DouyuCmdEnum> cmdMsg) {
-                // log.info("收到CMD消息{} {}", cmd, cmdMsg);
+            public void onCmdMsg(DouyuBinaryFrameHandler binaryFrameHandler, DouyuCmdEnum cmd, BaseCmdMsg<DouyuCmdEnum> cmdMsg) {
+                IDouyuDouyuCmdMsgListener.super.onCmdMsg(binaryFrameHandler, cmd, cmdMsg);
+
+                log.info("{} 收到CMD消息{} {}", binaryFrameHandler.getRoomId(), cmd, cmdMsg);
             }
 
             @Override
-            public void onOtherCmdMsg(DouyuCmdEnum cmd, BaseCmdMsg<DouyuCmdEnum> cmdMsg) {
-                log.debug("收到其他CMD消息 {}", cmd);
+            public void onOtherCmdMsg(DouyuBinaryFrameHandler binaryFrameHandler, DouyuCmdEnum cmd, BaseCmdMsg<DouyuCmdEnum> cmdMsg) {
+                IDouyuDouyuCmdMsgListener.super.onOtherCmdMsg(binaryFrameHandler, cmd, cmdMsg);
+
+                log.debug("{} 收到其他CMD消息 {}", binaryFrameHandler.getRoomId(), cmd);
             }
 
             @Override
-            public void onUnknownCmd(String cmdString, BaseMsg msg) {
-                log.debug("收到未知CMD消息 {}", cmdString);
+            public void onUnknownCmd(DouyuBinaryFrameHandler binaryFrameHandler, String cmdString, BaseMsg msg) {
+                IDouyuDouyuCmdMsgListener.super.onUnknownCmd(binaryFrameHandler, cmdString, msg);
+
+                log.debug("{} 收到未知CMD消息 {}", binaryFrameHandler.getRoomId(), cmdString);
             }
         }, new IBaseConnectionListener<DouyuConnectionHandler>() {
             @Override
-            public void onConnected() {
-                log.info("onConnected");
+            public void onConnected(DouyuConnectionHandler connectionHandler) {
+                log.info("{} onConnected", connectionHandler.getRoomId());
             }
 
             @Override
-            public void onConnectFailed(DouyuConnectionHandler douyuConnectionHandler) {
-                log.info("onConnectFailed");
+            public void onConnectFailed(DouyuConnectionHandler connectionHandler) {
+                log.info("{} onConnectFailed", connectionHandler.getRoomId());
             }
 
             @Override
-            public void onDisconnected(DouyuConnectionHandler douyuConnectionHandler) {
-                log.info("onDisconnected");
+            public void onDisconnected(DouyuConnectionHandler connectionHandler) {
+                log.info("{} onDisconnected", connectionHandler.getRoomId());
             }
         });
         client.connect();

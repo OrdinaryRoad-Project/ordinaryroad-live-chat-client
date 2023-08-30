@@ -41,7 +41,7 @@ import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 import tech.ordinaryroad.live.chat.client.commons.client.BaseLiveChatClient;
 import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
-import tech.ordinaryroad.live.chat.client.servers.netty.client.config.BaseNettyLiveChatClientConfig;
+import tech.ordinaryroad.live.chat.client.servers.netty.client.config.BaseNettyClientConfig;
 import tech.ordinaryroad.live.chat.client.servers.netty.handler.base.BaseBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.servers.netty.handler.base.BaseConnectionHandler;
 
@@ -55,13 +55,13 @@ import java.util.function.Consumer;
  * @author mjz
  * @date 2023/8/26
  */
-public abstract class BaseNettyLiveChatClient
-        <Config extends BaseNettyLiveChatClientConfig,
+public abstract class BaseNettyClient
+        <Config extends BaseNettyClientConfig,
                 CmdEnum extends Enum<CmdEnum>,
                 Msg extends IMsg,
-                MsgListener extends IBaseMsgListener<CmdEnum>,
+                MsgListener extends IBaseMsgListener<BinaryFrameHandler, CmdEnum>,
                 ConnectionHandler extends BaseConnectionHandler<ConnectionHandler>,
-                BinaryFrameHandler extends BaseBinaryFrameHandler<CmdEnum, Msg, MsgListener>
+                BinaryFrameHandler extends BaseBinaryFrameHandler<BinaryFrameHandler, CmdEnum, Msg, MsgListener>
                 >
         extends BaseLiveChatClient<Config> {
 
@@ -83,26 +83,26 @@ public abstract class BaseNettyLiveChatClient
 
     public abstract BinaryFrameHandler initBinaryFrameHandler();
 
-    protected BaseNettyLiveChatClient(Config config, EventLoopGroup workerGroup, IBaseConnectionListener<ConnectionHandler> connectionListener) {
+    protected BaseNettyClient(Config config, EventLoopGroup workerGroup, IBaseConnectionListener<ConnectionHandler> connectionListener) {
         super(config);
         this.workerGroup = workerGroup;
         this.connectionListener = connectionListener;
     }
 
-    public void onConnected() {
+    public void onConnected(ConnectionHandler connectionHandler) {
         if (this.connectionListener != null) {
-            this.connectionListener.onConnected();
+            this.connectionListener.onConnected(connectionHandler);
         }
     }
 
-    public void onConnectFailed(ConnectionHandler baseConnectionHandler) {
+    public void onConnectFailed(ConnectionHandler connectionHandler) {
         tryReconnect();
         if (this.connectionListener != null) {
             this.connectionListener.onConnectFailed(connectionHandler);
         }
     }
 
-    public void onDisconnected(ConnectionHandler baseConnectionHandler) {
+    public void onDisconnected(ConnectionHandler connectionHandler) {
         tryReconnect();
         if (this.connectionListener != null) {
             this.connectionListener.onDisconnected(connectionHandler);
@@ -120,18 +120,18 @@ public abstract class BaseNettyLiveChatClient
 
             this.clientConnectionListener = new IBaseConnectionListener<ConnectionHandler>() {
                 @Override
-                public void onConnected() {
-                    BaseNettyLiveChatClient.this.onConnected();
+                public void onConnected(ConnectionHandler connectionHandler) {
+                    BaseNettyClient.this.onConnected(connectionHandler);
                 }
 
                 @Override
                 public void onConnectFailed(ConnectionHandler connectionHandler) {
-                    BaseNettyLiveChatClient.this.onConnectFailed(connectionHandler);
+                    BaseNettyClient.this.onConnectFailed(connectionHandler);
                 }
 
                 @Override
                 public void onDisconnected(ConnectionHandler connectionHandler) {
-                    BaseNettyLiveChatClient.this.onDisconnected(connectionHandler);
+                    BaseNettyClient.this.onDisconnected(connectionHandler);
                 }
             };
             this.binaryFrameHandler = this.initBinaryFrameHandler();
@@ -151,19 +151,19 @@ public abstract class BaseNettyLiveChatClient
                             ChannelPipeline pipeline = ch.pipeline();
 
                             // 放到第一位 addFirst 支持wss链接服务端
-                            pipeline.addFirst(sslCtx.newHandler(ch.alloc(), BaseNettyLiveChatClient.this.websocketUri.getHost(), BaseNettyLiveChatClient.this.websocketUri.getPort()));
+                            pipeline.addFirst(sslCtx.newHandler(ch.alloc(), BaseNettyClient.this.websocketUri.getHost(), BaseNettyClient.this.websocketUri.getPort()));
 
                             // 添加一个http的编解码器
                             pipeline.addLast(new HttpClientCodec());
                             // 添加一个用于支持大数据流的支持
                             pipeline.addLast(new ChunkedWriteHandler());
                             // 添加一个聚合器，这个聚合器主要是将HttpMessage聚合成FullHttpRequest/Response
-                            pipeline.addLast(new HttpObjectAggregator(BaseNettyLiveChatClient.this.getConfig().getAggregatorMaxContentLength()));
+                            pipeline.addLast(new HttpObjectAggregator(BaseNettyClient.this.getConfig().getAggregatorMaxContentLength()));
 
                             // 连接处理器
-                            pipeline.addLast(BaseNettyLiveChatClient.this.connectionHandler);
+                            pipeline.addLast(BaseNettyClient.this.connectionHandler);
                             // 弹幕处理器
-                            pipeline.addLast(BaseNettyLiveChatClient.this.binaryFrameHandler);
+                            pipeline.addLast(BaseNettyClient.this.binaryFrameHandler);
                         }
                     });
             setStatus(ClientStatusEnums.INITIALIZED);

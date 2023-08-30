@@ -22,28 +22,39 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.servers.netty.client.config;
+package tech.ordinaryroad.live.chat.client.commons.util;
 
-import io.netty.handler.codec.http.HttpObjectAggregator;
-import lombok.*;
-import lombok.experimental.SuperBuilder;
-import tech.ordinaryroad.live.chat.client.commons.client.config.BaseLiveChatClientConfig;
+import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.util.StrUtil;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * @author mjz
- * @date 2023/8/26
+ * @date 2023/8/27
  */
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@SuperBuilder(toBuilder = true)
-public abstract class BaseNettyLiveChatClientConfig extends BaseLiveChatClientConfig {
+public class OrLiveChatCookieUtil {
 
-    /**
-     * 聚合器允许的最大消息体长度，默认 64*1024 byte
-     *
-     * @see HttpObjectAggregator#HttpObjectAggregator(int)
-     */
-    @Builder.Default
-    private int aggregatorMaxContentLength = 64 * 1024;
+    public static Map<String, String> parseCookieString(String cookies) {
+        Map<String, String> map = new HashMap<>();
+        if (StrUtil.isNotBlank(cookies) && !StrUtil.isNullOrUndefined(cookies)) {
+            try {
+                String[] split = cookies.split("; ");
+                for (String s : split) {
+                    String[] split1 = s.split("=");
+                    map.put(split1[0], split1[1]);
+                }
+            } catch (Exception e) {
+                throw new RuntimeException("cookie解析失败 " + cookies, e);
+            }
+        }
+        return map;
+    }
+
+    public static String getCookieByName(Map<String, String> cookieMap, String name, Supplier<String> supplier) {
+        String str = MapUtil.getStr(cookieMap, name);
+        return str == null ? supplier.get() : str;
+    }
 }

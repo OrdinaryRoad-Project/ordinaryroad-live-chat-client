@@ -25,8 +25,9 @@
 package tech.ordinaryroad.live.chat.client.servers.netty.client.handler;
 
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
+import lombok.Getter;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
-import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyLiveChatClient;
+import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
 import tech.ordinaryroad.live.chat.client.servers.netty.handler.base.BaseConnectionHandler;
 
 /**
@@ -35,44 +36,31 @@ import tech.ordinaryroad.live.chat.client.servers.netty.handler.base.BaseConnect
  * @author mjz
  * @date 2023/8/27
  */
-public abstract class BaseNettyLiveChatClientConnectionHandler<
-        Client extends BaseNettyLiveChatClient<?, ?, ?, ?, ?, ?>,
+public abstract class BaseNettyClientConnectionHandler<
+        Client extends BaseNettyClient<?, ?, ?, ?, ?, ?>,
         ConnectionHandler extends BaseConnectionHandler<ConnectionHandler>>
         extends BaseConnectionHandler<ConnectionHandler> {
 
+    @Getter
     protected final Client client;
-    private final long roomId;
 
-    public BaseNettyLiveChatClientConnectionHandler(WebSocketClientHandshaker handshaker, IBaseConnectionListener<ConnectionHandler> listener, Client client, long roomId) {
-        super(handshaker, listener);
+    public BaseNettyClientConnectionHandler(WebSocketClientHandshaker handshaker, IBaseConnectionListener<ConnectionHandler> listener, Client client, long roomId) {
+        super(handshaker, roomId, listener);
         this.client = client;
-        this.roomId = roomId;
     }
 
-    public BaseNettyLiveChatClientConnectionHandler(WebSocketClientHandshaker handshaker, IBaseConnectionListener<ConnectionHandler> listener, Client client) {
-        super(handshaker, listener);
+    public BaseNettyClientConnectionHandler(WebSocketClientHandshaker handshaker, IBaseConnectionListener<ConnectionHandler> listener, Client client) {
+        super(handshaker, client.getConfig().getRoomId(), listener);
         this.client = client;
-        this.roomId = client.getConfig().getRoomId();
     }
 
-    public BaseNettyLiveChatClientConnectionHandler(WebSocketClientHandshaker handshaker, Client client) {
-        super(handshaker);
+    public BaseNettyClientConnectionHandler(WebSocketClientHandshaker handshaker, Client client) {
+        super(handshaker, client.getConfig().getRoomId());
         this.client = client;
-        this.roomId = client.getConfig().getRoomId();
     }
 
-    public BaseNettyLiveChatClientConnectionHandler(WebSocketClientHandshaker handshaker, long roomId) {
-        super(handshaker);
+    public BaseNettyClientConnectionHandler(WebSocketClientHandshaker handshaker, long roomId) {
+        super(handshaker, roomId);
         this.client = null;
-        this.roomId = roomId;
-    }
-
-    /**
-     * 以client配置为主
-     *
-     * @return long
-     */
-    protected long getRoomId() {
-        return this.client != null ? this.client.getConfig().getRoomId() : roomId;
     }
 }

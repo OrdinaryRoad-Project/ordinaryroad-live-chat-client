@@ -41,8 +41,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
+            <groupId>tech.ordinaryroad</groupId>
+            <artifactId>live-chat-client-commons-util</artifactId>
         </dependency>
     </dependencies>
 </project>

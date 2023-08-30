@@ -35,7 +35,7 @@ import tech.ordinaryroad.live.chat.client.bilibili.config.BilibiliLiveChatClient
 import tech.ordinaryroad.live.chat.client.bilibili.constant.ProtoverEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.frame.factory.BilibiliWebSocketFrameFactory;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
-import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyLiveChatClientConnectionHandler;
+import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientConnectionHandler;
 
 
 /**
@@ -46,34 +46,49 @@ import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNetty
  */
 @Slf4j
 @ChannelHandler.Sharable
-public class BilibiliConnectionHandler extends BaseNettyLiveChatClientConnectionHandler<BilibiliLiveChatClient, BilibiliConnectionHandler> {
+public class BilibiliConnectionHandler extends BaseNettyClientConnectionHandler<BilibiliLiveChatClient, BilibiliConnectionHandler> {
+
+    private final ProtoverEnum protover;
+    private String cookie;
+    private final BilibiliWebSocketFrameFactory webSocketFrameFactory;
 
     public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, IBaseConnectionListener<BilibiliConnectionHandler> listener, BilibiliLiveChatClient client, long roomId) {
         super(handshaker, listener, client, roomId);
+        this.protover = client.getConfig().getProtover();
+        this.cookie = client.getConfig().getCookie();
+        this.webSocketFrameFactory = BilibiliWebSocketFrameFactory.getInstance(roomId, protover, cookie);
     }
 
     public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, IBaseConnectionListener<BilibiliConnectionHandler> listener, BilibiliLiveChatClient client) {
         super(handshaker, listener, client);
+        this.protover = client.getConfig().getProtover();
+        this.cookie = client.getConfig().getCookie();
+        this.webSocketFrameFactory = BilibiliWebSocketFrameFactory.getInstance(super.getRoomId(), protover, cookie);
     }
 
     public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, BilibiliLiveChatClient client) {
         super(handshaker, client);
+        this.protover = client.getConfig().getProtover();
+        this.cookie = client.getConfig().getCookie();
+        this.webSocketFrameFactory = BilibiliWebSocketFrameFactory.getInstance(super.getRoomId(), protover, cookie);
     }
 
-    public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, long roomId) {
+    public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, ProtoverEnum protover, String cookie) {
         super(handshaker, roomId);
+        this.protover = protover;
+        this.cookie = cookie;
+        this.webSocketFrameFactory = BilibiliWebSocketFrameFactory.getInstance(roomId, protover, cookie);
     }
 
-    private ProtoverEnum getProtoverEnum() {
-        return client == null ? ProtoverEnum.NORMAL_ZLIB : client.getConfig().getProtover();
+    public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, ProtoverEnum protover) {
+        this(handshaker, roomId, protover, null);
     }
 
     @Override
     protected void sendHeartbeat(ChannelHandlerContext ctx) {
         log.debug("发送心跳包");
         ctx.writeAndFlush(
-                BilibiliWebSocketFrameFactory.getInstance(getProtoverEnum())
-                        .createHeartbeat()
+                webSocketFrameFactory.createHeartbeat()
         ).addListener((ChannelFutureListener) future -> {
             if (future.isSuccess()) {
                 log.debug("心跳包发送完成");
@@ -87,7 +102,7 @@ public class BilibiliConnectionHandler extends BaseNettyLiveChatClientConnection
     public void sendAuthRequest(Channel channel) {
         // 5s内认证
         log.debug("发送认证包");
-        channel.writeAndFlush(BilibiliWebSocketFrameFactory.getInstance(getProtoverEnum()).createAuth(getRoomId()));
+        channel.writeAndFlush(webSocketFrameFactory.createAuth());
     }
 
     @Override

@@ -24,8 +24,10 @@
 
 package tech.ordinaryroad.live.chat.client.servers.netty.handler.base;
 
-import io.netty.channel.*;
-import io.netty.channel.socket.ChannelInputShutdownReadComplete;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelPromise;
+import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketHandshakeException;
@@ -36,7 +38,6 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 
@@ -49,6 +50,8 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public abstract class BaseConnectionHandler<ConnectionHandler extends BaseConnectionHandler<?>> extends SimpleChannelInboundHandler<FullHttpResponse> {
 
+    @Getter
+    private final long roomId;
     private final WebSocketClientHandshaker handshaker;
     @Getter
     private ChannelPromise handshakeFuture;
@@ -58,13 +61,14 @@ public abstract class BaseConnectionHandler<ConnectionHandler extends BaseConnec
      */
     private ScheduledFuture<?> scheduledFuture = null;
 
-    public BaseConnectionHandler(WebSocketClientHandshaker handshaker, IBaseConnectionListener<ConnectionHandler> listener) {
+    public BaseConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, IBaseConnectionListener<ConnectionHandler> listener) {
         this.handshaker = handshaker;
+        this.roomId = roomId;
         this.listener = listener;
     }
 
-    public BaseConnectionHandler(WebSocketClientHandshaker handshaker) {
-        this(handshaker, null);
+    public BaseConnectionHandler(WebSocketClientHandshaker handshaker, long roomId) {
+        this(handshaker, roomId, null);
     }
 
 
@@ -98,7 +102,7 @@ public abstract class BaseConnectionHandler<ConnectionHandler extends BaseConnec
             heartbeatCancel();
             heartbeatStart(ctx);
             if (this.listener != null) {
-                listener.onConnected();
+                listener.onConnected((ConnectionHandler) BaseConnectionHandler.this);
             }
         } else if (evt instanceof SslCloseCompletionEvent) {
             heartbeatCancel();
