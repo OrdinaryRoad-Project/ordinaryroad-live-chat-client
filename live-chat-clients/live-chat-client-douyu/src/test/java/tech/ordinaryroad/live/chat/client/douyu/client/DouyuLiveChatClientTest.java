@@ -49,13 +49,10 @@ class DouyuLiveChatClientTest implements IBaseConnectionListener<DouyuConnection
 
     @Test
     void example() throws InterruptedException {
-        String cookie = System.getenv("cookie");
-        log.error("cookie: {}", cookie);
         DouyuLiveChatClientConfig config = DouyuLiveChatClientConfig.builder()
-                // FIXME: 暂不支持浏览器Cookie
-                .cookie(cookie)
-                // FIXME: 暂不支持短id
-                .roomId(3168536)
+                // 暂不支持浏览器Cookie
+                // TODO 修改房间id（支持短id）
+                .roomId(92000)
                 .build();
 
         client = new DouyuLiveChatClient(config, new IDouyuDouyuCmdMsgListener() {
