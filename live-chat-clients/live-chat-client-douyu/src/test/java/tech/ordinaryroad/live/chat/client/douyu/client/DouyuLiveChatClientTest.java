@@ -42,7 +42,7 @@ import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuConnectionHan
  * @date 2023/8/26
  */
 @Slf4j
-class DouyuLiveChatClientTest {
+class DouyuLiveChatClientTest implements IBaseConnectionListener<DouyuConnectionHandler>, IDouyuDouyuCmdMsgListener {
 
     static Object lock = new Object();
     DouyuLiveChatClient client;
@@ -119,4 +119,48 @@ class DouyuLiveChatClientTest {
         }
     }
 
+    @Test
+    void multiplyClient() throws InterruptedException {
+        DouyuLiveChatClientConfig config1 = DouyuLiveChatClientConfig.builder().roomId(890074).build();
+        DouyuLiveChatClient client1 = new DouyuLiveChatClient(config1, DouyuLiveChatClientTest.this, DouyuLiveChatClientTest.this);
+
+        DouyuLiveChatClientConfig config2 = DouyuLiveChatClientConfig.builder().roomId(718133).build();
+        DouyuLiveChatClient client2 = new DouyuLiveChatClient(config2, DouyuLiveChatClientTest.this, DouyuLiveChatClientTest.this);
+
+        client1.connect(() -> {
+            log.warn("client1 connect successfully, start connecting client2");
+            client2.connect(()->{
+                log.warn("client2 connect successfully");
+            });
+        });
+
+        // 防止测试时直接退出
+        while (true) {
+            synchronized (lock) {
+                lock.wait();
+            }
+        }
+    }
+
+    @Override
+    public void onConnected(DouyuConnectionHandler connectionHandler) {
+        log.info("{} onConnected", connectionHandler.getRoomId());
+    }
+
+    @Override
+    public void onConnectFailed(DouyuConnectionHandler connectionHandler) {
+        log.info("{} onConnectFailed", connectionHandler.getRoomId());
+    }
+
+    @Override
+    public void onDisconnected(DouyuConnectionHandler connectionHandler) {
+        log.info("{} onDisconnected", connectionHandler.getRoomId());
+    }
+
+    @Override
+    public void onDanmuMsg(DouyuBinaryFrameHandler binaryFrameHandler, ChatmsgMsg msg) {
+        IDouyuDouyuCmdMsgListener.super.onDanmuMsg(binaryFrameHandler, msg);
+
+        log.info("{} 收到弹幕 {}({})：{}", binaryFrameHandler.getRoomId(), msg.getNn(), msg.getUid(), msg.getTxt());
+    }
 }
