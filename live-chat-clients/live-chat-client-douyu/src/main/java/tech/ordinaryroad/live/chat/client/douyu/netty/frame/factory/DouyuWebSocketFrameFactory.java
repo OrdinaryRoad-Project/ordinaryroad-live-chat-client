@@ -27,6 +27,7 @@ package tech.ordinaryroad.live.chat.client.douyu.netty.frame.factory;
 import cn.hutool.core.util.RandomUtil;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
+import tech.ordinaryroad.live.chat.client.douyu.api.DouyuApis;
 import tech.ordinaryroad.live.chat.client.douyu.msg.HeartbeatMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.JoingroupMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.LoginreqMsg;
@@ -80,8 +81,9 @@ public class DouyuWebSocketFrameFactory {
         try {
             // type@=loginreq/roomid@=7750753/dfl@=/username@=visitor10424697/uid@=1168052601/ver@=20220825/aver@=218101901/ct@=0/
             LoginreqMsg loginreqMsg = new LoginreqMsg();
-            loginreqMsg.setRoomid(roomId);
-            // TODO 支持cookie
+            long realRoomId = DouyuApis.getRealRoomId(roomId);
+            loginreqMsg.setRoomid(realRoomId);
+            // 暂不支持cookie
             loginreqMsg.setVer(ver);
             loginreqMsg.setAver(aver);
             loginreqMsg.setUsername("visitor" + RandomUtil.randomLong(10000000, 19999999));

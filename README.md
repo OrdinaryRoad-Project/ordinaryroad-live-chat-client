@@ -7,10 +7,10 @@
 > ToDo List: https://github.com/orgs/OrdinaryRoad-Project/projects/1
 
 - [x] Bilibili
-- [ ] Douyu
+- [x] Douyu
     - [x] DouyuLiveChatClient
-    - [ ] 支持 cookie
-    - [ ] 支持 短房间id
+    - [ ] ~~支持 cookie~~（暂时不需要）
+    - [x] 支持 短房间id
 
 - [ ] Huya
 - [ ] ...
@@ -23,6 +23,9 @@ Live room WebSocket chat client
 - Feature 1: 消息中的未知属性统一放到单独的MAP中
 - Feature 2: 支持自动重连
 - Feature 3: 支持同时监听多个直播间
+- Feature 4: 支持直播间短id
+
+[//]: # ([在线文档]&#40;https://ordinaryroad.tech/or_module/live_chat_client&#41;)
 
 ### Install
 
@@ -53,3 +56,5 @@ Live room WebSocket chat client
 ### Examples
 
 see [live-chat-client-examples](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/tree/main/live-chat-client-examples)
+
+> 参考 `bilibili-example` 即可，API基本一致

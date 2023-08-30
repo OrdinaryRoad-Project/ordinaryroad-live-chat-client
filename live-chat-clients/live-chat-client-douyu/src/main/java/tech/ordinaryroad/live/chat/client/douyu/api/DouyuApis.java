@@ -24,12 +24,15 @@
 
 package tech.ordinaryroad.live.chat.client.douyu.api;
 
-import cn.hutool.http.HttpRequest;
-import cn.hutool.http.HttpUtil;
+import cn.hutool.core.util.NumberUtil;
+import cn.hutool.http.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Cleanup;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.Map;
 
 /**
  * API简易版
@@ -41,6 +44,25 @@ import lombok.extern.slf4j.Slf4j;
 public class DouyuApis {
 
     public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
+    public static long getRealRoomId(long roomId, String cookie) {
+        long realRoomId = roomId;
+        @Cleanup
+        HttpResponse execute = createGetRequest("https://www.douyu.com/" + roomId, cookie).execute();
+        if (HttpStatus.isRedirected(execute.getStatus())) {
+            String location = execute.header(Header.LOCATION);
+            Map<String, String> paramMap = HttpUtil.decodeParamMap(location, null);
+            if (!paramMap.containsKey("rid")) {
+                throw new RuntimeException("{} 真实房间ID失败" + roomId);
+            }
+            realRoomId = NumberUtil.parseLong(paramMap.get("rid"));
+        }
+        return realRoomId;
+    }
+
+    public static long getRealRoomId(long roomId) {
+        return getRealRoomId(roomId, null);
+    }
 
     public static HttpRequest createGetRequest(String url, String cookie) {
         return HttpUtil.createGet(url)
