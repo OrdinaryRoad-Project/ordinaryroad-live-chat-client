@@ -3,8 +3,13 @@
 ![license](https://img.shields.io/github/license/OrdinaryRoad-Project/ordinaryroad-live-chat-client) ![release](https://img.shields.io/github/v/release/OrdinaryRoad-Project/ordinaryroad-live-chat-client) ![Maven Central](https://img.shields.io/maven-central/v/tech.ordinaryroad/live-chat-client)
 
 > This project is in progress... 👨‍💻
+> 
+> 有问题欢迎提交[issuse](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/issues)，觉得有用的话可以点个小星星⭐️鼓励一下，感谢
+>
+> 如果对项目感兴趣也欢迎[交流讨论](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/discussions)、提交PR
 >
 > ToDo List: https://github.com/orgs/OrdinaryRoad-Project/projects/1
+
 
 - [x] Bilibili
 - [x] Douyu
