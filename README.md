@@ -22,6 +22,7 @@ Live room WebSocket chat client
 - Feature 0: Netty
 - Feature 1: 消息中的未知属性统一放到单独的MAP中
 - Feature 2: 支持自动重连
+- Feature 3: 支持同时监听多个直播间
 
 ### Install
 
