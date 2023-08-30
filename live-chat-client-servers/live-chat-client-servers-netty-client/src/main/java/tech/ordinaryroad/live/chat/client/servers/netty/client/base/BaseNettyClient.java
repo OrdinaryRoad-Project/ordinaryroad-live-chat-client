@@ -175,7 +175,7 @@ public abstract class BaseNettyClient
     }
 
     @Override
-    public void connect() {
+    public void connect(Runnable success, Consumer<Throwable> failed) {
         if (this.cancelReconnect) {
             this.cancelReconnect = false;
         }
@@ -189,10 +189,16 @@ public abstract class BaseNettyClient
                 // 监听是否握手成功
                 this.connectionHandler.getHandshakeFuture().addListener((ChannelFutureListener) handshakeFuture -> {
                     connectionHandler.sendAuthRequest(channel);
+                    if (success != null) {
+                        success.run();
+                    }
                 });
             } else {
                 log.error("连接建立失败", connectFuture.cause());
                 this.onConnectFailed(this.connectionHandler);
+                if (failed != null) {
+                    failed.accept(connectFuture.cause());
+                }
             }
         });
     }
@@ -215,7 +221,7 @@ public abstract class BaseNettyClient
             return;
         }
         log.debug("{}s后将重新连接", getConfig().getReconnectDelay());
-        workerGroup.schedule(this::connect, getConfig().getReconnectDelay(), TimeUnit.SECONDS);
+        workerGroup.schedule(() -> this.connect(), getConfig().getReconnectDelay(), TimeUnit.SECONDS);
     }
 
     @Override
