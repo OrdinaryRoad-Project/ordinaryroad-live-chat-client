@@ -58,36 +58,34 @@ public class BilibiliConnectionHandler extends BaseNettyClientConnectionHandler<
     private String cookie;
     private final BilibiliWebSocketFrameFactory webSocketFrameFactory;
 
-    public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, IBaseConnectionListener<BilibiliConnectionHandler> listener, BilibiliLiveChatClient client, long roomId) {
-        super(handshaker, listener, client, roomId);
+    public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, BilibiliLiveChatClient client, IBaseConnectionListener<BilibiliConnectionHandler> listener) {
+        super(handshaker, client, listener);
         this.protover = client.getConfig().getProtover();
         this.cookie = client.getConfig().getCookie();
-        this.webSocketFrameFactory = BilibiliWebSocketFrameFactory.getInstance(roomId);
-    }
-
-    public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, IBaseConnectionListener<BilibiliConnectionHandler> listener, BilibiliLiveChatClient client) {
-        super(handshaker, listener, client);
-        this.protover = client.getConfig().getProtover();
-        this.cookie = client.getConfig().getCookie();
-        this.webSocketFrameFactory = BilibiliWebSocketFrameFactory.getInstance(super.getRoomId());
+        this.webSocketFrameFactory = BilibiliWebSocketFrameFactory.getInstance(client.getConfig().getRoomId());
     }
 
     public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, BilibiliLiveChatClient client) {
-        super(handshaker, client);
-        this.protover = client.getConfig().getProtover();
-        this.cookie = client.getConfig().getCookie();
-        this.webSocketFrameFactory = BilibiliWebSocketFrameFactory.getInstance(super.getRoomId());
+        this(handshaker, client, null);
     }
 
-    public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, ProtoverEnum protover, String cookie) {
-        super(handshaker, roomId);
+    public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, ProtoverEnum protover, IBaseConnectionListener<BilibiliConnectionHandler> listener, String cookie) {
+        super(handshaker, roomId, listener);
         this.protover = protover;
         this.cookie = cookie;
         this.webSocketFrameFactory = BilibiliWebSocketFrameFactory.getInstance(roomId);
     }
 
+    public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, ProtoverEnum protover, IBaseConnectionListener<BilibiliConnectionHandler> listener) {
+        this(handshaker, roomId, protover, listener, null);
+    }
+
+    public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, ProtoverEnum protover, String cookie) {
+        this(handshaker, roomId, protover, null, cookie);
+    }
+
     public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, ProtoverEnum protover) {
-        this(handshaker, roomId, protover, null);
+        this(handshaker, roomId, protover, null, null);
     }
 
     @Override

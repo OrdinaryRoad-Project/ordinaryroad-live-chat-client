@@ -61,40 +61,37 @@ public class DouyuConnectionHandler extends BaseNettyClientConnectionHandler<Dou
     private String cookie;
     private final DouyuWebSocketFrameFactory webSocketFrameFactory;
 
-    public DouyuConnectionHandler(WebSocketClientHandshaker handshaker, IBaseConnectionListener<DouyuConnectionHandler> listener, DouyuLiveChatClient client, long roomId) {
-        super(handshaker, listener, client, roomId);
-        this.ver = client.getConfig().getVer();
-        this.aver = client.getConfig().getAver();
-        this.cookie = client.getConfig().getCookie();
-        this.webSocketFrameFactory = DouyuWebSocketFrameFactory.getInstance(roomId);
-    }
 
-    public DouyuConnectionHandler(WebSocketClientHandshaker handshaker, IBaseConnectionListener<DouyuConnectionHandler> listener, DouyuLiveChatClient client) {
-        super(handshaker, listener, client);
+    public DouyuConnectionHandler(WebSocketClientHandshaker handshaker, DouyuLiveChatClient client, IBaseConnectionListener<DouyuConnectionHandler> listener) {
+        super(handshaker, client, listener);
         this.ver = client.getConfig().getVer();
         this.aver = client.getConfig().getAver();
         this.cookie = client.getConfig().getCookie();
-        this.webSocketFrameFactory = DouyuWebSocketFrameFactory.getInstance(super.getRoomId());
+        this.webSocketFrameFactory = DouyuWebSocketFrameFactory.getInstance(client.getConfig().getRoomId());
     }
 
     public DouyuConnectionHandler(WebSocketClientHandshaker handshaker, DouyuLiveChatClient client) {
-        super(handshaker, client);
-        this.ver = client.getConfig().getVer();
-        this.aver = client.getConfig().getAver();
-        this.cookie = client.getConfig().getCookie();
-        this.webSocketFrameFactory = DouyuWebSocketFrameFactory.getInstance(super.getRoomId());
+        this(handshaker, client, null);
     }
 
-    public DouyuConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, String ver, String aver, String cookie) {
-        super(handshaker, roomId);
+    public DouyuConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, String ver, String aver, IBaseConnectionListener<DouyuConnectionHandler> listener, String cookie) {
+        super(handshaker, roomId, listener);
         this.ver = ver;
         this.aver = aver;
         this.cookie = cookie;
         this.webSocketFrameFactory = DouyuWebSocketFrameFactory.getInstance(roomId);
     }
 
+    public DouyuConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, String ver, String aver, IBaseConnectionListener<DouyuConnectionHandler> listener) {
+        this(handshaker, roomId, ver, aver, listener, null);
+    }
+
+    public DouyuConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, String ver, String aver, String cookie) {
+        this(handshaker, roomId, ver, aver, null, cookie);
+    }
+
     public DouyuConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, String ver, String aver) {
-        this(handshaker, roomId, ver, aver, null);
+        this(handshaker, roomId, ver, aver, null, null);
     }
 
     @Override

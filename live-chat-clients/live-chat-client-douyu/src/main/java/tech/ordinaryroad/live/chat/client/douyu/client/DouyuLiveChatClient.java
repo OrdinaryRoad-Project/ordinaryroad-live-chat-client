@@ -86,7 +86,7 @@ public class DouyuLiveChatClient extends BaseNettyClient<
     public DouyuConnectionHandler initConnectionHandler(IBaseConnectionListener<DouyuConnectionHandler> clientConnectionListener) {
         return new DouyuConnectionHandler(
                 WebSocketClientHandshakerFactory.newHandshaker(getWebsocketUri(), WebSocketVersion.V13, null, true, new DefaultHttpHeaders()),
-                clientConnectionListener, DouyuLiveChatClient.this
+                DouyuLiveChatClient.this, clientConnectionListener
         );
     }
 
