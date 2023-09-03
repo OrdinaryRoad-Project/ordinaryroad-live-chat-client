@@ -229,8 +229,8 @@ public abstract class BaseNettyClient
         if (!getConfig().isAutoReconnect()) {
             return;
         }
-        if (log.isDebugEnabled()) {
-            log.debug("{}s后将重新连接", getConfig().getReconnectDelay());
+        if (log.isWarnEnabled()) {
+            log.warn("{}s后将重新连接 {}", getConfig().getReconnectDelay(), getConfig().getRoomId());
         }
         workerGroup.schedule(() -> {
             super.setStatus(ClientStatusEnums.RECONNECTING);
