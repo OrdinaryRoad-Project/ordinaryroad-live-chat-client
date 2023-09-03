@@ -31,6 +31,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+
 /**
  * 直播间弹幕客户端配置
  *
@@ -43,6 +46,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder(toBuilder = true)
 public abstract class BaseLiveChatClientConfig {
 
+    protected PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     public static final long DEFAULT_HEARTBEAT_INITIAL_DELAY = 15;
     public static final long DEFAULT_HEARTBEAT_PERIOD = 25;
 
@@ -81,4 +85,35 @@ public abstract class BaseLiveChatClientConfig {
      */
     @Builder.Default
     private long heartbeatPeriod = DEFAULT_HEARTBEAT_PERIOD;
+
+    public void setCookie(String cookie) {
+        this.propertyChangeSupport.firePropertyChange("cookie", this.cookie, cookie);
+        this.cookie = cookie;
+    }
+
+    public void setRoomId(long roomId) {
+        this.propertyChangeSupport.firePropertyChange("roomId", this.roomId, roomId);
+        this.roomId = roomId;
+    }
+
+    public void setWebsocketUri(String websocketUri) {
+        this.propertyChangeSupport.firePropertyChange("websocketUri", this.websocketUri, websocketUri);
+        this.websocketUri = websocketUri;
+    }
+
+    public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+        this.propertyChangeSupport.addPropertyChangeListener(propertyName, listener);
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        this.propertyChangeSupport.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+        this.propertyChangeSupport.removePropertyChangeListener(propertyName, listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        this.propertyChangeSupport.removePropertyChangeListener(listener);
+    }
 }

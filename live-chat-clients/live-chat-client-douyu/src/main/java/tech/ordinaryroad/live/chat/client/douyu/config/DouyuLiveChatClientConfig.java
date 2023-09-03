@@ -55,4 +55,13 @@ public class DouyuLiveChatClientConfig extends BaseNettyClientConfig {
     @Builder.Default
     private String websocketUri = "wss://danmuproxy.douyu.com:8503/";
 
+    public void setVer(String ver) {
+        super.propertyChangeSupport.firePropertyChange("ver", this.ver, ver);
+        this.ver = ver;
+    }
+
+    public void setAver(String aver) {
+        super.propertyChangeSupport.firePropertyChange("aver", this.aver, aver);
+        this.aver = aver;
+    }
 }
