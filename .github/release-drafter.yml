@@ -33,5 +33,3 @@ change-template: '- $TITLE (#$NUMBER) @$AUTHOR'
 template: |
   ## What’s Changed
   $CHANGES
-  ## Contributors
-  $CONTRIBUTORS
