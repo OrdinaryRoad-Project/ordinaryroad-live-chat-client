@@ -37,22 +37,22 @@ public enum ClientStatusEnums {
     /**
      * 已初始化
      */
-    INITIALIZED(100),
+    INITIALIZED(1),
 
     /**
      * 连接中
      */
-    CONNECTING(101),
+    CONNECTING(100),
+
+    /**
+     * 重新连接中
+     */
+    RECONNECTING(101),
 
     /**
      * 已连接
      */
     CONNECTED(200),
-
-    /**
-     * 重新连接中
-     */
-    RECONNECTING(300),
 
     /**
      * 连接失败

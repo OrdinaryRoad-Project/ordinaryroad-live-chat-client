@@ -50,8 +50,6 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public abstract class BaseConnectionHandler<ConnectionHandler extends BaseConnectionHandler<?>> extends SimpleChannelInboundHandler<FullHttpResponse> {
 
-    @Getter
-    private final long roomId;
     private final WebSocketClientHandshaker handshaker;
     @Getter
     private ChannelPromise handshakeFuture;
@@ -61,14 +59,13 @@ public abstract class BaseConnectionHandler<ConnectionHandler extends BaseConnec
      */
     private ScheduledFuture<?> scheduledFuture = null;
 
-    public BaseConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, IBaseConnectionListener<ConnectionHandler> listener) {
+    public BaseConnectionHandler(WebSocketClientHandshaker handshaker, IBaseConnectionListener<ConnectionHandler> listener) {
         this.handshaker = handshaker;
-        this.roomId = roomId;
         this.listener = listener;
     }
 
-    public BaseConnectionHandler(WebSocketClientHandshaker handshaker, long roomId) {
-        this(handshaker, roomId, null);
+    public BaseConnectionHandler(WebSocketClientHandshaker handshaker) {
+        this(handshaker, null);
     }
 
 
@@ -97,7 +94,9 @@ public abstract class BaseConnectionHandler<ConnectionHandler extends BaseConnec
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        log.debug("userEventTriggered {}", evt.getClass());
+        if (log.isDebugEnabled()) {
+            log.debug("userEventTriggered {}", evt.getClass());
+        }
         if (evt instanceof SslHandshakeCompletionEvent) {
             heartbeatCancel();
             heartbeatStart(ctx);
@@ -143,7 +142,9 @@ public abstract class BaseConnectionHandler<ConnectionHandler extends BaseConnec
     protected abstract long getHeartbeatInitialDelay();
 
     private void handshakeSuccessfully(ChannelHandlerContext ctx, FullHttpResponse msg) {
-        log.debug("握手完成!");
+        if (log.isDebugEnabled()) {
+            log.debug("握手完成!");
+        }
         this.handshaker.finishHandshake(ctx.channel(), msg);
         this.handshakeFuture.setSuccess();
     }

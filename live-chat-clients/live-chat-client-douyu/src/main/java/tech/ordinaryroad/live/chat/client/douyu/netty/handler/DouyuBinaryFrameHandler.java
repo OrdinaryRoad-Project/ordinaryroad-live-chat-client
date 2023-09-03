@@ -68,7 +68,9 @@ public class DouyuBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<D
             case chatmsg -> listener.onDanmuMsg(DouyuBinaryFrameHandler.this, (ChatmsgMsg) cmdMsg);
             default -> {
                 if (!(cmdMsg instanceof DouyuCmdMsg)) {
-                    log.debug("非DouyuCmdMsg {}", cmdMsg.getClass());
+                    if (log.isDebugEnabled()) {
+                        log.debug("非DouyuCmdMsg {}", cmdMsg.getClass());
+                    }
                     return;
                 }
                 super.listener.onOtherCmdMsg(DouyuBinaryFrameHandler.this, cmd, cmdMsg);

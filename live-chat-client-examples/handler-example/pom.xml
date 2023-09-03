@@ -1,0 +1,31 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>jar</packaging>
+    <groupId>tech.ordinaryroad</groupId>
+    <artifactId>live-chat-client-example-handler</artifactId>
+    <version>0.0.5</version>
+    <name>live-chat-client-example-handler</name>
+    <description>live-chat-client-example-handler</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <ordinaryroad-live-chat-client.version>0.0.5</ordinaryroad-live-chat-client.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>tech.ordinaryroad</groupId>
+            <artifactId>live-chat-client-bilibili</artifactId>
+            <!-- 参考github release版本，不需要前缀`v` -->
+            <version>${ordinaryroad-live-chat-client.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>tech.ordinaryroad</groupId>
+            <artifactId>live-chat-client-douyu</artifactId>
+            <!-- 参考github release版本，不需要前缀`v` -->
+            <version>${ordinaryroad-live-chat-client.version}</version>
+        </dependency>
+    </dependencies>
+</project>

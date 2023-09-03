@@ -32,6 +32,7 @@ import io.netty.handler.codec.http.websocketx.WebSocketVersion;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.bilibili.config.BilibiliLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.BilibiliCmdEnum;
+import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliConnectionListener;
 import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliSendSmsReplyMsgListener;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.base.IBilibiliMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliBinaryFrameHandler;
@@ -57,7 +58,7 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
 
     private final IBilibiliSendSmsReplyMsgListener msgListener;
 
-    public BilibiliLiveChatClient(BilibiliLiveChatClientConfig config, IBilibiliSendSmsReplyMsgListener msgListener, IBaseConnectionListener<BilibiliConnectionHandler> connectionListener, EventLoopGroup workerGroup) {
+    public BilibiliLiveChatClient(BilibiliLiveChatClientConfig config, IBilibiliSendSmsReplyMsgListener msgListener, IBilibiliConnectionListener connectionListener, EventLoopGroup workerGroup) {
         super(config, workerGroup, connectionListener);
         this.msgListener = msgListener;
 
@@ -65,7 +66,7 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
         this.init();
     }
 
-    public BilibiliLiveChatClient(BilibiliLiveChatClientConfig config, IBilibiliSendSmsReplyMsgListener msgListener, IBaseConnectionListener<BilibiliConnectionHandler> connectionListener) {
+    public BilibiliLiveChatClient(BilibiliLiveChatClientConfig config, IBilibiliSendSmsReplyMsgListener msgListener, IBilibiliConnectionListener connectionListener) {
         this(config, msgListener, connectionListener, new NioEventLoopGroup());
     }
 
@@ -77,7 +78,7 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
     public BilibiliConnectionHandler initConnectionHandler(IBaseConnectionListener<BilibiliConnectionHandler> clientConnectionListener) {
         return new BilibiliConnectionHandler(
                 WebSocketClientHandshakerFactory.newHandshaker(getWebsocketUri(), WebSocketVersion.V13, null, true, new DefaultHttpHeaders()),
-                clientConnectionListener, BilibiliLiveChatClient.this
+                BilibiliLiveChatClient.this, clientConnectionListener
         );
     }
 

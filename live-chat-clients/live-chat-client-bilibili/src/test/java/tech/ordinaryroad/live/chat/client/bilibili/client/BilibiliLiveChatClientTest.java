@@ -65,7 +65,7 @@ class BilibiliLiveChatClientTest {
                 JsonNode jsonNode2 = info.get(2);
                 Long uid = jsonNode2.get(0).asLong();
                 String uname = jsonNode2.get(1).asText();
-                log.info("{} 收到弹幕 {}({})：{}", binaryFrameHandler, uname, uid, danmuText);
+                log.info("{} 收到弹幕 {}({})：{}", binaryFrameHandler.getRoomId(), uname, uid, danmuText);
             }
 
             @Override

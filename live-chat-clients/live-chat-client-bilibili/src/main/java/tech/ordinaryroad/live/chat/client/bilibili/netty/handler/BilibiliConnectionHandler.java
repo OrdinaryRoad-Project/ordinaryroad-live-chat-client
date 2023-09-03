@@ -48,61 +48,88 @@ import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNetty
 @ChannelHandler.Sharable
 public class BilibiliConnectionHandler extends BaseNettyClientConnectionHandler<BilibiliLiveChatClient, BilibiliConnectionHandler> {
 
+    /**
+     * 以ClientConfig为主
+     */
+    private final long roomId;
+    /**
+     * 以ClientConfig为主
+     */
     private final ProtoverEnum protover;
+    /**
+     * 以ClientConfig为主
+     */
     private String cookie;
-    private final BilibiliWebSocketFrameFactory webSocketFrameFactory;
 
-    public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, IBaseConnectionListener<BilibiliConnectionHandler> listener, BilibiliLiveChatClient client, long roomId) {
-        super(handshaker, listener, client, roomId);
+    public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, BilibiliLiveChatClient client, IBaseConnectionListener<BilibiliConnectionHandler> listener) {
+        super(handshaker, client, listener);
+        this.roomId = client.getConfig().getRoomId();
         this.protover = client.getConfig().getProtover();
         this.cookie = client.getConfig().getCookie();
-        this.webSocketFrameFactory = BilibiliWebSocketFrameFactory.getInstance(roomId, protover, cookie);
-    }
-
-    public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, IBaseConnectionListener<BilibiliConnectionHandler> listener, BilibiliLiveChatClient client) {
-        super(handshaker, listener, client);
-        this.protover = client.getConfig().getProtover();
-        this.cookie = client.getConfig().getCookie();
-        this.webSocketFrameFactory = BilibiliWebSocketFrameFactory.getInstance(super.getRoomId(), protover, cookie);
     }
 
     public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, BilibiliLiveChatClient client) {
-        super(handshaker, client);
-        this.protover = client.getConfig().getProtover();
-        this.cookie = client.getConfig().getCookie();
-        this.webSocketFrameFactory = BilibiliWebSocketFrameFactory.getInstance(super.getRoomId(), protover, cookie);
+        this(handshaker, client, null);
+    }
+
+    public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, ProtoverEnum protover, IBaseConnectionListener<BilibiliConnectionHandler> listener, String cookie) {
+        super(handshaker, listener);
+        this.roomId = roomId;
+        this.protover = protover;
+        this.cookie = cookie;
+    }
+
+    public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, ProtoverEnum protover, IBaseConnectionListener<BilibiliConnectionHandler> listener) {
+        this(handshaker, roomId, protover, listener, null);
     }
 
     public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, ProtoverEnum protover, String cookie) {
-        super(handshaker, roomId);
-        this.protover = protover;
-        this.cookie = cookie;
-        this.webSocketFrameFactory = BilibiliWebSocketFrameFactory.getInstance(roomId, protover, cookie);
+        this(handshaker, roomId, protover, null, cookie);
     }
 
     public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, ProtoverEnum protover) {
-        this(handshaker, roomId, protover, null);
+        this(handshaker, roomId, protover, null, null);
     }
 
     @Override
     protected void sendHeartbeat(ChannelHandlerContext ctx) {
-        log.debug("发送心跳包");
+        if (log.isDebugEnabled()) {
+            log.debug("发送心跳包");
+        }
         ctx.writeAndFlush(
-                webSocketFrameFactory.createHeartbeat()
+                getWebSocketFrameFactory(getRoomId()).createHeartbeat(getProtover())
         ).addListener((ChannelFutureListener) future -> {
             if (future.isSuccess()) {
-                log.debug("心跳包发送完成");
+                if (log.isDebugEnabled()) {
+                    log.debug("心跳包发送完成");
+                }
             } else {
                 log.error("心跳包发送失败", future.cause());
             }
         });
     }
 
+    private static BilibiliWebSocketFrameFactory getWebSocketFrameFactory(long roomId) {
+        return BilibiliWebSocketFrameFactory.getInstance(roomId);
+    }
+
     @Override
     public void sendAuthRequest(Channel channel) {
         // 5s内认证
         log.debug("发送认证包");
-        channel.writeAndFlush(webSocketFrameFactory.createAuth());
+        channel.writeAndFlush(getWebSocketFrameFactory(getRoomId()).createAuth(getProtover(), getCookie()));
+    }
+
+    public long getRoomId() {
+        return client != null ? client.getConfig().getRoomId() : roomId;
+    }
+
+    private ProtoverEnum getProtover() {
+        return client != null ? client.getConfig().getProtover() : protover;
+    }
+
+    private String getCookie() {
+        return client != null ? client.getConfig().getCookie() : cookie;
     }
 
     @Override

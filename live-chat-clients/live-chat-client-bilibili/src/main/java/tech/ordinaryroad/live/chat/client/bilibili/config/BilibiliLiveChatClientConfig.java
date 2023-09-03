@@ -53,4 +53,8 @@ public class BilibiliLiveChatClientConfig extends BaseNettyClientConfig {
     @Builder.Default
     private String websocketUri = "wss://broadcastlv.chat.bilibili.com:443/sub";
 
+    public void setProtover(ProtoverEnum protover) {
+        super.propertyChangeSupport.firePropertyChange("protover", this.protover, protover);
+        this.protover = protover;
+    }
 }
