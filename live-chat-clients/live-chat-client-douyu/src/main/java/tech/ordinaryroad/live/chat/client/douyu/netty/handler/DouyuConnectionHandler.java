@@ -47,8 +47,17 @@ import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNetty
 @ChannelHandler.Sharable
 public class DouyuConnectionHandler extends BaseNettyClientConnectionHandler<DouyuLiveChatClient, DouyuConnectionHandler> {
 
+    /**
+     * 以ClientConfig为主
+     */
     private final String ver;
+    /**
+     * 以ClientConfig为主
+     */
     private final String aver;
+    /**
+     * 以ClientConfig为主
+     */
     private String cookie;
     private final DouyuWebSocketFrameFactory webSocketFrameFactory;
 
@@ -106,7 +115,19 @@ public class DouyuConnectionHandler extends BaseNettyClientConnectionHandler<Dou
     public void sendAuthRequest(Channel channel) {
         // 5s内认证
         log.debug("发送认证包");
-        channel.writeAndFlush(webSocketFrameFactory.createAuth(ver, aver));
+        channel.writeAndFlush(webSocketFrameFactory.createAuth(getVer(), getAver()));
+    }
+
+    private String getVer() {
+        return client != null ? client.getConfig().getVer() : ver;
+    }
+
+    private String getAver() {
+        return client != null ? client.getConfig().getAver() : aver;
+    }
+
+    private String getCookie() {
+        return client != null ? client.getConfig().getCookie() : cookie;
     }
 
     @Override

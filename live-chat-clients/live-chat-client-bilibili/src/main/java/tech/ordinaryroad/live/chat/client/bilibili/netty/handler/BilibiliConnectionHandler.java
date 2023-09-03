@@ -48,7 +48,13 @@ import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNetty
 @ChannelHandler.Sharable
 public class BilibiliConnectionHandler extends BaseNettyClientConnectionHandler<BilibiliLiveChatClient, BilibiliConnectionHandler> {
 
+    /**
+     * 以ClientConfig为主
+     */
     private final ProtoverEnum protover;
+    /**
+     * 以ClientConfig为主
+     */
     private String cookie;
     private final BilibiliWebSocketFrameFactory webSocketFrameFactory;
 
@@ -88,7 +94,7 @@ public class BilibiliConnectionHandler extends BaseNettyClientConnectionHandler<
     protected void sendHeartbeat(ChannelHandlerContext ctx) {
         log.debug("发送心跳包");
         ctx.writeAndFlush(
-                webSocketFrameFactory.createHeartbeat(protover)
+                webSocketFrameFactory.createHeartbeat(getProtover())
         ).addListener((ChannelFutureListener) future -> {
             if (future.isSuccess()) {
                 log.debug("心跳包发送完成");
@@ -102,7 +108,15 @@ public class BilibiliConnectionHandler extends BaseNettyClientConnectionHandler<
     public void sendAuthRequest(Channel channel) {
         // 5s内认证
         log.debug("发送认证包");
-        channel.writeAndFlush(webSocketFrameFactory.createAuth(protover, cookie));
+        channel.writeAndFlush(webSocketFrameFactory.createAuth(getProtover(), getCookie()));
+    }
+
+    private ProtoverEnum getProtover() {
+        return client != null ? client.getConfig().getProtover() : protover;
+    }
+
+    private String getCookie() {
+        return client != null ? client.getConfig().getCookie() : cookie;
     }
 
     @Override
