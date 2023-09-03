@@ -28,6 +28,7 @@ import cn.hutool.core.util.RandomUtil;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import tech.ordinaryroad.live.chat.client.douyu.api.DouyuApis;
+import tech.ordinaryroad.live.chat.client.douyu.config.DouyuLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.douyu.msg.HeartbeatMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.JoingroupMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.LoginreqMsg;
@@ -49,35 +50,25 @@ public class DouyuWebSocketFrameFactory {
      * 浏览器地址中的房间id，暂不支持短id
      */
     private final long roomId;
-    /**
-     * 浏览器cookie，仅用来维持登录状态
-     */
-    private String cookie;
-    private String ver;
-    private String aver;
     private volatile static HeartbeatMsg heartbeatMsg;
 
-    public DouyuWebSocketFrameFactory(long roomId, String ver, String aver, String cookie) {
+    public DouyuWebSocketFrameFactory(long roomId) {
         this.roomId = roomId;
-        this.ver = ver;
-        this.aver = aver;
-        this.cookie = cookie;
     }
 
-    public synchronized static DouyuWebSocketFrameFactory getInstance(long roomId, String ver, String aver, String cookie) {
-        return CACHE.computeIfAbsent(roomId, aLong -> new DouyuWebSocketFrameFactory(roomId, ver, aver, cookie));
-    }
-
-    public synchronized static DouyuWebSocketFrameFactory getInstance(long roomId, String ver, String aver) {
-        return getInstance(roomId, ver, aver, null);
+    public synchronized static DouyuWebSocketFrameFactory getInstance(long roomId) {
+        return CACHE.computeIfAbsent(roomId, aLong -> new DouyuWebSocketFrameFactory(roomId));
     }
 
     /**
      * 创建认证包
      *
+     * @param ver    {@link DouyuLiveChatClientConfig#getVer()}
+     * @param aver   {@link DouyuLiveChatClientConfig#getAver()}
+     * @param cookie 暂未使用
      * @return AuthWebSocketFrame
      */
-    public AuthWebSocketFrame createAuth() {
+    public AuthWebSocketFrame createAuth(String ver, String aver, String cookie) {
         try {
             // type@=loginreq/roomid@=7750753/dfl@=/username@=visitor10424697/uid@=1168052601/ver@=20220825/aver@=218101901/ct@=0/
             LoginreqMsg loginreqMsg = new LoginreqMsg();

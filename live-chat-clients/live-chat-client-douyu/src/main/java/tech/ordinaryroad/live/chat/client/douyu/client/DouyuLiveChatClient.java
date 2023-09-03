@@ -67,7 +67,7 @@ public class DouyuLiveChatClient extends BaseNettyClient<
     public DouyuLiveChatClient(DouyuLiveChatClientConfig config, IDouyuDouyuCmdMsgListener msgListener, IBaseConnectionListener<DouyuConnectionHandler> connectionListener, EventLoopGroup workerGroup) {
         super(config, workerGroup, connectionListener);
         this.msgListener = msgListener;
-        this.webSocketFrameFactory = DouyuWebSocketFrameFactory.getInstance(config.getRoomId(), config.getVer(), config.getAver(), config.getCookie());
+        this.webSocketFrameFactory = DouyuWebSocketFrameFactory.getInstance(config.getRoomId());
 
         // 初始化
         this.init();

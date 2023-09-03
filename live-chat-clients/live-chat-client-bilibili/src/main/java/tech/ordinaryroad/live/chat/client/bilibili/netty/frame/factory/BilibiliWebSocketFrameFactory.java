@@ -51,34 +51,24 @@ public class BilibiliWebSocketFrameFactory {
      * 浏览器地址中的房间id，支持短id
      */
     private final long roomId;
-    /**
-     * 浏览器cookie，仅用来维持登录状态
-     */
-    private String cookie;
-    private final ProtoverEnum protover;
-
     private volatile static HeartbeatMsg heartbeatMsg;
 
-    public BilibiliWebSocketFrameFactory(long roomId, ProtoverEnum protover, String cookie) {
+    public BilibiliWebSocketFrameFactory(long roomId) {
         this.roomId = roomId;
-        this.protover = protover;
-        this.cookie = cookie;
     }
 
-    public synchronized static BilibiliWebSocketFrameFactory getInstance(long roomId, ProtoverEnum protover, String cookie) {
-        return CACHE.computeIfAbsent(roomId, aLong -> new BilibiliWebSocketFrameFactory(roomId, protover, cookie));
-    }
-
-    public synchronized static BilibiliWebSocketFrameFactory getInstance(long roomId, ProtoverEnum protover) {
-        return getInstance(roomId, protover, null);
+    public synchronized static BilibiliWebSocketFrameFactory getInstance(long roomId) {
+        return CACHE.computeIfAbsent(roomId, aLong -> new BilibiliWebSocketFrameFactory(roomId));
     }
 
     /**
      * 创建认证包
      *
+     * @param protover {@link ProtoverEnum}
+     * @param cookie   浏览器cookie，仅用来维持登录状态
      * @return AuthWebSocketFrame
      */
-    public AuthWebSocketFrame createAuth() {
+    public AuthWebSocketFrame createAuth(ProtoverEnum protover, String cookie) {
         try {
             Map<String, String> cookieMap = OrLiveChatCookieUtil.parseCookieString(cookie);
             String buvid3 = OrLiveChatCookieUtil.getCookieByName(cookieMap, "buvid3", () -> UUID.randomUUID().toString());
@@ -86,7 +76,7 @@ public class BilibiliWebSocketFrameFactory {
             JsonNode data = BilibiliApis.roomInit(roomId, cookie);
             JsonNode danmuInfo = BilibiliApis.getDanmuInfo(roomId, 0, cookie);
             int realRoomId = data.get("room_id").asInt();
-            AuthMsg authMsg = new AuthMsg(realRoomId, this.protover.getCode(), buvid3, danmuInfo.get("token").asText());
+            AuthMsg authMsg = new AuthMsg(realRoomId, protover.getCode(), buvid3, danmuInfo.get("token").asText());
             authMsg.setUid(NumberUtil.parseLong(uid));
             return new AuthWebSocketFrame(BilibiliCodecUtil.encode(authMsg));
         } catch (Exception e) {
@@ -94,20 +84,21 @@ public class BilibiliWebSocketFrameFactory {
         }
     }
 
-    public HeartbeatWebSocketFrame createHeartbeat() {
-        return new HeartbeatWebSocketFrame(BilibiliCodecUtil.encode(this.getHeartbeatMsg()));
+    public HeartbeatWebSocketFrame createHeartbeat(ProtoverEnum protover) {
+        return new HeartbeatWebSocketFrame(BilibiliCodecUtil.encode(this.getHeartbeatMsg(protover)));
     }
 
     /**
      * 心跳包单例模式
      *
+     * @param protover {@link ProtoverEnum}
      * @return HeartbeatWebSocketFrame
      */
-    public HeartbeatMsg getHeartbeatMsg() {
+    public HeartbeatMsg getHeartbeatMsg(ProtoverEnum protover) {
         if (heartbeatMsg == null) {
             synchronized (BilibiliWebSocketFrameFactory.this) {
                 if (heartbeatMsg == null) {
-                    heartbeatMsg = new HeartbeatMsg(this.protover.getCode());
+                    heartbeatMsg = new HeartbeatMsg(protover.getCode());
                 }
             }
         }

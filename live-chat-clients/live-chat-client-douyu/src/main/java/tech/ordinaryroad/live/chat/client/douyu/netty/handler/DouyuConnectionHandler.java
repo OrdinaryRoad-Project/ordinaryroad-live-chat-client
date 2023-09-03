@@ -57,7 +57,7 @@ public class DouyuConnectionHandler extends BaseNettyClientConnectionHandler<Dou
         this.ver = client.getConfig().getVer();
         this.aver = client.getConfig().getAver();
         this.cookie = client.getConfig().getCookie();
-        this.webSocketFrameFactory = DouyuWebSocketFrameFactory.getInstance(roomId, ver, aver, cookie);
+        this.webSocketFrameFactory = DouyuWebSocketFrameFactory.getInstance(roomId);
     }
 
     public DouyuConnectionHandler(WebSocketClientHandshaker handshaker, IBaseConnectionListener<DouyuConnectionHandler> listener, DouyuLiveChatClient client) {
@@ -65,7 +65,7 @@ public class DouyuConnectionHandler extends BaseNettyClientConnectionHandler<Dou
         this.ver = client.getConfig().getVer();
         this.aver = client.getConfig().getAver();
         this.cookie = client.getConfig().getCookie();
-        this.webSocketFrameFactory = DouyuWebSocketFrameFactory.getInstance(super.getRoomId(), ver, aver, cookie);
+        this.webSocketFrameFactory = DouyuWebSocketFrameFactory.getInstance(super.getRoomId());
     }
 
     public DouyuConnectionHandler(WebSocketClientHandshaker handshaker, DouyuLiveChatClient client) {
@@ -73,7 +73,7 @@ public class DouyuConnectionHandler extends BaseNettyClientConnectionHandler<Dou
         this.ver = client.getConfig().getVer();
         this.aver = client.getConfig().getAver();
         this.cookie = client.getConfig().getCookie();
-        this.webSocketFrameFactory = DouyuWebSocketFrameFactory.getInstance(super.getRoomId(), ver, aver, cookie);
+        this.webSocketFrameFactory = DouyuWebSocketFrameFactory.getInstance(super.getRoomId());
     }
 
     public DouyuConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, String ver, String aver, String cookie) {
@@ -81,7 +81,7 @@ public class DouyuConnectionHandler extends BaseNettyClientConnectionHandler<Dou
         this.ver = ver;
         this.aver = aver;
         this.cookie = cookie;
-        this.webSocketFrameFactory = DouyuWebSocketFrameFactory.getInstance(roomId, ver, aver, cookie);
+        this.webSocketFrameFactory = DouyuWebSocketFrameFactory.getInstance(roomId);
     }
 
     public DouyuConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, String ver, String aver) {
@@ -106,7 +106,7 @@ public class DouyuConnectionHandler extends BaseNettyClientConnectionHandler<Dou
     public void sendAuthRequest(Channel channel) {
         // 5s内认证
         log.debug("发送认证包");
-        channel.writeAndFlush(webSocketFrameFactory.createAuth());
+        channel.writeAndFlush(webSocketFrameFactory.createAuth(ver, aver, cookie));
     }
 
     @Override
