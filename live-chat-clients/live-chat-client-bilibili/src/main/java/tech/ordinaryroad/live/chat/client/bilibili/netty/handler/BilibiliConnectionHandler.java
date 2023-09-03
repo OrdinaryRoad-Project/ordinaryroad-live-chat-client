@@ -51,18 +51,21 @@ public class BilibiliConnectionHandler extends BaseNettyClientConnectionHandler<
     /**
      * 以ClientConfig为主
      */
+    private final long roomId;
+    /**
+     * 以ClientConfig为主
+     */
     private final ProtoverEnum protover;
     /**
      * 以ClientConfig为主
      */
     private String cookie;
-    private final BilibiliWebSocketFrameFactory webSocketFrameFactory;
 
     public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, BilibiliLiveChatClient client, IBaseConnectionListener<BilibiliConnectionHandler> listener) {
         super(handshaker, client, listener);
+        this.roomId = client.getConfig().getRoomId();
         this.protover = client.getConfig().getProtover();
         this.cookie = client.getConfig().getCookie();
-        this.webSocketFrameFactory = BilibiliWebSocketFrameFactory.getInstance(client.getConfig().getRoomId());
     }
 
     public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, BilibiliLiveChatClient client) {
@@ -70,10 +73,10 @@ public class BilibiliConnectionHandler extends BaseNettyClientConnectionHandler<
     }
 
     public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, ProtoverEnum protover, IBaseConnectionListener<BilibiliConnectionHandler> listener, String cookie) {
-        super(handshaker, roomId, listener);
+        super(handshaker, listener);
+        this.roomId = roomId;
         this.protover = protover;
         this.cookie = cookie;
-        this.webSocketFrameFactory = BilibiliWebSocketFrameFactory.getInstance(roomId);
     }
 
     public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, ProtoverEnum protover, IBaseConnectionListener<BilibiliConnectionHandler> listener) {
@@ -92,7 +95,7 @@ public class BilibiliConnectionHandler extends BaseNettyClientConnectionHandler<
     protected void sendHeartbeat(ChannelHandlerContext ctx) {
         log.debug("发送心跳包");
         ctx.writeAndFlush(
-                webSocketFrameFactory.createHeartbeat(getProtover())
+                getWebSocketFrameFactory(getRoomId()).createHeartbeat(getProtover())
         ).addListener((ChannelFutureListener) future -> {
             if (future.isSuccess()) {
                 log.debug("心跳包发送完成");
@@ -102,11 +105,19 @@ public class BilibiliConnectionHandler extends BaseNettyClientConnectionHandler<
         });
     }
 
+    private static BilibiliWebSocketFrameFactory getWebSocketFrameFactory(long roomId) {
+        return BilibiliWebSocketFrameFactory.getInstance(roomId);
+    }
+
     @Override
     public void sendAuthRequest(Channel channel) {
         // 5s内认证
         log.debug("发送认证包");
-        channel.writeAndFlush(webSocketFrameFactory.createAuth(getProtover(), getCookie()));
+        channel.writeAndFlush(getWebSocketFrameFactory(getRoomId()).createAuth(getProtover(), getCookie()));
+    }
+
+    public long getRoomId() {
+        return client != null ? client.getConfig().getRoomId() : roomId;
     }
 
     private ProtoverEnum getProtover() {

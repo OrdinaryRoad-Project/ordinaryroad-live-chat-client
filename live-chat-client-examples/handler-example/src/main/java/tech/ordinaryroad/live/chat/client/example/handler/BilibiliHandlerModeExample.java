@@ -69,7 +69,6 @@ public class BilibiliHandlerModeExample {
     static String cookie = System.getenv("cookie");
     // TODO 修改版本
     static ProtoverEnum protover = ProtoverEnum.NORMAL_BROTLI;
-    static BilibiliWebSocketFrameFactory webSocketFrameFactory = BilibiliWebSocketFrameFactory.getInstance(roomId);
 
     public static void main(String[] args) {
         log.error("cookie: {}", cookie);
@@ -250,6 +249,6 @@ public class BilibiliHandlerModeExample {
 
     private static void sendAuth() {
         log.debug("发送认证包");
-        channel.writeAndFlush(webSocketFrameFactory.createAuth(protover, cookie));
+        channel.writeAndFlush(BilibiliWebSocketFrameFactory.getInstance(roomId).createAuth(protover, cookie));
     }
 }

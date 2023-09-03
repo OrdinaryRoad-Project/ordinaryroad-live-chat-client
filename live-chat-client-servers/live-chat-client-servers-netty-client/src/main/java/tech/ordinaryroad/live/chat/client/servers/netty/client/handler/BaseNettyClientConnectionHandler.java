@@ -45,7 +45,7 @@ public abstract class BaseNettyClientConnectionHandler<
     protected final Client client;
 
     public BaseNettyClientConnectionHandler(WebSocketClientHandshaker handshaker, Client client, IBaseConnectionListener<ConnectionHandler> listener) {
-        super(handshaker, client.getConfig().getRoomId(), listener);
+        super(handshaker, listener);
         this.client = client;
     }
 
@@ -53,12 +53,13 @@ public abstract class BaseNettyClientConnectionHandler<
         this(handshaker, client, null);
     }
 
-    public BaseNettyClientConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, IBaseConnectionListener<ConnectionHandler> listener) {
-        super(handshaker, roomId, listener);
+    public BaseNettyClientConnectionHandler(WebSocketClientHandshaker handshaker, IBaseConnectionListener<ConnectionHandler> listener) {
+        super(handshaker, listener);
         this.client = null;
     }
 
     public BaseNettyClientConnectionHandler(WebSocketClientHandshaker handshaker, long roomId) {
-        this(handshaker, roomId, null);
+        super(handshaker, null);
+        this.client = null;
     }
 }

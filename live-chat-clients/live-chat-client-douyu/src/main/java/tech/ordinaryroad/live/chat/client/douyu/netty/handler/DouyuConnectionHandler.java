@@ -50,6 +50,10 @@ public class DouyuConnectionHandler extends BaseNettyClientConnectionHandler<Dou
     /**
      * 以ClientConfig为主
      */
+    private final long roomId;
+    /**
+     * 以ClientConfig为主
+     */
     private final String ver;
     /**
      * 以ClientConfig为主
@@ -59,15 +63,13 @@ public class DouyuConnectionHandler extends BaseNettyClientConnectionHandler<Dou
      * 以ClientConfig为主
      */
     private String cookie;
-    private final DouyuWebSocketFrameFactory webSocketFrameFactory;
-
 
     public DouyuConnectionHandler(WebSocketClientHandshaker handshaker, DouyuLiveChatClient client, IBaseConnectionListener<DouyuConnectionHandler> listener) {
         super(handshaker, client, listener);
+        this.roomId = client.getConfig().getRoomId();
         this.ver = client.getConfig().getVer();
         this.aver = client.getConfig().getAver();
         this.cookie = client.getConfig().getCookie();
-        this.webSocketFrameFactory = DouyuWebSocketFrameFactory.getInstance(client.getConfig().getRoomId());
     }
 
     public DouyuConnectionHandler(WebSocketClientHandshaker handshaker, DouyuLiveChatClient client) {
@@ -75,11 +77,11 @@ public class DouyuConnectionHandler extends BaseNettyClientConnectionHandler<Dou
     }
 
     public DouyuConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, String ver, String aver, IBaseConnectionListener<DouyuConnectionHandler> listener, String cookie) {
-        super(handshaker, roomId, listener);
+        super(handshaker, listener);
+        this.roomId = roomId;
         this.ver = ver;
         this.aver = aver;
         this.cookie = cookie;
-        this.webSocketFrameFactory = DouyuWebSocketFrameFactory.getInstance(roomId);
     }
 
     public DouyuConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, String ver, String aver, IBaseConnectionListener<DouyuConnectionHandler> listener) {
@@ -98,7 +100,7 @@ public class DouyuConnectionHandler extends BaseNettyClientConnectionHandler<Dou
     protected void sendHeartbeat(ChannelHandlerContext ctx) {
         log.debug("发送心跳包");
         ctx.writeAndFlush(
-                webSocketFrameFactory.createHeartbeat()
+                getWebSocketFrameFactory(getRoomId()).createHeartbeat()
         ).addListener((ChannelFutureListener) future -> {
             if (future.isSuccess()) {
                 log.debug("心跳包发送完成");
@@ -112,7 +114,15 @@ public class DouyuConnectionHandler extends BaseNettyClientConnectionHandler<Dou
     public void sendAuthRequest(Channel channel) {
         // 5s内认证
         log.debug("发送认证包");
-        channel.writeAndFlush(webSocketFrameFactory.createAuth(getVer(), getAver()));
+        channel.writeAndFlush(getWebSocketFrameFactory(getRoomId()).createAuth(getVer(), getAver()));
+    }
+
+    private DouyuWebSocketFrameFactory getWebSocketFrameFactory(long roomId) {
+        return DouyuWebSocketFrameFactory.getInstance(roomId);
+    }
+
+    public long getRoomId() {
+        return client != null ? client.getConfig().getRoomId() : roomId;
     }
 
     private String getVer() {
