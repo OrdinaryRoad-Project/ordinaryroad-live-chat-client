@@ -28,9 +28,8 @@ import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import tech.ordinaryroad.live.chat.client.bilibili.client.BilibiliLiveChatClient;
+import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliConnectionListener;
 import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliSendSmsReplyMsgListener;
-import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliConnectionHandler;
-import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 
 /**
  * @author mjz
@@ -46,7 +45,7 @@ public class BilibiliLiveChatClientConfiguration {
     private IBilibiliSendSmsReplyMsgListener bilibiliSendSmsReplyMsgListener;
 
     @Resource
-    private IBaseConnectionListener<BilibiliConnectionHandler> bilibiliConnectionListener;
+    private IBilibiliConnectionListener bilibiliConnectionListener;
 
     @Bean
     public BilibiliLiveChatClient bilibiliLiveChatClient() {

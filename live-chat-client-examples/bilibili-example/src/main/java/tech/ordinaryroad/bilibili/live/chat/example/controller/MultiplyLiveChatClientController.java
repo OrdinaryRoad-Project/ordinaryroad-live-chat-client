@@ -31,9 +31,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tech.ordinaryroad.live.chat.client.bilibili.client.BilibiliLiveChatClient;
 import tech.ordinaryroad.live.chat.client.bilibili.config.BilibiliLiveChatClientConfig;
+import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliConnectionListener;
 import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliSendSmsReplyMsgListener;
-import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliConnectionHandler;
-import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 
 /**
  * @author mjz
@@ -46,7 +45,7 @@ public class MultiplyLiveChatClientController {
     @Autowired
     private IBilibiliSendSmsReplyMsgListener bilibiliSendSmsReplyMsgListener;
     @Autowired
-    private IBaseConnectionListener<BilibiliConnectionHandler> bilibiliConnectionListener;
+    private IBilibiliConnectionListener bilibiliConnectionListener;
 
     @GetMapping("newClientAndStart/{roomId}")
     public void newClientAndStart(@PathVariable Long roomId) {

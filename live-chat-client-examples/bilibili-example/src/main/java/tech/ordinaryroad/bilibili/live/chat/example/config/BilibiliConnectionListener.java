@@ -26,8 +26,8 @@ package tech.ordinaryroad.bilibili.live.chat.example.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliConnectionListener;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliConnectionHandler;
-import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 
 /**
  * @author mjz
@@ -35,7 +35,7 @@ import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionL
  */
 @Slf4j
 @Service
-public class BilibiliConnectionListener implements IBaseConnectionListener<BilibiliConnectionHandler> {
+public class BilibiliConnectionListener implements IBilibiliConnectionListener {
 
     @Override
     public void onConnected(BilibiliConnectionHandler connectionHandler) {
