@@ -34,8 +34,7 @@ import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import lombok.Getter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
@@ -55,6 +54,7 @@ import java.util.function.Consumer;
  * @author mjz
  * @date 2023/8/26
  */
+@Slf4j
 public abstract class BaseNettyClient
         <Config extends BaseNettyClientConfig,
                 CmdEnum extends Enum<CmdEnum>,
@@ -64,8 +64,6 @@ public abstract class BaseNettyClient
                 BinaryFrameHandler extends BaseBinaryFrameHandler<BinaryFrameHandler, CmdEnum, Msg, MsgListener>
                 >
         extends BaseLiveChatClient<Config> {
-
-    Logger log = LoggerFactory.getLogger(getClass());
 
     @Getter
     private final EventLoopGroup workerGroup;
@@ -90,12 +88,14 @@ public abstract class BaseNettyClient
     }
 
     public void onConnected(ConnectionHandler connectionHandler) {
+        super.setStatus(ClientStatusEnums.CONNECTED);
         if (this.connectionListener != null) {
             this.connectionListener.onConnected(connectionHandler);
         }
     }
 
     public void onConnectFailed(ConnectionHandler connectionHandler) {
+        super.setStatus(ClientStatusEnums.CONNECT_FAILED);
         tryReconnect();
         if (this.connectionListener != null) {
             this.connectionListener.onConnectFailed(connectionHandler);
@@ -103,6 +103,7 @@ public abstract class BaseNettyClient
     }
 
     public void onDisconnected(ConnectionHandler connectionHandler) {
+        super.setStatus(ClientStatusEnums.DISCONNECTED);
         tryReconnect();
         if (this.connectionListener != null) {
             this.connectionListener.onDisconnected(connectionHandler);
@@ -166,7 +167,7 @@ public abstract class BaseNettyClient
                             pipeline.addLast(BaseNettyClient.this.binaryFrameHandler);
                         }
                     });
-            setStatus(ClientStatusEnums.INITIALIZED);
+            super.setStatus(ClientStatusEnums.INITIALIZED);
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         } catch (SSLException e) {
@@ -182,9 +183,17 @@ public abstract class BaseNettyClient
         if (!checkStatus(ClientStatusEnums.INITIALIZED)) {
             return;
         }
+        if (getStatus() == ClientStatusEnums.CONNECTED) {
+            return;
+        }
+        if (getStatus() != ClientStatusEnums.RECONNECTING) {
+            super.setStatus(ClientStatusEnums.CONNECTING);
+        }
         this.bootstrap.connect().addListener((ChannelFutureListener) connectFuture -> {
             if (connectFuture.isSuccess()) {
-                log.debug("连接建立成功！");
+                if (log.isDebugEnabled()) {
+                    log.debug("连接建立成功！");
+                }
                 this.channel = connectFuture.channel();
                 // 监听是否握手成功
                 this.connectionHandler.getHandshakeFuture().addListener((ChannelFutureListener) handshakeFuture -> {
@@ -220,8 +229,13 @@ public abstract class BaseNettyClient
         if (!getConfig().isAutoReconnect()) {
             return;
         }
-        log.debug("{}s后将重新连接", getConfig().getReconnectDelay());
-        workerGroup.schedule(() -> this.connect(), getConfig().getReconnectDelay(), TimeUnit.SECONDS);
+        if (log.isDebugEnabled()) {
+            log.debug("{}s后将重新连接", getConfig().getReconnectDelay());
+        }
+        workerGroup.schedule(() -> {
+            super.setStatus(ClientStatusEnums.RECONNECTING);
+            this.connect();
+        }, getConfig().getReconnectDelay(), TimeUnit.SECONDS);
     }
 
     @Override
@@ -249,7 +263,13 @@ public abstract class BaseNettyClient
 
     @Override
     public void destroy() {
-        workerGroup.shutdownGracefully();
+        workerGroup.shutdownGracefully().addListener(future -> {
+            if (future.isSuccess()) {
+                super.setStatus(ClientStatusEnums.DESTROYED);
+            } else {
+                throw new RuntimeException("client销毁失败", future.cause());
+            }
+        });
     }
 
     @Override
@@ -257,4 +277,13 @@ public abstract class BaseNettyClient
         return getConfig().getWebsocketUri();
     }
 
+    @Override
+    protected void setStatus(ClientStatusEnums status) {
+        super.setStatus(status);
+        if (log.isDebugEnabled()) {
+            if (getStatus() != status) {
+                log.debug("{} 状态变化 {} => {}\n", getClass().getSimpleName(), getStatus(), status);
+            }
+        }
+    }
 }
