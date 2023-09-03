@@ -47,13 +47,15 @@ public class LiveChatClientController {
     }
 
     @GetMapping("autoReconnect/{autoReconnect}")
-    public void autoReconnect(@RequestParam String platform, @PathVariable Boolean autoReconnect) {
+    public Boolean autoReconnect(@RequestParam String platform, @PathVariable Boolean autoReconnect) {
         getClient(platform).getConfig().setAutoReconnect(autoReconnect);
+        return getClient(platform).getConfig().isAutoReconnect();
     }
 
     @GetMapping("roomId/{roomId}")
-    public void roomId(@RequestParam String platform, @PathVariable Long roomId) {
+    public Long roomId(@RequestParam String platform, @PathVariable Long roomId) {
         getClient(platform).getConfig().setRoomId(roomId);
+        return getClient(platform).getConfig().getRoomId();
     }
 
     @GetMapping("disconnect/{cancelReconnect}")
@@ -62,14 +64,16 @@ public class LiveChatClientController {
     }
 
     @GetMapping("cookie")
-    public void cookie(@RequestParam String platform, @RequestParam String cookie) {
+    public String cookie(@RequestParam String platform, @RequestParam String cookie) {
         getClient(platform).getConfig().setCookie(cookie);
+        return getClient(platform).getConfig().getCookie();
     }
 
     private <Client extends BaseNettyClient<?, ?, ?, ?, ?, ?>> Client getClient(String platform) {
-        if (!clientMap.containsKey(platform)) {
+        String key = platform + "LiveChatClient";
+        if (!clientMap.containsKey(key)) {
             throw new RuntimeException("暂不支持 " + platform);
         }
-        return (Client) clientMap.get(platform);
+        return (Client) clientMap.get(key);
     }
 }
