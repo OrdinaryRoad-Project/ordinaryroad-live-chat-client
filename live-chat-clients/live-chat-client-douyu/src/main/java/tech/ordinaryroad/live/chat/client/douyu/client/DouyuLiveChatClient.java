@@ -36,6 +36,7 @@ import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 import tech.ordinaryroad.live.chat.client.douyu.config.DouyuLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
+import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuConnectionListener;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuDouyuCmdMsgListener;
 import tech.ordinaryroad.live.chat.client.douyu.msg.ChatmsgMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.LoginresMsg;
@@ -64,7 +65,7 @@ public class DouyuLiveChatClient extends BaseNettyClient<
     private final IDouyuDouyuCmdMsgListener msgListener;
     private final DouyuWebSocketFrameFactory webSocketFrameFactory;
 
-    public DouyuLiveChatClient(DouyuLiveChatClientConfig config, IDouyuDouyuCmdMsgListener msgListener, IBaseConnectionListener<DouyuConnectionHandler> connectionListener, EventLoopGroup workerGroup) {
+    public DouyuLiveChatClient(DouyuLiveChatClientConfig config, IDouyuDouyuCmdMsgListener msgListener, IDouyuConnectionListener connectionListener, EventLoopGroup workerGroup) {
         super(config, workerGroup, connectionListener);
         this.msgListener = msgListener;
         this.webSocketFrameFactory = DouyuWebSocketFrameFactory.getInstance(config.getRoomId());
@@ -73,7 +74,7 @@ public class DouyuLiveChatClient extends BaseNettyClient<
         this.init();
     }
 
-    public DouyuLiveChatClient(DouyuLiveChatClientConfig config, IDouyuDouyuCmdMsgListener msgListener, IBaseConnectionListener<DouyuConnectionHandler> connectionListener) {
+    public DouyuLiveChatClient(DouyuLiveChatClientConfig config, IDouyuDouyuCmdMsgListener msgListener, IDouyuConnectionListener connectionListener) {
         this(config, msgListener, connectionListener, new NioEventLoopGroup());
     }
 

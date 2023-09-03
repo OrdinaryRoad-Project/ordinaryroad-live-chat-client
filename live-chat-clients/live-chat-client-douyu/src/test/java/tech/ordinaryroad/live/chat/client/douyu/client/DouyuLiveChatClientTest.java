@@ -26,12 +26,12 @@ package tech.ordinaryroad.live.chat.client.douyu.client;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseCmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 import tech.ordinaryroad.live.chat.client.douyu.config.DouyuLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
+import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuConnectionListener;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuDouyuCmdMsgListener;
 import tech.ordinaryroad.live.chat.client.douyu.msg.ChatmsgMsg;
 import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuBinaryFrameHandler;
@@ -42,7 +42,7 @@ import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuConnectionHan
  * @date 2023/8/26
  */
 @Slf4j
-class DouyuLiveChatClientTest implements IBaseConnectionListener<DouyuConnectionHandler>, IDouyuDouyuCmdMsgListener {
+class DouyuLiveChatClientTest implements IDouyuConnectionListener, IDouyuDouyuCmdMsgListener {
 
     static Object lock = new Object();
     DouyuLiveChatClient client;
@@ -90,7 +90,7 @@ class DouyuLiveChatClientTest implements IBaseConnectionListener<DouyuConnection
 
                 log.debug("{} 收到未知CMD消息 {}", binaryFrameHandler.getRoomId(), cmdString);
             }
-        }, new IBaseConnectionListener<DouyuConnectionHandler>() {
+        }, new IDouyuConnectionListener() {
             @Override
             public void onConnected(DouyuConnectionHandler connectionHandler) {
                 log.info("{} onConnected", connectionHandler.getRoomId());
@@ -126,7 +126,7 @@ class DouyuLiveChatClientTest implements IBaseConnectionListener<DouyuConnection
 
         client1.connect(() -> {
             log.warn("client1 connect successfully, start connecting client2");
-            client2.connect(()->{
+            client2.connect(() -> {
                 log.warn("client2 connect successfully");
             });
         });
