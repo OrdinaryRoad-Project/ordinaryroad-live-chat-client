@@ -86,6 +86,10 @@ public class DouyuWebSocketFrameFactory {
         }
     }
 
+    public AuthWebSocketFrame createAuth(String ver, String aver) {
+        return this.createAuth(ver,aver,null);
+    }
+
     public HeartbeatWebSocketFrame createHeartbeat() {
         return new HeartbeatWebSocketFrame(DouyuCodecUtil.encode(this.getHeartbeatMsg()));
     }

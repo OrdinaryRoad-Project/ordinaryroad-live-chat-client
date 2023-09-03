@@ -106,7 +106,7 @@ public class DouyuConnectionHandler extends BaseNettyClientConnectionHandler<Dou
     public void sendAuthRequest(Channel channel) {
         // 5s内认证
         log.debug("发送认证包");
-        channel.writeAndFlush(webSocketFrameFactory.createAuth(ver, aver, cookie));
+        channel.writeAndFlush(webSocketFrameFactory.createAuth(ver, aver));
     }
 
     @Override
