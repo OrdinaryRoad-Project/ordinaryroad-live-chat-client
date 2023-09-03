@@ -88,14 +88,14 @@ public abstract class BaseNettyClient
     }
 
     public void onConnected(ConnectionHandler connectionHandler) {
-        super.setStatus(ClientStatusEnums.CONNECTED);
+        this.setStatus(ClientStatusEnums.CONNECTED);
         if (this.connectionListener != null) {
             this.connectionListener.onConnected(connectionHandler);
         }
     }
 
     public void onConnectFailed(ConnectionHandler connectionHandler) {
-        super.setStatus(ClientStatusEnums.CONNECT_FAILED);
+        this.setStatus(ClientStatusEnums.CONNECT_FAILED);
         tryReconnect();
         if (this.connectionListener != null) {
             this.connectionListener.onConnectFailed(connectionHandler);
@@ -103,7 +103,7 @@ public abstract class BaseNettyClient
     }
 
     public void onDisconnected(ConnectionHandler connectionHandler) {
-        super.setStatus(ClientStatusEnums.DISCONNECTED);
+        this.setStatus(ClientStatusEnums.DISCONNECTED);
         tryReconnect();
         if (this.connectionListener != null) {
             this.connectionListener.onDisconnected(connectionHandler);
@@ -167,7 +167,7 @@ public abstract class BaseNettyClient
                             pipeline.addLast(BaseNettyClient.this.binaryFrameHandler);
                         }
                     });
-            super.setStatus(ClientStatusEnums.INITIALIZED);
+            this.setStatus(ClientStatusEnums.INITIALIZED);
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         } catch (SSLException e) {
@@ -187,7 +187,7 @@ public abstract class BaseNettyClient
             return;
         }
         if (getStatus() != ClientStatusEnums.RECONNECTING) {
-            super.setStatus(ClientStatusEnums.CONNECTING);
+            this.setStatus(ClientStatusEnums.CONNECTING);
         }
         this.bootstrap.connect().addListener((ChannelFutureListener) connectFuture -> {
             if (connectFuture.isSuccess()) {
@@ -233,7 +233,7 @@ public abstract class BaseNettyClient
             log.warn("{}s后将重新连接 {}", getConfig().getReconnectDelay(), getConfig().getRoomId());
         }
         workerGroup.schedule(() -> {
-            super.setStatus(ClientStatusEnums.RECONNECTING);
+            this.setStatus(ClientStatusEnums.RECONNECTING);
             this.connect();
         }, getConfig().getReconnectDelay(), TimeUnit.SECONDS);
     }
@@ -265,7 +265,7 @@ public abstract class BaseNettyClient
     public void destroy() {
         workerGroup.shutdownGracefully().addListener(future -> {
             if (future.isSuccess()) {
-                super.setStatus(ClientStatusEnums.DESTROYED);
+                this.setStatus(ClientStatusEnums.DESTROYED);
             } else {
                 throw new RuntimeException("client销毁失败", future.cause());
             }
@@ -279,11 +279,11 @@ public abstract class BaseNettyClient
 
     @Override
     protected void setStatus(ClientStatusEnums status) {
-        super.setStatus(status);
         if (log.isDebugEnabled()) {
             if (getStatus() != status) {
                 log.debug("{} 状态变化 {} => {}\n", getClass().getSimpleName(), getStatus(), status);
             }
         }
+        super.setStatus(status);
     }
 }
