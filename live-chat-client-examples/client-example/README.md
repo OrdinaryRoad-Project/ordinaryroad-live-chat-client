@@ -1,4 +1,4 @@
-# ordinaryroad-bilibili-live-chat-client-example
+# client-example
 
 ## 1 配置
 
