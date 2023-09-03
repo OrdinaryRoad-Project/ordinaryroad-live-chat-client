@@ -36,6 +36,7 @@
         <java.version>17</java.version>
     </properties>
     <modules>
-        <module>bilibili-example</module>
+        <module>client-example</module>
+        <module>handler-example</module>
     </modules>
 </project>
