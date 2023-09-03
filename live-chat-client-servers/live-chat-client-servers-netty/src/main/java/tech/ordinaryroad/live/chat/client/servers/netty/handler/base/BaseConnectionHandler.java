@@ -94,7 +94,9 @@ public abstract class BaseConnectionHandler<ConnectionHandler extends BaseConnec
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        log.debug("userEventTriggered {}", evt.getClass());
+        if (log.isDebugEnabled()) {
+            log.debug("userEventTriggered {}", evt.getClass());
+        }
         if (evt instanceof SslHandshakeCompletionEvent) {
             heartbeatCancel();
             heartbeatStart(ctx);
@@ -140,7 +142,9 @@ public abstract class BaseConnectionHandler<ConnectionHandler extends BaseConnec
     protected abstract long getHeartbeatInitialDelay();
 
     private void handshakeSuccessfully(ChannelHandlerContext ctx, FullHttpResponse msg) {
-        log.debug("握手完成!");
+        if (log.isDebugEnabled()) {
+            log.debug("握手完成!");
+        }
         this.handshaker.finishHandshake(ctx.channel(), msg);
         this.handshakeFuture.setSuccess();
     }

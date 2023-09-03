@@ -98,12 +98,16 @@ public class DouyuConnectionHandler extends BaseNettyClientConnectionHandler<Dou
 
     @Override
     protected void sendHeartbeat(ChannelHandlerContext ctx) {
-        log.debug("发送心跳包");
+        if (log.isDebugEnabled()) {
+            log.debug("发送心跳包");
+        }
         ctx.writeAndFlush(
                 getWebSocketFrameFactory(getRoomId()).createHeartbeat()
         ).addListener((ChannelFutureListener) future -> {
             if (future.isSuccess()) {
-                log.debug("心跳包发送完成");
+                if (log.isDebugEnabled()) {
+                    log.debug("心跳包发送完成");
+                }
             } else {
                 log.error("心跳包发送失败", future.cause());
             }
@@ -113,7 +117,9 @@ public class DouyuConnectionHandler extends BaseNettyClientConnectionHandler<Dou
     @Override
     public void sendAuthRequest(Channel channel) {
         // 5s内认证
-        log.debug("发送认证包");
+        if (log.isDebugEnabled()) {
+            log.debug("发送认证包");
+        }
         channel.writeAndFlush(getWebSocketFrameFactory(getRoomId()).createAuth(getVer(), getAver()));
     }
 

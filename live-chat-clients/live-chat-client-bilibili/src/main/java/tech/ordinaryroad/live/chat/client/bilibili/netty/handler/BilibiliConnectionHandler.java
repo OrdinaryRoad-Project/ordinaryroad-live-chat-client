@@ -93,12 +93,16 @@ public class BilibiliConnectionHandler extends BaseNettyClientConnectionHandler<
 
     @Override
     protected void sendHeartbeat(ChannelHandlerContext ctx) {
-        log.debug("发送心跳包");
+        if (log.isDebugEnabled()) {
+            log.debug("发送心跳包");
+        }
         ctx.writeAndFlush(
                 getWebSocketFrameFactory(getRoomId()).createHeartbeat(getProtover())
         ).addListener((ChannelFutureListener) future -> {
             if (future.isSuccess()) {
-                log.debug("心跳包发送完成");
+                if (log.isDebugEnabled()) {
+                    log.debug("心跳包发送完成");
+                }
             } else {
                 log.error("心跳包发送失败", future.cause());
             }
