@@ -80,10 +80,7 @@ public class BilibiliHandlerModeExample {
 
             @Override
             public void onConnected(BilibiliConnectionHandler connectionHandler) {
-                log.error("连接成功，10s后将断开连接，模拟自动重连");
-                workerGroup.schedule(() -> {
-                    channel.close();
-                }, 10, TimeUnit.SECONDS);
+                log.error("{} 连接成功", roomId);
             }
 
             @Override
@@ -236,6 +233,10 @@ public class BilibiliHandlerModeExample {
             channel = bootstrap.connect().sync().channel();
             // 阻塞等待是否握手成功
             connectionHandler.getHandshakeFuture().sync();
+            log.error("连接成功，10s后将断开连接，模拟自动重连");
+            workerGroup.schedule(() -> {
+                channel.close();
+            }, 10, TimeUnit.SECONDS);
             // 5s内认证
             sendAuth();
 
