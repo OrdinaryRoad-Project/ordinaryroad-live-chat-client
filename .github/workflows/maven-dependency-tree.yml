@@ -3,6 +3,9 @@ name: Update Maven Dependency Tree
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   update_maven_dependency_tree:
     runs-on: ubuntu-latest
@@ -12,5 +15,3 @@ jobs:
 
       - name: Submit Dependency Snapshot
         uses: advanced-security/maven-dependency-submission-action@v3
-        env:
-          token: ${{ secrets.GITHUB_TOKEN }}
