@@ -12,3 +12,5 @@ jobs:
 
       - name: Submit Dependency Snapshot
         uses: advanced-security/maven-dependency-submission-action@v3
+        env:
+          token: ${{ secrets.GITHUB_TOKEN }}
