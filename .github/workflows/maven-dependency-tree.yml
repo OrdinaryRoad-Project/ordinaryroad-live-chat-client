@@ -1,17 +1,23 @@
-name: Update Maven Dependency Tree
+name: Update Maven Dependency Graph
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [ opened, reopened, synchronize ]
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  update_maven_dependency_tree:
+  update_maven_dependency_graph:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
       - name: Submit Dependency Snapshot
         uses: advanced-security/maven-dependency-submission-action@v3
