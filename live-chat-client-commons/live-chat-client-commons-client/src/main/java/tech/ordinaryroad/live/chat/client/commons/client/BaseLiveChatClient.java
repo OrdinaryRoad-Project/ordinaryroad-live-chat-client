@@ -35,7 +35,7 @@ import java.util.function.Consumer;
  * @author mjz
  * @date 2023/8/26
  */
-public abstract class BaseLiveChatClient<Config extends BaseLiveChatClientConfig> {
+public abstract class BaseLiveChatClient<Config extends BaseLiveChatClientConfig> implements IBaseLiveChatClient{
 
     private final Config config;
     @Getter
@@ -50,40 +50,28 @@ public abstract class BaseLiveChatClient<Config extends BaseLiveChatClientConfig
         return config;
     }
 
-    public abstract void init();
-
-    public abstract void connect(Runnable success, Consumer<Throwable> failed);
-
+    @Override
     public void connect(Runnable success) {
         this.connect(success, null);
     }
 
+    @Override
     public void connect() {
         this.connect(null, null);
     }
 
-    /**
-     * 手动断开连接
-     *
-     * @param cancelReconnect 取消本次的自动重连（如果启用自动重连）
-     */
+    @Override
     public void disconnect(boolean cancelReconnect) {
         this.cancelReconnect = cancelReconnect;
         this.disconnect();
     }
 
-    public abstract void disconnect();
-
-    public abstract void destroy();
-
-    public abstract void send(Object msg);
-
-    public abstract void send(Object msg, Runnable success, Consumer<Throwable> failed);
-
+    @Override
     public void send(Object msg, Runnable success) {
         this.send(msg, success, null);
     }
 
+    @Override
     public void send(Object msg, Consumer<Throwable> failed) {
         this.send(msg, null, failed);
     }
