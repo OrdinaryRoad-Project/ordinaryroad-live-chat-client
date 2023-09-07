@@ -25,6 +25,8 @@
 package tech.ordinaryroad.live.chat.client.douyu.api;
 
 import cn.hutool.core.util.NumberUtil;
+import cn.hutool.core.util.ReUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -44,18 +46,34 @@ import java.util.Map;
 public class DouyuApis {
 
     public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    public static final String PATTERN_BODY_ROOM_ID = "\\$ROOM\\.room_id\\D+(\\d+)";
+    public static final String KEY_REDIRECT_LOCATION_RID = "rid";
 
     public static long getRealRoomId(long roomId, String cookie) {
-        long realRoomId = roomId;
+        String realRoomIdString = null;
         @Cleanup
         HttpResponse execute = createGetRequest("https://www.douyu.com/" + roomId, cookie).execute();
         if (HttpStatus.isRedirected(execute.getStatus())) {
             String location = execute.header(Header.LOCATION);
             Map<String, String> paramMap = HttpUtil.decodeParamMap(location, null);
-            if (!paramMap.containsKey("rid")) {
-                throw new RuntimeException("{} 真实房间ID失败" + roomId);
+            if (paramMap.containsKey(KEY_REDIRECT_LOCATION_RID)) {
+                realRoomIdString = paramMap.get(KEY_REDIRECT_LOCATION_RID);
             }
-            realRoomId = NumberUtil.parseLong(paramMap.get("rid"));
+        }
+        if (StrUtil.isBlank(realRoomIdString)) {
+            String body = execute.body();
+            String matchString = ReUtil.get(PATTERN_BODY_ROOM_ID, body, 1);
+            if (StrUtil.isNotBlank(matchString)) {
+                realRoomIdString = matchString;
+            }
+        }
+        long realRoomId = roomId;
+        if (!StrUtil.isBlank(realRoomIdString)) {
+            try {
+                realRoomId = NumberUtil.parseLong(realRoomIdString);
+            } catch (Exception e) {
+                throw new RuntimeException("获取" + roomId + "真实房间ID失败");
+            }
         }
         return realRoomId;
     }
