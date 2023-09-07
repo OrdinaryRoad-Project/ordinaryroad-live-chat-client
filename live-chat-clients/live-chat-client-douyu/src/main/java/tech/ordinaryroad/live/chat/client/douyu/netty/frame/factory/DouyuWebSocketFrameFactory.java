@@ -27,6 +27,7 @@ package tech.ordinaryroad.live.chat.client.douyu.netty.frame.factory;
 import cn.hutool.core.util.RandomUtil;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
+import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.douyu.api.DouyuApis;
 import tech.ordinaryroad.live.chat.client.douyu.config.DouyuLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.douyu.msg.HeartbeatMsg;
@@ -82,7 +83,7 @@ public class DouyuWebSocketFrameFactory {
             loginreqMsg.setCt(0);
             return new AuthWebSocketFrame(DouyuCodecUtil.encode(loginreqMsg));
         } catch (Exception e) {
-            throw new RuntimeException("认证包创建失败，请检查房间号是否正确。roomId: %d, msg: %s".formatted(roomId, e.getMessage()));
+            throw new BaseException("认证包创建失败，请检查房间号是否正确。roomId: %d, msg: %s".formatted(roomId, e.getMessage()));
         }
     }
 

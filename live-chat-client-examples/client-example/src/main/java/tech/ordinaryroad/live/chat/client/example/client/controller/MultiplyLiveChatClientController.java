@@ -29,6 +29,7 @@ import tech.ordinaryroad.live.chat.client.bilibili.client.BilibiliLiveChatClient
 import tech.ordinaryroad.live.chat.client.bilibili.config.BilibiliLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliConnectionListener;
 import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliSendSmsReplyMsgListener;
+import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.client.config.BaseLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.douyu.client.DouyuLiveChatClient;
 import tech.ordinaryroad.live.chat.client.douyu.config.DouyuLiveChatClientConfig;
@@ -73,7 +74,7 @@ public class MultiplyLiveChatClientController {
                         .build();
                 client = new DouyuLiveChatClient((DouyuLiveChatClientConfig) config, douyuCmdMsgListener, douyuConnectionListener);
             }
-            default -> throw new RuntimeException("暂不支持 " + platform);
+            default -> throw new BaseException("暂不支持 " + platform);
         }
         client.connect();
     }

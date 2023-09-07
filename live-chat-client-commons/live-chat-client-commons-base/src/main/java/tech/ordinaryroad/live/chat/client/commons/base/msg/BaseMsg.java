@@ -30,8 +30,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,7 +64,7 @@ public abstract class BaseMsg implements IMsg {
         try {
             return OBJECT_MAPPER.writeValueAsString(this);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            throw new BaseException(e);
         }
     }
 }

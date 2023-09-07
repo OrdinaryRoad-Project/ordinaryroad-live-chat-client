@@ -33,6 +33,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Cleanup;
 import lombok.extern.slf4j.Slf4j;
+import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 
 import java.util.Map;
 
@@ -72,7 +73,7 @@ public class DouyuApis {
             try {
                 realRoomId = NumberUtil.parseLong(realRoomIdString);
             } catch (Exception e) {
-                throw new RuntimeException("获取" + roomId + "真实房间ID失败");
+                throw new BaseException("获取" + roomId + "真实房间ID失败");
             }
         }
         return realRoomId;
@@ -95,10 +96,10 @@ public class DouyuApis {
                 // 成功
                 return jsonNode.get("data");
             } else {
-                throw new RuntimeException(jsonNode.get("message").asText());
+                throw new BaseException(jsonNode.get("message").asText());
             }
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            throw new BaseException(e);
         }
     }
 

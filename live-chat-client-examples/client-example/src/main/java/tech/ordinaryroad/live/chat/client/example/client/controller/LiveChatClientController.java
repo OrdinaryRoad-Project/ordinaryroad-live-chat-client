@@ -26,6 +26,7 @@ package tech.ordinaryroad.live.chat.client.example.client.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
 
 import java.util.Map;
@@ -72,7 +73,7 @@ public class LiveChatClientController {
     private <Client extends BaseNettyClient<?, ?, ?, ?, ?, ?>> Client getClient(String platform) {
         String key = platform + "LiveChatClient";
         if (!clientMap.containsKey(key)) {
-            throw new RuntimeException("暂不支持 " + platform);
+            throw new BaseException("暂不支持 " + platform);
         }
         return (Client) clientMap.get(key);
     }
