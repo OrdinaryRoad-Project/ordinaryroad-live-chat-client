@@ -34,6 +34,7 @@ import tech.ordinaryroad.live.chat.client.bilibili.msg.HeartbeatMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.frame.AuthWebSocketFrame;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.frame.HeartbeatWebSocketFrame;
 import tech.ordinaryroad.live.chat.client.bilibili.util.BilibiliCodecUtil;
+import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCookieUtil;
 
 import java.util.Map;
@@ -80,7 +81,7 @@ public class BilibiliWebSocketFrameFactory {
             authMsg.setUid(NumberUtil.parseLong(uid));
             return new AuthWebSocketFrame(BilibiliCodecUtil.encode(authMsg));
         } catch (Exception e) {
-            throw new RuntimeException("认证包创建失败，请检查房间号是否正确。roomId: %d, msg: %s".formatted(roomId, e.getMessage()));
+            throw new BaseException("认证包创建失败，请检查房间号是否正确。roomId: %d, msg: %s".formatted(roomId, e.getMessage()));
         }
     }
     public AuthWebSocketFrame createAuth(ProtoverEnum protover) {

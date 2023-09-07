@@ -170,9 +170,9 @@ public abstract class BaseNettyClient
                     });
             this.setStatus(ClientStatusEnums.INITIALIZED);
         } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
+            throw new BaseException(e);
         } catch (SSLException e) {
-            throw new RuntimeException(e);
+            throw new BaseException(e);
         }
     }
 
@@ -268,7 +268,7 @@ public abstract class BaseNettyClient
             if (future.isSuccess()) {
                 this.setStatus(ClientStatusEnums.DESTROYED);
             } else {
-                throw new RuntimeException("client销毁失败", future.cause());
+                throw new BaseException("client销毁失败", future.cause());
             }
         });
     }

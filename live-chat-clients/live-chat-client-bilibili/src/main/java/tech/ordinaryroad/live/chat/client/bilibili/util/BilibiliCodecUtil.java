@@ -39,6 +39,7 @@ import tech.ordinaryroad.live.chat.client.bilibili.msg.HeartbeatReplyMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.SendSmsReplyMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.base.BaseBilibiliMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.base.IBilibiliMsg;
+import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -119,7 +120,7 @@ public class BilibiliCodecUtil {
 
         OperationEnum operationEnum = OperationEnum.getByCode(operationCode);
         if (operationEnum == null) {
-            throw new RuntimeException("未知operation: %d".formatted(operationCode));
+            throw new BaseException("未知operation: %d".formatted(operationCode));
         }
         if (protoverCode == ProtoverEnum.NORMAL_ZLIB.getCode()) {
             switch (operationEnum) {
@@ -136,7 +137,7 @@ public class BilibiliCodecUtil {
                             byteArrayOutputStream.write(bytes, 0, count);
                         }
                     } catch (DataFormatException e) {
-                        throw new RuntimeException(e);
+                        throw new BaseException(e);
                     }
                     inflater.end();
 
@@ -192,7 +193,7 @@ public class BilibiliCodecUtil {
                         }
                         wrappedBuffer = Unpooled.wrappedBuffer(byteArrayOutputStream.toByteArray());
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        throw new BaseException(e);
                     } finally {
                         try {
                             // Close the BrotliInputStream. This also closes the InputStream.
@@ -227,21 +228,21 @@ public class BilibiliCodecUtil {
                 try {
                     return Optional.ofNullable(BaseBilibiliMsg.OBJECT_MAPPER.readValue(jsonString, SendSmsReplyMsg.class));
                 } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
+                    throw new BaseException(e);
                 }
             }
             case AUTH_REPLY -> {
                 try {
                     return Optional.ofNullable(BaseBilibiliMsg.OBJECT_MAPPER.readValue(jsonString, AuthReplyMsg.class));
                 } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
+                    throw new BaseException(e);
                 }
             }
             case HEARTBEAT_REPLY -> {
                 try {
                     return Optional.ofNullable(BaseBilibiliMsg.OBJECT_MAPPER.readValue(jsonString, HeartbeatReplyMsg.class));
                 } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
+                    throw new BaseException(e);
                 }
             }
             default -> {

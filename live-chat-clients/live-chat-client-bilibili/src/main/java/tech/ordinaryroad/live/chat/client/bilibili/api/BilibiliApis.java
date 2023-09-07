@@ -52,6 +52,7 @@ import java.util.Map;
 public class BilibiliApis {
 
     public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    public static final String KEY_COOKIE_CSRF = "bili_jct";
 
     public static JsonNode roomInit(long roomId, String cookie) {
         @Cleanup
@@ -109,8 +110,8 @@ public class BilibiliApis {
     public static void sendMsg(String msg, long roomId, String cookie) {
         JsonNode data = BilibiliApis.roomInit(roomId, cookie);
         String realRoomId = data.get("room_id").asText();
-        String biliJct = OrLiveChatCookieUtil.getCookieByName(cookie, "bili_jct", () -> {
-            throw new BaseException("cookie中缺少参数" + "bili_jct");
+        String biliJct = OrLiveChatCookieUtil.getCookieByName(cookie, KEY_COOKIE_CSRF, () -> {
+            throw new BaseException("cookie中缺少参数" + KEY_COOKIE_CSRF);
         });
         BilibiliSendMsgRequest request = new BilibiliSendMsgRequest(msg, StrUtil.toString(ZonedDateTime.now(ZoneId.of("Asia/Shanghai")).toEpochSecond()), realRoomId, biliJct, biliJct);
         sendMsg(request, cookie);
@@ -132,7 +133,7 @@ public class BilibiliApis {
                 throw new RuntimeException(jsonNode.get("message").asText());
             }
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            throw new BaseException(e);
         }
     }
 

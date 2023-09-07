@@ -26,7 +26,6 @@ package tech.ordinaryroad.live.chat.client.bilibili.constant;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import tech.ordinaryroad.live.chat.client.commons.base.enums.IBaseCmdEnums;
 
 /**
  * @author mjz
