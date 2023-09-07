@@ -40,7 +40,7 @@ import java.util.Map;
 public class LiveChatClientController {
 
     @Autowired
-    Map<String, BaseNettyClient<?, ?, ?, ?, ?, ?>> clientMap;
+    Map<String, BaseNettyClient<?, ?, ?, ?, ?, ?, ?>> clientMap;
 
     @GetMapping("connect")
     public void connect(@RequestParam String platform) {
@@ -70,7 +70,7 @@ public class LiveChatClientController {
         return getClient(platform).getConfig().getCookie();
     }
 
-    private <Client extends BaseNettyClient<?, ?, ?, ?, ?, ?>> Client getClient(String platform) {
+    private <Client extends BaseNettyClient<?, ?, ?, ?, ?, ?, ?>> Client getClient(String platform) {
         String key = platform + "LiveChatClient";
         if (!clientMap.containsKey(key)) {
             throw new BaseException("暂不支持 " + platform);

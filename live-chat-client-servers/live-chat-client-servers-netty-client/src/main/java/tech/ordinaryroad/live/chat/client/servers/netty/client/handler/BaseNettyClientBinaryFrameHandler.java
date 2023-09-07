@@ -37,12 +37,13 @@ import tech.ordinaryroad.live.chat.client.servers.netty.handler.base.BaseBinaryF
  * @date 2023/8/30
  */
 public abstract class BaseNettyClientBinaryFrameHandler<
-        Client extends BaseNettyClient<?, ?, ?, ?, ?, ?>,
-        BinaryFrameHandler extends BaseBinaryFrameHandler<BinaryFrameHandler, CmdEnum, Msg, MsgListener>,
+        Client extends BaseNettyClient<?, ?, ?, ?, ?, ?, ?>,
+        BinaryFrameHandler extends BaseBinaryFrameHandler<BinaryFrameHandler, CmdEnum, Msg, DanmuMsg, MsgListener>,
         CmdEnum extends Enum<CmdEnum>,
         Msg extends IMsg,
-        MsgListener extends IBaseMsgListener<BinaryFrameHandler, CmdEnum>>
-        extends BaseBinaryFrameHandler<BinaryFrameHandler, CmdEnum, Msg, MsgListener> {
+        DanmuMsg extends IMsg,
+        MsgListener extends IBaseMsgListener<BinaryFrameHandler, CmdEnum, DanmuMsg>>
+        extends BaseBinaryFrameHandler<BinaryFrameHandler, CmdEnum, Msg, DanmuMsg, MsgListener> {
 
     @Getter
     protected final Client client;

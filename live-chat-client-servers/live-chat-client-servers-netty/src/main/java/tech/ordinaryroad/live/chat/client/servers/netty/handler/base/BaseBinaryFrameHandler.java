@@ -46,9 +46,13 @@ import java.util.List;
  * @date 2023/1/4
  */
 @Slf4j
-public abstract class BaseBinaryFrameHandler<T extends BaseBinaryFrameHandler<?, ?, ?, ?>, CmdEnum extends Enum<CmdEnum>, Msg extends IMsg, MsgListener extends IBaseMsgListener<T, CmdEnum>>
-        extends SimpleChannelInboundHandler<BinaryWebSocketFrame>
-        implements IBaseMsgListener<T, CmdEnum> {
+public abstract class BaseBinaryFrameHandler<
+        T extends BaseBinaryFrameHandler<?, ?, ?, ?, ?>,
+        CmdEnum extends Enum<CmdEnum>,
+        Msg extends IMsg,
+        DanmuMsg extends IMsg,
+        MsgListener extends IBaseMsgListener<T, CmdEnum, DanmuMsg>
+        > extends SimpleChannelInboundHandler<BinaryWebSocketFrame> implements IBaseMsgListener<T, CmdEnum, DanmuMsg> {
 
     @Getter
     private final long roomId;

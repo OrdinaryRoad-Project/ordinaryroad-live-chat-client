@@ -33,21 +33,7 @@ import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener
  * @author mjz
  * @date 2023/1/7
  */
-public interface IBilibiliSendSmsReplyMsgListener extends IBaseMsgListener<BilibiliBinaryFrameHandler, BilibiliCmdEnum> {
-
-    /**
-     * 收到弹幕
-     *
-     * @param binaryFrameHandler BilibiliBinaryFrameHandler
-     * @param msg                SendSmsReplyMsg
-     */
-    default void onDanmuMsg(BilibiliBinaryFrameHandler binaryFrameHandler, SendSmsReplyMsg msg) {
-        this.onDanmuMsg(msg);
-    }
-
-    default void onDanmuMsg(SendSmsReplyMsg msg) {
-        // ignore
-    }
+public interface IBilibiliSendSmsReplyMsgListener extends IBaseMsgListener<BilibiliBinaryFrameHandler, BilibiliCmdEnum, SendSmsReplyMsg> {
 
     /**
      * 收到礼物

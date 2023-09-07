@@ -125,6 +125,7 @@ public class BilibiliHandlerModeExample {
             BilibiliBinaryFrameHandler bilibiliHandler = new BilibiliBinaryFrameHandler(new IBilibiliSendSmsReplyMsgListener() {
                 @Override
                 public void onDanmuMsg(BilibiliBinaryFrameHandler binaryFrameHandler, SendSmsReplyMsg msg) {
+                    IBilibiliSendSmsReplyMsgListener.super.onDanmuMsg(binaryFrameHandler, msg);
                     JsonNode info = msg.getInfo();
                     JsonNode jsonNode1 = info.get(1);
                     String danmuText = jsonNode1.asText();
