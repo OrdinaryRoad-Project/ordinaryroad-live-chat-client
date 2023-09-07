@@ -24,6 +24,8 @@
 
 package tech.ordinaryroad.live.chat.client.bilibili.api;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
@@ -32,6 +34,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Cleanup;
 import lombok.extern.slf4j.Slf4j;
+import tech.ordinaryroad.live.chat.client.bilibili.api.request.BilibiliSendMsgRequest;
+import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
+import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCookieUtil;
+
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Map;
 
 /**
  * B站API简易版
@@ -84,6 +93,27 @@ public class BilibiliApis {
         @Cleanup
         HttpResponse response = createGetRequest("https://api.live.bilibili.com/xlive/web-room/v1/index/getDanmuInfo?id=" + roomId + "&type=" + type, cookie).execute();
         return responseInterceptor(response.body());
+    }
+
+    public static void sendMsg(BilibiliSendMsgRequest request, String cookie) {
+        if (StrUtil.isBlank(cookie)) {
+            throw new BaseException("发送弹幕接口cookie不能为空");
+        }
+        Map<String, Object> stringObjectMap = BeanUtil.beanToMap(request);
+        @Cleanup HttpResponse execute = HttpUtil.createPost("https://api.live.bilibili.com/msg/send")
+                .cookie(cookie)
+                .form(stringObjectMap)
+                .execute();
+    }
+
+    public static void sendMsg(String msg, long roomId, String cookie) {
+        JsonNode data = BilibiliApis.roomInit(roomId, cookie);
+        String realRoomId = data.get("room_id").asText();
+        String biliJct = OrLiveChatCookieUtil.getCookieByName(cookie, "bili_jct", () -> {
+            throw new BaseException("cookie中缺少参数" + "bili_jct");
+        });
+        BilibiliSendMsgRequest request = new BilibiliSendMsgRequest(msg, StrUtil.toString(ZonedDateTime.now(ZoneId.of("Asia/Shanghai")).toEpochSecond()), realRoomId, biliJct, biliJct);
+        sendMsg(request, cookie);
     }
 
     public static HttpRequest createGetRequest(String url, String cookies) {
