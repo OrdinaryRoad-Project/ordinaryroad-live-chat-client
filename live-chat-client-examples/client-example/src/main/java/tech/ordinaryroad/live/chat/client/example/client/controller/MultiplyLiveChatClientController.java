@@ -60,7 +60,7 @@ public class MultiplyLiveChatClientController {
     @GetMapping("newClientAndStart/{roomId}")
     public void newClientAndStart(@PathVariable Long roomId, @RequestParam String platform) {
         BaseLiveChatClientConfig config;
-        BaseNettyClient<?, ?, ?, ?, ?, ?> client;
+        BaseNettyClient<?, ?, ?, ?, ?, ?, ?> client;
         switch (platform) {
             case "bilibili" -> {
                 config = BilibiliLiveChatClientConfig.builder()

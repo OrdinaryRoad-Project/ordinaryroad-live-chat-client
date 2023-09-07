@@ -57,6 +57,7 @@ public class DouyuLiveChatClient extends BaseNettyClient<
         DouyuLiveChatClientConfig,
         DouyuCmdEnum,
         IDouyuMsg,
+        ChatmsgMsg,
         IDouyuDouyuCmdMsgListener,
         DouyuConnectionHandler,
         DouyuBinaryFrameHandler

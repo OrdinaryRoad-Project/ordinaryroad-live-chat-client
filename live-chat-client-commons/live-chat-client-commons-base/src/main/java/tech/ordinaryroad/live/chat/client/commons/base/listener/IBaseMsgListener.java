@@ -33,7 +33,18 @@ import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
  * @author mjz
  * @date 2023/8/26
  */
-public interface IBaseMsgListener<T, CmdEnum extends Enum<CmdEnum>> {
+public interface IBaseMsgListener<T, CmdEnum extends Enum<CmdEnum>, DanmuMsg extends IMsg> {
+
+    /**
+     * 收到弹幕
+     */
+    default void onDanmuMsg(T t, DanmuMsg msg) {
+        this.onDanmuMsg(msg);
+    }
+
+    default void onDanmuMsg(DanmuMsg msg) {
+        // ignore
+    }
 
     /**
      * 收到消息（所有消息）

@@ -47,7 +47,7 @@ import java.util.List;
  */
 @Slf4j
 @ChannelHandler.Sharable
-public class BilibiliBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<BilibiliLiveChatClient, BilibiliBinaryFrameHandler, BilibiliCmdEnum, IBilibiliMsg, IBilibiliSendSmsReplyMsgListener> {
+public class BilibiliBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<BilibiliLiveChatClient, BilibiliBinaryFrameHandler, BilibiliCmdEnum, IBilibiliMsg, SendSmsReplyMsg, IBilibiliSendSmsReplyMsgListener> {
 
     public BilibiliBinaryFrameHandler(IBilibiliSendSmsReplyMsgListener listener, BilibiliLiveChatClient client) {
         super(listener, client);

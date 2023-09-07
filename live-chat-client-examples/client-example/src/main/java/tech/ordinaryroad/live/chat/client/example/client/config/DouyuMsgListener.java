@@ -42,6 +42,7 @@ public class DouyuMsgListener implements IDouyuDouyuCmdMsgListener {
 
     @Override
     public void onDanmuMsg(DouyuBinaryFrameHandler binaryFrameHandler, ChatmsgMsg msg) {
+        IDouyuDouyuCmdMsgListener.super.onDanmuMsg(binaryFrameHandler, msg);
         log.info("{} 收到弹幕 {}({})：{}", binaryFrameHandler.getRoomId(), msg.getNn(), msg.getUid(), msg.getTxt());
     }
 

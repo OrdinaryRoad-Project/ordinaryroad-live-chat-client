@@ -33,39 +33,5 @@ import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuBinaryFrameHa
  * @author mjz
  * @date 2023/1/7
  */
-public interface IDouyuDouyuCmdMsgListener extends IBaseMsgListener<DouyuBinaryFrameHandler, DouyuCmdEnum> {
-
-    /**
-     * <pre>{@code
-     * {
-     * 	"type": "chatmsg",
-     * 	"cmdEnum": "chatmsg",
-     * 	"cmd": "chatmsg",
-     * 	"nn": "宋老二929",
-     * 	"ext": null,
-     * 	"bnn": null,
-     * 	"level": "1",
-     * 	"cst": "1693213418102",
-     * 	"brid": "0",
-     * 	"bl": "0",
-     * 	"dms": "5",
-     * 	"rid": "3168536",
-     * 	"uid": "396023456",
-     * 	"txt": "666",
-     * 	"pdg": "47",
-     * 	"pdk": "89",
-     * 	"sahf": "0",
-     * 	"ic": ["avatar_v3", "202101", "45daf5ceb475414293e3da4559552655"],
-     * 	"hb": ["2719"],
-     * 	"hc": null,
-     * 	"cid": "0b37e26cccd54f7c4d73590000000000",
-     * 	"lk": null
-     * }
-     * }</pre>
-     *
-     * @param msg ChatmsgMsg
-     */
-    default void onDanmuMsg(DouyuBinaryFrameHandler binaryFrameHandler, ChatmsgMsg msg) {
-        // ignore
-    }
+public interface IDouyuDouyuCmdMsgListener extends IBaseMsgListener<DouyuBinaryFrameHandler, DouyuCmdEnum, ChatmsgMsg> {
 }

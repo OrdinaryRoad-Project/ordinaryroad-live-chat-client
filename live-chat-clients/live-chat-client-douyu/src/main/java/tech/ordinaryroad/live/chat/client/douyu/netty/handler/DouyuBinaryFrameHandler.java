@@ -48,7 +48,7 @@ import java.util.List;
  */
 @Slf4j
 @ChannelHandler.Sharable
-public class DouyuBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<DouyuLiveChatClient, DouyuBinaryFrameHandler, DouyuCmdEnum, IDouyuMsg, IDouyuDouyuCmdMsgListener> {
+public class DouyuBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<DouyuLiveChatClient, DouyuBinaryFrameHandler, DouyuCmdEnum, IDouyuMsg, ChatmsgMsg, IDouyuDouyuCmdMsgListener> {
 
     public DouyuBinaryFrameHandler(IDouyuDouyuCmdMsgListener listener, DouyuLiveChatClient client) {
         super(listener, client);
