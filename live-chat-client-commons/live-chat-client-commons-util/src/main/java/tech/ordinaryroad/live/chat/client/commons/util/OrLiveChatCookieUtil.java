@@ -57,4 +57,9 @@ public class OrLiveChatCookieUtil {
         String str = MapUtil.getStr(cookieMap, name);
         return str == null ? supplier.get() : str;
     }
+
+    public static String getCookieByName(String cookie, String name, Supplier<String> supplier) {
+        String str = MapUtil.getStr(parseCookieString(cookie), name);
+        return str == null ? supplier.get() : str;
+    }
 }

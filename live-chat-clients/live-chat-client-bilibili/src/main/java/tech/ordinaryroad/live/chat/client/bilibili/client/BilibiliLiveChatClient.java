@@ -30,6 +30,7 @@ import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshakerFactory;
 import io.netty.handler.codec.http.websocketx.WebSocketVersion;
 import lombok.extern.slf4j.Slf4j;
+import tech.ordinaryroad.live.chat.client.bilibili.api.BilibiliApis;
 import tech.ordinaryroad.live.chat.client.bilibili.config.BilibiliLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.BilibiliCmdEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliConnectionListener;
@@ -85,5 +86,14 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
     @Override
     public BilibiliBinaryFrameHandler initBinaryFrameHandler() {
         return new BilibiliBinaryFrameHandler(BilibiliLiveChatClient.this.msgListener, BilibiliLiveChatClient.this);
+    }
+
+    @Override
+    public void sendDanmu(Object danmu) {
+        if (danmu instanceof String msg) {
+            BilibiliApis.sendMsg(msg, getConfig().getRoomId(), getConfig().getCookie());
+        } else {
+            super.sendDanmu(danmu);
+        }
     }
 }

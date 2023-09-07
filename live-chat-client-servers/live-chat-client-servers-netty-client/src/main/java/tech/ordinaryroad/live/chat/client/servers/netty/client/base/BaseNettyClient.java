@@ -35,6 +35,7 @@ import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
@@ -285,5 +286,10 @@ public abstract class BaseNettyClient
             }
         }
         super.setStatus(status);
+    }
+
+    @Override
+    public void sendDanmu(Object danmu) {
+        throw new BaseException("暂未支持该功能");
     }
 }
