@@ -105,6 +105,7 @@ public class BilibiliApis {
                 .cookie(cookie)
                 .form(stringObjectMap)
                 .execute();
+        responseInterceptor(execute.body());
     }
 
     public static void sendMsg(String msg, long roomId, String cookie) {
@@ -130,7 +131,7 @@ public class BilibiliApis {
                 // 成功
                 return jsonNode.get("data");
             } else {
-                throw new RuntimeException(jsonNode.get("message").asText());
+                throw new BaseException(jsonNode.get("message").asText());
             }
         } catch (JsonProcessingException e) {
             throw new BaseException(e);
