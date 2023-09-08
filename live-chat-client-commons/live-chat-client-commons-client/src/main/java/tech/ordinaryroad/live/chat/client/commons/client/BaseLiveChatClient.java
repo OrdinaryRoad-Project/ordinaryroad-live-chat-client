@@ -114,9 +114,10 @@ public abstract class BaseLiveChatClient<Config extends BaseLiveChatClientConfig
     }
 
     protected void setStatus(ClientStatusEnums status) {
-        if (this.status != status) {
-            this.statusChangeSupport.firePropertyChange("status", this.status, status);
+        ClientStatusEnums oldStatus = this.status;
+        if (oldStatus != status) {
             this.status = status;
+            this.statusChangeSupport.firePropertyChange("status", oldStatus, status);
         }
     }
 

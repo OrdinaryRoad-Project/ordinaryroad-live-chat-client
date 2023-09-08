@@ -94,23 +94,27 @@ public abstract class BaseLiveChatClientConfig {
     private long minSendDanmuPeriod = DEFAULT_MIN_SEND_DANMU_PERIOD;
 
     public void setCookie(String cookie) {
-        this.propertyChangeSupport.firePropertyChange("cookie", this.cookie, cookie);
+        String oldValue = this.cookie;
         this.cookie = cookie;
+        this.propertyChangeSupport.firePropertyChange("cookie", oldValue, cookie);
     }
 
     public void setRoomId(long roomId) {
-        this.propertyChangeSupport.firePropertyChange("roomId", this.roomId, roomId);
+        long oldValue = this.roomId;
         this.roomId = roomId;
+        this.propertyChangeSupport.firePropertyChange("roomId", oldValue, roomId);
     }
 
     public void setWebsocketUri(String websocketUri) {
-        this.propertyChangeSupport.firePropertyChange("websocketUri", this.websocketUri, websocketUri);
+        String oldValue = this.websocketUri;
         this.websocketUri = websocketUri;
+        this.propertyChangeSupport.firePropertyChange("websocketUri", oldValue, websocketUri);
     }
 
     public void setMinSendDanmuPeriod(long minSendDanmuPeriod) {
-        this.propertyChangeSupport.firePropertyChange("minSendDanmuPeriod", this.minSendDanmuPeriod, minSendDanmuPeriod);
+        long oldValue = this.minSendDanmuPeriod;
         this.minSendDanmuPeriod = minSendDanmuPeriod;
+        this.propertyChangeSupport.firePropertyChange("minSendDanmuPeriod", oldValue, minSendDanmuPeriod);
     }
 
     public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {

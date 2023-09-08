@@ -56,12 +56,14 @@ public class DouyuLiveChatClientConfig extends BaseNettyClientConfig {
     private String websocketUri = "wss://wsproxy.douyu.com:6673";
 
     public void setVer(String ver) {
-        super.propertyChangeSupport.firePropertyChange("ver", this.ver, ver);
+        String oldValue = this.ver;
         this.ver = ver;
+        super.propertyChangeSupport.firePropertyChange("ver", oldValue, ver);
     }
 
     public void setAver(String aver) {
-        super.propertyChangeSupport.firePropertyChange("aver", this.aver, aver);
+        String oldValue = this.aver;
         this.aver = aver;
+        super.propertyChangeSupport.firePropertyChange("aver", oldValue, aver);
     }
 }
