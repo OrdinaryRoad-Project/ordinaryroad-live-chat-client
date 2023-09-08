@@ -3,6 +3,9 @@
 ## 1 配置
 
 ```yaml
+spring:
+  application:
+    name: ordinaryroad-live-chat-client-example
 tech:
   ordinaryroad:
     live:
@@ -18,7 +21,9 @@ tech:
                   cookie: ${bilibiliCookie:}
                 douyu:
                   # TODO 直播间id
-                  roomId: 3168536
+                  roomId: 74751
+                  # TODO 浏览器Cookie
+                  cookie: ${douyuCookie:}
 ```
 
 ## 2 LiveChatClientController

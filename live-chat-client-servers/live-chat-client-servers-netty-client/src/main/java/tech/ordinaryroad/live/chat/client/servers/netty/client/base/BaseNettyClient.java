@@ -264,6 +264,10 @@ public abstract class BaseNettyClient
 
     @Override
     public void destroy() {
+        super.destroy();
+
+        // 销毁时不需要重连
+        this.cancelReconnect = true;
         workerGroup.shutdownGracefully().addListener(future -> {
             if (future.isSuccess()) {
                 this.setStatus(ClientStatusEnums.DESTROYED);
