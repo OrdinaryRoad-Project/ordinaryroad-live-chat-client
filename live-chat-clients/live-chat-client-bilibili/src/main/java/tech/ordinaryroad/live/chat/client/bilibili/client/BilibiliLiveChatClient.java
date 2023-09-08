@@ -35,7 +35,8 @@ import tech.ordinaryroad.live.chat.client.bilibili.config.BilibiliLiveChatClient
 import tech.ordinaryroad.live.chat.client.bilibili.constant.BilibiliCmdEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliConnectionListener;
 import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliSendSmsReplyMsgListener;
-import tech.ordinaryroad.live.chat.client.bilibili.msg.SendSmsReplyMsg;
+import tech.ordinaryroad.live.chat.client.bilibili.msg.DanmuMsgMsg;
+import tech.ordinaryroad.live.chat.client.bilibili.msg.SendGiftMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.base.IBilibiliMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliConnectionHandler;
@@ -55,7 +56,8 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
         BilibiliLiveChatClientConfig,
         BilibiliCmdEnum,
         IBilibiliMsg,
-        SendSmsReplyMsg,
+        DanmuMsgMsg,
+        SendGiftMsg,
         IBilibiliSendSmsReplyMsgListener,
         BilibiliConnectionHandler,
         BilibiliBinaryFrameHandler

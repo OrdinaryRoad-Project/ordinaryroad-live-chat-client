@@ -30,6 +30,8 @@ import org.junit.jupiter.api.Test;
 import tech.ordinaryroad.live.chat.client.bilibili.config.BilibiliLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.BilibiliCmdEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliSendSmsReplyMsgListener;
+import tech.ordinaryroad.live.chat.client.bilibili.msg.DanmuMsgMsg;
+import tech.ordinaryroad.live.chat.client.bilibili.msg.SendGiftMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.SendSmsReplyMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseCmdMsg;
@@ -58,7 +60,7 @@ class BilibiliLiveChatClientTest {
 
         client = new BilibiliLiveChatClient(config, new IBilibiliSendSmsReplyMsgListener() {
             @Override
-            public void onDanmuMsg(BilibiliBinaryFrameHandler binaryFrameHandler, SendSmsReplyMsg msg) {
+            public void onDanmuMsg(BilibiliBinaryFrameHandler binaryFrameHandler, DanmuMsgMsg msg) {
                 JsonNode info = msg.getInfo();
                 JsonNode jsonNode1 = info.get(1);
                 String danmuText = jsonNode1.asText();
@@ -69,14 +71,18 @@ class BilibiliLiveChatClientTest {
             }
 
             @Override
-            public void onSendGift(BilibiliBinaryFrameHandler binaryFrameHandler, SendSmsReplyMsg msg) {
-                JsonNode data = msg.getData();
-                String action = data.get("action").asText();
-                String giftName = data.get("giftName").asText();
-                Integer num = data.get("num").asInt();
-                String uname = data.get("uname").asText();
-                Integer price = data.get("price").asInt();
-                log.info("收到礼物 {} {} {}x{}({})", uname, action, giftName, num, price);
+            public void onGiftMsg(BilibiliBinaryFrameHandler binaryFrameHandler, SendGiftMsg msg) {
+                IBilibiliSendSmsReplyMsgListener.super.onGiftMsg(binaryFrameHandler, msg);
+
+                SendGiftMsg.Data data = msg.getData();
+                String action = data.getAction();
+                String giftName = data.getGiftName();
+                long giftId = data.getGiftId();
+                Integer num = data.getNum();
+                String uname = data.getUname();
+                Integer price = data.getPrice();
+                long uid = data.getUid();
+                log.info("{} 收到礼物 {}({}) {} {}({})x{}({})", binaryFrameHandler.getRoomId(), uname, uid, action, giftName, giftId, num, price);
             }
 
             @Override

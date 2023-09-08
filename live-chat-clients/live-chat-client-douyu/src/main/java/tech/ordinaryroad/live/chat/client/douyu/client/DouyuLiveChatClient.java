@@ -42,6 +42,7 @@ import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuConnectionListener;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuDouyuCmdMsgListener;
 import tech.ordinaryroad.live.chat.client.douyu.msg.ChatmsgMsg;
+import tech.ordinaryroad.live.chat.client.douyu.msg.DgbMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.LoginresMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.MsgrepeaterproxylistMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.base.IDouyuMsg;
@@ -64,6 +65,7 @@ public class DouyuLiveChatClient extends BaseNettyClient<
         DouyuCmdEnum,
         IDouyuMsg,
         ChatmsgMsg,
+        DgbMsg,
         IDouyuDouyuCmdMsgListener,
         DouyuConnectionHandler,
         DouyuBinaryFrameHandler
@@ -199,6 +201,13 @@ public class DouyuLiveChatClient extends BaseNettyClient<
     public void onDanmuMsg(DouyuBinaryFrameHandler binaryFrameHandler, ChatmsgMsg msg) {
         if (this.msgListener != null) {
             this.msgListener.onDanmuMsg(binaryFrameHandler, msg);
+        }
+    }
+
+    @Override
+    public void onGiftMsg(DouyuBinaryFrameHandler binaryFrameHandler, DgbMsg msg) {
+        if (this.msgListener != null) {
+            this.msgListener.onGiftMsg(binaryFrameHandler, msg);
         }
     }
 

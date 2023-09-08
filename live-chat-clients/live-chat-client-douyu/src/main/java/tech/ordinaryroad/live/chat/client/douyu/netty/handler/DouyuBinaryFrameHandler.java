@@ -32,6 +32,7 @@ import tech.ordinaryroad.live.chat.client.douyu.client.DouyuLiveChatClient;
 import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuDouyuCmdMsgListener;
 import tech.ordinaryroad.live.chat.client.douyu.msg.ChatmsgMsg;
+import tech.ordinaryroad.live.chat.client.douyu.msg.DgbMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.DouyuCmdMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.base.IDouyuMsg;
 import tech.ordinaryroad.live.chat.client.douyu.util.DouyuCodecUtil;
@@ -48,7 +49,7 @@ import java.util.List;
  */
 @Slf4j
 @ChannelHandler.Sharable
-public class DouyuBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<DouyuLiveChatClient, DouyuBinaryFrameHandler, DouyuCmdEnum, IDouyuMsg, ChatmsgMsg, IDouyuDouyuCmdMsgListener> {
+public class DouyuBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<DouyuLiveChatClient, DouyuBinaryFrameHandler, DouyuCmdEnum, IDouyuMsg, ChatmsgMsg, DgbMsg, IDouyuDouyuCmdMsgListener> {
 
     public DouyuBinaryFrameHandler(IDouyuDouyuCmdMsgListener listener, DouyuLiveChatClient client) {
         super(listener, client);
@@ -66,6 +67,7 @@ public class DouyuBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<D
 
         switch (cmd) {
             case chatmsg -> listener.onDanmuMsg(DouyuBinaryFrameHandler.this, (ChatmsgMsg) cmdMsg);
+            case dgb -> listener.onGiftMsg(DouyuBinaryFrameHandler.this, (DgbMsg) cmdMsg);
             default -> {
                 if (!(cmdMsg instanceof DouyuCmdMsg)) {
                     if (log.isDebugEnabled()) {

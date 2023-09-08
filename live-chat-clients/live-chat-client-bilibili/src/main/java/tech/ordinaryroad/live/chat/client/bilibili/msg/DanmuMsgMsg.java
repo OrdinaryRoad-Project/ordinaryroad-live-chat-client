@@ -22,47 +22,31 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.bilibili.msg.base;
+package tech.ordinaryroad.live.chat.client.bilibili.msg;
 
-
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tech.ordinaryroad.live.chat.client.bilibili.constant.BilibiliCmdEnum;
-import tech.ordinaryroad.live.chat.client.bilibili.constant.ProtoverEnum;
-import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseCmdMsg;
+import tech.ordinaryroad.live.chat.client.bilibili.constant.OperationEnum;
+import tech.ordinaryroad.live.chat.client.bilibili.msg.base.BaseBilibiliCmdMsg;
 
 /**
  * @author mjz
- * @date 2023/1/6
+ * @date 2023/9/8
  */
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class BaseBilibiliCmdMsg extends BaseCmdMsg<BilibiliCmdEnum> implements IBilibiliMsg {
+public class DanmuMsgMsg extends BaseBilibiliCmdMsg {
 
-    private int protover;
-    private String cmd;
-
-    @Override
-    public String getCmd() {
-        return this.cmd;
-    }
+    private JsonNode info;
+    private String dm_v2;
 
     @Override
-    public void setCmd(String cmd) {
-        this.cmd = cmd;
-    }
-
-    @Override
-    public BilibiliCmdEnum getCmdEnum() {
-        return BilibiliCmdEnum.getByString(getCmd());
-    }
-
-    @Override
-    public ProtoverEnum getProtoverEnum() {
-        return ProtoverEnum.getByCode(this.protover);
+    public OperationEnum getOperationEnum() {
+        return OperationEnum.SEND_SMS_REPLY;
     }
 }

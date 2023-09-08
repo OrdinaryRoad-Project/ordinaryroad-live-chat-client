@@ -25,26 +25,33 @@
 package tech.ordinaryroad.live.chat.client.bilibili.listener;
 
 import tech.ordinaryroad.live.chat.client.bilibili.constant.BilibiliCmdEnum;
+import tech.ordinaryroad.live.chat.client.bilibili.msg.DanmuMsgMsg;
+import tech.ordinaryroad.live.chat.client.bilibili.msg.SendGiftMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.SendSmsReplyMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener;
+import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 
 /**
  * @author mjz
  * @date 2023/1/7
  */
-public interface IBilibiliSendSmsReplyMsgListener extends IBaseMsgListener<BilibiliBinaryFrameHandler, BilibiliCmdEnum, SendSmsReplyMsg> {
+public interface IBilibiliSendSmsReplyMsgListener extends IBaseMsgListener<BilibiliBinaryFrameHandler, BilibiliCmdEnum, DanmuMsgMsg, SendGiftMsg> {
 
     /**
      * 收到礼物
      *
      * @param binaryFrameHandler BilibiliBinaryFrameHandler
      * @param msg                SendSmsReplyMsg
+     * @deprecated use {@link #onGiftMsg(Object, IMsg)}
      */
     default void onSendGift(BilibiliBinaryFrameHandler binaryFrameHandler, SendSmsReplyMsg msg) {
         this.onSendGift(msg);
     }
 
+    /**
+     * @deprecated use {@link #onGiftMsg(IMsg)}
+     */
     default void onSendGift(SendSmsReplyMsg msg) {
         // ignore
     }

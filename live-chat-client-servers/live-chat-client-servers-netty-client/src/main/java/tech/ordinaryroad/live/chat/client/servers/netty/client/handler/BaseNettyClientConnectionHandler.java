@@ -37,7 +37,7 @@ import tech.ordinaryroad.live.chat.client.servers.netty.handler.base.BaseConnect
  * @date 2023/8/27
  */
 public abstract class BaseNettyClientConnectionHandler<
-        Client extends BaseNettyClient<?, ?, ?, ?, ?, ?, ?>,
+        Client extends BaseNettyClient<?, ?, ?, ?, ?, ?, ?, ?>,
         ConnectionHandler extends BaseConnectionHandler<ConnectionHandler>>
         extends BaseConnectionHandler<ConnectionHandler> {
 

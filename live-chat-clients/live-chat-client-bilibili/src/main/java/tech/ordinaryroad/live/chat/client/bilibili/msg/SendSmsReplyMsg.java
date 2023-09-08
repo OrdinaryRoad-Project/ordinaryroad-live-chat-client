@@ -29,9 +29,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tech.ordinaryroad.live.chat.client.bilibili.constant.BilibiliCmdEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.OperationEnum;
-import tech.ordinaryroad.live.chat.client.bilibili.constant.ProtoverEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.base.BaseBilibiliCmdMsg;
 
 /**
@@ -72,24 +70,12 @@ public class SendSmsReplyMsg extends BaseBilibiliCmdMsg {
 
     private JsonNode scatter;
 
-    private Integer protover;
-
     private Integer roomid;
 
     private Integer real_roomid;
 
     @Override
-    public ProtoverEnum getProtoverEnum() {
-        return ProtoverEnum.getByCode(this.protover);
-    }
-
-    @Override
     public OperationEnum getOperationEnum() {
         return OperationEnum.SEND_SMS_REPLY;
-    }
-
-    @Override
-    public BilibiliCmdEnum getCmdEnum() {
-        return BilibiliCmdEnum.getByString(super.getCmd());
     }
 }
