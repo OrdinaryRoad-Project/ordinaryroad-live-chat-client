@@ -24,6 +24,7 @@
 
 package tech.ordinaryroad.live.chat.client.example.client.controller;
 
+import cn.hutool.core.util.RandomUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
@@ -68,6 +69,11 @@ public class LiveChatClientController {
     public String cookie(@RequestParam String platform, @RequestParam String cookie) {
         getClient(platform).getConfig().setCookie(cookie);
         return getClient(platform).getConfig().getCookie();
+    }
+
+    @GetMapping("sendDanmu/{danmu}")
+    public void sendDanmu(@RequestParam String platform, @PathVariable String danmu) {
+        getClient(platform).sendDanmu(danmu + RandomUtil.randomNumbers(1));
     }
 
     private <Client extends BaseNettyClient<?, ?, ?, ?, ?, ?, ?>> Client getClient(String platform) {
