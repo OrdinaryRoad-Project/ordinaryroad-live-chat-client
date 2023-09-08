@@ -59,12 +59,36 @@ public interface IBaseLiveChatClient {
 
     void send(Object msg, Consumer<Throwable> failed);
 
+    /**
+     * 发送弹幕
+     *
+     * @param danmu 弹幕内容
+     * @since 0.0.6
+     */
     void sendDanmu(Object danmu);
 
+    /**
+     * 发送弹幕
+     *
+     * @param danmu 弹幕内容
+     * @since 0.0.6
+     */
     void sendDanmu(Object danmu, Runnable success, Consumer<Throwable> failed);
 
+    /**
+     * 发送弹幕
+     *
+     * @param danmu 弹幕内容
+     * @since 0.0.6
+     */
     void sendDanmu(Object danmu, Runnable success);
 
+    /**
+     * 发送弹幕
+     *
+     * @param danmu 弹幕内容
+     * @since 0.0.6
+     */
     void sendDanmu(Object danmu, Consumer<Throwable> failed);
 
 }
