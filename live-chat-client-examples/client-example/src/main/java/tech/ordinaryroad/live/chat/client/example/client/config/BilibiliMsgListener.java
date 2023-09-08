@@ -28,7 +28,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.BilibiliCmdEnum;
-import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliSendSmsReplyMsgListener;
+import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliMsgListener;
+import tech.ordinaryroad.live.chat.client.bilibili.msg.DanmuMsgMsg;
+import tech.ordinaryroad.live.chat.client.bilibili.msg.SendGiftMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.SendSmsReplyMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseCmdMsg;
@@ -41,29 +43,20 @@ import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
  */
 @Slf4j
 @Service
-public class BilibiliMsgListener implements IBilibiliSendSmsReplyMsgListener {
+public class BilibiliMsgListener implements IBilibiliMsgListener {
 
     @Override
-    public void onDanmuMsg(BilibiliBinaryFrameHandler binaryFrameHandler, SendSmsReplyMsg msg) {
-        IBilibiliSendSmsReplyMsgListener.super.onDanmuMsg(binaryFrameHandler, msg);
-        JsonNode info = msg.getInfo();
-        JsonNode jsonNode1 = info.get(1);
-        String danmuText = jsonNode1.asText();
-        JsonNode jsonNode2 = info.get(2);
-        Long uid = jsonNode2.get(0).asLong();
-        String uname = jsonNode2.get(1).asText();
-        log.info("{} 收到弹幕 {}({})：{}", binaryFrameHandler.getRoomId(), uname, uid, danmuText);
+    public void onDanmuMsg(BilibiliBinaryFrameHandler binaryFrameHandler, DanmuMsgMsg msg) {
+        IBilibiliMsgListener.super.onDanmuMsg(binaryFrameHandler, msg);
+
+        log.info("{} 收到弹幕 {}({})：{}", binaryFrameHandler.getRoomId(), msg.getUsername(), msg.getUid(), msg.getContent());
     }
 
     @Override
-    public void onSendGift(SendSmsReplyMsg msg) {
-        JsonNode data = msg.getData();
-        String action = data.get("action").asText();
-        String giftName = data.get("giftName").asText();
-        Integer num = data.get("num").asInt();
-        String uname = data.get("uname").asText();
-        Integer price = data.get("price").asInt();
-        log.info("收到礼物 {} {} {}x{}({})", uname, action, giftName, num, price);
+    public void onGiftMsg(BilibiliBinaryFrameHandler binaryFrameHandler, SendGiftMsg msg) {
+        IBilibiliMsgListener.super.onGiftMsg(binaryFrameHandler, msg);
+
+        log.info("{} 收到礼物 {}({}) {} {}({})x{}({})", binaryFrameHandler.getRoomId(), msg.getUsername(), msg.getUid(), msg.getData().getAction(), msg.getGiftName(), msg.getGiftId(), msg.getGiftCount(), msg.getGiftPrice());
     }
 
     @Override

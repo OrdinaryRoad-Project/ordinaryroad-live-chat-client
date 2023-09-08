@@ -29,6 +29,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import tech.ordinaryroad.live.chat.client.commons.base.msg.IDanmuMsg;
 import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyu.msg.base.BaseDouyuCmdMsg;
 
@@ -69,7 +70,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChatmsgMsg extends BaseDouyuCmdMsg {
+public class ChatmsgMsg extends BaseDouyuCmdMsg implements IDanmuMsg {
 
     private String nn;
     private String ext;
@@ -94,5 +95,15 @@ public class ChatmsgMsg extends BaseDouyuCmdMsg {
     @Override
     public String getType() {
         return DouyuCmdEnum.chatmsg.name();
+    }
+
+    @Override
+    public String getUsername() {
+        return this.nn;
+    }
+
+    @Override
+    public String getContent() {
+        return this.txt;
     }
 }

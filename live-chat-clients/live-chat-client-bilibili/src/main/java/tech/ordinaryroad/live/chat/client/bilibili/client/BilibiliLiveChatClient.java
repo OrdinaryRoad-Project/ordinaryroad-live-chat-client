@@ -34,8 +34,9 @@ import tech.ordinaryroad.live.chat.client.bilibili.api.BilibiliApis;
 import tech.ordinaryroad.live.chat.client.bilibili.config.BilibiliLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.BilibiliCmdEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliConnectionListener;
-import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliSendSmsReplyMsgListener;
-import tech.ordinaryroad.live.chat.client.bilibili.msg.SendSmsReplyMsg;
+import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliMsgListener;
+import tech.ordinaryroad.live.chat.client.bilibili.msg.DanmuMsgMsg;
+import tech.ordinaryroad.live.chat.client.bilibili.msg.SendGiftMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.base.IBilibiliMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliConnectionHandler;
@@ -55,15 +56,16 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
         BilibiliLiveChatClientConfig,
         BilibiliCmdEnum,
         IBilibiliMsg,
-        SendSmsReplyMsg,
-        IBilibiliSendSmsReplyMsgListener,
+        DanmuMsgMsg,
+        SendGiftMsg,
+        IBilibiliMsgListener,
         BilibiliConnectionHandler,
         BilibiliBinaryFrameHandler
         > {
 
-    private final IBilibiliSendSmsReplyMsgListener msgListener;
+    private final IBilibiliMsgListener msgListener;
 
-    public BilibiliLiveChatClient(BilibiliLiveChatClientConfig config, IBilibiliSendSmsReplyMsgListener msgListener, IBilibiliConnectionListener connectionListener, EventLoopGroup workerGroup) {
+    public BilibiliLiveChatClient(BilibiliLiveChatClientConfig config, IBilibiliMsgListener msgListener, IBilibiliConnectionListener connectionListener, EventLoopGroup workerGroup) {
         super(config, workerGroup, connectionListener);
         this.msgListener = msgListener;
 
@@ -71,11 +73,11 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
         this.init();
     }
 
-    public BilibiliLiveChatClient(BilibiliLiveChatClientConfig config, IBilibiliSendSmsReplyMsgListener msgListener, IBilibiliConnectionListener connectionListener) {
+    public BilibiliLiveChatClient(BilibiliLiveChatClientConfig config, IBilibiliMsgListener msgListener, IBilibiliConnectionListener connectionListener) {
         this(config, msgListener, connectionListener, new NioEventLoopGroup());
     }
 
-    public BilibiliLiveChatClient(BilibiliLiveChatClientConfig config, IBilibiliSendSmsReplyMsgListener msgListener) {
+    public BilibiliLiveChatClient(BilibiliLiveChatClientConfig config, IBilibiliMsgListener msgListener) {
         this(config, msgListener, null, new NioEventLoopGroup());
     }
 

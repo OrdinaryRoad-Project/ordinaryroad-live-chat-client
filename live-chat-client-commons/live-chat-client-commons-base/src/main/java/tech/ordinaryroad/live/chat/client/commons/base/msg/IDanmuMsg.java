@@ -22,47 +22,29 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.bilibili.msg.base;
-
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import tech.ordinaryroad.live.chat.client.bilibili.constant.BilibiliCmdEnum;
-import tech.ordinaryroad.live.chat.client.bilibili.constant.ProtoverEnum;
-import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseCmdMsg;
+package tech.ordinaryroad.live.chat.client.commons.base.msg;
 
 /**
  * @author mjz
- * @date 2023/1/6
+ * @date 2023/9/8
  */
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public abstract class BaseBilibiliCmdMsg extends BaseCmdMsg<BilibiliCmdEnum> implements IBilibiliMsg {
+public interface IDanmuMsg extends IMsg {
 
-    private int protover;
-    private String cmd;
+    /**
+     * 弹幕发送者id
+     */
+    long getUid();
 
-    @Override
-    public String getCmd() {
-        return this.cmd;
-    }
+    /**
+     * 弹幕发送者用户名
+     *
+     * @return
+     */
+    String getUsername();
 
-    @Override
-    public void setCmd(String cmd) {
-        this.cmd = cmd;
-    }
+    /**
+     * 弹幕内容
+     */
+    String getContent();
 
-    @Override
-    public BilibiliCmdEnum getCmdEnum() {
-        return BilibiliCmdEnum.getByString(getCmd());
-    }
-
-    @Override
-    public ProtoverEnum getProtoverEnum() {
-        return ProtoverEnum.getByCode(this.protover);
-    }
 }

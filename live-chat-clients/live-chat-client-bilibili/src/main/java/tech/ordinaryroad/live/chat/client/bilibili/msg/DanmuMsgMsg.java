@@ -22,47 +22,50 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.bilibili.msg.base;
+package tech.ordinaryroad.live.chat.client.bilibili.msg;
 
-
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tech.ordinaryroad.live.chat.client.bilibili.constant.BilibiliCmdEnum;
-import tech.ordinaryroad.live.chat.client.bilibili.constant.ProtoverEnum;
-import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseCmdMsg;
+import tech.ordinaryroad.live.chat.client.bilibili.constant.OperationEnum;
+import tech.ordinaryroad.live.chat.client.bilibili.msg.base.BaseBilibiliCmdMsg;
+import tech.ordinaryroad.live.chat.client.commons.base.msg.IDanmuMsg;
 
 /**
  * @author mjz
- * @date 2023/1/6
+ * @date 2023/9/8
  */
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class BaseBilibiliCmdMsg extends BaseCmdMsg<BilibiliCmdEnum> implements IBilibiliMsg {
+public class DanmuMsgMsg extends BaseBilibiliCmdMsg implements IDanmuMsg {
 
-    private int protover;
-    private String cmd;
+    private JsonNode info;
+    private String dm_v2;
 
     @Override
-    public String getCmd() {
-        return this.cmd;
+    public OperationEnum getOperationEnum() {
+        return OperationEnum.SEND_SMS_REPLY;
     }
 
     @Override
-    public void setCmd(String cmd) {
-        this.cmd = cmd;
+    public long getUid() {
+        JsonNode jsonNode2 = info.get(2);
+        return jsonNode2.get(0).asLong();
     }
 
     @Override
-    public BilibiliCmdEnum getCmdEnum() {
-        return BilibiliCmdEnum.getByString(getCmd());
+    public String getUsername() {
+        JsonNode jsonNode2 = info.get(2);
+        return jsonNode2.get(1).asText();
     }
 
     @Override
-    public ProtoverEnum getProtoverEnum() {
-        return ProtoverEnum.getByCode(this.protover);
+    public String getContent() {
+        JsonNode jsonNode1 = info.get(1);
+        return jsonNode1.asText();
     }
 }

@@ -28,7 +28,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import tech.ordinaryroad.live.chat.client.bilibili.client.BilibiliLiveChatClient;
 import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliConnectionListener;
-import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliSendSmsReplyMsgListener;
+import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliMsgListener;
 import tech.ordinaryroad.live.chat.client.douyu.client.DouyuLiveChatClient;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuConnectionListener;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuDouyuCmdMsgListener;
@@ -41,12 +41,12 @@ import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuDouyuCmdMsgListen
 public class LiveChatClientConfiguration {
 
     private final LiveChatClientConfigurations configurations;
-    private final IBilibiliSendSmsReplyMsgListener bilibiliSendSmsReplyMsgListener;
+    private final IBilibiliMsgListener bilibiliSendSmsReplyMsgListener;
     private final IBilibiliConnectionListener bilibiliConnectionListener;
     private final IDouyuDouyuCmdMsgListener douyuCmdMsgListener;
     private final IDouyuConnectionListener douyuConnectionListener;
 
-    public LiveChatClientConfiguration(LiveChatClientConfigurations configurations, IBilibiliSendSmsReplyMsgListener bilibiliSendSmsReplyMsgListener, IBilibiliConnectionListener bilibiliConnectionListener, IDouyuDouyuCmdMsgListener douyuCmdMsgListener, IDouyuConnectionListener douyuConnectionListener) {
+    public LiveChatClientConfiguration(LiveChatClientConfigurations configurations, IBilibiliMsgListener bilibiliSendSmsReplyMsgListener, IBilibiliConnectionListener bilibiliConnectionListener, IDouyuDouyuCmdMsgListener douyuCmdMsgListener, IDouyuConnectionListener douyuConnectionListener) {
         this.configurations = configurations;
         this.bilibiliSendSmsReplyMsgListener = bilibiliSendSmsReplyMsgListener;
         this.bilibiliConnectionListener = bilibiliConnectionListener;
