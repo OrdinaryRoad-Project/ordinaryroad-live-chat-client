@@ -2,28 +2,46 @@
 name-template: 'v$NEXT_PATCH_VERSION 🌈'
 tag-template: 'v$NEXT_PATCH_VERSION'
 version-template: $MAJOR.$MINOR.$PATCH
+autolabeler:
+  - label: 'chore'
+    files:
+      - '*.md'
+    branch:
+      - '/docs{0,1}\/.+/'
+  - label: 'bug'
+    branch:
+      - '/fix\/.+/'
+    title:
+      - '/fix/i'
+  - label: 'enhancement'
+    branch:
+      - '/feature\/.+/'
+#    body:
+#      - '/JIRA-[0-9]{1,4}/'
+  - label: 'cicd'
+    title:
+      - '/cicd/i'
 # Emoji reference: https://gitmoji.carloscuesta.me/
 categories:
   - title: '🚀 Features'
     labels:
       - 'feature'
       - 'enhancement'
-      - 'kind/feature'
   - title: '🐛 Bug Fixes'
     labels:
       - 'fix'
       - 'bugfix'
       - 'bug'
-  - title: 📝 Documentation updates
+  - title: '📝 Documentation updates'
     labels:
       - documentation
-  - title: 🧰 Maintenance
+  - title: '🧰 Maintenance'
     labels:
-      - chore
-      - dependencies
-  - title: 🚦 Tests
+      - 'chore'
+      - 'dependencies'
+  - title: '🚦 Tests'
     labels:
-      - test
+      - 'test'
 exclude-labels:
   - reverted
   - no-changelog
