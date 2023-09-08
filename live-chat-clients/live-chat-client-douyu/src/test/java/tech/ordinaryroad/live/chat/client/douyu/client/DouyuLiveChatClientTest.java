@@ -24,6 +24,9 @@
 
 package tech.ordinaryroad.live.chat.client.douyu.client;
 
+import cn.hutool.core.thread.ThreadUtil;
+import cn.hutool.core.util.RandomUtil;
+import io.netty.channel.nio.NioEventLoopGroup;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseCmdMsg;
@@ -50,9 +53,8 @@ class DouyuLiveChatClientTest implements IDouyuConnectionListener, IDouyuDouyuCm
     @Test
     void example() throws InterruptedException {
         DouyuLiveChatClientConfig config = DouyuLiveChatClientConfig.builder()
-                // 暂不支持浏览器Cookie
                 // TODO 修改房间id（支持短id）
-                .roomId(92000)
+                .roomId(74751)
                 .build();
 
         client = new DouyuLiveChatClient(config, new IDouyuDouyuCmdMsgListener() {
@@ -128,6 +130,77 @@ class DouyuLiveChatClientTest implements IDouyuConnectionListener, IDouyuDouyuCm
             log.warn("client1 connect successfully, start connecting client2");
             client2.connect(() -> {
                 log.warn("client2 connect successfully");
+            });
+        });
+
+        // 防止测试时直接退出
+        while (true) {
+            synchronized (lock) {
+                lock.wait();
+            }
+        }
+    }
+
+    @Test
+    void sendDanmu() throws InterruptedException {
+        String cookie = System.getenv("cookie");
+//        cookie = null;
+        log.error("cookie: {}", cookie);
+        DouyuLiveChatClientConfig config = DouyuLiveChatClientConfig.builder()
+                .cookie(cookie)
+                // TODO 修改弹幕发送最短时间间隔，默认3s
+                .minSendDanmuPeriod(10 * 1000)
+                // TODO 修改房间id（支持短id）
+                .roomId(74751)
+                .build();
+        client = new DouyuLiveChatClient(DouyuLiveChatClient.MODE_WS, config, new IDouyuDouyuCmdMsgListener() {
+            @Override
+            public void onMsg(IMsg msg) {
+                IDouyuDouyuCmdMsgListener.super.onMsg(msg);
+
+//                log.debug("收到消息 {}", msg.getClass());
+            }
+
+            @Override
+            public void onCmdMsg(DouyuCmdEnum cmd, BaseCmdMsg<DouyuCmdEnum> cmdMsg) {
+                IDouyuDouyuCmdMsgListener.super.onCmdMsg(cmd, cmdMsg);
+
+                log.debug("收到CMD消息 {} {}", cmd, cmdMsg);
+            }
+
+            @Override
+            public void onUnknownCmd(String cmdString, BaseMsg msg) {
+                IDouyuDouyuCmdMsgListener.super.onUnknownCmd(cmdString, msg);
+
+                log.debug("收到未知CMD消息 {} {}", cmdString, msg);
+            }
+        }, new IDouyuConnectionListener() {
+            @Override
+            public void onConnected(DouyuConnectionHandler connectionHandler) {
+                log.error("{} onConnected", connectionHandler.getRoomId());
+            }
+
+            @Override
+            public void onConnectFailed(DouyuConnectionHandler connectionHandler) {
+                log.error("{} onConnectFailed", connectionHandler.getRoomId());
+            }
+
+            @Override
+            public void onDisconnected(DouyuConnectionHandler connectionHandler) {
+                log.error("{} onDisconnected", connectionHandler.getRoomId());
+            }
+        }, new NioEventLoopGroup());
+        client.connect(() -> {
+            String danmu = "666" + RandomUtil.randomNumbers(1);
+            log.error("连接成功，5s后发送弹幕{}", danmu);
+            client.getWorkerGroup().execute(() -> {
+                ThreadUtil.sleep(5000);
+                while (true) {
+                    String s = RandomUtil.randomNumbers(2);
+                    log.error("发送弹幕{}", danmu + s);
+                    client.sendDanmu(danmu + s);
+                    ThreadUtil.sleep(2000);
+                }
             });
         });
 
