@@ -36,6 +36,7 @@ Live room WebSocket chat client
 - Feature 3: 支持同时监听多个直播间
 - Feature 4: 支持直播间短id
 - Feature 5: 支持弹幕发送
+- Feature 6: 内置收到弹幕、收到礼物回调
 
 [//]: # ([在线文档]&#40;https://ordinaryroad.tech/or_module/live-chat-client/&#41;)
 
@@ -67,6 +68,8 @@ Live room WebSocket chat client
 
 ## 2 使用
 
+> 测试类包含了多种样例，可供参考
+
 ### 2.1 Client模式
 
 > Spring Boot 3 示例 [client-example](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/tree/main/live-chat-client-examples/client-example)
@@ -88,6 +91,13 @@ public class ClientModeExample {
                 IBilibiliMsgListener.super.onDanmuMsg(binaryFrameHandler, msg);
 
                 System.out.printf("%s 收到弹幕 %s(%d)：%s%n", binaryFrameHandler.getRoomId(), msg.getUsername(), msg.getUid(), msg.getContent());
+            }
+
+            @Override
+            public void onGiftMsg(BilibiliBinaryFrameHandler binaryFrameHandler, SendGiftMsg msg) {
+                IBilibiliMsgListener.super.onGiftMsg(binaryFrameHandler, msg);
+             
+                log.info("{} 收到礼物 {}({}) {} {}({})x{}({})", binaryFrameHandler.getRoomId(), msg.getUsername(), msg.getUid(), msg.getData().getAction(), msg.getGiftName(), msg.getGiftId(), msg.getGiftCount(), msg.getGiftPrice());
             }
         });
         client.connect();
