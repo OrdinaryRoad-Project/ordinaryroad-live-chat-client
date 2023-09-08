@@ -22,49 +22,41 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.commons.client;
+package tech.ordinaryroad.live.chat.client.douyu.msg;
 
-import java.util.function.Consumer;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import tech.ordinaryroad.live.chat.client.commons.util.OrLocalDateTimeUtil;
+import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
+import tech.ordinaryroad.live.chat.client.douyu.msg.base.BaseDouyuCmdMsg;
 
 /**
+ * <pre>{@code
+ * type@=keeplive/vbw@=0/cdn@=hs-h5/tick@=1694099389/kd@=da9c384371b4552ac94e1237d2596262/
+ * }</pre>
+ *
  * @author mjz
- * @date 2023/9/5
+ * @date 2023/9/7
  */
-public interface IBaseLiveChatClient {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class KeepliveMsg extends BaseDouyuCmdMsg {
 
-    void init();
+    private String vbw = "0";
+    private String cnd;
+    private long tick = OrLocalDateTimeUtil.zonedCurrentTimeSecs();
+    private String kd = "";
 
-    void connect(Runnable success, Consumer<Throwable> failed);
+    public KeepliveMsg(String cnd) {
+        this.cnd = cnd;
+    }
 
-    void connect(Runnable success);
-
-    void connect();
-
-    /**
-     * 手动断开连接
-     *
-     * @param cancelReconnect 取消本次的自动重连（如果启用自动重连）
-     */
-    void disconnect(boolean cancelReconnect);
-
-    void disconnect();
-
-    void destroy();
-
-    void send(Object msg);
-
-    void send(Object msg, Runnable success, Consumer<Throwable> failed);
-
-    void send(Object msg, Runnable success);
-
-    void send(Object msg, Consumer<Throwable> failed);
-
-    void sendDanmu(Object danmu);
-
-    void sendDanmu(Object danmu, Runnable success, Consumer<Throwable> failed);
-
-    void sendDanmu(Object danmu, Runnable success);
-
-    void sendDanmu(Object danmu, Consumer<Throwable> failed);
-
+    @Override
+    public String getType() {
+        return DouyuCmdEnum.keeplive.name();
+    }
 }

@@ -22,49 +22,33 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.commons.client;
+package tech.ordinaryroad.live.chat.client.commons.util;
 
-import java.util.function.Consumer;
+import cn.hutool.core.date.LocalDateTimeUtil;
+
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 /**
  * @author mjz
- * @date 2023/9/5
+ * @date 2023/9/7
  */
-public interface IBaseLiveChatClient {
+public class OrLocalDateTimeUtil extends LocalDateTimeUtil {
 
-    void init();
-
-    void connect(Runnable success, Consumer<Throwable> failed);
-
-    void connect(Runnable success);
-
-    void connect();
+    public static ZoneId ZONE_ID_CTT = ZoneId.of(ZoneId.SHORT_IDS.get("CTT"));
 
     /**
-     * 手动断开连接
-     *
-     * @param cancelReconnect 取消本次的自动重连（如果启用自动重连）
+     * 获取中国标准时间的当前时间戳（毫秒）
      */
-    void disconnect(boolean cancelReconnect);
+    public static long zonedCurrentTimeMillis() {
+        ZonedDateTime now = ZonedDateTime.now(ZONE_ID_CTT);
+        return now.toEpochSecond() * 1000 + now.getNano() / 1_000_000;
+    }
 
-    void disconnect();
-
-    void destroy();
-
-    void send(Object msg);
-
-    void send(Object msg, Runnable success, Consumer<Throwable> failed);
-
-    void send(Object msg, Runnable success);
-
-    void send(Object msg, Consumer<Throwable> failed);
-
-    void sendDanmu(Object danmu);
-
-    void sendDanmu(Object danmu, Runnable success, Consumer<Throwable> failed);
-
-    void sendDanmu(Object danmu, Runnable success);
-
-    void sendDanmu(Object danmu, Consumer<Throwable> failed);
-
+    /**
+     * 获取中国标准时间的当前时间戳（秒）
+     */
+    public static long zonedCurrentTimeSecs() {
+        return ZonedDateTime.now(ZONE_ID_CTT).toEpochSecond();
+    }
 }

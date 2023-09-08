@@ -78,6 +78,10 @@ public abstract class BaseNettyClient
     @Getter
     private URI websocketUri;
     private IBaseConnectionListener<ConnectionHandler> clientConnectionListener;
+    /**
+     * 控制弹幕发送频率
+     */
+    private volatile long lastSendDanmuTimeInMillis;
 
     public abstract ConnectionHandler initConnectionHandler(IBaseConnectionListener<ConnectionHandler> clientConnectionListener);
 
@@ -241,11 +245,6 @@ public abstract class BaseNettyClient
     }
 
     @Override
-    public void send(Object msg) {
-        this.channel.writeAndFlush(msg);
-    }
-
-    @Override
     public void send(Object msg, Runnable success, Consumer<Throwable> failed) {
         ChannelFuture future = this.channel.writeAndFlush(msg);
         if (success != null || failed != null) {
@@ -290,7 +289,27 @@ public abstract class BaseNettyClient
     }
 
     @Override
-    public void sendDanmu(Object danmu) {
+    public void sendDanmu(Object danmu, Runnable success, Consumer<Throwable> failed) {
         throw new BaseException("暂未支持该功能");
+    }
+
+    /**
+     * 发送弹幕前判断是否可以发送
+     */
+    protected boolean checkCanSendDanmn() {
+        if (System.currentTimeMillis() - this.lastSendDanmuTimeInMillis > getConfig().getMinSendDanmuPeriod()) {
+            return true;
+        }
+        if (log.isWarnEnabled()) {
+            log.warn("发送弹幕频率过快，忽略该次发送");
+        }
+        return false;
+    }
+
+    /**
+     * 发送弹幕后调用该方法
+     */
+    protected void finishSendDanmu() {
+        this.lastSendDanmuTimeInMillis = System.currentTimeMillis();
     }
 }

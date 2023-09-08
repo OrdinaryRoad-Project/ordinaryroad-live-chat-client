@@ -24,20 +24,25 @@
 
 package tech.ordinaryroad.live.chat.client.douyu.netty.frame.factory;
 
+import cn.hutool.core.lang.UUID;
+import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.StrUtil;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
+import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCookieUtil;
 import tech.ordinaryroad.live.chat.client.douyu.api.DouyuApis;
+import tech.ordinaryroad.live.chat.client.douyu.client.DouyuLiveChatClient;
 import tech.ordinaryroad.live.chat.client.douyu.config.DouyuLiveChatClientConfig;
-import tech.ordinaryroad.live.chat.client.douyu.msg.HeartbeatMsg;
-import tech.ordinaryroad.live.chat.client.douyu.msg.JoingroupMsg;
-import tech.ordinaryroad.live.chat.client.douyu.msg.LoginreqMsg;
-import tech.ordinaryroad.live.chat.client.douyu.msg.SubMsg;
+import tech.ordinaryroad.live.chat.client.douyu.msg.*;
+import tech.ordinaryroad.live.chat.client.douyu.msg.base.BaseDouyuCmdMsg;
 import tech.ordinaryroad.live.chat.client.douyu.netty.frame.AuthWebSocketFrame;
 import tech.ordinaryroad.live.chat.client.douyu.netty.frame.HeartbeatWebSocketFrame;
+import tech.ordinaryroad.live.chat.client.douyu.netty.frame.KeepliveWebSocketFrame;
 import tech.ordinaryroad.live.chat.client.douyu.util.DouyuCodecUtil;
 
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -64,35 +69,73 @@ public class DouyuWebSocketFrameFactory {
     /**
      * 创建认证包
      *
+     * @param mode   {@link DouyuLiveChatClient#MODE_DANMU}, {@link DouyuLiveChatClient#MODE_WS}
      * @param ver    {@link DouyuLiveChatClientConfig#getVer()}
      * @param aver   {@link DouyuLiveChatClientConfig#getAver()}
-     * @param cookie 暂未使用
+     * @param cookie 浏览器Cookie，发送弹幕时必传
      * @return AuthWebSocketFrame
      */
-    public AuthWebSocketFrame createAuth(String ver, String aver, String cookie) {
+    public AuthWebSocketFrame createAuth(int mode, String ver, String aver, String cookie) {
         try {
             // type@=loginreq/roomid@=7750753/dfl@=/username@=visitor10424697/uid@=1168052601/ver@=20220825/aver@=218101901/ct@=0/
-            LoginreqMsg loginreqMsg = new LoginreqMsg();
+            LoginreqMsg loginreqMsg;
             long realRoomId = DouyuApis.getRealRoomId(roomId);
-            loginreqMsg.setRoomid(realRoomId);
-            // 暂不支持cookie
-            loginreqMsg.setVer(ver);
-            loginreqMsg.setAver(aver);
-            loginreqMsg.setUsername("visitor" + RandomUtil.randomLong(10000000, 19999999));
-            loginreqMsg.setUid(RandomUtil.randomLong(1000000000, 1999999999));
-            loginreqMsg.setCt(0);
-            return new AuthWebSocketFrame(DouyuCodecUtil.encode(loginreqMsg));
+            long uid;
+            String username;
+            Map<String, String> cookieMap = OrLiveChatCookieUtil.parseCookieString(cookie);
+
+            if (cookieMap.isEmpty()) {
+                // 视为未登录
+                if (mode == DouyuLiveChatClient.MODE_DANMU) {
+                    uid = RandomUtil.randomLong(10000000, 19999999);
+                    username = "visitor" + RandomUtil.randomLong(10000000, 19999999);
+                    loginreqMsg = new LoginreqMsg(realRoomId, "", username, uid, ver, aver);
+                    return new AuthWebSocketFrame(DouyuCodecUtil.encode(loginreqMsg, LoginreqMsg.SHOULD_IGNORE_NEW_LOGIN_PROPERTIES));
+                } else {
+                    loginreqMsg = new LoginreqMsg(realRoomId, "", "", ver, aver, "", "", "", UUID.fastUUID().toString(true));
+                    return new AuthWebSocketFrame(DouyuCodecUtil.encode(loginreqMsg, LoginreqMsg.SHOULD_IGNORE_OLD_LOGIN_PROPERTIES));
+                }
+            }
+            // 视为登录
+            else {
+                String acfUid = OrLiveChatCookieUtil.getCookieByName(cookieMap, DouyuApis.KEY_COOKIE_ACF_UID, () -> {
+                    throw new BaseException("Cookie中缺少字段" + DouyuApis.KEY_COOKIE_ACF_UID);
+                });
+                uid = NumberUtil.parseLong(acfUid);
+                username = acfUid;
+                String dfl = "sn@A=105@Sss@A=1";
+                if (mode == DouyuLiveChatClient.MODE_DANMU) {
+                    loginreqMsg = new LoginreqMsg(realRoomId, dfl, username, uid, ver, aver);
+                    return new AuthWebSocketFrame(DouyuCodecUtil.encode(loginreqMsg, LoginreqMsg.SHOULD_IGNORE_NEW_LOGIN_PROPERTIES));
+                } else {
+                    String acfLtkid = OrLiveChatCookieUtil.getCookieByName(cookieMap, DouyuApis.KEY_COOKIE_ACF_LTKID, () -> {
+                        throw new BaseException("Cookie中缺少字段" + DouyuApis.KEY_COOKIE_ACF_LTKID);
+                    });
+                    String acfStk = OrLiveChatCookieUtil.getCookieByName(cookieMap, DouyuApis.KEY_COOKIE_ACF_STK, () -> {
+                        throw new BaseException("Cookie中缺少字段" + DouyuApis.KEY_COOKIE_ACF_STK);
+                    });
+                    String dyDid = OrLiveChatCookieUtil.getCookieByName(cookieMap, DouyuApis.KEY_COOKIE_DY_DID, () -> {
+                        throw new BaseException("Cookie中缺少字段" + DouyuApis.KEY_COOKIE_DY_DID);
+                    });
+                    loginreqMsg = new LoginreqMsg(realRoomId, dfl, username, ver, aver, acfLtkid, "1", acfStk, dyDid);
+                    return new AuthWebSocketFrame(DouyuCodecUtil.encode(loginreqMsg, LoginreqMsg.SHOULD_IGNORE_OLD_LOGIN_PROPERTIES));
+                }
+            }
         } catch (Exception e) {
             throw new BaseException("认证包创建失败，请检查房间号是否正确。roomId: %d, msg: %s".formatted(roomId, e.getMessage()));
         }
     }
 
-    public AuthWebSocketFrame createAuth(String ver, String aver) {
-        return this.createAuth(ver,aver,null);
+    public AuthWebSocketFrame createAuth(int mode, String ver, String aver) {
+        return this.createAuth(mode, ver, aver, null);
     }
 
     public HeartbeatWebSocketFrame createHeartbeat() {
         return new HeartbeatWebSocketFrame(DouyuCodecUtil.encode(this.getHeartbeatMsg()));
+    }
+
+    public KeepliveWebSocketFrame createKeeplive(String cookie) {
+        return new KeepliveWebSocketFrame(DouyuCodecUtil.encode(this.getKeepliveMsg(StrUtil.isNotBlank(cookie) ? "hs-h5" : "")));
     }
 
     /**
@@ -111,6 +154,10 @@ public class DouyuWebSocketFrameFactory {
         return heartbeatMsg;
     }
 
+    private BaseDouyuCmdMsg getKeepliveMsg(String cnd) {
+        return new KeepliveMsg(cnd);
+    }
+
     public WebSocketFrame createJoingroup() {
         JoingroupMsg joingroupMsg = new JoingroupMsg();
         joingroupMsg.setRid(roomId);
@@ -119,5 +166,16 @@ public class DouyuWebSocketFrameFactory {
 
     public WebSocketFrame createSub() {
         return new BinaryWebSocketFrame(DouyuCodecUtil.encode(new SubMsg()));
+    }
+
+    public WebSocketFrame createDanmu(String msg, String cookie) {
+        String dyDid = OrLiveChatCookieUtil.getCookieByName(cookie, DouyuApis.KEY_COOKIE_DY_DID, () -> {
+            throw new BaseException("cookie中缺少参数" + DouyuApis.KEY_COOKIE_DY_DID);
+        });
+        String acfUid = OrLiveChatCookieUtil.getCookieByName(cookie, DouyuApis.KEY_COOKIE_ACF_UID, () -> {
+            throw new BaseException("cookie中缺少参数" + DouyuApis.KEY_COOKIE_ACF_UID);
+        });
+        ChatmessageMsg chatmessageMsg = new ChatmessageMsg(msg, dyDid, acfUid);
+        return new BinaryWebSocketFrame(DouyuCodecUtil.encode(chatmessageMsg));
     }
 }

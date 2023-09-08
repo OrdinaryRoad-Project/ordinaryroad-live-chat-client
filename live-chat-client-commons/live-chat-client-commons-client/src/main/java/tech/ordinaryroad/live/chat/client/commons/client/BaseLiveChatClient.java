@@ -35,7 +35,7 @@ import java.util.function.Consumer;
  * @author mjz
  * @date 2023/8/26
  */
-public abstract class BaseLiveChatClient<Config extends BaseLiveChatClientConfig> implements IBaseLiveChatClient{
+public abstract class BaseLiveChatClient<Config extends BaseLiveChatClientConfig> implements IBaseLiveChatClient {
 
     private final Config config;
     @Getter
@@ -67,6 +67,11 @@ public abstract class BaseLiveChatClient<Config extends BaseLiveChatClientConfig
     }
 
     @Override
+    public void send(Object msg) {
+        this.send(msg, null, null);
+    }
+
+    @Override
     public void send(Object msg, Runnable success) {
         this.send(msg, success, null);
     }
@@ -74,6 +79,21 @@ public abstract class BaseLiveChatClient<Config extends BaseLiveChatClientConfig
     @Override
     public void send(Object msg, Consumer<Throwable> failed) {
         this.send(msg, null, failed);
+    }
+
+    @Override
+    public void sendDanmu(Object danmu) {
+        this.sendDanmu(danmu, null, null);
+    }
+
+    @Override
+    public void sendDanmu(Object danmu, Runnable success) {
+        this.sendDanmu(danmu, success, null);
+    }
+
+    @Override
+    public void sendDanmu(Object danmu, Consumer<Throwable> failed) {
+        this.sendDanmu(danmu, null, failed);
     }
 
     protected abstract void tryReconnect();

@@ -22,49 +22,19 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.commons.client;
+package tech.ordinaryroad.live.chat.client.douyu.netty.frame;
 
-import java.util.function.Consumer;
+import io.netty.buffer.ByteBuf;
+import tech.ordinaryroad.live.chat.client.douyu.netty.frame.base.BaseDouyuWebSocketFrame;
 
 /**
  * @author mjz
- * @date 2023/9/5
+ * @date 2023/9/8
  */
-public interface IBaseLiveChatClient {
+public class KeepliveWebSocketFrame extends BaseDouyuWebSocketFrame {
 
-    void init();
-
-    void connect(Runnable success, Consumer<Throwable> failed);
-
-    void connect(Runnable success);
-
-    void connect();
-
-    /**
-     * 手动断开连接
-     *
-     * @param cancelReconnect 取消本次的自动重连（如果启用自动重连）
-     */
-    void disconnect(boolean cancelReconnect);
-
-    void disconnect();
-
-    void destroy();
-
-    void send(Object msg);
-
-    void send(Object msg, Runnable success, Consumer<Throwable> failed);
-
-    void send(Object msg, Runnable success);
-
-    void send(Object msg, Consumer<Throwable> failed);
-
-    void sendDanmu(Object danmu);
-
-    void sendDanmu(Object danmu, Runnable success, Consumer<Throwable> failed);
-
-    void sendDanmu(Object danmu, Runnable success);
-
-    void sendDanmu(Object danmu, Consumer<Throwable> failed);
+    public KeepliveWebSocketFrame(ByteBuf byteBuf) {
+        super(byteBuf);
+    }
 
 }
