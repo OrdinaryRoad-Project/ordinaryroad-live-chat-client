@@ -36,6 +36,7 @@ import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionL
 import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseCmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
+import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
 import tech.ordinaryroad.live.chat.client.douyu.config.DouyuLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuConnectionListener;
@@ -96,6 +97,22 @@ public class DouyuLiveChatClient extends BaseNettyClient<
 
     public DouyuLiveChatClient(DouyuLiveChatClientConfig config, IDouyuDouyuCmdMsgListener msgListener) {
         this(config, msgListener, null, new NioEventLoopGroup());
+    }
+
+    @Override
+    public void init() {
+        super.init();
+
+        if (mode == MODE_WS) {
+            addStatusChangeListener(evt -> {
+                ClientStatusEnums status = (ClientStatusEnums) evt.getNewValue();
+                if (status == ClientStatusEnums.DISCONNECTED) {
+                    if (DouyuLiveChatClient.this.danmuClient != null) {
+                        DouyuLiveChatClient.this.danmuClient.destroy();
+                    }
+                }
+            });
+        }
     }
 
     @Override
