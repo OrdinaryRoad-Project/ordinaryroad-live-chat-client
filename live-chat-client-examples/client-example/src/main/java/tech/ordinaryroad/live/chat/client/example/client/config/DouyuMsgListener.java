@@ -29,6 +29,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuDouyuCmdMsgListener;
 import tech.ordinaryroad.live.chat.client.douyu.msg.ChatmsgMsg;
+import tech.ordinaryroad.live.chat.client.douyu.msg.DgbMsg;
 import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuBinaryFrameHandler;
 
 /**
@@ -43,7 +44,23 @@ public class DouyuMsgListener implements IDouyuDouyuCmdMsgListener {
     @Override
     public void onDanmuMsg(DouyuBinaryFrameHandler binaryFrameHandler, ChatmsgMsg msg) {
         IDouyuDouyuCmdMsgListener.super.onDanmuMsg(binaryFrameHandler, msg);
+
         log.info("{} 收到弹幕 {}({})：{}", binaryFrameHandler.getRoomId(), msg.getNn(), msg.getUid(), msg.getTxt());
+    }
+
+    @Override
+    public void onGiftMsg(DouyuBinaryFrameHandler binaryFrameHandler, DgbMsg msg) {
+        IDouyuDouyuCmdMsgListener.super.onGiftMsg(binaryFrameHandler, msg);
+
+        String username = msg.getNn();
+        String uid = msg.getUid();
+        // 礼物ID
+        String gfid = msg.getGfid();
+        // 礼物个数
+        String gfcnt = msg.getGfcnt();
+        // 礼物价格
+        int price = -1;
+        log.info("{} 收到礼物 {}({}) {} {}({})x{}({})", binaryFrameHandler.getRoomId(), username, uid, "赠送", "`礼物名未知`", gfid, gfcnt, price);
     }
 
 }
