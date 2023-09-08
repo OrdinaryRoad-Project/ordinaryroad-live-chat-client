@@ -62,7 +62,9 @@ public abstract class BaseBinaryFrameHandler<
         this.listener = listener;
         this.roomId = roomId;
         if (listener == null) {
-            log.warn("listener not set");
+            if (log.isWarnEnabled()) {
+                log.warn("listener not set");
+            }
         }
     }
 
