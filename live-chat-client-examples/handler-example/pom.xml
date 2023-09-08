@@ -4,7 +4,7 @@
     <packaging>jar</packaging>
     <groupId>tech.ordinaryroad</groupId>
     <artifactId>live-chat-client-example-handler</artifactId>
-    <version>0.0.7</version>
+    <version>0.0.8</version>
     <name>live-chat-client-example-handler</name>
     <description>live-chat-client-example-handler</description>
 
@@ -12,7 +12,7 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <ordinaryroad-live-chat-client.version>0.0.7</ordinaryroad-live-chat-client.version>
+        <ordinaryroad-live-chat-client.version>0.0.8</ordinaryroad-live-chat-client.version>
         <lombok.version>1.18.28</lombok.version>
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
     </properties>
