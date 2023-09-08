@@ -28,6 +28,8 @@ import lombok.Getter;
 import tech.ordinaryroad.live.chat.client.commons.client.config.BaseLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -40,6 +42,7 @@ public abstract class BaseLiveChatClient<Config extends BaseLiveChatClientConfig
     private final Config config;
     @Getter
     private volatile ClientStatusEnums status = ClientStatusEnums.NEW;
+    protected PropertyChangeSupport statusChangeSupport = new PropertyChangeSupport(status);
     protected volatile boolean cancelReconnect = false;
 
     protected BaseLiveChatClient(Config config) {
@@ -112,8 +115,23 @@ public abstract class BaseLiveChatClient<Config extends BaseLiveChatClientConfig
 
     protected void setStatus(ClientStatusEnums status) {
         if (this.status != status) {
+            this.statusChangeSupport.firePropertyChange("status", this.status, status);
             this.status = status;
         }
     }
 
+    public void addStatusChangeListener(PropertyChangeListener listener) {
+        this.statusChangeSupport.addPropertyChangeListener(listener);
+    }
+
+    public void removeStatusChangeListener(PropertyChangeListener listener) {
+        this.statusChangeSupport.removePropertyChangeListener(listener);
+    }
+
+    @Override
+    public void destroy() {
+        for (PropertyChangeListener propertyChangeListener : this.statusChangeSupport.getPropertyChangeListeners()) {
+            this.statusChangeSupport.removePropertyChangeListener(propertyChangeListener);
+        }
+    }
 }
