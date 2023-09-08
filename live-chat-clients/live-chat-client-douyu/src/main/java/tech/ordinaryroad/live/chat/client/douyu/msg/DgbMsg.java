@@ -28,6 +28,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import tech.ordinaryroad.live.chat.client.commons.base.msg.IGiftMsg;
 import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyu.msg.base.BaseDouyuCmdMsg;
 
@@ -78,7 +79,7 @@ import tech.ordinaryroad.live.chat.client.douyu.msg.base.BaseDouyuCmdMsg;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DgbMsg extends BaseDouyuCmdMsg {
+public class DgbMsg extends BaseDouyuCmdMsg implements IGiftMsg {
 
     /**
      * 用户名
@@ -89,7 +90,7 @@ public class DgbMsg extends BaseDouyuCmdMsg {
     private String brid;
     private String pma;
     private String bnid;
-    private String gfid;
+    private long gfid;
     private String bl;
     private String pid;
     private String rid;
@@ -98,11 +99,11 @@ public class DgbMsg extends BaseDouyuCmdMsg {
     /**
      * 用户id
      */
-    private String uid;
+    private long uid;
     /**
      * 收礼物用户id
      */
-    private String receive_uid;
+    private long receive_uid;
     private String ic;
     private String from;
     private String gpf;
@@ -123,7 +124,7 @@ public class DgbMsg extends BaseDouyuCmdMsg {
     /**
      * 礼物个数
      */
-    private String gfcnt;
+    private int gfcnt;
     private String ct;
     private String pfm;
     private String sahf;
@@ -134,5 +135,40 @@ public class DgbMsg extends BaseDouyuCmdMsg {
     @Override
     public String getType() {
         return DouyuCmdEnum.dgb.name();
+    }
+
+    @Override
+    public String getUsername() {
+        return this.nn;
+    }
+
+    @Override
+    public String getGiftName() {
+        return "";
+    }
+
+    @Override
+    public long getGiftId() {
+        return this.gfid;
+    }
+
+    @Override
+    public int getGiftCount() {
+        return this.gfcnt;
+    }
+
+    @Override
+    public int getGiftPrice() {
+        return -1;
+    }
+
+    @Override
+    public long getReceiveUid() {
+        return this.receive_uid;
+    }
+
+    @Override
+    public String getReceiveUsername() {
+        return this.receive_nn;
     }
 }

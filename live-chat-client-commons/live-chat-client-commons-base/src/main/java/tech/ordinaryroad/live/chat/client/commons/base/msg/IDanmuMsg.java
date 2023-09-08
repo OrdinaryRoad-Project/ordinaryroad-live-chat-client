@@ -22,50 +22,29 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.bilibili.msg;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import tech.ordinaryroad.live.chat.client.bilibili.constant.OperationEnum;
-import tech.ordinaryroad.live.chat.client.bilibili.msg.base.BaseBilibiliCmdMsg;
-import tech.ordinaryroad.live.chat.client.commons.base.msg.IDanmuMsg;
+package tech.ordinaryroad.live.chat.client.commons.base.msg;
 
 /**
  * @author mjz
  * @date 2023/9/8
  */
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class DanmuMsgMsg extends BaseBilibiliCmdMsg implements IDanmuMsg {
+public interface IDanmuMsg extends IMsg {
 
-    private JsonNode info;
-    private String dm_v2;
+    /**
+     * 弹幕发送者id
+     */
+    long getUid();
 
-    @Override
-    public OperationEnum getOperationEnum() {
-        return OperationEnum.SEND_SMS_REPLY;
-    }
+    /**
+     * 弹幕发送者用户名
+     *
+     * @return
+     */
+    String getUsername();
 
-    @Override
-    public long getUid() {
-        JsonNode jsonNode2 = info.get(2);
-        return jsonNode2.get(0).asLong();
-    }
+    /**
+     * 弹幕内容
+     */
+    String getContent();
 
-    @Override
-    public String getUsername() {
-        JsonNode jsonNode2 = info.get(2);
-        return jsonNode2.get(1).asText();
-    }
-
-    @Override
-    public String getContent() {
-        JsonNode jsonNode1 = info.get(1);
-        return jsonNode1.asText();
-    }
 }

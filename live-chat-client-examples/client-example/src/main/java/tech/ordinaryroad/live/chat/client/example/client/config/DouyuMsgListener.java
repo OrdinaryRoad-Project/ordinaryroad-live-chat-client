@@ -45,22 +45,14 @@ public class DouyuMsgListener implements IDouyuDouyuCmdMsgListener {
     public void onDanmuMsg(DouyuBinaryFrameHandler binaryFrameHandler, ChatmsgMsg msg) {
         IDouyuDouyuCmdMsgListener.super.onDanmuMsg(binaryFrameHandler, msg);
 
-        log.info("{} 收到弹幕 {}({})：{}", binaryFrameHandler.getRoomId(), msg.getNn(), msg.getUid(), msg.getTxt());
+        log.info("{} 收到弹幕 {}({})：{}", binaryFrameHandler.getRoomId(), msg.getUsername(), msg.getUid(), msg.getContent());
     }
 
     @Override
     public void onGiftMsg(DouyuBinaryFrameHandler binaryFrameHandler, DgbMsg msg) {
         IDouyuDouyuCmdMsgListener.super.onGiftMsg(binaryFrameHandler, msg);
 
-        String username = msg.getNn();
-        String uid = msg.getUid();
-        // 礼物ID
-        String gfid = msg.getGfid();
-        // 礼物个数
-        String gfcnt = msg.getGfcnt();
-        // 礼物价格
-        int price = -1;
-        log.info("{} 收到礼物 {}({}) {} {}({})x{}({})", binaryFrameHandler.getRoomId(), username, uid, "赠送", "`礼物名未知`", gfid, gfcnt, price);
+        log.info("{} 收到礼物 {}({}) {} {}({})x{}({})", binaryFrameHandler.getRoomId(), msg.getUsername(), msg.getUid(), "赠送", "`礼物名未知`", msg.getGiftId(), msg.getGiftCount(), msg.getGiftPrice());
     }
 
 }

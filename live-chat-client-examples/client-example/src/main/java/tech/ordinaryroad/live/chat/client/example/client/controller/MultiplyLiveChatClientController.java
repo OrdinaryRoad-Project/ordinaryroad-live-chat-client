@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import tech.ordinaryroad.live.chat.client.bilibili.client.BilibiliLiveChatClient;
 import tech.ordinaryroad.live.chat.client.bilibili.config.BilibiliLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliConnectionListener;
-import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliSendSmsReplyMsgListener;
+import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliMsgListener;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.client.config.BaseLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.douyu.client.DouyuLiveChatClient;
@@ -45,12 +45,12 @@ import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyCli
 @RequestMapping("client/multiply")
 public class MultiplyLiveChatClientController {
 
-    private final IBilibiliSendSmsReplyMsgListener bilibiliSendSmsReplyMsgListener;
+    private final IBilibiliMsgListener bilibiliSendSmsReplyMsgListener;
     private final IBilibiliConnectionListener bilibiliConnectionListener;
     private final IDouyuDouyuCmdMsgListener douyuCmdMsgListener;
     private final IDouyuConnectionListener douyuConnectionListener;
 
-    public MultiplyLiveChatClientController(IBilibiliSendSmsReplyMsgListener bilibiliSendSmsReplyMsgListener, IBilibiliConnectionListener bilibiliConnectionListener, IDouyuDouyuCmdMsgListener douyuCmdMsgListener, IDouyuConnectionListener douyuConnectionListener) {
+    public MultiplyLiveChatClientController(IBilibiliMsgListener bilibiliSendSmsReplyMsgListener, IBilibiliConnectionListener bilibiliConnectionListener, IDouyuDouyuCmdMsgListener douyuCmdMsgListener, IDouyuConnectionListener douyuConnectionListener) {
         this.bilibiliSendSmsReplyMsgListener = bilibiliSendSmsReplyMsgListener;
         this.bilibiliConnectionListener = bilibiliConnectionListener;
         this.douyuCmdMsgListener = douyuCmdMsgListener;

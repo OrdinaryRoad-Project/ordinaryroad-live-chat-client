@@ -31,7 +31,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.bilibili.client.BilibiliLiveChatClient;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.BilibiliCmdEnum;
-import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliSendSmsReplyMsgListener;
+import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliMsgListener;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.DanmuMsgMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.SendGiftMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.SendSmsReplyMsg;
@@ -52,13 +52,13 @@ import java.util.List;
  */
 @Slf4j
 @ChannelHandler.Sharable
-public class BilibiliBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<BilibiliLiveChatClient, BilibiliBinaryFrameHandler, BilibiliCmdEnum, IBilibiliMsg, DanmuMsgMsg, SendGiftMsg, IBilibiliSendSmsReplyMsgListener> {
+public class BilibiliBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<BilibiliLiveChatClient, BilibiliBinaryFrameHandler, BilibiliCmdEnum, IBilibiliMsg, DanmuMsgMsg, SendGiftMsg, IBilibiliMsgListener> {
 
-    public BilibiliBinaryFrameHandler(IBilibiliSendSmsReplyMsgListener listener, BilibiliLiveChatClient client) {
+    public BilibiliBinaryFrameHandler(IBilibiliMsgListener listener, BilibiliLiveChatClient client) {
         super(listener, client);
     }
 
-    public BilibiliBinaryFrameHandler(IBilibiliSendSmsReplyMsgListener listener, long roomId) {
+    public BilibiliBinaryFrameHandler(IBilibiliMsgListener listener, long roomId) {
         super(listener, roomId);
     }
 

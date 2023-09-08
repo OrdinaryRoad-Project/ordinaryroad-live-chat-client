@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import tech.ordinaryroad.live.chat.client.bilibili.config.BilibiliLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.BilibiliCmdEnum;
-import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliSendSmsReplyMsgListener;
+import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliMsgListener;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.DanmuMsgMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.SendGiftMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.SendSmsReplyMsg;
@@ -58,31 +58,17 @@ class BilibiliLiveChatClientTest {
                 .roomId(7777)
                 .build();
 
-        client = new BilibiliLiveChatClient(config, new IBilibiliSendSmsReplyMsgListener() {
+        client = new BilibiliLiveChatClient(config, new IBilibiliMsgListener() {
             @Override
             public void onDanmuMsg(BilibiliBinaryFrameHandler binaryFrameHandler, DanmuMsgMsg msg) {
-                JsonNode info = msg.getInfo();
-                JsonNode jsonNode1 = info.get(1);
-                String danmuText = jsonNode1.asText();
-                JsonNode jsonNode2 = info.get(2);
-                Long uid = jsonNode2.get(0).asLong();
-                String uname = jsonNode2.get(1).asText();
-                log.info("{} 收到弹幕 {}({})：{}", binaryFrameHandler.getRoomId(), uname, uid, danmuText);
+                IBilibiliMsgListener.super.onDanmuMsg(binaryFrameHandler, msg);
+                log.info("{} 收到弹幕 {}({})：{}", binaryFrameHandler.getRoomId(), msg.getUsername(), msg.getUid(), msg.getContent());
             }
 
             @Override
             public void onGiftMsg(BilibiliBinaryFrameHandler binaryFrameHandler, SendGiftMsg msg) {
-                IBilibiliSendSmsReplyMsgListener.super.onGiftMsg(binaryFrameHandler, msg);
-
-                SendGiftMsg.Data data = msg.getData();
-                String action = data.getAction();
-                String giftName = data.getGiftName();
-                long giftId = data.getGiftId();
-                Integer num = data.getNum();
-                String uname = data.getUname();
-                Integer price = data.getPrice();
-                long uid = data.getUid();
-                log.info("{} 收到礼物 {}({}) {} {}({})x{}({})", binaryFrameHandler.getRoomId(), uname, uid, action, giftName, giftId, num, price);
+                IBilibiliMsgListener.super.onGiftMsg(binaryFrameHandler, msg);
+                log.info("{} 收到礼物 {}({}) {} {}({})x{}({})", binaryFrameHandler.getRoomId(), msg.getUsername(), msg.getUid(), msg.getData().getAction(), msg.getGiftName(), msg.getGiftId(), msg.getGiftCount(), msg.getGiftPrice());
             }
 
             @Override

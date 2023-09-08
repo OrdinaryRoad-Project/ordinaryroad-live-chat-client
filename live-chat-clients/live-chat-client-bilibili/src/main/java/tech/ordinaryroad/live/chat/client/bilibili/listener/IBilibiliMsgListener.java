@@ -36,7 +36,7 @@ import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
  * @author mjz
  * @date 2023/1/7
  */
-public interface IBilibiliSendSmsReplyMsgListener extends IBaseMsgListener<BilibiliBinaryFrameHandler, BilibiliCmdEnum, DanmuMsgMsg, SendGiftMsg> {
+public interface IBilibiliMsgListener extends IBaseMsgListener<BilibiliBinaryFrameHandler, BilibiliCmdEnum, DanmuMsgMsg, SendGiftMsg> {
 
     /**
      * 收到礼物
