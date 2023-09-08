@@ -16,10 +16,12 @@
     - [x] BilibiliLiveChatClient
     - [x] 支持 cookie
     - [x] 支持 短房间id
+    - [x] 支持 弹幕发送
 - [x] Douyu
     - [x] DouyuLiveChatClient
-    - [ ] ~~支持 cookie~~（暂时不需要）
+    - [x] 支持 cookie
     - [x] 支持 短房间id
+    - [x] 支持 弹幕发送
 
 - [ ] Huya
 - [ ] ...
@@ -33,6 +35,7 @@ Live room WebSocket chat client
 - Feature 2: 支持自动重连
 - Feature 3: 支持同时监听多个直播间
 - Feature 4: 支持直播间短id
+- Feature 5: 支持弹幕发送
 
 [//]: # ([在线文档]&#40;https://ordinaryroad.tech/or_module/live-chat-client/&#41;)
 
@@ -94,6 +97,9 @@ public class ClientModeExample {
             }
         });
         client.connect();
+        
+        // TODO 要发送的弹幕内容，请注意控制发送频率；框架内置支持设置发送弹幕的最少时间间隔，小于时将忽略该次发送
+        client.sendDanmu("弹幕内容xxx");
     }
 }
 ```
@@ -101,3 +107,35 @@ public class ClientModeExample {
 ### 2.2 高级模式
 
 > 参考 [BilibiliHandlerModeExample](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/tree/main/live-chat-client-examples/handler-example/src/main/java/tech/ordinaryroad/live/chat/client/example/handler/BilibiliHandlerModeExample.java)
+
+## 3. 项目说明
+- commons（主要是抽象接口、抽象类的定义）
+    - commons-base
+        - 定义了一些基础的抽象类：消息、消息监听器、连接连监听器
+        - 消息
+            - msg：收到的所有msg
+                - cmdMsg：有些平台的一些消息正文中没有消息类型cmd字段，例如B站的心跳包，因此再细分为cmdMsg
+        - 消息监听器
+            - onMsg：所有消息（不管消息内容）都会调用
+            - onCmdMsg：cmd消息（消息体中有表示消息类型的字段时），并且该类型需要处理（例如心跳回复包不需要处理）时调用
+            - onOtherCmdMsg：该消息类型不需要处理（例如PK、点赞数更新等类型）时调用
+            - onUnknownCmd：该消息类型未知（没有对应的枚举类）时调用
+    - commons-client
+        - 定义了Client的配置：连接地址、房间id、Cookie、心跳、自动重连等相关参数
+        - 定义了Client的一些方法：初始化、连接、断开、发送消息等
+        - 定义了Client的生命周期
+    - commons-util
+        - 一些工具类：反射、Cookie
+- servers（对使用的连接工具的抽象）
+    - servers-netty
+        - 定义了连接处理Handler
+        - 定义了数据处理Handler
+    - servers-netty-client（基于netty实现的Client）
+        - 扩展了Client、ClientConfig
+        - 扩展Handler增加了Client成员变量
+- clients（对servers-netty-client的具体实现）
+    - client-bilibili
+    - client-douyu
+
+## 感谢以下开源项目
+- [douyu-crawler-demo](https://github.com/cj1128/douyu-crawler-demo)（登录状态的请求包构建）
