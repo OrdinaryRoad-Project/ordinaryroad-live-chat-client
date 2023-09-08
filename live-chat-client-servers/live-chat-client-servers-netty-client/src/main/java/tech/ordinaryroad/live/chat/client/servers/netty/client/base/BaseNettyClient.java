@@ -314,5 +314,8 @@ public abstract class BaseNettyClient
      */
     protected void finishSendDanmu() {
         this.lastSendDanmuTimeInMillis = System.currentTimeMillis();
+        if (log.isDebugEnabled()) {
+            log.debug("弹幕发送完成");
+        }
     }
 }
