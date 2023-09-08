@@ -99,8 +99,14 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
         }
         if (danmu instanceof String msg) {
             try {
+                if (log.isDebugEnabled()) {
+                    log.debug("{} bilibili发送弹幕 {}", getConfig().getRoomId(), danmu);
+                }
                 BilibiliApis.sendMsg(msg, getConfig().getRoomId(), getConfig().getCookie());
                 finishSendDanmu();
+                if (log.isDebugEnabled()) {
+                    log.debug("bilibili弹幕发送成功 {}", danmu);
+                }
                 if (success != null) {
                     success.run();
                 }
@@ -108,7 +114,7 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
                 if (failed != null) {
                     failed.accept(e.getCause());
                 } else {
-                    log.error("弹幕发送失败", e.getCause());
+                    log.error("bilibili弹幕发送失败", e.getCause());
                 }
             }
         } else {

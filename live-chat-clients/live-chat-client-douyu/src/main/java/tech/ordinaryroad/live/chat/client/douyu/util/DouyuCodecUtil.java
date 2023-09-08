@@ -209,7 +209,9 @@ public class DouyuCodecUtil {
         Class<IDouyuMsg> msgClass = getDouyuMsgClassByType(cmdEnum, msgType);
         if (msgClass == null) {
             // TODO 不支持的cmdEnum
-            log.warn("暂不支持 cmdEnum {}, msgType {}", cmdEnum, msgType);
+            if (log.isWarnEnabled()) {
+                log.warn("暂不支持 cmdEnum {}, msgType {}", cmdEnum, msgType);
+            }
             return null;
         }
 

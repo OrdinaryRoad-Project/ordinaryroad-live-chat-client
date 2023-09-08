@@ -212,7 +212,22 @@ public class DouyuLiveChatClient extends BaseNettyClient<
             return;
         }
         if (mode == MODE_WS && danmu instanceof String msg) {
-            send(getWebSocketFrameFactory(getConfig().getRoomId()).createDanmu(msg, getConfig().getCookie()), success, failed);
+            if (log.isDebugEnabled()) {
+                log.debug("{} douyu发送弹幕 {}", getConfig().getRoomId(), danmu);
+            }
+            send(getWebSocketFrameFactory(getConfig().getRoomId()).createDanmu(msg, getConfig().getCookie()), () -> {
+                if (log.isDebugEnabled()) {
+                    log.debug("douyu弹幕发送成功 {}", danmu);
+                }
+                if (success != null) {
+                    success.run();
+                }
+            }, throwable -> {
+                log.error("douyu弹幕发送失败", throwable);
+                if (failed != null) {
+                    failed.accept(throwable);
+                }
+            });
             finishSendDanmu();
         } else {
             super.sendDanmu(danmu);

@@ -297,13 +297,16 @@ public abstract class BaseNettyClient
      * 发送弹幕前判断是否可以发送
      */
     protected boolean checkCanSendDanmn() {
-        if (System.currentTimeMillis() - this.lastSendDanmuTimeInMillis > getConfig().getMinSendDanmuPeriod()) {
-            return true;
+        if (getStatus() != ClientStatusEnums.CONNECTED) {
+            throw new BaseException("连接未建立，无法发送弹幕");
         }
-        if (log.isWarnEnabled()) {
-            log.warn("发送弹幕频率过快，忽略该次发送");
+        if (System.currentTimeMillis() - this.lastSendDanmuTimeInMillis <= getConfig().getMinSendDanmuPeriod()) {
+            if (log.isWarnEnabled()) {
+                log.warn("发送弹幕频率过快，忽略该次发送");
+            }
+            return false;
         }
-        return false;
+        return true;
     }
 
     /**
@@ -311,5 +314,8 @@ public abstract class BaseNettyClient
      */
     protected void finishSendDanmu() {
         this.lastSendDanmuTimeInMillis = System.currentTimeMillis();
+        if (log.isDebugEnabled()) {
+            log.debug("弹幕发送完成");
+        }
     }
 }

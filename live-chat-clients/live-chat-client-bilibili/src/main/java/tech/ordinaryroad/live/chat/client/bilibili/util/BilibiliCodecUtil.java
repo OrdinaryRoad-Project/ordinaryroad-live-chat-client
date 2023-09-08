@@ -217,7 +217,9 @@ public class BilibiliCodecUtil {
                 }
             }
         } else {
-            log.warn("暂不支持的版本：{}", protoverCode);
+            if (log.isWarnEnabled()) {
+                log.warn("暂不支持的版本：{}", protoverCode);
+            }
             return Optional.empty();
         }
     }
@@ -246,7 +248,9 @@ public class BilibiliCodecUtil {
                 }
             }
             default -> {
-                log.warn("暂不支持 {}", operation);
+                if (log.isWarnEnabled()) {
+                    log.warn("暂不支持 {}", operation);
+                }
                 return Optional.empty();
             }
         }

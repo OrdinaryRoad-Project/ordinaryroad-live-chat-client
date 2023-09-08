@@ -48,8 +48,12 @@ tech:
 > http://localhost:8080/client/autoReconnect/true?platform=douyu
 
 > 更新cookie（清空）
-> http://localhost:8080/client/cookie?cookie=?platform=bilibili
-> http://localhost:8080/client/cookie?cookie=?platform=douyu
+> http://localhost:8080/client/cookie?cookie=&platform=bilibili
+> http://localhost:8080/client/cookie?cookie=&platform=douyu
+
+> 发送弹幕“666666“+一位随机数
+> http://localhost:8080/client/sendDanmu/666666?platform=douyu
+> http://localhost:8080/client/sendDanmu/666666?platform=bilibili
 
 ## 支持同时监听多个直播间
 
