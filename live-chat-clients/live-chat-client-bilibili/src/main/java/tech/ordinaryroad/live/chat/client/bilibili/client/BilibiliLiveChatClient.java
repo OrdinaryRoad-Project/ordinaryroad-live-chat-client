@@ -42,6 +42,8 @@ import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliConnect
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
 
+import java.util.function.Consumer;
+
 /**
  * B站直播间弹幕客户端
  *
@@ -91,11 +93,26 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
     }
 
     @Override
-    public void sendDanmu(Object danmu) {
+    public void sendDanmu(Object danmu, Runnable success, Consumer<Throwable> failed) {
+        if (!checkCanSendDanmn()) {
+            return;
+        }
         if (danmu instanceof String msg) {
-            BilibiliApis.sendMsg(msg, getConfig().getRoomId(), getConfig().getCookie());
+            try {
+                BilibiliApis.sendMsg(msg, getConfig().getRoomId(), getConfig().getCookie());
+                finishSendDanmu();
+                if (success != null) {
+                    success.run();
+                }
+            } catch (Exception e) {
+                if (failed != null) {
+                    failed.accept(e.getCause());
+                } else {
+                    log.error("弹幕发送失败", e.getCause());
+                }
+            }
         } else {
-            super.sendDanmu(danmu);
+            super.sendDanmu(danmu, success, failed);
         }
     }
 }
