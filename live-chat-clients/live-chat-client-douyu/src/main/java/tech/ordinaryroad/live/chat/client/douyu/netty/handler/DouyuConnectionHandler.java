@@ -29,6 +29,7 @@ import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
+import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.douyu.client.DouyuLiveChatClient;
@@ -47,6 +48,7 @@ import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNetty
 @ChannelHandler.Sharable
 public class DouyuConnectionHandler extends BaseNettyClientConnectionHandler<DouyuLiveChatClient, DouyuConnectionHandler> {
 
+    private final int mode;
     /**
      * 以ClientConfig为主
      */
@@ -64,36 +66,38 @@ public class DouyuConnectionHandler extends BaseNettyClientConnectionHandler<Dou
      */
     private String cookie;
 
-    public DouyuConnectionHandler(WebSocketClientHandshaker handshaker, DouyuLiveChatClient client, IBaseConnectionListener<DouyuConnectionHandler> listener) {
+    public DouyuConnectionHandler(int mode, WebSocketClientHandshaker handshaker, DouyuLiveChatClient client, IBaseConnectionListener<DouyuConnectionHandler> listener) {
         super(handshaker, client, listener);
+        this.mode = mode;
         this.roomId = client.getConfig().getRoomId();
         this.ver = client.getConfig().getVer();
         this.aver = client.getConfig().getAver();
         this.cookie = client.getConfig().getCookie();
     }
 
-    public DouyuConnectionHandler(WebSocketClientHandshaker handshaker, DouyuLiveChatClient client) {
-        this(handshaker, client, null);
+    public DouyuConnectionHandler(int mode, WebSocketClientHandshaker handshaker, DouyuLiveChatClient client) {
+        this(mode, handshaker, client, null);
     }
 
-    public DouyuConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, String ver, String aver, IBaseConnectionListener<DouyuConnectionHandler> listener, String cookie) {
+    public DouyuConnectionHandler(int mode, WebSocketClientHandshaker handshaker, long roomId, String ver, String aver, IBaseConnectionListener<DouyuConnectionHandler> listener, String cookie) {
         super(handshaker, listener);
+        this.mode = mode;
         this.roomId = roomId;
         this.ver = ver;
         this.aver = aver;
         this.cookie = cookie;
     }
 
-    public DouyuConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, String ver, String aver, IBaseConnectionListener<DouyuConnectionHandler> listener) {
-        this(handshaker, roomId, ver, aver, listener, null);
+    public DouyuConnectionHandler(int mode, WebSocketClientHandshaker handshaker, long roomId, String ver, String aver, IBaseConnectionListener<DouyuConnectionHandler> listener) {
+        this(mode, handshaker, roomId, ver, aver, listener, null);
     }
 
-    public DouyuConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, String ver, String aver, String cookie) {
-        this(handshaker, roomId, ver, aver, null, cookie);
+    public DouyuConnectionHandler(int mode, WebSocketClientHandshaker handshaker, long roomId, String ver, String aver, String cookie) {
+        this(mode, handshaker, roomId, ver, aver, null, cookie);
     }
 
-    public DouyuConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, String ver, String aver) {
-        this(handshaker, roomId, ver, aver, null, null);
+    public DouyuConnectionHandler(int mode, WebSocketClientHandshaker handshaker, long roomId, String ver, String aver) {
+        this(mode, handshaker, roomId, ver, aver, null, null);
     }
 
     @Override
@@ -101,9 +105,13 @@ public class DouyuConnectionHandler extends BaseNettyClientConnectionHandler<Dou
         if (log.isDebugEnabled()) {
             log.debug("发送心跳包");
         }
-        ctx.writeAndFlush(
-                getWebSocketFrameFactory(getRoomId()).createHeartbeat()
-        ).addListener((ChannelFutureListener) future -> {
+        WebSocketFrame webSocketFrame;
+        if (mode == DouyuLiveChatClient.MODE_DANMU) {
+            webSocketFrame = getWebSocketFrameFactory(getRoomId()).createHeartbeat();
+        } else {
+            webSocketFrame = getWebSocketFrameFactory(getRoomId()).createKeeplive(getCookie());
+        }
+        ctx.writeAndFlush(webSocketFrame).addListener((ChannelFutureListener) future -> {
             if (future.isSuccess()) {
                 if (log.isDebugEnabled()) {
                     log.debug("心跳包发送完成");
@@ -120,7 +128,7 @@ public class DouyuConnectionHandler extends BaseNettyClientConnectionHandler<Dou
         if (log.isDebugEnabled()) {
             log.debug("发送认证包");
         }
-        channel.writeAndFlush(getWebSocketFrameFactory(getRoomId()).createAuth(getVer(), getAver()));
+        channel.writeAndFlush(getWebSocketFrameFactory(getRoomId()).createAuth(mode, getVer(), getAver(), getCookie()));
     }
 
     private DouyuWebSocketFrameFactory getWebSocketFrameFactory(long roomId) {

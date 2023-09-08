@@ -49,6 +49,7 @@ public abstract class BaseLiveChatClientConfig {
     protected PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     public static final long DEFAULT_HEARTBEAT_INITIAL_DELAY = 15;
     public static final long DEFAULT_HEARTBEAT_PERIOD = 25;
+    public static final long DEFAULT_MIN_SEND_DANMU_PERIOD = 3000L;
 
     private String websocketUri;
 
@@ -86,6 +87,12 @@ public abstract class BaseLiveChatClientConfig {
     @Builder.Default
     private long heartbeatPeriod = DEFAULT_HEARTBEAT_PERIOD;
 
+    /**
+     * 最小发送弹幕时间间隔（毫秒）
+     */
+    @Builder.Default
+    private long minSendDanmuPeriod = DEFAULT_MIN_SEND_DANMU_PERIOD;
+
     public void setCookie(String cookie) {
         this.propertyChangeSupport.firePropertyChange("cookie", this.cookie, cookie);
         this.cookie = cookie;
@@ -99,6 +106,11 @@ public abstract class BaseLiveChatClientConfig {
     public void setWebsocketUri(String websocketUri) {
         this.propertyChangeSupport.firePropertyChange("websocketUri", this.websocketUri, websocketUri);
         this.websocketUri = websocketUri;
+    }
+
+    public void setMinSendDanmuPeriod(long minSendDanmuPeriod) {
+        this.propertyChangeSupport.firePropertyChange("minSendDanmuPeriod", this.minSendDanmuPeriod, minSendDanmuPeriod);
+        this.minSendDanmuPeriod = minSendDanmuPeriod;
     }
 
     public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {

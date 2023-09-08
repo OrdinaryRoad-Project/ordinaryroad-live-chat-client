@@ -67,7 +67,7 @@ public enum DouyuCmdEnum {
      * type@=keeplive/tick@=1439802131/
      * }</pre>
      */
-    keeplive,
+    keeplive(KeepliveMsg.class),
     /**
      * 客户端新版心跳、心跳回复
      * <pre>{@code
@@ -105,7 +105,7 @@ public enum DouyuCmdEnum {
      * 礼物
      * type@=dgb/gfid@=1/gs@=59872/gfcnt@=1/hashid@=1/rid@=1/nn@=someone/level@=1/dw@=1/
      */
-    dgb,
+    dgb(DgbMsg.class),
     /**
      * 用户进房通知消息
      * type@=uenter/rid@=1/ uid@=1/nn@=someone/str@=1/l evel@=1/el@=eid@AA=1@ASetp@AA=1@ASsc@AA=1@AS@S/
@@ -177,6 +177,14 @@ public enum DouyuCmdEnum {
      */
     rri,
     mapkb(MapkbMsg.class),
+    /**
+     * 发送弹幕
+     */
+    chatmessage(ChatmessageMsg.class),
+    h5ckreq(H5ckreqMsg.class),
+    h5gkcreq(H5gkcreqMsg.class),
+    h5cs(H5csMsg.class),
+    msgrepeaterproxylist(MsgrepeaterproxylistMsg.class),
     ;
 
     private Class<?> tClass;

@@ -24,6 +24,7 @@
 
 package tech.ordinaryroad.live.chat.client.douyu.util;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
@@ -53,13 +54,18 @@ import java.util.*;
 public class DouyuCodecUtil {
 
     public static final String[] IGNORE_PROPERTIES = {"OBJECT_MAPPER", "unknownProperties"};
+    /**
+     * 以SHOULD_IGNORE开头的成员变量将不会序列化
+     */
+    public static final String SHOULD_IGNORE_PROPERTIES_PREFIX = "SHOULD_IGNORE";
+
     public static final short MSG_TYPE_SEND = 689;
     public static final short MSG_TYPE_RECEIVE = 690;
     public static final short FRAME_HEADER_LENGTH = 8;
 
-    public static ByteBuf encode(BaseDouyuCmdMsg msg) {
+    public static ByteBuf encode(BaseDouyuCmdMsg msg, List<String> containProperties) {
         ByteBuf out = Unpooled.buffer(FRAME_HEADER_LENGTH);
-        String bodyDouyuSttString = StrUtil.nullToEmpty(toDouyuSttString(msg)) + SUFFIX;
+        String bodyDouyuSttString = StrUtil.nullToEmpty(toDouyuSttString(msg, containProperties)) + SUFFIX;
         byte[] bodyBytes = bodyDouyuSttString.getBytes(StandardCharsets.UTF_8);
         int length = bodyBytes.length + FRAME_HEADER_LENGTH;
         out.writeIntLE(length);
@@ -69,6 +75,10 @@ public class DouyuCodecUtil {
         out.writeByte(0);
         out.writeBytes(bodyBytes);
         return out;
+    }
+
+    public static ByteBuf encode(BaseDouyuCmdMsg msg) {
+        return encode(msg, null);
     }
 
     public static List<IDouyuMsg> decode(ByteBuf in) {
@@ -138,16 +148,23 @@ public class DouyuCodecUtil {
         return string == null ? StrUtil.EMPTY : (string.replaceAll("@S", "/").replaceAll("@A", "@"));
     }
 
-    public static String toDouyuSttString(Object object) {
+    public static String toDouyuSttString(Object object, List<String> containProperties) {
         StringBuffer sb = new StringBuffer();
         if (object instanceof IDouyuMsg) {
             Class<?> objectClass = object.getClass();
-            Field[] fields = ReflectUtil.getFields(objectClass, field -> !ArrayUtil.contains(IGNORE_PROPERTIES, field.getName()));
+            Field[] fields = ReflectUtil.getFields(objectClass, field -> {
+                String name = field.getName();
+                if (CollUtil.isNotEmpty(containProperties)) {
+                    return containProperties.contains(name);
+                } else {
+                    return !name.startsWith(SHOULD_IGNORE_PROPERTIES_PREFIX) && !ArrayUtil.contains(IGNORE_PROPERTIES, name);
+                }
+            });
             for (Field field : fields) {
                 String key = field.getName();
                 Method method = OrLiveChatReflectUtil.getGetterMethod(objectClass, key);
                 Object value = ReflectUtil.invoke(object, method);
-                String douyuSttString = toDouyuSttString(value);
+                String douyuSttString = toDouyuSttString(value, containProperties);
                 String escape = escape(douyuSttString);
                 sb.append(escape(key))
                         .append(SPLITTER)
@@ -158,7 +175,7 @@ public class DouyuCodecUtil {
             if (object instanceof Iterable<?> iterable) {
                 StringBuffer iterableStringBuffer = new StringBuffer();
                 for (Object o : iterable) {
-                    String douyuSttString = toDouyuSttString(o);
+                    String douyuSttString = toDouyuSttString(o, containProperties);
                     String escape = escape(douyuSttString);
                     iterableStringBuffer.append(escape)
                             .append(END);
@@ -169,15 +186,19 @@ public class DouyuCodecUtil {
                 map.forEach((mapKey, mapValue) -> {
                     mapStringBuffer.append(escape(StrUtil.toStringOrNull(mapKey)))
                             .append(SPLITTER)
-                            .append(escape(toDouyuSttString(mapValue)))
+                            .append(escape(toDouyuSttString(mapValue, containProperties)))
                             .append(END);
                 });
                 sb.append((mapStringBuffer.toString()));
             } else {
-                sb.append((StrUtil.toStringOrNull(object)));
+                sb.append((StrUtil.nullToEmpty(StrUtil.toStringOrNull(object))));
             }
         }
         return sb.toString();
+    }
+
+    public static String toDouyuSttString(Object object) {
+        return toDouyuSttString(object, null);
     }
 
     public static IDouyuMsg parseDouyuSttString(String string, short msgType) {
