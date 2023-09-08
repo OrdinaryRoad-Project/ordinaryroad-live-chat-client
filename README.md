@@ -82,24 +82,25 @@ public class ClientModeExample {
                 .roomId(7777)
                 .build();
 
-        BilibiliLiveChatClient client = new BilibiliLiveChatClient(config, new IBilibiliSendSmsReplyMsgListener() {
+        BilibiliLiveChatClient client = new BilibiliLiveChatClient(config, new IBilibiliMsgListener() {
             @Override
-            public void onDanmuMsg(BilibiliBinaryFrameHandler binaryFrameHandler, SendSmsReplyMsg msg) {
-                IBilibiliSendSmsReplyMsgListener.super.onDanmuMsg(binaryFrameHandler, msg);
+            public void onDanmuMsg(BilibiliBinaryFrameHandler binaryFrameHandler, DanmuMsgMsg msg) {
+                IBilibiliMsgListener.super.onDanmuMsg(binaryFrameHandler, msg);
 
-                JsonNode info = msg.getInfo();
-                JsonNode jsonNode1 = info.get(1);
-                String danmuText = jsonNode1.asText();
-                JsonNode jsonNode2 = info.get(2);
-                Long uid = jsonNode2.get(0).asLong();
-                String uname = jsonNode2.get(1).asText();
-                System.out.printf("%s 收到弹幕 %s(%d)：%s%n", binaryFrameHandler.getRoomId(), uname, uid, danmuText);
+                System.out.printf("%s 收到弹幕 %s(%d)：%s%n", binaryFrameHandler.getRoomId(), msg.getUsername(), msg.getUid(), msg.getContent());
             }
         });
         client.connect();
-        
-        // TODO 要发送的弹幕内容，请注意控制发送频率；框架内置支持设置发送弹幕的最少时间间隔，小于时将忽略该次发送
-        client.sendDanmu("弹幕内容xxx");
+
+        client.addStatusChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                if (evt.getNewValue().equals(ClientStatusEnums.CONNECTED)) {
+                    // TODO 要发送的弹幕内容，请注意控制发送频率；框架内置支持设置发送弹幕的最少时间间隔，小于时将忽略该次发送
+                    client.sendDanmu("666666" + RandomUtil.randomNumbers(1));
+                }
+            }
+        });
     }
 }
 ```
@@ -111,11 +112,15 @@ public class ClientModeExample {
 ## 3. 项目说明
 - commons（主要是抽象接口、抽象类的定义）
     - commons-base
-        - 定义了一些基础的抽象类：消息、消息监听器、连接连监听器
+        - 定义了一些基础的接口、抽象类：消息、消息监听器、连接连监听器
         - 消息
             - msg：收到的所有msg
                 - cmdMsg：有些平台的一些消息正文中没有消息类型cmd字段，例如B站的心跳包，因此再细分为cmdMsg
+            - IDanmuMsg: 内置用户名、弹幕内容等方法
+            - IGiftMsg：内置发送方、接收方、礼物ID、礼物个数等
         - 消息监听器
+            - onDanmuMsg：收到弹幕消息
+            - onGiftMsg：收到礼物消息
             - onMsg：所有消息（不管消息内容）都会调用
             - onCmdMsg：cmd消息（消息体中有表示消息类型的字段时），并且该类型需要处理（例如心跳回复包不需要处理）时调用
             - onOtherCmdMsg：该消息类型不需要处理（例如PK、点赞数更新等类型）时调用
@@ -125,7 +130,7 @@ public class ClientModeExample {
         - 定义了Client的一些方法：初始化、连接、断开、发送消息等
         - 定义了Client的生命周期
     - commons-util
-        - 一些工具类：反射、Cookie
+        - 一些工具类：时间、反射、Cookie
 - servers（对使用的连接工具的抽象）
     - servers-netty
         - 定义了连接处理Handler
