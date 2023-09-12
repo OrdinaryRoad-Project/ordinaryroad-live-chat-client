@@ -204,9 +204,14 @@ public abstract class BaseNettyClient
                 this.channel = connectFuture.channel();
                 // 监听是否握手成功
                 this.connectionHandler.getHandshakeFuture().addListener((ChannelFutureListener) handshakeFuture -> {
-                    connectionHandler.sendAuthRequest(channel);
-                    if (success != null) {
-                        success.run();
+                    try {
+                        connectionHandler.sendAuthRequest(channel);
+                        if (success != null) {
+                            success.run();
+                        }
+                    } catch (Exception e) {
+                        log.error("认证包发送失败，断开连接", e);
+                        this.disconnect();
                     }
                 });
             } else {
