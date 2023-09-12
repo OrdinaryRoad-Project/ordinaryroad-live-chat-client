@@ -27,7 +27,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>tech.ordinaryroad</groupId>
     <artifactId>live-chat-client</artifactId>
-    <version>0.0.8</version>
+    <version>0.0.9</version>
     <packaging>pom</packaging>
     <name>ordinaryroad-live-chat-client</name>
     <description>Live room WebSocket chat client</description>
@@ -63,7 +63,6 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
 
         <brotli4j.version>1.12.0</brotli4j.version>
         <jackson-databind.version>2.15.2</jackson-databind.version>
@@ -79,37 +78,37 @@
             <dependency>
                 <groupId>tech.ordinaryroad</groupId>
                 <artifactId>live-chat-client-commons-base</artifactId>
-                <version>0.0.8</version>
+                <version>0.0.9</version>
             </dependency>
 
             <dependency>
                 <groupId>tech.ordinaryroad</groupId>
                 <artifactId>live-chat-client-commons-util</artifactId>
-                <version>0.0.8</version>
+                <version>0.0.9</version>
             </dependency>
 
             <dependency>
                 <groupId>tech.ordinaryroad</groupId>
                 <artifactId>live-chat-client-commons-client</artifactId>
-                <version>0.0.8</version>
+                <version>0.0.9</version>
             </dependency>
 
             <dependency>
                 <groupId>tech.ordinaryroad</groupId>
                 <artifactId>live-chat-client-servers-netty</artifactId>
-                <version>0.0.8</version>
+                <version>0.0.9</version>
             </dependency>
 
             <dependency>
                 <groupId>tech.ordinaryroad</groupId>
                 <artifactId>live-chat-client-servers-netty-client</artifactId>
-                <version>0.0.8</version>
+                <version>0.0.9</version>
             </dependency>
 
             <dependency>
                 <groupId>tech.ordinaryroad</groupId>
                 <artifactId>live-chat-client-bilibili</artifactId>
-                <version>0.0.8</version>
+                <version>0.0.9</version>
             </dependency>
 
             <dependency>
@@ -171,7 +170,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven-compiler-plugin.version}</version>
+                <version>3.11.0</version>
                 <configuration>
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
