@@ -35,7 +35,7 @@ import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 import tech.ordinaryroad.live.chat.client.douyu.config.DouyuLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuConnectionListener;
-import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuDouyuCmdMsgListener;
+import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuMsgListener;
 import tech.ordinaryroad.live.chat.client.douyu.msg.ChatmsgMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.DgbMsg;
 import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuBinaryFrameHandler;
@@ -46,7 +46,7 @@ import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuConnectionHan
  * @date 2023/8/26
  */
 @Slf4j
-class DouyuLiveChatClientTest implements IDouyuConnectionListener, IDouyuDouyuCmdMsgListener {
+class DouyuLiveChatClientTest implements IDouyuConnectionListener, IDouyuMsgListener {
 
     static Object lock = new Object();
     DouyuLiveChatClient client;
@@ -58,45 +58,45 @@ class DouyuLiveChatClientTest implements IDouyuConnectionListener, IDouyuDouyuCm
                 .roomId(74751)
                 .build();
 
-        client = new DouyuLiveChatClient(config, new IDouyuDouyuCmdMsgListener() {
+        client = new DouyuLiveChatClient(config, new IDouyuMsgListener() {
             @Override
             public void onMsg(DouyuBinaryFrameHandler binaryFrameHandler, IMsg msg) {
-                IDouyuDouyuCmdMsgListener.super.onMsg(binaryFrameHandler, msg);
+                IDouyuMsgListener.super.onMsg(binaryFrameHandler, msg);
 
                 log.debug("{} 收到{}消息 {}", binaryFrameHandler.getRoomId(), msg.getClass(), msg);
             }
 
             @Override
             public void onDanmuMsg(DouyuBinaryFrameHandler binaryFrameHandler, ChatmsgMsg msg) {
-                IDouyuDouyuCmdMsgListener.super.onDanmuMsg(binaryFrameHandler, msg);
+                IDouyuMsgListener.super.onDanmuMsg(binaryFrameHandler, msg);
 
                 log.info("{} 收到弹幕 {}({})：{}", binaryFrameHandler.getRoomId(), msg.getUsername(), msg.getUid(), msg.getContent());
             }
 
             @Override
             public void onGiftMsg(DouyuBinaryFrameHandler binaryFrameHandler, DgbMsg msg) {
-                IDouyuDouyuCmdMsgListener.super.onGiftMsg(binaryFrameHandler, msg);
+                IDouyuMsgListener.super.onGiftMsg(binaryFrameHandler, msg);
 
                 log.info("{} 收到礼物 {}({}) {} {}({})x{}({})", binaryFrameHandler.getRoomId(), msg.getUsername(), msg.getUid(), "赠送", msg.getGiftName(), msg.getGiftId(), msg.getGiftCount(), msg.getGiftPrice());
             }
 
             @Override
             public void onCmdMsg(DouyuBinaryFrameHandler binaryFrameHandler, DouyuCmdEnum cmd, BaseCmdMsg<DouyuCmdEnum> cmdMsg) {
-                IDouyuDouyuCmdMsgListener.super.onCmdMsg(binaryFrameHandler, cmd, cmdMsg);
+                IDouyuMsgListener.super.onCmdMsg(binaryFrameHandler, cmd, cmdMsg);
 
                 log.info("{} 收到CMD消息{} {}", binaryFrameHandler.getRoomId(), cmd, cmdMsg);
             }
 
             @Override
             public void onOtherCmdMsg(DouyuBinaryFrameHandler binaryFrameHandler, DouyuCmdEnum cmd, BaseCmdMsg<DouyuCmdEnum> cmdMsg) {
-                IDouyuDouyuCmdMsgListener.super.onOtherCmdMsg(binaryFrameHandler, cmd, cmdMsg);
+                IDouyuMsgListener.super.onOtherCmdMsg(binaryFrameHandler, cmd, cmdMsg);
 
                 log.debug("{} 收到其他CMD消息 {}", binaryFrameHandler.getRoomId(), cmd);
             }
 
             @Override
             public void onUnknownCmd(DouyuBinaryFrameHandler binaryFrameHandler, String cmdString, BaseMsg msg) {
-                IDouyuDouyuCmdMsgListener.super.onUnknownCmd(binaryFrameHandler, cmdString, msg);
+                IDouyuMsgListener.super.onUnknownCmd(binaryFrameHandler, cmdString, msg);
 
                 log.debug("{} 收到未知CMD消息 {}", binaryFrameHandler.getRoomId(), cmdString);
             }
@@ -161,24 +161,24 @@ class DouyuLiveChatClientTest implements IDouyuConnectionListener, IDouyuDouyuCm
                 // TODO 修改房间id（支持短id）
                 .roomId(74751)
                 .build();
-        client = new DouyuLiveChatClient(DouyuLiveChatClient.MODE_WS, config, new IDouyuDouyuCmdMsgListener() {
+        client = new DouyuLiveChatClient(DouyuLiveChatClient.MODE_WS, config, new IDouyuMsgListener() {
             @Override
             public void onMsg(IMsg msg) {
-                IDouyuDouyuCmdMsgListener.super.onMsg(msg);
+                IDouyuMsgListener.super.onMsg(msg);
 
 //                log.debug("收到消息 {}", msg.getClass());
             }
 
             @Override
             public void onCmdMsg(DouyuCmdEnum cmd, BaseCmdMsg<DouyuCmdEnum> cmdMsg) {
-                IDouyuDouyuCmdMsgListener.super.onCmdMsg(cmd, cmdMsg);
+                IDouyuMsgListener.super.onCmdMsg(cmd, cmdMsg);
 
                 log.debug("收到CMD消息 {} {}", cmd, cmdMsg);
             }
 
             @Override
             public void onUnknownCmd(String cmdString, BaseMsg msg) {
-                IDouyuDouyuCmdMsgListener.super.onUnknownCmd(cmdString, msg);
+                IDouyuMsgListener.super.onUnknownCmd(cmdString, msg);
 
                 log.debug("收到未知CMD消息 {} {}", cmdString, msg);
             }
@@ -220,6 +220,26 @@ class DouyuLiveChatClientTest implements IDouyuConnectionListener, IDouyuDouyuCm
         }
     }
 
+    @Test
+    void createAuthFrameFailedAndDisconnect() throws InterruptedException {
+        DouyuLiveChatClientConfig config = DouyuLiveChatClientConfig.builder()
+                // TODO 修改房间id（支持短id）
+                .autoReconnect(false)
+                .cookie("12323232'123'213'2'13'2")
+                .roomId(22222)
+                .build();
+
+        client = new DouyuLiveChatClient(config, this,this);
+        client.connect();
+
+        // 防止测试时直接退出
+        while (true) {
+            synchronized (lock) {
+                lock.wait();
+            }
+        }
+    }
+
     @Override
     public void onConnected(DouyuConnectionHandler connectionHandler) {
         log.info("{} onConnected", connectionHandler.getRoomId());
@@ -237,7 +257,7 @@ class DouyuLiveChatClientTest implements IDouyuConnectionListener, IDouyuDouyuCm
 
     @Override
     public void onDanmuMsg(DouyuBinaryFrameHandler binaryFrameHandler, ChatmsgMsg msg) {
-        IDouyuDouyuCmdMsgListener.super.onDanmuMsg(binaryFrameHandler, msg);
+        IDouyuMsgListener.super.onDanmuMsg(binaryFrameHandler, msg);
 
         log.info("{} 收到弹幕 {}({})：{}", binaryFrameHandler.getRoomId(), msg.getNn(), msg.getUid(), msg.getTxt());
     }
