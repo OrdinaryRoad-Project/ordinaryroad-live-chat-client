@@ -30,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseCmdMsg;
 import tech.ordinaryroad.live.chat.client.douyu.client.DouyuLiveChatClient;
 import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
-import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuDouyuCmdMsgListener;
+import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuMsgListener;
 import tech.ordinaryroad.live.chat.client.douyu.msg.ChatmsgMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.DgbMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.DouyuCmdMsg;
@@ -49,13 +49,13 @@ import java.util.List;
  */
 @Slf4j
 @ChannelHandler.Sharable
-public class DouyuBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<DouyuLiveChatClient, DouyuBinaryFrameHandler, DouyuCmdEnum, IDouyuMsg, ChatmsgMsg, DgbMsg, IDouyuDouyuCmdMsgListener> {
+public class DouyuBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<DouyuLiveChatClient, DouyuBinaryFrameHandler, DouyuCmdEnum, IDouyuMsg, ChatmsgMsg, DgbMsg, IDouyuMsgListener> {
 
-    public DouyuBinaryFrameHandler(IDouyuDouyuCmdMsgListener listener, DouyuLiveChatClient client) {
+    public DouyuBinaryFrameHandler(IDouyuMsgListener listener, DouyuLiveChatClient client) {
         super(listener, client);
     }
 
-    public DouyuBinaryFrameHandler(IDouyuDouyuCmdMsgListener listener, long roomId) {
+    public DouyuBinaryFrameHandler(IDouyuMsgListener listener, long roomId) {
         super(listener, roomId);
     }
 

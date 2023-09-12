@@ -124,7 +124,6 @@ public class DouyuConnectionHandler extends BaseNettyClientConnectionHandler<Dou
 
     @Override
     public void sendAuthRequest(Channel channel) {
-        // 5s内认证
         if (log.isDebugEnabled()) {
             log.debug("发送认证包");
         }

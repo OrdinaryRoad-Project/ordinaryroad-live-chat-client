@@ -34,7 +34,7 @@ import tech.ordinaryroad.live.chat.client.commons.client.config.BaseLiveChatClie
 import tech.ordinaryroad.live.chat.client.douyu.client.DouyuLiveChatClient;
 import tech.ordinaryroad.live.chat.client.douyu.config.DouyuLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuConnectionListener;
-import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuDouyuCmdMsgListener;
+import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuMsgListener;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
 
 /**
@@ -47,10 +47,10 @@ public class MultiplyLiveChatClientController {
 
     private final IBilibiliMsgListener bilibiliSendSmsReplyMsgListener;
     private final IBilibiliConnectionListener bilibiliConnectionListener;
-    private final IDouyuDouyuCmdMsgListener douyuCmdMsgListener;
+    private final IDouyuMsgListener douyuCmdMsgListener;
     private final IDouyuConnectionListener douyuConnectionListener;
 
-    public MultiplyLiveChatClientController(IBilibiliMsgListener bilibiliSendSmsReplyMsgListener, IBilibiliConnectionListener bilibiliConnectionListener, IDouyuDouyuCmdMsgListener douyuCmdMsgListener, IDouyuConnectionListener douyuConnectionListener) {
+    public MultiplyLiveChatClientController(IBilibiliMsgListener bilibiliSendSmsReplyMsgListener, IBilibiliConnectionListener bilibiliConnectionListener, IDouyuMsgListener douyuCmdMsgListener, IDouyuConnectionListener douyuConnectionListener) {
         this.bilibiliSendSmsReplyMsgListener = bilibiliSendSmsReplyMsgListener;
         this.bilibiliConnectionListener = bilibiliConnectionListener;
         this.douyuCmdMsgListener = douyuCmdMsgListener;

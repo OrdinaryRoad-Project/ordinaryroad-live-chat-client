@@ -34,5 +34,5 @@ import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuBinaryFrameHa
  * @author mjz
  * @date 2023/1/7
  */
-public interface IDouyuDouyuCmdMsgListener extends IBaseMsgListener<DouyuBinaryFrameHandler, DouyuCmdEnum, ChatmsgMsg, DgbMsg> {
+public interface IDouyuMsgListener extends IBaseMsgListener<DouyuBinaryFrameHandler, DouyuCmdEnum, ChatmsgMsg, DgbMsg> {
 }

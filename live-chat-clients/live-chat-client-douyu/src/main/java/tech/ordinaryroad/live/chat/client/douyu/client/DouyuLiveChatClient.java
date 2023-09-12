@@ -40,7 +40,7 @@ import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums
 import tech.ordinaryroad.live.chat.client.douyu.config.DouyuLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuConnectionListener;
-import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuDouyuCmdMsgListener;
+import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuMsgListener;
 import tech.ordinaryroad.live.chat.client.douyu.msg.ChatmsgMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.DgbMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.LoginresMsg;
@@ -66,10 +66,10 @@ public class DouyuLiveChatClient extends BaseNettyClient<
         IDouyuMsg,
         ChatmsgMsg,
         DgbMsg,
-        IDouyuDouyuCmdMsgListener,
+        IDouyuMsgListener,
         DouyuConnectionHandler,
         DouyuBinaryFrameHandler
-        > implements IDouyuDouyuCmdMsgListener {
+        > implements IDouyuMsgListener {
 
     public static final int MODE_WS = 1;
     public static final int MODE_DANMU = 2;
@@ -77,9 +77,9 @@ public class DouyuLiveChatClient extends BaseNettyClient<
     private DouyuLiveChatClient danmuClient = null;
     private final int mode;
     private final IDouyuConnectionListener connectionListener;
-    private final IDouyuDouyuCmdMsgListener msgListener;
+    private final IDouyuMsgListener msgListener;
 
-    public DouyuLiveChatClient(int mode, DouyuLiveChatClientConfig config, IDouyuDouyuCmdMsgListener msgListener, IDouyuConnectionListener connectionListener, EventLoopGroup workerGroup) {
+    public DouyuLiveChatClient(int mode, DouyuLiveChatClientConfig config, IDouyuMsgListener msgListener, IDouyuConnectionListener connectionListener, EventLoopGroup workerGroup) {
         super(config, workerGroup, null);
         this.mode = mode;
         this.connectionListener = connectionListener;
@@ -89,15 +89,15 @@ public class DouyuLiveChatClient extends BaseNettyClient<
         this.init();
     }
 
-    public DouyuLiveChatClient(DouyuLiveChatClientConfig config, IDouyuDouyuCmdMsgListener msgListener, IDouyuConnectionListener connectionListener, EventLoopGroup workerGroup) {
+    public DouyuLiveChatClient(DouyuLiveChatClientConfig config, IDouyuMsgListener msgListener, IDouyuConnectionListener connectionListener, EventLoopGroup workerGroup) {
         this(MODE_WS, config, msgListener, connectionListener, workerGroup);
     }
 
-    public DouyuLiveChatClient(DouyuLiveChatClientConfig config, IDouyuDouyuCmdMsgListener msgListener, IDouyuConnectionListener connectionListener) {
+    public DouyuLiveChatClient(DouyuLiveChatClientConfig config, IDouyuMsgListener msgListener, IDouyuConnectionListener connectionListener) {
         this(config, msgListener, connectionListener, new NioEventLoopGroup());
     }
 
-    public DouyuLiveChatClient(DouyuLiveChatClientConfig config, IDouyuDouyuCmdMsgListener msgListener) {
+    public DouyuLiveChatClient(DouyuLiveChatClientConfig config, IDouyuMsgListener msgListener) {
         this(config, msgListener, null, new NioEventLoopGroup());
     }
 
