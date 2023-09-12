@@ -31,7 +31,7 @@ import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliConnectionL
 import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliMsgListener;
 import tech.ordinaryroad.live.chat.client.douyu.client.DouyuLiveChatClient;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuConnectionListener;
-import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuDouyuCmdMsgListener;
+import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuMsgListener;
 
 /**
  * @author mjz
@@ -43,10 +43,10 @@ public class LiveChatClientConfiguration {
     private final LiveChatClientConfigurations configurations;
     private final IBilibiliMsgListener bilibiliSendSmsReplyMsgListener;
     private final IBilibiliConnectionListener bilibiliConnectionListener;
-    private final IDouyuDouyuCmdMsgListener douyuCmdMsgListener;
+    private final IDouyuMsgListener douyuCmdMsgListener;
     private final IDouyuConnectionListener douyuConnectionListener;
 
-    public LiveChatClientConfiguration(LiveChatClientConfigurations configurations, IBilibiliMsgListener bilibiliSendSmsReplyMsgListener, IBilibiliConnectionListener bilibiliConnectionListener, IDouyuDouyuCmdMsgListener douyuCmdMsgListener, IDouyuConnectionListener douyuConnectionListener) {
+    public LiveChatClientConfiguration(LiveChatClientConfigurations configurations, IBilibiliMsgListener bilibiliSendSmsReplyMsgListener, IBilibiliConnectionListener bilibiliConnectionListener, IDouyuMsgListener douyuCmdMsgListener, IDouyuConnectionListener douyuConnectionListener) {
         this.configurations = configurations;
         this.bilibiliSendSmsReplyMsgListener = bilibiliSendSmsReplyMsgListener;
         this.bilibiliConnectionListener = bilibiliConnectionListener;
