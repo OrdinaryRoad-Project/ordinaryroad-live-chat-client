@@ -107,11 +107,11 @@ public class BilibiliMsgListener implements IBilibiliMsgListener {
 
     @Override
     public void onOtherCmdMsg(BilibiliCmdEnum cmd, BaseCmdMsg<BilibiliCmdEnum> cmdMsg) {
-        log.debug("收到其他CMD消息 {}", cmd);
+        log.info("收到其他CMD消息 {}", cmd);
     }
 
     @Override
     public void onUnknownCmd(String cmdString, BaseMsg msg) {
-        log.debug("收到未知CMD消息 {}", cmdString);
+        log.info("收到未知CMD消息 {}", cmdString);
     }
 }
