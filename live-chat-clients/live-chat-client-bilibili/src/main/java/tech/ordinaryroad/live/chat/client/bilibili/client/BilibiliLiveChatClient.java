@@ -104,19 +104,32 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
                 if (log.isDebugEnabled()) {
                     log.debug("{} bilibili发送弹幕 {}", getConfig().getRoomId(), danmu);
                 }
-                BilibiliApis.sendMsg(msg, getConfig().getRoomId(), getConfig().getCookie());
-                finishSendDanmu();
+
+                boolean sendSuccess = false;
+                try {
+                    BilibiliApis.sendMsg(msg, getConfig().getRoomId(), getConfig().getCookie());
+                    sendSuccess = true;
+                } catch (Exception e) {
+                    log.error("bilibili弹幕发送失败", e.getCause());
+                    if (failed != null) {
+                        failed.accept(e.getCause());
+                    }
+                }
+                if (!sendSuccess) {
+                    return;
+                }
+
                 if (log.isDebugEnabled()) {
                     log.debug("bilibili弹幕发送成功 {}", danmu);
                 }
                 if (success != null) {
                     success.run();
                 }
+                finishSendDanmu();
             } catch (Exception e) {
+                log.error("bilibili弹幕发送失败", e.getCause());
                 if (failed != null) {
                     failed.accept(e.getCause());
-                } else {
-                    log.error("bilibili弹幕发送失败", e.getCause());
                 }
             }
         } else {
