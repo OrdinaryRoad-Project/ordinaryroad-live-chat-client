@@ -119,7 +119,7 @@ public class ClientModeExample {
 
 > 参考 [BilibiliHandlerModeExample](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/tree/main/live-chat-client-examples/handler-example/src/main/java/tech/ordinaryroad/live/chat/client/example/handler/BilibiliHandlerModeExample.java)
 
-## 3. 项目说明
+## 3 项目说明
 - commons（主要是抽象接口、抽象类的定义）
     - commons-base
         - 定义了一些基础的接口、抽象类：消息、消息监听器、连接连监听器
