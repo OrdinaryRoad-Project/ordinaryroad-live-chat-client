@@ -27,7 +27,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>tech.ordinaryroad</groupId>
     <artifactId>live-chat-client</artifactId>
-    <version>0.0.9</version>
+    <version>0.0.10</version>
     <packaging>pom</packaging>
     <name>ordinaryroad-live-chat-client</name>
     <description>Live room WebSocket chat client</description>
@@ -82,37 +82,37 @@
             <dependency>
                 <groupId>tech.ordinaryroad</groupId>
                 <artifactId>live-chat-client-commons-base</artifactId>
-                <version>0.0.9</version>
+                <version>0.0.10</version>
             </dependency>
 
             <dependency>
                 <groupId>tech.ordinaryroad</groupId>
                 <artifactId>live-chat-client-commons-util</artifactId>
-                <version>0.0.9</version>
+                <version>0.0.10</version>
             </dependency>
 
             <dependency>
                 <groupId>tech.ordinaryroad</groupId>
                 <artifactId>live-chat-client-commons-client</artifactId>
-                <version>0.0.9</version>
+                <version>0.0.10</version>
             </dependency>
 
             <dependency>
                 <groupId>tech.ordinaryroad</groupId>
                 <artifactId>live-chat-client-servers-netty</artifactId>
-                <version>0.0.9</version>
+                <version>0.0.10</version>
             </dependency>
 
             <dependency>
                 <groupId>tech.ordinaryroad</groupId>
                 <artifactId>live-chat-client-servers-netty-client</artifactId>
-                <version>0.0.9</version>
+                <version>0.0.10</version>
             </dependency>
 
             <dependency>
                 <groupId>tech.ordinaryroad</groupId>
                 <artifactId>live-chat-client-bilibili</artifactId>
-                <version>0.0.9</version>
+                <version>0.0.10</version>
             </dependency>
 
             <dependency>
