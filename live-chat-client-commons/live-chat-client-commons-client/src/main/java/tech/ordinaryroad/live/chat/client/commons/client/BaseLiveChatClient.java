@@ -142,6 +142,7 @@ public abstract class BaseLiveChatClient<
         for (PropertyChangeListener propertyChangeListener : this.statusChangeSupport.getPropertyChangeListeners()) {
             this.statusChangeSupport.removePropertyChangeListener(propertyChangeListener);
         }
+        this.msgListeners.clear();
     }
 
     @Override
