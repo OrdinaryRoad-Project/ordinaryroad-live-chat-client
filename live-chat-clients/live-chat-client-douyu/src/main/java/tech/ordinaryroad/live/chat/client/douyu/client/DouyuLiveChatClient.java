@@ -165,8 +165,8 @@ public class DouyuLiveChatClient extends DouyuWsLiveChatClient implements IDouyu
                 this.danmuClient.addStatusChangeListener(evt -> {
                     ClientStatusEnums newStatus = (ClientStatusEnums) evt.getNewValue();
                     switch (newStatus) {
-                        case RECONNECTING, CONNECT_FAILED, DISCONNECTED, CONNECTING -> {
-                            setStatus(newStatus);
+                        case CONNECTED, RECONNECTING, CONNECT_FAILED, DISCONNECTED, CONNECTING -> {
+                            super.setStatus(newStatus);
                         }
                         default -> {
                             // ignore
@@ -185,5 +185,13 @@ public class DouyuLiveChatClient extends DouyuWsLiveChatClient implements IDouyu
             return;
         }
         super.setStatus(status);
+    }
+
+    @Override
+    public void destroy() {
+        if (danmuClient != null) {
+            danmuClient.destroy();
+        }
+        super.destroy();
     }
 }
