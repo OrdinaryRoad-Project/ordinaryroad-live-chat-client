@@ -88,6 +88,10 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
         this(config, msgListener, null, new NioEventLoopGroup());
     }
 
+    public BilibiliLiveChatClient(BilibiliLiveChatClientConfig config) {
+        this(config, null);
+    }
+
     @Override
     public BilibiliConnectionHandler initConnectionHandler(IBaseConnectionListener<BilibiliConnectionHandler> clientConnectionListener) {
         return new BilibiliConnectionHandler(
