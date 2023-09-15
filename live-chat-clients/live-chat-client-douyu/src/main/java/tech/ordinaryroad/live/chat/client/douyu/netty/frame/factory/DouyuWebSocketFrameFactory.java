@@ -35,6 +35,7 @@ import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCookieUtil;
 import tech.ordinaryroad.live.chat.client.douyu.api.DouyuApis;
 import tech.ordinaryroad.live.chat.client.douyu.client.DouyuLiveChatClient;
 import tech.ordinaryroad.live.chat.client.douyu.config.DouyuLiveChatClientConfig;
+import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuClientModeEnum;
 import tech.ordinaryroad.live.chat.client.douyu.msg.*;
 import tech.ordinaryroad.live.chat.client.douyu.msg.base.BaseDouyuCmdMsg;
 import tech.ordinaryroad.live.chat.client.douyu.netty.frame.AuthWebSocketFrame;
@@ -75,7 +76,7 @@ public class DouyuWebSocketFrameFactory {
      * @param cookie 浏览器Cookie，发送弹幕时必传
      * @return AuthWebSocketFrame
      */
-    public AuthWebSocketFrame createAuth(int mode, String ver, String aver, String cookie) {
+    public AuthWebSocketFrame createAuth(DouyuClientModeEnum mode, String ver, String aver, String cookie) {
         try {
             // type@=loginreq/roomid@=7750753/dfl@=/username@=visitor10424697/uid@=1168052601/ver@=20220825/aver@=218101901/ct@=0/
             LoginreqMsg loginreqMsg;
@@ -86,7 +87,7 @@ public class DouyuWebSocketFrameFactory {
 
             if (cookieMap.isEmpty()) {
                 // 视为未登录
-                if (mode == DouyuLiveChatClient.MODE_DANMU) {
+                if (mode == DouyuClientModeEnum.DANMU) {
                     uid = RandomUtil.randomLong(10000000, 19999999);
                     username = "visitor" + RandomUtil.randomLong(10000000, 19999999);
                     loginreqMsg = new LoginreqMsg(realRoomId, "", username, uid, ver, aver);
@@ -104,7 +105,7 @@ public class DouyuWebSocketFrameFactory {
                 uid = NumberUtil.parseLong(acfUid);
                 username = acfUid;
                 String dfl = "sn@A=105@Sss@A=1";
-                if (mode == DouyuLiveChatClient.MODE_DANMU) {
+                if (mode == DouyuClientModeEnum.DANMU) {
                     loginreqMsg = new LoginreqMsg(realRoomId, dfl, username, uid, ver, aver);
                     return new AuthWebSocketFrame(DouyuCodecUtil.encode(loginreqMsg, LoginreqMsg.SHOULD_IGNORE_NEW_LOGIN_PROPERTIES));
                 } else {
@@ -126,7 +127,7 @@ public class DouyuWebSocketFrameFactory {
         }
     }
 
-    public AuthWebSocketFrame createAuth(int mode, String ver, String aver) {
+    public AuthWebSocketFrame createAuth(DouyuClientModeEnum mode, String ver, String aver) {
         return this.createAuth(mode, ver, aver, null);
     }
 

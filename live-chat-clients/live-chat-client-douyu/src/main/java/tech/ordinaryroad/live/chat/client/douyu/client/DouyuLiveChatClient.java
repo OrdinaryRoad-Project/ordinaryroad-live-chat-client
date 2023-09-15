@@ -26,12 +26,9 @@ package tech.ordinaryroad.live.chat.client.douyu.client;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
+import cn.hutool.core.util.RandomUtil;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.handler.codec.http.DefaultHttpHeaders;
-import io.netty.handler.codec.http.websocketx.WebSocketClientHandshakerFactory;
-import io.netty.handler.codec.http.websocketx.WebSocketFrame;
-import io.netty.handler.codec.http.websocketx.WebSocketVersion;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseCmdMsg;
@@ -44,15 +41,12 @@ import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuConnectionListene
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuMsgListener;
 import tech.ordinaryroad.live.chat.client.douyu.msg.ChatmsgMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.DgbMsg;
-import tech.ordinaryroad.live.chat.client.douyu.msg.LoginresMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.MsgrepeaterproxylistMsg;
-import tech.ordinaryroad.live.chat.client.douyu.msg.base.IDouyuMsg;
-import tech.ordinaryroad.live.chat.client.douyu.netty.frame.factory.DouyuWebSocketFrameFactory;
 import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuConnectionHandler;
-import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
 
-import java.util.function.Consumer;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 直播间弹幕客户端
@@ -61,37 +55,24 @@ import java.util.function.Consumer;
  * @date 2023/8/20
  */
 @Slf4j
-public class DouyuLiveChatClient extends BaseNettyClient<
-        DouyuLiveChatClientConfig,
-        DouyuCmdEnum,
-        IDouyuMsg,
-        ChatmsgMsg,
-        DgbMsg,
-        IDouyuMsgListener,
-        DouyuConnectionHandler,
-        DouyuBinaryFrameHandler
-        > implements IDouyuMsgListener {
+public class DouyuLiveChatClient extends DouyuWsLiveChatClient implements IDouyuMsgListener {
 
-    public static final int MODE_WS = 1;
-    public static final int MODE_DANMU = 2;
-
-    private DouyuLiveChatClient danmuClient = null;
-    private final int mode;
+    private final DouyuWsLiveChatClient proxyClient = this;
+    private DouyuDanmuLiveChatClient danmuClient = null;
+    private DouyuConnectionHandler connectionHandler;
+    /**
+     * 统一管理Ws、Danmu的连接状态
+     */
     private final IDouyuConnectionListener connectionListener;
-    private final IDouyuMsgListener msgListener;
 
-    public DouyuLiveChatClient(int mode, DouyuLiveChatClientConfig config, IDouyuMsgListener msgListener, IDouyuConnectionListener connectionListener, EventLoopGroup workerGroup) {
-        super(config, workerGroup, null);
-        this.mode = mode;
+    public DouyuLiveChatClient(DouyuLiveChatClientConfig config, List<IDouyuMsgListener> msgListeners, IDouyuConnectionListener connectionListener, EventLoopGroup workerGroup) {
+        super(config, msgListeners, null, workerGroup);
         this.connectionListener = connectionListener;
-        this.msgListener = msgListener;
-
-        // 初始化
-        this.init();
     }
 
     public DouyuLiveChatClient(DouyuLiveChatClientConfig config, IDouyuMsgListener msgListener, IDouyuConnectionListener connectionListener, EventLoopGroup workerGroup) {
-        this(MODE_WS, config, msgListener, connectionListener, workerGroup);
+        super(config, msgListener, null, workerGroup);
+        this.connectionListener = connectionListener;
     }
 
     public DouyuLiveChatClient(DouyuLiveChatClientConfig config, IDouyuMsgListener msgListener, IDouyuConnectionListener connectionListener) {
@@ -99,179 +80,110 @@ public class DouyuLiveChatClient extends BaseNettyClient<
     }
 
     public DouyuLiveChatClient(DouyuLiveChatClientConfig config, IDouyuMsgListener msgListener) {
-        this(config, msgListener, null, new NioEventLoopGroup());
+        this(config, msgListener, null);
     }
 
-    @Override
-    public void init() {
-        super.init();
-
-        if (mode == MODE_WS) {
-            addStatusChangeListener(evt -> {
-                ClientStatusEnums status = (ClientStatusEnums) evt.getNewValue();
-                if (status == ClientStatusEnums.DISCONNECTED) {
-                    if (DouyuLiveChatClient.this.danmuClient != null) {
-                        DouyuLiveChatClient.this.danmuClient.destroy();
-                    }
-                }
-            });
-        }
+    public DouyuLiveChatClient(DouyuLiveChatClientConfig config) {
+        this(config, null);
     }
 
     @Override
     public DouyuConnectionHandler initConnectionHandler(IBaseConnectionListener<DouyuConnectionHandler> clientConnectionListener) {
-        return new DouyuConnectionHandler(
-                mode, WebSocketClientHandshakerFactory.newHandshaker(getWebsocketUri(), WebSocketVersion.V13, null, true, new DefaultHttpHeaders()),
-                DouyuLiveChatClient.this, new IDouyuConnectionListener() {
-            @Override
-            public void onConnected(DouyuConnectionHandler connectionHandler) {
-                clientConnectionListener.onConnected(connectionHandler);
-                if (mode == MODE_DANMU) {
-                    if (DouyuLiveChatClient.this.connectionListener != null) {
-                        DouyuLiveChatClient.this.connectionListener.onConnected(connectionHandler);
-                    }
-                }
-            }
-
-            @Override
-            public void onConnectFailed(DouyuConnectionHandler connectionHandler) {
-                clientConnectionListener.onConnectFailed(connectionHandler);
-                if (mode == MODE_DANMU) {
-                    if (DouyuLiveChatClient.this.connectionListener != null) {
-                        DouyuLiveChatClient.this.connectionListener.onConnectFailed(connectionHandler);
-                    }
-                }
-            }
-
-            @Override
-            public void onDisconnected(DouyuConnectionHandler connectionHandler) {
-                clientConnectionListener.onDisconnected(connectionHandler);
-                if (mode == MODE_DANMU) {
-                    if (DouyuLiveChatClient.this.connectionListener != null) {
-                        DouyuLiveChatClient.this.connectionListener.onDisconnected(connectionHandler);
-                    }
-                }
-            }
-        });
-    }
-
-    @Override
-    public DouyuBinaryFrameHandler initBinaryFrameHandler() {
-        return new DouyuBinaryFrameHandler(DouyuLiveChatClient.this, DouyuLiveChatClient.this);
+        this.connectionHandler = super.initConnectionHandler(super.clientConnectionListener);
+        return connectionHandler;
     }
 
     @Override
     public void onMsg(DouyuBinaryFrameHandler binaryFrameHandler, IMsg msg) {
-        if (mode == MODE_DANMU) {
-            if (msg instanceof LoginresMsg) {
-                // 1 type@=joingroup/rid@=4615502/gid@=1/
-                send(getWebSocketFrameFactory(getConfig().getRoomId()).createJoingroup(), () -> {
-                    // 2 type@=mrkl/
-                    send(getWebSocketFrameFactory(getConfig().getRoomId()).createHeartbeat(), () -> {
-                        // 3 type@=sub/mt@=dayrk/
-                        send(getWebSocketFrameFactory(getConfig().getRoomId()).createSub());
-                    });
-                });
-            }
-        } else {
-            if (msg instanceof LoginresMsg) {
-                send(getWebSocketFrameFactory(getConfig().getRoomId()).createKeeplive(getConfig().getCookie()));
-                // 1 type@=h5ckreq/rid@=3168536/ti@=250120230908/
-                // send(getWebSocketFrameFactory(getConfig().getRoomId()).createH5ckreq());
-            } else if (msg instanceof MsgrepeaterproxylistMsg msgrepeaterproxylistMsg) {
-                // 初始化danmuClient
-                if (mode == MODE_WS) {
-                    DouyuLiveChatClientConfig danmuClientConfig = BeanUtil.toBean(getConfig(), DouyuLiveChatClientConfig.class, CopyOptions.create().ignoreNullValue());
-                    danmuClientConfig.setWebsocketUri("wss://danmuproxy.douyu.com:8503/");
-                    this.danmuClient = new DouyuLiveChatClient(MODE_DANMU, danmuClientConfig, msgListener, connectionListener, new NioEventLoopGroup());
-                    this.danmuClient.connect();
+        super.onMsg(binaryFrameHandler, msg);
+        if (msg instanceof MsgrepeaterproxylistMsg msgrepeaterproxylistMsg) {
+            List<Map<String, String>> list = msgrepeaterproxylistMsg.getList();
+            if (list.isEmpty()) {
+                log.error("弹幕服务器列表为空");
+                if (connectionListener != null) {
+                    connectionListener.onConnectFailed(connectionHandler);
                 }
+                disconnect();
+            } else {
+                // 初始化danmuClient
+                int randomIndex = RandomUtil.randomInt(0, list.size());
+                Map<String, String> randomMap = list.get(randomIndex);
+                DouyuLiveChatClientConfig danmuClientConfig = BeanUtil.toBean(getConfig(), DouyuLiveChatClientConfig.class, CopyOptions.create().ignoreNullValue());
+                danmuClientConfig.setWebsocketUri("wss://%s:%s/".formatted(randomMap.get("ip"), randomMap.get("port")));
+                this.danmuClient = new DouyuDanmuLiveChatClient(danmuClientConfig, new IDouyuMsgListener() {
+                    @Override
+                    public void onMsg(DouyuBinaryFrameHandler binaryFrameHandler, IMsg msg) {
+                        proxyClient.iteratorMsgListeners(msgListener -> msgListener.onMsg(binaryFrameHandler, msg));
+                    }
 
+                    @Override
+                    public void onDanmuMsg(DouyuBinaryFrameHandler binaryFrameHandler, ChatmsgMsg msg) {
+                        proxyClient.iteratorMsgListeners(msgListener -> msgListener.onDanmuMsg(binaryFrameHandler, msg));
+                    }
+
+                    @Override
+                    public void onGiftMsg(DouyuBinaryFrameHandler binaryFrameHandler, DgbMsg msg) {
+                        proxyClient.iteratorMsgListeners(msgListener -> msgListener.onGiftMsg(binaryFrameHandler, msg));
+                    }
+
+                    @Override
+                    public void onCmdMsg(DouyuBinaryFrameHandler binaryFrameHandler, DouyuCmdEnum cmd, BaseCmdMsg<DouyuCmdEnum> cmdMsg) {
+                        proxyClient.iteratorMsgListeners(msgListener -> msgListener.onCmdMsg(binaryFrameHandler, cmd, cmdMsg));
+                    }
+
+                    @Override
+                    public void onOtherCmdMsg(DouyuBinaryFrameHandler binaryFrameHandler, DouyuCmdEnum cmd, BaseCmdMsg<DouyuCmdEnum> cmdMsg) {
+                        proxyClient.iteratorMsgListeners(msgListener -> msgListener.onOtherCmdMsg(binaryFrameHandler, cmd, cmdMsg));
+                    }
+
+                    @Override
+                    public void onUnknownCmd(DouyuBinaryFrameHandler binaryFrameHandler, String cmdString, BaseMsg msg) {
+                        proxyClient.iteratorMsgListeners(msgListener -> msgListener.onUnknownCmd(binaryFrameHandler, cmdString, msg));
+                    }
+                }, new IDouyuConnectionListener() {
+                    @Override
+                    public void onConnected(DouyuConnectionHandler connectionHandler) {
+                        if (connectionListener != null) {
+                            connectionListener.onConnected(connectionHandler);
+                        }
+                    }
+
+                    @Override
+                    public void onConnectFailed(DouyuConnectionHandler connectionHandler) {
+                        if (connectionListener != null) {
+                            connectionListener.onConnectFailed(connectionHandler);
+                        }
+                    }
+
+                    @Override
+                    public void onDisconnected(DouyuConnectionHandler connectionHandler) {
+                        if (connectionListener != null) {
+                            connectionListener.onDisconnected(connectionHandler);
+                        }
+                    }
+                });
+                this.danmuClient.addStatusChangeListener(evt -> {
+                    ClientStatusEnums newStatus = (ClientStatusEnums) evt.getNewValue();
+                    switch (newStatus) {
+                        case RECONNECTING, CONNECT_FAILED, DISCONNECTED, CONNECTING -> {
+                            setStatus(newStatus);
+                        }
+                        default -> {
+                            // ignore
+                        }
+                    }
+
+                });
+                this.danmuClient.connect();
             }
         }
-        if (this.msgListener != null) {
-            this.msgListener.onMsg(binaryFrameHandler, msg);
-        }
-    }
-
-    private static DouyuWebSocketFrameFactory getWebSocketFrameFactory(long roomId) {
-        return DouyuWebSocketFrameFactory.getInstance(roomId);
     }
 
     @Override
-    public void onDanmuMsg(DouyuBinaryFrameHandler binaryFrameHandler, ChatmsgMsg msg) {
-        if (this.msgListener != null) {
-            this.msgListener.onDanmuMsg(binaryFrameHandler, msg);
-        }
-    }
-
-    @Override
-    public void onGiftMsg(DouyuBinaryFrameHandler binaryFrameHandler, DgbMsg msg) {
-        if (this.msgListener != null) {
-            this.msgListener.onGiftMsg(binaryFrameHandler, msg);
-        }
-    }
-
-    @Override
-    public void onCmdMsg(DouyuBinaryFrameHandler binaryFrameHandler, DouyuCmdEnum cmd, BaseCmdMsg<DouyuCmdEnum> cmdMsg) {
-        if (this.msgListener != null) {
-            this.msgListener.onCmdMsg(binaryFrameHandler, cmd, cmdMsg);
-        }
-    }
-
-    @Override
-    public void onOtherCmdMsg(DouyuBinaryFrameHandler binaryFrameHandler, DouyuCmdEnum cmd, BaseCmdMsg<DouyuCmdEnum> cmdMsg) {
-        if (this.msgListener != null) {
-            this.msgListener.onOtherCmdMsg(binaryFrameHandler, cmd, cmdMsg);
-        }
-    }
-
-    @Override
-    public void onUnknownCmd(DouyuBinaryFrameHandler binaryFrameHandler, String cmdString, BaseMsg msg) {
-        if (this.msgListener != null) {
-            this.msgListener.onUnknownCmd(binaryFrameHandler, cmdString, msg);
-        }
-    }
-
-    @Override
-    public void sendDanmu(Object danmu, Runnable success, Consumer<Throwable> failed) {
-        if (!checkCanSendDanmn()) {
+    protected void setStatus(ClientStatusEnums status) {
+        if (status == ClientStatusEnums.CONNECTED) {
             return;
         }
-        if (mode == MODE_WS && danmu instanceof String msg) {
-            if (log.isDebugEnabled()) {
-                log.debug("{} douyu发送弹幕 {}", getConfig().getRoomId(), danmu);
-            }
-
-            WebSocketFrame webSocketFrame = null;
-            try {
-                webSocketFrame = getWebSocketFrameFactory(getConfig().getRoomId()).createDanmu(msg, getConfig().getCookie());
-            } catch (Exception e) {
-                log.error("douyu弹幕包创建失败", e);
-                if (failed != null) {
-                    failed.accept(e);
-                }
-            }
-            if (webSocketFrame == null) {
-                return;
-            }
-
-            send(webSocketFrame, () -> {
-                if (log.isDebugEnabled()) {
-                    log.debug("douyu弹幕发送成功 {}", danmu);
-                }
-                if (success != null) {
-                    success.run();
-                }
-                finishSendDanmu();
-            }, throwable -> {
-                log.error("douyu弹幕发送失败", throwable);
-                if (failed != null) {
-                    failed.accept(throwable);
-                }
-            });
-        } else {
-            super.sendDanmu(danmu);
-        }
+        super.setStatus(status);
     }
 }

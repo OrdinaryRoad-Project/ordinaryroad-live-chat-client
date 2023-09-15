@@ -24,15 +24,29 @@
 
 package tech.ordinaryroad.live.chat.client.commons.client;
 
+import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener;
+
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
  * @author mjz
  * @date 2023/9/5
  */
-public interface IBaseLiveChatClient {
+@SuppressWarnings("rawtypes")
+public interface IBaseLiveChatClient<MsgListener extends IBaseMsgListener<?, ?, ?, ?>> {
 
     void init();
+
+    boolean addMsgListener(MsgListener msgListener);
+
+    boolean addMsgListeners(List<MsgListener> msgListeners);
+
+    boolean removeMsgListener(MsgListener msgListener);
+
+    boolean removeMsgListeners(List<MsgListener> msgListeners);
+
+    void removeAllMsgListeners();
 
     void connect(Runnable success, Consumer<Throwable> failed);
 
