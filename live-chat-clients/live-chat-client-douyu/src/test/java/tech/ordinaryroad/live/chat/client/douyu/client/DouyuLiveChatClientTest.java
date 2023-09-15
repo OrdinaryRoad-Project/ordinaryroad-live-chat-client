@@ -41,6 +41,10 @@ import tech.ordinaryroad.live.chat.client.douyu.msg.DgbMsg;
 import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuConnectionHandler;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 /**
  * @author mjz
  * @date 2023/8/26
@@ -127,6 +131,48 @@ class DouyuLiveChatClientTest implements IDouyuConnectionListener, IDouyuMsgList
     }
 
     @Test
+    void multipyListeners() throws InterruptedException {
+        DouyuLiveChatClientConfig config = DouyuLiveChatClientConfig.builder()
+                // TODO 修改房间id（支持短id）
+                .roomId(74751)
+                .build();
+
+        client = new DouyuLiveChatClient(config, null, this);
+        client.addMsgListener(new IDouyuMsgListener() {
+            @Override
+            public void onMsg(DouyuBinaryFrameHandler binaryFrameHandler, IMsg msg) {
+                log.info("listener 1 onMsg {}", msg);
+            }
+        });
+        IDouyuMsgListener msgListener2 = new IDouyuMsgListener() {
+            @Override
+            public void onMsg(DouyuBinaryFrameHandler binaryFrameHandler, IMsg msg) {
+                log.info("listener 2 onMsg {}", msg);
+            }
+        };
+        client.addMsgListener(msgListener2);
+        AtomicBoolean removed = new AtomicBoolean(false);
+        client.addMsgListener(new IDouyuMsgListener() {
+            @Override
+            public void onMsg(DouyuBinaryFrameHandler binaryFrameHandler, IMsg msg) {
+                log.info("listener 3 onMsg {}", msg);
+                if (!removed.get()) {
+                    log.warn("remove listener 2 by listener 3");
+                    removed.set(client.removeMsgListener(msgListener2));
+                }
+            }
+        });
+        client.connect();
+
+        // 防止测试时直接退出
+        while (true) {
+            synchronized (lock) {
+                lock.wait();
+            }
+        }
+    }
+
+    @Test
     void multiplyClient() throws InterruptedException {
         DouyuLiveChatClientConfig config1 = DouyuLiveChatClientConfig.builder().roomId(890074).build();
         DouyuLiveChatClient client1 = new DouyuLiveChatClient(config1, DouyuLiveChatClientTest.this, DouyuLiveChatClientTest.this);
@@ -161,7 +207,7 @@ class DouyuLiveChatClientTest implements IDouyuConnectionListener, IDouyuMsgList
                 // TODO 修改房间id（支持短id）
                 .roomId(74751)
                 .build();
-        client = new DouyuLiveChatClient(DouyuLiveChatClient.MODE_WS, config, new IDouyuMsgListener() {
+        DouyuWsLiveChatClient client = new DouyuWsLiveChatClient(config, new IDouyuMsgListener() {
             @Override
             public void onMsg(IMsg msg) {
                 IDouyuMsgListener.super.onMsg(msg);
@@ -229,7 +275,36 @@ class DouyuLiveChatClientTest implements IDouyuConnectionListener, IDouyuMsgList
                 .roomId(22222)
                 .build();
 
-        client = new DouyuLiveChatClient(config, this,this);
+        client = new DouyuLiveChatClient(config, this, this);
+        client.connect();
+
+        // 防止测试时直接退出
+        while (true) {
+            synchronized (lock) {
+                lock.wait();
+            }
+        }
+    }
+
+    @Test
+    void autoReconnect() throws InterruptedException {
+        DouyuLiveChatClientConfig config = DouyuLiveChatClientConfig.builder()
+                // TODO 修改房间id（支持短id）
+                .autoReconnect(true)
+                .cookie("12323232'123'213'2'13'2")
+//                .websocketUri("wss://sa.asd.asd:12")
+                .roomId(22222)
+                .build();
+
+        client = new DouyuLiveChatClient(config, this, this);
+        client.addStatusChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                Object oldStatus = evt.getOldValue();
+                Object newStatus = evt.getNewValue();
+                log.error("{} => {}", oldStatus, newStatus);
+            }
+        });
         client.connect();
 
         // 防止测试时直接退出

@@ -25,11 +25,15 @@
 package tech.ordinaryroad.live.chat.client.commons.client;
 
 import lombok.Getter;
+import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener;
 import tech.ordinaryroad.live.chat.client.commons.client.config.BaseLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -37,13 +41,17 @@ import java.util.function.Consumer;
  * @author mjz
  * @date 2023/8/26
  */
-public abstract class BaseLiveChatClient<Config extends BaseLiveChatClientConfig> implements IBaseLiveChatClient {
+public abstract class BaseLiveChatClient<
+        Config extends BaseLiveChatClientConfig,
+        MsgListener extends IBaseMsgListener<?, ?, ?, ?>
+        > implements IBaseLiveChatClient<MsgListener> {
 
     private final Config config;
     @Getter
     private volatile ClientStatusEnums status = ClientStatusEnums.NEW;
     protected PropertyChangeSupport statusChangeSupport = new PropertyChangeSupport(status);
     protected volatile boolean cancelReconnect = false;
+    protected final List<MsgListener> msgListeners = Collections.synchronizedList(new ArrayList<>());
 
     protected BaseLiveChatClient(Config config) {
         this.config = config;
@@ -135,4 +143,42 @@ public abstract class BaseLiveChatClient<Config extends BaseLiveChatClientConfig
             this.statusChangeSupport.removePropertyChangeListener(propertyChangeListener);
         }
     }
+
+    @Override
+    public boolean addMsgListener(MsgListener msgListener) {
+        if (msgListener == null) {
+            return false;
+        }
+        return this.msgListeners.add(msgListener);
+    }
+
+    @Override
+    public boolean addMsgListeners(List<MsgListener> msgListeners) {
+        if (msgListeners == null || msgListeners.isEmpty()) {
+            return false;
+        }
+        return this.msgListeners.addAll(msgListeners);
+    }
+
+    @Override
+    public boolean removeMsgListener(MsgListener msgListener) {
+        if (msgListener == null) {
+            return false;
+        }
+        return this.msgListeners.remove(msgListener);
+    }
+
+    @Override
+    public boolean removeMsgListeners(List<MsgListener> msgListeners) {
+        if (msgListeners == null || msgListeners.isEmpty()) {
+            return false;
+        }
+        return this.msgListeners.removeAll(msgListeners);
+    }
+
+    @Override
+    public void removeAllMsgListeners() {
+        this.msgListeners.clear();
+    }
+
 }

@@ -24,6 +24,10 @@
 
 package tech.ordinaryroad.live.chat.client.douyu.msg;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyu.msg.base.BaseDouyuCmdMsg;
 
@@ -34,6 +38,10 @@ import java.util.Map;
  * @author mjz
  * @date 2023/9/8
  */
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class MsgrepeaterproxylistMsg extends BaseDouyuCmdMsg {
 
     private String rid;

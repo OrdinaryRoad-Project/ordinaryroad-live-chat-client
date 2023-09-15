@@ -25,6 +25,7 @@
 package tech.ordinaryroad.live.chat.client.example.handler;
 
 
+import cn.hutool.core.collection.CollUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -124,7 +125,7 @@ public class BilibiliHandlerModeExample {
                             new DefaultHttpHeaders()),
                     roomId, protover, connectionListener, cookie
             );
-            BilibiliBinaryFrameHandler bilibiliHandler = new BilibiliBinaryFrameHandler(new IBilibiliMsgListener() {
+            IBilibiliMsgListener msgListener = new IBilibiliMsgListener() {
                 @Override
                 public void onDanmuMsg(BilibiliBinaryFrameHandler binaryFrameHandler, DanmuMsgMsg msg) {
                     IBilibiliMsgListener.super.onDanmuMsg(binaryFrameHandler, msg);
@@ -182,7 +183,8 @@ public class BilibiliHandlerModeExample {
                 public void onUnknownCmd(String cmdString, BaseMsg cmdMsg) {
                     log.info("未知cmd {}", cmdString);
                 }
-            }, roomId);
+            };
+            BilibiliBinaryFrameHandler bilibiliHandler = new BilibiliBinaryFrameHandler(CollUtil.newArrayList(msgListener), roomId);
 
             //进行握手
             log.info("握手开始");

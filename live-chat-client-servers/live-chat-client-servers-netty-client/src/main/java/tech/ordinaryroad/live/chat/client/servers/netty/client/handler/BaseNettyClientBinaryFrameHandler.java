@@ -30,6 +30,8 @@ import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
 import tech.ordinaryroad.live.chat.client.servers.netty.handler.base.BaseBinaryFrameHandler;
 
+import java.util.List;
+
 /**
  * BaseClientBinaryFrameHandler
  *
@@ -49,18 +51,18 @@ public abstract class BaseNettyClientBinaryFrameHandler<
     @Getter
     protected final Client client;
 
-    public BaseNettyClientBinaryFrameHandler(MsgListener listener, Client client, long roomId) {
-        super(listener, roomId);
+    public BaseNettyClientBinaryFrameHandler(List<MsgListener> msgListeners, Client client, long roomId) {
+        super(msgListeners, roomId);
         this.client = client;
     }
 
-    public BaseNettyClientBinaryFrameHandler(MsgListener listener, Client client) {
-        super(listener, client.getConfig().getRoomId());
+    public BaseNettyClientBinaryFrameHandler(List<MsgListener> msgListeners, Client client) {
+        super(msgListeners, client.getConfig().getRoomId());
         this.client = client;
     }
 
-    public BaseNettyClientBinaryFrameHandler(MsgListener listener, long roomId) {
-        super(listener, roomId);
+    public BaseNettyClientBinaryFrameHandler(List<MsgListener> msgListeners, long roomId) {
+        super(msgListeners, roomId);
         this.client = null;
     }
 }

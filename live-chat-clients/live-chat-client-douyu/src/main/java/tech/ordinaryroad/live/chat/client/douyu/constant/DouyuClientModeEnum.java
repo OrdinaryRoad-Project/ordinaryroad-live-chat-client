@@ -22,11 +22,19 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.commons.base.constants;
+package tech.ordinaryroad.live.chat.client.douyu.constant;
 
 /**
  * @author mjz
- * @date 2023/8/26
+ * @date 2023/9/15
  */
-public class Constants {
+public enum DouyuClientModeEnum {
+    /**
+     * 发送弹幕，获取可用的Danmu服务器链接
+     */
+    WS,
+    /**
+     * 接收直播间弹幕
+     */
+    DANMU,
 }

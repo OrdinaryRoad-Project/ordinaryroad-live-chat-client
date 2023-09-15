@@ -43,6 +43,7 @@ import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliConnect
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -63,11 +64,17 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
         BilibiliBinaryFrameHandler
         > {
 
-    private final IBilibiliMsgListener msgListener;
+    public BilibiliLiveChatClient(BilibiliLiveChatClientConfig config, List<IBilibiliMsgListener> msgListeners, IBilibiliConnectionListener connectionListener, EventLoopGroup workerGroup) {
+        super(config, workerGroup, connectionListener);
+        addMsgListeners(msgListeners);
+
+        // 初始化
+        this.init();
+    }
 
     public BilibiliLiveChatClient(BilibiliLiveChatClientConfig config, IBilibiliMsgListener msgListener, IBilibiliConnectionListener connectionListener, EventLoopGroup workerGroup) {
         super(config, workerGroup, connectionListener);
-        this.msgListener = msgListener;
+        addMsgListener(msgListener);
 
         // 初始化
         this.init();
@@ -91,7 +98,7 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
 
     @Override
     public BilibiliBinaryFrameHandler initBinaryFrameHandler() {
-        return new BilibiliBinaryFrameHandler(BilibiliLiveChatClient.this.msgListener, BilibiliLiveChatClient.this);
+        return new BilibiliBinaryFrameHandler(super.msgListeners, BilibiliLiveChatClient.this);
     }
 
     @Override

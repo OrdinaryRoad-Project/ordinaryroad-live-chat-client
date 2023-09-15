@@ -28,7 +28,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseCmdMsg;
-import tech.ordinaryroad.live.chat.client.douyu.client.DouyuLiveChatClient;
+import tech.ordinaryroad.live.chat.client.douyu.client.base.BaseDouyuLiveChatClient;
 import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuMsgListener;
 import tech.ordinaryroad.live.chat.client.douyu.msg.ChatmsgMsg;
@@ -49,25 +49,27 @@ import java.util.List;
  */
 @Slf4j
 @ChannelHandler.Sharable
-public class DouyuBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<DouyuLiveChatClient, DouyuBinaryFrameHandler, DouyuCmdEnum, IDouyuMsg, ChatmsgMsg, DgbMsg, IDouyuMsgListener> {
+public class DouyuBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<BaseDouyuLiveChatClient, DouyuBinaryFrameHandler, DouyuCmdEnum, IDouyuMsg, ChatmsgMsg, DgbMsg, IDouyuMsgListener> {
 
-    public DouyuBinaryFrameHandler(IDouyuMsgListener listener, DouyuLiveChatClient client) {
-        super(listener, client);
+    public DouyuBinaryFrameHandler(List<IDouyuMsgListener> msgListeners, BaseDouyuLiveChatClient client) {
+        super(msgListeners, client);
     }
 
-    public DouyuBinaryFrameHandler(IDouyuMsgListener listener, long roomId) {
-        super(listener, roomId);
+    public DouyuBinaryFrameHandler(List<IDouyuMsgListener> msgListeners, long roomId) {
+        super(msgListeners, roomId);
     }
 
     @Override
     public void onCmdMsg(DouyuCmdEnum cmd, BaseCmdMsg<DouyuCmdEnum> cmdMsg) {
-        if (super.listener == null) {
+        if (super.msgListeners.isEmpty()) {
             return;
         }
 
         switch (cmd) {
-            case chatmsg -> listener.onDanmuMsg(DouyuBinaryFrameHandler.this, (ChatmsgMsg) cmdMsg);
-            case dgb -> listener.onGiftMsg(DouyuBinaryFrameHandler.this, (DgbMsg) cmdMsg);
+            case chatmsg ->
+                    iteratorMsgListeners(msgListener -> msgListener.onDanmuMsg(DouyuBinaryFrameHandler.this, (ChatmsgMsg) cmdMsg));
+            case dgb ->
+                    iteratorMsgListeners(msgListener -> msgListener.onGiftMsg(DouyuBinaryFrameHandler.this, (DgbMsg) cmdMsg));
             default -> {
                 if (!(cmdMsg instanceof DouyuCmdMsg)) {
                     if (log.isDebugEnabled()) {
@@ -75,7 +77,7 @@ public class DouyuBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<D
                     }
                     return;
                 }
-                super.listener.onOtherCmdMsg(DouyuBinaryFrameHandler.this, cmd, cmdMsg);
+                iteratorMsgListeners(msgListener -> msgListener.onOtherCmdMsg(DouyuBinaryFrameHandler.this, cmd, cmdMsg));
             }
         }
     }
