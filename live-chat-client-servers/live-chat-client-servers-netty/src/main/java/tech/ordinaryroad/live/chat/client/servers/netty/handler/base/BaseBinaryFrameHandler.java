@@ -37,6 +37,7 @@ import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 
 /**
@@ -57,14 +58,14 @@ public abstract class BaseBinaryFrameHandler<
 
     @Getter
     private final long roomId;
-    protected final MsgListener listener;
+    protected final List<MsgListener> msgListeners;
 
-    public BaseBinaryFrameHandler(MsgListener listener, long roomId) {
-        this.listener = listener;
+    public BaseBinaryFrameHandler(List<MsgListener> msgListeners, long roomId) {
+        this.msgListeners = msgListeners;
         this.roomId = roomId;
-        if (listener == null) {
-            if (log.isWarnEnabled()) {
-                log.warn("listener not set");
+        if (this.msgListeners == null || this.msgListeners.isEmpty()) {
+            if (log.isDebugEnabled()) {
+                log.debug("listener not set");
             }
         }
     }
@@ -105,9 +106,7 @@ public abstract class BaseBinaryFrameHandler<
     @Override
     public void onMsg(T t, IMsg msg) {
         IBaseMsgListener.super.onMsg(t, msg);
-        if (this.listener != null) {
-            this.listener.onMsg(t, msg);
-        }
+        iteratorMsgListeners(msgListener -> msgListener.onMsg(t, msg));
     }
 
     /**
@@ -120,16 +119,22 @@ public abstract class BaseBinaryFrameHandler<
     @Override
     public void onCmdMsg(T t, CmdEnum cmd, BaseCmdMsg<CmdEnum> cmdMsg) {
         IBaseMsgListener.super.onCmdMsg(t, cmd, cmdMsg);
-        if (this.listener != null) {
-            this.listener.onCmdMsg(t, cmd, cmdMsg);
-        }
+        iteratorMsgListeners(msgListener -> msgListener.onCmdMsg(t, cmd, cmdMsg));
     }
 
     @Override
     public void onUnknownCmd(T t, String cmdString, BaseMsg msg) {
         IBaseMsgListener.super.onUnknownCmd(t, cmdString, msg);
-        if (this.listener != null) {
-            this.listener.onUnknownCmd(t, cmdString, msg);
+        iteratorMsgListeners(msgListener -> msgListener.onUnknownCmd(t, cmdString, msg));
+    }
+
+    @SuppressWarnings("ForLoopReplaceableByForEach")
+    public void iteratorMsgListeners(Consumer<MsgListener> consumer) {
+        if (msgListeners.isEmpty()) {
+            return;
+        }
+        for (int i = 0; i < msgListeners.size(); i++) {
+            consumer.accept(msgListeners.get(i));
         }
     }
 }

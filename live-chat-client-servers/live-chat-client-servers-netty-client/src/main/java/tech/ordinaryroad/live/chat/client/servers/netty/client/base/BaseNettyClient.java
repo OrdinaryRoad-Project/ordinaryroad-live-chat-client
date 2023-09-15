@@ -66,7 +66,7 @@ public abstract class BaseNettyClient
                 ConnectionHandler extends BaseConnectionHandler<ConnectionHandler>,
                 BinaryFrameHandler extends BaseBinaryFrameHandler<BinaryFrameHandler, CmdEnum, Msg, DanmuMsg, GiftMsg, MsgListener>
                 >
-        extends BaseLiveChatClient<Config> {
+        extends BaseLiveChatClient<Config, MsgListener> {
 
     @Getter
     private final EventLoopGroup workerGroup;
@@ -78,7 +78,7 @@ public abstract class BaseNettyClient
     private Channel channel;
     @Getter
     private URI websocketUri;
-    private IBaseConnectionListener<ConnectionHandler> clientConnectionListener;
+    protected IBaseConnectionListener<ConnectionHandler> clientConnectionListener;
     /**
      * 控制弹幕发送频率
      */
@@ -126,7 +126,7 @@ public abstract class BaseNettyClient
             this.websocketUri = new URI(getWebSocketUriString());
             SslContext sslCtx = SslContextBuilder.forClient().build();
 
-            this.clientConnectionListener = new IBaseConnectionListener<ConnectionHandler>() {
+            this.clientConnectionListener = new IBaseConnectionListener<>() {
                 @Override
                 public void onConnected(ConnectionHandler connectionHandler) {
                     BaseNettyClient.this.onConnected(connectionHandler);
@@ -327,5 +327,9 @@ public abstract class BaseNettyClient
         if (log.isDebugEnabled()) {
             log.debug("弹幕发送完成");
         }
+    }
+
+    public void iteratorMsgListeners(Consumer<MsgListener> consumer) {
+        binaryFrameHandler.iteratorMsgListeners(consumer);
     }
 }

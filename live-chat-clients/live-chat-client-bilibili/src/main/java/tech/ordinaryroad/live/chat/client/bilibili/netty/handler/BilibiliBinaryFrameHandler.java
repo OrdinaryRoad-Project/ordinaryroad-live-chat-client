@@ -54,20 +54,18 @@ import java.util.List;
 @ChannelHandler.Sharable
 public class BilibiliBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<BilibiliLiveChatClient, BilibiliBinaryFrameHandler, BilibiliCmdEnum, IBilibiliMsg, DanmuMsgMsg, SendGiftMsg, IBilibiliMsgListener> {
 
-    public BilibiliBinaryFrameHandler(IBilibiliMsgListener listener, BilibiliLiveChatClient client) {
-        super(listener, client);
+    public BilibiliBinaryFrameHandler(List<IBilibiliMsgListener> msgListeners, BilibiliLiveChatClient client) {
+        super(msgListeners, client);
     }
 
-    public BilibiliBinaryFrameHandler(IBilibiliMsgListener listener, long roomId) {
-        super(listener, roomId);
+    public BilibiliBinaryFrameHandler(List<IBilibiliMsgListener> msgListeners, long roomId) {
+        super(msgListeners, roomId);
     }
 
     @SneakyThrows
     @Override
     public void onCmdMsg(BilibiliCmdEnum cmd, BaseCmdMsg<BilibiliCmdEnum> cmdMsg) {
-        super.onCmdMsg(cmd, cmdMsg);
-
-        if (super.listener == null) {
+        if (super.msgListeners.isEmpty()) {
             return;
         }
 
@@ -77,23 +75,36 @@ public class BilibiliBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
                 DanmuMsgMsg danmuMsgMsg = new DanmuMsgMsg();
                 danmuMsgMsg.setInfo(sendSmsReplyMsg.getInfo());
                 danmuMsgMsg.setDm_v2(StrUtil.toStringOrNull(sendSmsReplyMsg.getUnknownProperties().get("dm_v2")));
-                listener.onDanmuMsg(BilibiliBinaryFrameHandler.this, danmuMsgMsg);
+                iteratorMsgListeners(msgListener -> msgListener.onDanmuMsg(BilibiliBinaryFrameHandler.this, danmuMsgMsg));
             }
+
             case SEND_GIFT -> {
                 SendGiftMsg sendGiftMsg = new SendGiftMsg();
                 SendGiftMsg.Data data = BaseBilibiliMsg.OBJECT_MAPPER.treeToValue(sendSmsReplyMsg.getData(), SendGiftMsg.Data.class);
                 sendGiftMsg.setData(data);
-                listener.onGiftMsg(BilibiliBinaryFrameHandler.this, sendGiftMsg);
-                listener.onSendGift(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg);
+                iteratorMsgListeners(msgListener -> {
+                    msgListener.onGiftMsg(BilibiliBinaryFrameHandler.this, sendGiftMsg);
+                    msgListener.onSendGift(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg);
+                });
             }
-            case INTERACT_WORD -> listener.onEnterRoom(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg);
-            case ENTRY_EFFECT -> listener.onEntryEffect(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg);
-            case WATCHED_CHANGE -> listener.onWatchedChange(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg);
-            case LIKE_INFO_V3_CLICK -> listener.onClickLike(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg);
-            case LIKE_INFO_V3_UPDATE -> listener.onClickUpdate(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg);
-            default -> {
-                listener.onOtherCmdMsg(BilibiliBinaryFrameHandler.this, cmd, cmdMsg);
-            }
+
+            case INTERACT_WORD ->
+                    iteratorMsgListeners(msgListener -> msgListener.onEnterRoom(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg));
+
+            case ENTRY_EFFECT ->
+                    iteratorMsgListeners(msgListener -> msgListener.onEntryEffect(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg));
+
+            case WATCHED_CHANGE ->
+                    iteratorMsgListeners(msgListener -> msgListener.onWatchedChange(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg));
+
+            case LIKE_INFO_V3_CLICK ->
+                    iteratorMsgListeners(msgListener -> msgListener.onClickLike(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg));
+
+            case LIKE_INFO_V3_UPDATE ->
+                    iteratorMsgListeners(msgListener -> msgListener.onClickUpdate(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg));
+
+            default ->
+                    iteratorMsgListeners(msgListener -> msgListener.onOtherCmdMsg(BilibiliBinaryFrameHandler.this, cmd, cmdMsg));
         }
     }
 
