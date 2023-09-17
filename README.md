@@ -40,6 +40,8 @@ Live room WebSocket chat client
 
 [//]: # ([在线文档]&#40;https://ordinaryroad.tech/or_module/live-chat-client/&#41;)
 
+## [⭐BarrageFly——让弹幕飞](https://barragefly.ordinaryroad.tech/)，基于该项目的一个弹幕转发、过滤、处理平台
+
 ## 1 安装
 
 ### B站
@@ -72,7 +74,7 @@ Live room WebSocket chat client
 
 ### 2.1 Client模式
 
-> Spring Boot 3 示例 [client-example](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/tree/main/live-chat-client-examples/client-example)
+> Spring Boot 示例 [client-example](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/tree/main/live-chat-client-examples/client-example)
 
 ```java
 public class ClientModeExample {
@@ -96,7 +98,7 @@ public class ClientModeExample {
             @Override
             public void onGiftMsg(BilibiliBinaryFrameHandler binaryFrameHandler, SendGiftMsg msg) {
                 IBilibiliMsgListener.super.onGiftMsg(binaryFrameHandler, msg);
-             
+
                 log.info("{} 收到礼物 {}({}) {} {}({})x{}({})", binaryFrameHandler.getRoomId(), msg.getUsername(), msg.getUid(), msg.getData().getAction(), msg.getGiftName(), msg.getGiftId(), msg.getGiftCount(), msg.getGiftPrice());
             }
         });
@@ -120,6 +122,7 @@ public class ClientModeExample {
 > 参考 [BilibiliHandlerModeExample](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/tree/main/live-chat-client-examples/handler-example/src/main/java/tech/ordinaryroad/live/chat/client/example/handler/BilibiliHandlerModeExample.java)
 
 ## 3 项目说明
+
 - commons（主要是抽象接口、抽象类的定义）
     - commons-base
         - 定义了一些基础的接口、抽象类：消息、消息监听器、连接连监听器
@@ -153,4 +156,5 @@ public class ClientModeExample {
     - client-douyu
 
 ## 感谢以下开源项目
+
 - [douyu-crawler-demo](https://github.com/cj1128/douyu-crawler-demo)（登录状态的请求包构建）
