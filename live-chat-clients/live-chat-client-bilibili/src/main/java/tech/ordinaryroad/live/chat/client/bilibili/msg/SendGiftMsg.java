@@ -271,7 +271,7 @@ public class SendGiftMsg extends BaseBilibiliCmdMsg implements IGiftMsg {
         private String action;
         private String uname;
         private String send_master;
-        private String blind_gift;
+        private JsonNode blind_gift;
 
         /**
          * 未知属性都放在这
