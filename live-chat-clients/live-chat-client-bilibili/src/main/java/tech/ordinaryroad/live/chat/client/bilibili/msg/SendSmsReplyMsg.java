@@ -70,9 +70,9 @@ public class SendSmsReplyMsg extends BaseBilibiliCmdMsg {
 
     private JsonNode scatter;
 
-    private Integer roomid;
+    private long roomid;
 
-    private Integer real_roomid;
+    private long real_roomid;
 
     @Override
     public OperationEnum getOperationEnum() {
