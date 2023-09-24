@@ -22,21 +22,45 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.douyu.listener;
+package tech.ordinaryroad.live.chat.client.bilibili.msg.dto;
 
-import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener;
-import tech.ordinaryroad.live.chat.client.commons.base.listener.IDanmuMsgListener;
-import tech.ordinaryroad.live.chat.client.commons.base.listener.IGiftMsgListener;
-import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
-import tech.ordinaryroad.live.chat.client.douyu.msg.ChatmsgMsg;
-import tech.ordinaryroad.live.chat.client.douyu.msg.DgbMsg;
-import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuBinaryFrameHandler;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.databind.JsonNode;
+import lombok.Data;
 
-/**
- * @author mjz
- * @date 2023/1/7
- */
-public interface IDouyuMsgListener extends IBaseMsgListener<DouyuBinaryFrameHandler, DouyuCmdEnum>,
-        IDanmuMsgListener<DouyuBinaryFrameHandler, ChatmsgMsg>,
-        IGiftMsgListener<DouyuBinaryFrameHandler, DgbMsg> {
+import java.util.HashMap;
+import java.util.Map;
+
+@Data
+public class MedalInfo {
+
+    private long target_id;
+    private String special;
+    private int icon_id;
+    private String anchor_uname;
+    private int anchor_roomid;
+    private int medal_level;
+    private String medal_name;
+    private String medal_color;
+    private long medal_color_start;
+    private long medal_color_end;
+    private long medal_color_border;
+    private int is_lighted;
+    private int guard_level;
+
+    /**
+     * 未知属性都放在这
+     */
+    private final Map<String, JsonNode> unknownProperties = new HashMap<>();
+
+    @JsonAnyGetter
+    public Map<String, JsonNode> getUnknownProperties() {
+        return unknownProperties;
+    }
+
+    @JsonAnySetter
+    public void setOther(String key, JsonNode value) {
+        this.unknownProperties.put(key, value);
+    }
 }

@@ -22,21 +22,26 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.douyu.listener;
+package tech.ordinaryroad.live.chat.client.commons.base.listener;
 
-import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener;
-import tech.ordinaryroad.live.chat.client.commons.base.listener.IDanmuMsgListener;
-import tech.ordinaryroad.live.chat.client.commons.base.listener.IGiftMsgListener;
-import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
-import tech.ordinaryroad.live.chat.client.douyu.msg.ChatmsgMsg;
-import tech.ordinaryroad.live.chat.client.douyu.msg.DgbMsg;
-import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuBinaryFrameHandler;
 
 /**
+ * 醒目留言消息回调
+ *
  * @author mjz
- * @date 2023/1/7
+ * @date 2023/9/24
+ * @since 0.0.11
  */
-public interface IDouyuMsgListener extends IBaseMsgListener<DouyuBinaryFrameHandler, DouyuCmdEnum>,
-        IDanmuMsgListener<DouyuBinaryFrameHandler, ChatmsgMsg>,
-        IGiftMsgListener<DouyuBinaryFrameHandler, DgbMsg> {
+public interface ISuperChatMsgListener<T, SuperChatMsg> {
+
+    /**
+     * 收到醒目留言
+     */
+    default void onSuperChatMsg(T t, SuperChatMsg msg) {
+        this.onSuperChatMsg(msg);
+    }
+
+    default void onSuperChatMsg(SuperChatMsg msg) {
+        // ignore
+    }
 }

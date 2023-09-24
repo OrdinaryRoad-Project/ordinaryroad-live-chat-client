@@ -33,8 +33,7 @@ import java.util.function.Consumer;
  * @author mjz
  * @date 2023/9/5
  */
-@SuppressWarnings("rawtypes")
-public interface IBaseLiveChatClient<MsgListener extends IBaseMsgListener<?, ?, ?, ?>> {
+public interface IBaseLiveChatClient<MsgListener extends IBaseMsgListener<?, ?>> {
 
     void init();
 

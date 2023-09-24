@@ -34,8 +34,6 @@ import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuClientModeEnum;
 import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuConnectionListener;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuMsgListener;
-import tech.ordinaryroad.live.chat.client.douyu.msg.ChatmsgMsg;
-import tech.ordinaryroad.live.chat.client.douyu.msg.DgbMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.base.IDouyuMsg;
 import tech.ordinaryroad.live.chat.client.douyu.netty.frame.factory.DouyuWebSocketFrameFactory;
 import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuBinaryFrameHandler;
@@ -54,8 +52,6 @@ public abstract class BaseDouyuLiveChatClient extends BaseNettyClient<
         DouyuLiveChatClientConfig,
         DouyuCmdEnum,
         IDouyuMsg,
-        ChatmsgMsg,
-        DgbMsg,
         IDouyuMsgListener,
         DouyuConnectionHandler,
         DouyuBinaryFrameHandler

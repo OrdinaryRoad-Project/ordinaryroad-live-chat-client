@@ -22,21 +22,25 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.douyu.listener;
+package tech.ordinaryroad.live.chat.client.commons.base.listener;
 
-import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener;
-import tech.ordinaryroad.live.chat.client.commons.base.listener.IDanmuMsgListener;
-import tech.ordinaryroad.live.chat.client.commons.base.listener.IGiftMsgListener;
-import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
-import tech.ordinaryroad.live.chat.client.douyu.msg.ChatmsgMsg;
-import tech.ordinaryroad.live.chat.client.douyu.msg.DgbMsg;
-import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuBinaryFrameHandler;
 
 /**
+ * 弹幕消息回调
+ *
  * @author mjz
- * @date 2023/1/7
+ * @since 0.0.6
  */
-public interface IDouyuMsgListener extends IBaseMsgListener<DouyuBinaryFrameHandler, DouyuCmdEnum>,
-        IDanmuMsgListener<DouyuBinaryFrameHandler, ChatmsgMsg>,
-        IGiftMsgListener<DouyuBinaryFrameHandler, DgbMsg> {
+public interface IDanmuMsgListener<T, DanmuMsg> {
+
+    /**
+     * 收到弹幕
+     */
+    default void onDanmuMsg(T t, DanmuMsg msg) {
+        this.onDanmuMsg(msg);
+    }
+
+    default void onDanmuMsg(DanmuMsg msg) {
+        // ignore
+    }
 }

@@ -60,11 +60,9 @@ public abstract class BaseNettyClient
         <Config extends BaseNettyClientConfig,
                 CmdEnum extends Enum<CmdEnum>,
                 Msg extends IMsg,
-                DanmuMsg extends IMsg,
-                GiftMsg extends IMsg,
-                MsgListener extends IBaseMsgListener<BinaryFrameHandler, CmdEnum, DanmuMsg, GiftMsg>,
+                MsgListener extends IBaseMsgListener<BinaryFrameHandler, CmdEnum>,
                 ConnectionHandler extends BaseConnectionHandler<ConnectionHandler>,
-                BinaryFrameHandler extends BaseBinaryFrameHandler<BinaryFrameHandler, CmdEnum, Msg, DanmuMsg, GiftMsg, MsgListener>
+                BinaryFrameHandler extends BaseBinaryFrameHandler<BinaryFrameHandler, CmdEnum, Msg, MsgListener>
                 >
         extends BaseLiveChatClient<Config, MsgListener> {
 
