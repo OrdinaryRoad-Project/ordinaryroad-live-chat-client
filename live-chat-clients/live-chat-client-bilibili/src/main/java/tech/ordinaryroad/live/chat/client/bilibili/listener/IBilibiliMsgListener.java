@@ -28,29 +28,35 @@ import tech.ordinaryroad.live.chat.client.bilibili.constant.BilibiliCmdEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.DanmuMsgMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.SendGiftMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.SendSmsReplyMsg;
+import tech.ordinaryroad.live.chat.client.bilibili.msg.SuperChatMessageMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener;
-import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
+import tech.ordinaryroad.live.chat.client.commons.base.listener.IDanmuMsgListener;
+import tech.ordinaryroad.live.chat.client.commons.base.listener.IGiftMsgListener;
+import tech.ordinaryroad.live.chat.client.commons.base.listener.ISuperChatMsgListener;
 
 /**
  * @author mjz
  * @date 2023/1/7
  */
-public interface IBilibiliMsgListener extends IBaseMsgListener<BilibiliBinaryFrameHandler, BilibiliCmdEnum, DanmuMsgMsg, SendGiftMsg> {
+public interface IBilibiliMsgListener extends IBaseMsgListener<BilibiliBinaryFrameHandler, BilibiliCmdEnum>,
+        IDanmuMsgListener<BilibiliBinaryFrameHandler, DanmuMsgMsg>,
+        IGiftMsgListener<BilibiliBinaryFrameHandler, SendGiftMsg>,
+        ISuperChatMsgListener<BilibiliBinaryFrameHandler, SuperChatMessageMsg> {
 
     /**
      * 收到礼物
      *
      * @param binaryFrameHandler BilibiliBinaryFrameHandler
      * @param msg                SendSmsReplyMsg
-     * @deprecated use {@link #onGiftMsg(Object, IMsg)}
+     * @deprecated use {@link IGiftMsgListener#onGiftMsg(Object, Object)}
      */
     default void onSendGift(BilibiliBinaryFrameHandler binaryFrameHandler, SendSmsReplyMsg msg) {
         this.onSendGift(msg);
     }
 
     /**
-     * @deprecated use {@link #onGiftMsg(IMsg)}
+     * @deprecated use {@link IGiftMsgListener#onGiftMsg(Object)}
      */
     default void onSendGift(SendSmsReplyMsg msg) {
         // ignore

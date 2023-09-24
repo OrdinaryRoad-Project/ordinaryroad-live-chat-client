@@ -22,60 +22,14 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.bilibili.msg;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import tech.ordinaryroad.live.chat.client.bilibili.constant.OperationEnum;
-import tech.ordinaryroad.live.chat.client.bilibili.msg.base.BaseBilibiliCmdMsg;
+package tech.ordinaryroad.live.chat.client.commons.base.msg;
 
 /**
+ * 醒目留言
+ *
  * @author mjz
- * @date 2023/1/6
+ * @date 2023/9/22
  */
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class SendSmsReplyMsg extends BaseBilibiliCmdMsg {
+public interface ISuperChatMsg extends IDanmuMsg {
 
-    private Long id;
-
-    private String name;
-
-    private JsonNode full;
-
-    private JsonNode half;
-
-    private JsonNode side;
-
-    private JsonNode data;
-
-    private JsonNode info;
-
-    private JsonNode msg_common;
-
-    private JsonNode msg_self;
-
-    private JsonNode link_url;
-
-    private JsonNode msg_type;
-
-    private JsonNode shield_uid;
-
-    private JsonNode business_id;
-
-    private JsonNode scatter;
-
-    private long roomid;
-
-    private long real_roomid;
-
-    @Override
-    public OperationEnum getOperationEnum() {
-        return OperationEnum.SEND_SMS_REPLY;
-    }
 }

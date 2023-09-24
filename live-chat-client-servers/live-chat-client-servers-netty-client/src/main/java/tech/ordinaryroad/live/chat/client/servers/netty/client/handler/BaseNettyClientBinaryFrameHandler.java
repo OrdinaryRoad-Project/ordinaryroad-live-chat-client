@@ -39,14 +39,12 @@ import java.util.List;
  * @date 2023/8/30
  */
 public abstract class BaseNettyClientBinaryFrameHandler<
-        Client extends BaseNettyClient<?, ?, ?, ?, ?, ?, ?, ?>,
-        BinaryFrameHandler extends BaseBinaryFrameHandler<BinaryFrameHandler, CmdEnum, Msg, DanmuMsg, GiftMsg, MsgListener>,
+        Client extends BaseNettyClient<?, ?, ?, ?, ?, ?>,
+        BinaryFrameHandler extends BaseBinaryFrameHandler<BinaryFrameHandler, CmdEnum, Msg, MsgListener>,
         CmdEnum extends Enum<CmdEnum>,
         Msg extends IMsg,
-        DanmuMsg extends IMsg,
-        GiftMsg extends IMsg,
-        MsgListener extends IBaseMsgListener<BinaryFrameHandler, CmdEnum, DanmuMsg, GiftMsg>>
-        extends BaseBinaryFrameHandler<BinaryFrameHandler, CmdEnum, Msg, DanmuMsg, GiftMsg, MsgListener> {
+        MsgListener extends IBaseMsgListener<BinaryFrameHandler, CmdEnum>>
+        extends BaseBinaryFrameHandler<BinaryFrameHandler, CmdEnum, Msg, MsgListener> {
 
     @Getter
     protected final Client client;

@@ -43,7 +43,7 @@ import java.util.function.Consumer;
  */
 public abstract class BaseLiveChatClient<
         Config extends BaseLiveChatClientConfig,
-        MsgListener extends IBaseMsgListener<?, ?, ?, ?>
+        MsgListener extends IBaseMsgListener<?, ?>
         > implements IBaseLiveChatClient<MsgListener> {
 
     private final Config config;

@@ -33,6 +33,7 @@ import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliMsgListener
 import tech.ordinaryroad.live.chat.client.bilibili.msg.DanmuMsgMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.SendGiftMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.SendSmsReplyMsg;
+import tech.ordinaryroad.live.chat.client.bilibili.msg.SuperChatMessageMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseCmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseMsg;
@@ -69,6 +70,12 @@ class BilibiliLiveChatClientTest {
             public void onGiftMsg(BilibiliBinaryFrameHandler binaryFrameHandler, SendGiftMsg msg) {
                 IBilibiliMsgListener.super.onGiftMsg(binaryFrameHandler, msg);
                 log.info("{} 收到礼物 {}({}) {} {}({})x{}({})", binaryFrameHandler.getRoomId(), msg.getUsername(), msg.getUid(), msg.getData().getAction(), msg.getGiftName(), msg.getGiftId(), msg.getGiftCount(), msg.getGiftPrice());
+            }
+
+            @Override
+            public void onSuperChatMsg(BilibiliBinaryFrameHandler binaryFrameHandler, SuperChatMessageMsg msg) {
+                IBilibiliMsgListener.super.onSuperChatMsg(binaryFrameHandler, msg);
+                log.info("{} 收到醒目留言 {}({})：{}", binaryFrameHandler.getRoomId(), msg.getUsername(), msg.getUid(), msg.getContent());
             }
 
             @Override

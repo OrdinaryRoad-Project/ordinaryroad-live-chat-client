@@ -30,41 +30,12 @@ import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 
 /**
+ * Base消息回调
+ *
  * @author mjz
  * @date 2023/8/26
  */
-public interface IBaseMsgListener<
-        T,
-        CmdEnum extends Enum<CmdEnum>,
-        DanmuMsg extends IMsg,
-        GiftMsg extends IMsg
-        > {
-
-    /**
-     * 收到弹幕
-     *
-     * @since 0.0.6
-     */
-    default void onDanmuMsg(T t, DanmuMsg msg) {
-        this.onDanmuMsg(msg);
-    }
-
-    default void onDanmuMsg(DanmuMsg msg) {
-        // ignore
-    }
-
-    /**
-     * 收到礼物
-     *
-     * @since 0.0.8
-     */
-    default void onGiftMsg(T t, GiftMsg msg) {
-        this.onGiftMsg(msg);
-    }
-
-    default void onGiftMsg(GiftMsg msg) {
-        // ignore
-    }
+public interface IBaseMsgListener<T, CmdEnum extends Enum<CmdEnum>> {
 
     /**
      * 收到消息（所有消息）

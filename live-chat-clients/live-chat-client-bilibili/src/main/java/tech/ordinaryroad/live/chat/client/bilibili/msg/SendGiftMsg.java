@@ -34,6 +34,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.OperationEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.base.BaseBilibiliCmdMsg;
+import tech.ordinaryroad.live.chat.client.bilibili.msg.dto.MedalInfo;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IGiftMsg;
 
 import java.util.HashMap;
@@ -145,7 +146,7 @@ public class SendGiftMsg extends BaseBilibiliCmdMsg implements IGiftMsg {
         private int combo_resources_id;
         private int magnification;
         private String name_color;
-        private Medal_info medal_info;
+        private MedalInfo medal_info;
         private int svga_block;
         private String blind_gift;
         private int float_sc_resource_id;
@@ -158,39 +159,6 @@ public class SendGiftMsg extends BaseBilibiliCmdMsg implements IGiftMsg {
         private boolean is_join_receiver;
         private Bag_gift bag_gift;
         private int wealth_level;
-
-        /**
-         * 未知属性都放在这
-         */
-        private final Map<String, JsonNode> unknownProperties = new HashMap<>();
-
-        @JsonAnyGetter
-        public Map<String, JsonNode> getUnknownProperties() {
-            return unknownProperties;
-        }
-
-        @JsonAnySetter
-        public void setOther(String key, JsonNode value) {
-            this.unknownProperties.put(key, value);
-        }
-    }
-
-    @lombok.Data
-    public static class Medal_info {
-
-        private long target_id;
-        private String special;
-        private int icon_id;
-        private String anchor_uname;
-        private int anchor_roomid;
-        private int medal_level;
-        private String medal_name;
-        private long medal_color;
-        private long medal_color_start;
-        private long medal_color_end;
-        private long medal_color_border;
-        private int is_lighted;
-        private int guard_level;
 
         /**
          * 未知属性都放在这

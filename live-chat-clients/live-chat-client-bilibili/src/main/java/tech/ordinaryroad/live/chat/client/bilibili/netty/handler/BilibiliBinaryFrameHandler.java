@@ -35,6 +35,7 @@ import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliMsgListener
 import tech.ordinaryroad.live.chat.client.bilibili.msg.DanmuMsgMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.SendGiftMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.SendSmsReplyMsg;
+import tech.ordinaryroad.live.chat.client.bilibili.msg.SuperChatMessageMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.base.BaseBilibiliMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.base.IBilibiliMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.util.BilibiliCodecUtil;
@@ -52,7 +53,7 @@ import java.util.List;
  */
 @Slf4j
 @ChannelHandler.Sharable
-public class BilibiliBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<BilibiliLiveChatClient, BilibiliBinaryFrameHandler, BilibiliCmdEnum, IBilibiliMsg, DanmuMsgMsg, SendGiftMsg, IBilibiliMsgListener> {
+public class BilibiliBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<BilibiliLiveChatClient, BilibiliBinaryFrameHandler, BilibiliCmdEnum, IBilibiliMsg, IBilibiliMsgListener> {
 
     public BilibiliBinaryFrameHandler(List<IBilibiliMsgListener> msgListeners, BilibiliLiveChatClient client) {
         super(msgListeners, client);
@@ -86,6 +87,14 @@ public class BilibiliBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
                     msgListener.onGiftMsg(BilibiliBinaryFrameHandler.this, sendGiftMsg);
                     msgListener.onSendGift(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg);
                 });
+            }
+
+            case SUPER_CHAT_MESSAGE -> {
+                SuperChatMessageMsg superChatMessageMsg = new SuperChatMessageMsg();
+                superChatMessageMsg.setRoomid(sendSmsReplyMsg.getRoomid());
+                SuperChatMessageMsg.Data data = BaseBilibiliMsg.OBJECT_MAPPER.treeToValue(sendSmsReplyMsg.getData(), SuperChatMessageMsg.Data.class);
+                superChatMessageMsg.setData(data);
+                iteratorMsgListeners(msgListener -> msgListener.onSuperChatMsg(BilibiliBinaryFrameHandler.this, superChatMessageMsg));
             }
 
             case INTERACT_WORD ->

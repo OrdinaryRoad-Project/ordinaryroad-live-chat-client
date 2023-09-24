@@ -49,7 +49,7 @@ import java.util.List;
  */
 @Slf4j
 @ChannelHandler.Sharable
-public class DouyuBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<BaseDouyuLiveChatClient, DouyuBinaryFrameHandler, DouyuCmdEnum, IDouyuMsg, ChatmsgMsg, DgbMsg, IDouyuMsgListener> {
+public class DouyuBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<BaseDouyuLiveChatClient, DouyuBinaryFrameHandler, DouyuCmdEnum, IDouyuMsg, IDouyuMsgListener> {
 
     public DouyuBinaryFrameHandler(List<IDouyuMsgListener> msgListeners, BaseDouyuLiveChatClient client) {
         super(msgListeners, client);

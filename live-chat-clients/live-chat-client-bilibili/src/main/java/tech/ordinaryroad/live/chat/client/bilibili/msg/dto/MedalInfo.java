@@ -22,60 +22,45 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.bilibili.msg;
+package tech.ordinaryroad.live.chat.client.bilibili.msg.dto;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.databind.JsonNode;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import tech.ordinaryroad.live.chat.client.bilibili.constant.OperationEnum;
-import tech.ordinaryroad.live.chat.client.bilibili.msg.base.BaseBilibiliCmdMsg;
+import lombok.Data;
 
-/**
- * @author mjz
- * @date 2023/1/6
- */
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class SendSmsReplyMsg extends BaseBilibiliCmdMsg {
+import java.util.HashMap;
+import java.util.Map;
 
-    private Long id;
+@Data
+public class MedalInfo {
 
-    private String name;
+    private long target_id;
+    private String special;
+    private int icon_id;
+    private String anchor_uname;
+    private int anchor_roomid;
+    private int medal_level;
+    private String medal_name;
+    private String medal_color;
+    private long medal_color_start;
+    private long medal_color_end;
+    private long medal_color_border;
+    private int is_lighted;
+    private int guard_level;
 
-    private JsonNode full;
+    /**
+     * 未知属性都放在这
+     */
+    private final Map<String, JsonNode> unknownProperties = new HashMap<>();
 
-    private JsonNode half;
+    @JsonAnyGetter
+    public Map<String, JsonNode> getUnknownProperties() {
+        return unknownProperties;
+    }
 
-    private JsonNode side;
-
-    private JsonNode data;
-
-    private JsonNode info;
-
-    private JsonNode msg_common;
-
-    private JsonNode msg_self;
-
-    private JsonNode link_url;
-
-    private JsonNode msg_type;
-
-    private JsonNode shield_uid;
-
-    private JsonNode business_id;
-
-    private JsonNode scatter;
-
-    private long roomid;
-
-    private long real_roomid;
-
-    @Override
-    public OperationEnum getOperationEnum() {
-        return OperationEnum.SEND_SMS_REPLY;
+    @JsonAnySetter
+    public void setOther(String key, JsonNode value) {
+        this.unknownProperties.put(key, value);
     }
 }

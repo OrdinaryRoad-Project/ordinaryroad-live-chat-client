@@ -48,13 +48,11 @@ import java.util.function.Consumer;
  */
 @Slf4j
 public abstract class BaseBinaryFrameHandler<
-        T extends BaseBinaryFrameHandler<?, ?, ?, ?, ?, ?>,
+        T extends BaseBinaryFrameHandler<?, ?, ?, ?>,
         CmdEnum extends Enum<CmdEnum>,
         Msg extends IMsg,
-        DanmuMsg extends IMsg,
-        GiftMsg extends IMsg,
-        MsgListener extends IBaseMsgListener<T, CmdEnum, DanmuMsg, GiftMsg>
-        > extends SimpleChannelInboundHandler<BinaryWebSocketFrame> implements IBaseMsgListener<T, CmdEnum, DanmuMsg, GiftMsg> {
+        MsgListener extends IBaseMsgListener<T, CmdEnum>
+        > extends SimpleChannelInboundHandler<BinaryWebSocketFrame> implements IBaseMsgListener<T, CmdEnum> {
 
     @Getter
     private final long roomId;
