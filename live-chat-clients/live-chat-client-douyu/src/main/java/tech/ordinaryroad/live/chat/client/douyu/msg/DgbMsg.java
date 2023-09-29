@@ -29,8 +29,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IGiftMsg;
+import tech.ordinaryroad.live.chat.client.douyu.api.DouyuApis;
 import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyu.msg.base.BaseDouyuCmdMsg;
+
+import java.util.List;
 
 /**
  * 收到礼物消息
@@ -104,7 +107,7 @@ public class DgbMsg extends BaseDouyuCmdMsg implements IGiftMsg {
      * 收礼物用户id
      */
     private long receive_uid;
-    private String ic;
+    private List<String> ic;
     private String from;
     private String gpf;
     private String bnl;
@@ -140,6 +143,11 @@ public class DgbMsg extends BaseDouyuCmdMsg implements IGiftMsg {
     @Override
     public String getUsername() {
         return this.nn;
+    }
+
+    @Override
+    public String getUserAvatar() {
+        return DouyuApis.getSmallAvatarUrl(ic);
     }
 
     @Override

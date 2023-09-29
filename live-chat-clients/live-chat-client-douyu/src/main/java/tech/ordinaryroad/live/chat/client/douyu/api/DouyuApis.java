@@ -24,6 +24,7 @@
 
 package tech.ordinaryroad.live.chat.client.douyu.api;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
@@ -37,6 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLocalDateTimeUtil;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -55,6 +57,21 @@ public class DouyuApis {
     public static final String KEY_COOKIE_ACF_UID = "acf_uid";
     public static final String KEY_COOKIE_ACF_STK = "acf_stk";
     public static final String KEY_COOKIE_ACF_LTKID = "acf_ltkid";
+    public static final String API_AVATAR = "https://apic.douyucdn.cn/upload/";
+    public static final String API_AVATAR_PREFIX_SMALL = "_small.jpg";
+    public static final String API_AVATAR_PREFIX_MIDDLE = "_middle.jpg";
+    public static final String API_AVATAR_PREFIX_BIG = "_big.jpg";
+
+    public static String getAvatarUrl(List<String> list, String prefix) {
+        if (CollUtil.isEmpty(list) || list.size() < 3) {
+            return StrUtil.EMPTY;
+        }
+        return API_AVATAR + CollUtil.join(list, "/") + prefix;
+    }
+
+    public static String getSmallAvatarUrl(List<String> list) {
+        return getAvatarUrl(list, API_AVATAR_PREFIX_SMALL);
+    }
 
     public static long getRealRoomId(long roomId, String cookie) {
         String realRoomIdString = null;
