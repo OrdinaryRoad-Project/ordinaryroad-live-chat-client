@@ -37,10 +37,15 @@ public interface IDanmuMsg extends IMsg {
 
     /**
      * 弹幕发送者用户名
-     *
-     * @return
      */
     String getUsername();
+
+    /**
+     * 弹幕发送者头像地址
+     */
+    default String getUserAvatar() {
+        return null;
+    }
 
     /**
      * 弹幕内容

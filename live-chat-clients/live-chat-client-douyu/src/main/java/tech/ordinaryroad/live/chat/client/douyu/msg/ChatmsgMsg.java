@@ -30,6 +30,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IDanmuMsg;
+import tech.ordinaryroad.live.chat.client.douyu.api.DouyuApis;
 import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyu.msg.base.BaseDouyuCmdMsg;
 
@@ -100,6 +101,11 @@ public class ChatmsgMsg extends BaseDouyuCmdMsg implements IDanmuMsg {
     @Override
     public String getUsername() {
         return this.nn;
+    }
+
+    @Override
+    public String getUserAvatar() {
+        return DouyuApis.getSmallAvatarUrl(ic);
     }
 
     @Override

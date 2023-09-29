@@ -41,6 +41,13 @@ public interface IGiftMsg extends IMsg {
     String getUsername();
 
     /**
+     * 发送方头像地址
+     */
+    default String getUserAvatar() {
+        return null;
+    }
+
+    /**
      * 礼物名称
      */
     String getGiftName();
