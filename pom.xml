@@ -75,6 +75,7 @@
         <logback-classic.version>1.4.11</logback-classic.version>
         <lombok.version>1.18.28</lombok.version>
         <junit-jupiter.version>5.10.0</junit-jupiter.version>
+        <protobuf-java-util.version>3.24.3</protobuf-java-util.version>
     </properties>
 
     <dependencyManagement>
@@ -119,6 +120,12 @@
                 <groupId>com.aayushatharva.brotli4j</groupId>
                 <artifactId>brotli4j</artifactId>
                 <version>${brotli4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.protobuf</groupId>
+                <artifactId>protobuf-java-util</artifactId>
+                <version>${protobuf-java-util.version}</version>
             </dependency>
 
             <dependency>

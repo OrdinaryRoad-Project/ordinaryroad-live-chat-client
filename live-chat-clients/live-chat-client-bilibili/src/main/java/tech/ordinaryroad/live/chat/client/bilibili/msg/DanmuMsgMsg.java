@@ -24,6 +24,7 @@
 
 package tech.ordinaryroad.live.chat.client.bilibili.msg;
 
+import cn.hutool.core.codec.Base64;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -61,6 +62,18 @@ public class DanmuMsgMsg extends BaseBilibiliCmdMsg implements IDanmuMsg {
     public String getUsername() {
         JsonNode jsonNode2 = info.get(2);
         return jsonNode2.get(1).asText();
+    }
+
+    @Override
+    public String getUserAvatar() {
+        String avatar = null;
+        try {
+            tech.ordinaryroad.live.chat.client.bilibili.protobuf.dm_v2 dmV2 = tech.ordinaryroad.live.chat.client.bilibili.protobuf.dm_v2.parseFrom(Base64.decode(dm_v2));
+            avatar = dmV2.getDmV220().getAvatar();
+        } catch (Exception e) {
+            // ignore
+        }
+        return avatar;
     }
 
     @Override

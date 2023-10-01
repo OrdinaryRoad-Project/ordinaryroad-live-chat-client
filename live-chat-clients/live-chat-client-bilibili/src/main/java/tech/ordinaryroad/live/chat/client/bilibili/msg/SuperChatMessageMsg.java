@@ -61,6 +61,11 @@ public class SuperChatMessageMsg extends BaseBilibiliCmdMsg implements ISuperCha
     }
 
     @Override
+    public String getUserAvatar() {
+        return data.user_info.face;
+    }
+
+    @Override
     public String getContent() {
         return data.message;
     }
