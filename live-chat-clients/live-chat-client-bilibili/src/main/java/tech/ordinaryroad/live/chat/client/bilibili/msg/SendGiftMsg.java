@@ -68,6 +68,11 @@ public class SendGiftMsg extends BaseBilibiliCmdMsg implements IGiftMsg {
     }
 
     @Override
+    public String getUserAvatar() {
+        return data.getFace();
+    }
+
+    @Override
     public String getGiftName() {
         return data.getGiftName();
     }

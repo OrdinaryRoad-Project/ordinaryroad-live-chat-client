@@ -42,6 +42,8 @@ public interface IDanmuMsg extends IMsg {
 
     /**
      * 弹幕发送者头像地址
+     *
+     * @since 0.0.11
      */
     default String getUserAvatar() {
         return null;
