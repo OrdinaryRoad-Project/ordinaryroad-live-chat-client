@@ -39,7 +39,7 @@ import tech.ordinaryroad.live.chat.client.bilibili.msg.SuperChatMessageMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.base.BaseBilibiliMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.base.IBilibiliMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.util.BilibiliCodecUtil;
-import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseCmdMsg;
+import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientBinaryFrameHandler;
 
 import java.util.List;
@@ -65,7 +65,7 @@ public class BilibiliBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
 
     @SneakyThrows
     @Override
-    public void onCmdMsg(BilibiliCmdEnum cmd, BaseCmdMsg<BilibiliCmdEnum> cmdMsg) {
+    public void onCmdMsg(BilibiliCmdEnum cmd, ICmdMsg<BilibiliCmdEnum> cmdMsg) {
         if (super.msgListeners.isEmpty()) {
             return;
         }

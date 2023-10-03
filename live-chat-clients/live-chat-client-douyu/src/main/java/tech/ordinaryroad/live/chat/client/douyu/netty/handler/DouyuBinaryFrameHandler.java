@@ -27,13 +27,14 @@ package tech.ordinaryroad.live.chat.client.douyu.netty.handler;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import lombok.extern.slf4j.Slf4j;
-import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseCmdMsg;
+import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.douyu.client.base.BaseDouyuLiveChatClient;
 import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuMsgListener;
 import tech.ordinaryroad.live.chat.client.douyu.msg.ChatmsgMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.DgbMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.DouyuCmdMsg;
+import tech.ordinaryroad.live.chat.client.douyu.msg.SsdMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.base.IDouyuMsg;
 import tech.ordinaryroad.live.chat.client.douyu.util.DouyuCodecUtil;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientBinaryFrameHandler;
@@ -60,7 +61,7 @@ public class DouyuBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<B
     }
 
     @Override
-    public void onCmdMsg(DouyuCmdEnum cmd, BaseCmdMsg<DouyuCmdEnum> cmdMsg) {
+    public void onCmdMsg(DouyuCmdEnum cmd, ICmdMsg<DouyuCmdEnum> cmdMsg) {
         if (super.msgListeners.isEmpty()) {
             return;
         }
