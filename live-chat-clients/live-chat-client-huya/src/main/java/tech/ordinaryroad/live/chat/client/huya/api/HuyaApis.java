@@ -44,6 +44,10 @@ import static tech.ordinaryroad.live.chat.client.commons.base.msg.BaseMsg.OBJECT
 
 /**
  * API简易版
+ * <br/>
+ * <a href="https://a.msstatic.com/huya/h5player/room/2309271152/vplayerUI.js">vplayerUI.js</a>
+ * <br/>
+ * <a href="https://hd2.huya.com/fedbasic/huyabaselibs/taf-signal/taf-signal.global.0.0.4.prod.js">taf-signal.global.0.0.4.prod.js</a>
  *
  * @author mjz
  * @date 2023/9/5
