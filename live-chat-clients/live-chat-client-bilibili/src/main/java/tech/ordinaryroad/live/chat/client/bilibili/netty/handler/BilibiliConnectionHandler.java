@@ -116,7 +116,9 @@ public class BilibiliConnectionHandler extends BaseNettyClientConnectionHandler<
     @Override
     public void sendAuthRequest(Channel channel) {
         // 5s内认证
-        log.debug("发送认证包");
+        if (log.isDebugEnabled()) {
+            log.debug("发送认证包");
+        }
         channel.writeAndFlush(getWebSocketFrameFactory(getRoomId()).createAuth(getProtover(), getCookie()));
     }
 
