@@ -57,7 +57,7 @@ import java.util.Map;
 public abstract class BaseWup extends BaseHuyaMsg {
 
     private TarsServantRequest tarsServantRequest = new TarsServantRequest(null){{
-        tarsServantRequest.setMethodInfo(new TarsMethodInfo());
+        setMethodInfo(new TarsMethodInfo());
     }};
     private UniAttribute uniAttribute = new UniAttribute();
 
