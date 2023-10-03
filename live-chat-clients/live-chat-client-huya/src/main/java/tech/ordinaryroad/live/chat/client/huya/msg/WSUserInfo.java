@@ -50,6 +50,8 @@ public class WSUserInfo extends TarsStructBase {
     private long lSid = 0;
     private long lGroupId = 0;
     private long lGroupType = 0;
+    private String sAppId = "";
+    private String sUA = "";
 
     @Override
     public void writeTo(TarsOutputStream os) {
@@ -61,6 +63,8 @@ public class WSUserInfo extends TarsStructBase {
         os.write(this.lSid, 5);
         os.write(this.lGroupId, 6);
         os.write(this.lGroupType, 7);
+        os.write(this.sAppId, 8);
+        os.write(this.sUA, 9);
     }
 
     @Override
@@ -73,6 +77,8 @@ public class WSUserInfo extends TarsStructBase {
         this.lSid = is.read(this.lSid, 5, true);
         this.lGroupId = is.read(this.lGroupId, 6, true);
         this.lGroupType = is.read(this.lGroupType, 7, true);
+        this.sAppId = is.read(this.sAppId, 8, true);
+        this.sUA = is.read(this.sUA, 9, true);
     }
 
     @Override

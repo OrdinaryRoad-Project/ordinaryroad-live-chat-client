@@ -25,6 +25,7 @@
 package tech.ordinaryroad.live.chat.client.huya.netty.handler;
 
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
@@ -85,21 +86,20 @@ public class HuyaConnectionHandler extends BaseNettyClientConnectionHandler<Huya
 
     @Override
     protected void sendHeartbeat(ChannelHandlerContext ctx) {
-        // ignore
-//        if (log.isDebugEnabled()) {
-//            log.debug("发送心跳包");
-//        }
-//        ctx.writeAndFlush(
-//                getWebSocketFrameFactory(getRoomId()).createHeartbeat()
-//        ).addListener((ChannelFutureListener) future -> {
-//            if (future.isSuccess()) {
-//                if (log.isDebugEnabled()) {
-//                    log.debug("心跳包发送完成");
-//                }
-//            } else {
-//                log.error("心跳包发送失败", future.cause());
-//            }
-//        });
+        if (log.isDebugEnabled()) {
+            log.debug("发送心跳包");
+        }
+        ctx.writeAndFlush(
+                getWebSocketFrameFactory(getRoomId()).createHeartbeat()
+        ).addListener((ChannelFutureListener) future -> {
+            if (future.isSuccess()) {
+                if (log.isDebugEnabled()) {
+                    log.debug("心跳包发送完成");
+                }
+            } else {
+                log.error("心跳包发送失败", future.cause());
+            }
+        });
     }
 
     private static HuyaWebSocketFrameFactory getWebSocketFrameFactory(long roomId) {

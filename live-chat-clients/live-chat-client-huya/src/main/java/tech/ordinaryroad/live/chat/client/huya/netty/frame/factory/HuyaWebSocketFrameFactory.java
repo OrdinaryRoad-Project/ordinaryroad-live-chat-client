@@ -29,6 +29,7 @@ import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.huya.api.HuyaApis;
+import tech.ordinaryroad.live.chat.client.huya.config.HuyaLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.huya.constant.HuyaClientTemplateTypeEnum;
 import tech.ordinaryroad.live.chat.client.huya.constant.HuyaOperationEnum;
 import tech.ordinaryroad.live.chat.client.huya.constant.HuyaStreamLineTypeEnum;
@@ -82,6 +83,8 @@ public class HuyaWebSocketFrameFactory {
             wsUserInfo.setLSid(roomInfo.get("lSubChannelId").asLong());
             wsUserInfo.setLGroupId(roomInfo.get("lYyid").asLong());
             wsUserInfo.setLGroupType(3);
+            wsUserInfo.setSAppId("");
+            wsUserInfo.setSUA("webh5&%s&websocket".formatted(HuyaLiveChatClientConfig.VER));
 
             WebSocketCommand webSocketCommand = new WebSocketCommand();
             webSocketCommand.setOperation(HuyaOperationEnum.EWSCmd_RegisterReq.getCode());

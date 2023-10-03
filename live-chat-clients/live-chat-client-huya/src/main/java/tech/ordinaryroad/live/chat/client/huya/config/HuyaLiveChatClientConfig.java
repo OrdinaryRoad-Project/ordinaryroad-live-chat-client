@@ -43,9 +43,41 @@ import tech.ordinaryroad.live.chat.client.servers.netty.client.config.BaseNettyC
 @SuperBuilder(toBuilder = true)
 public class HuyaLiveChatClientConfig extends BaseNettyClientConfig {
 
+    public static final String VER = "2309271152";
+
     @Builder.Default
-    private String websocketUri = "wss://cdnws.api.huya.com:443";
+    private String websocketUri = "wss://wsapi.huya.com:443";
+
+    @Builder.Default
+    private int aggregatorMaxContentLength = 64 * 1024 * 1024;
 
     @Builder.Default
     private int maxFramePayloadLength = 64 * 1024 * 1024;
+
+    @Builder.Default
+    private String ver = VER;
+
+    @Builder.Default
+    private String exp = "15547.23738,16582.25335,32083.50834";
+
+    @Builder.Default
+    private String appSrc = "HUYA&ZH&2052";
+
+    public void setVer(String ver) {
+        String oldValue = this.ver;
+        this.ver = ver;
+        super.propertyChangeSupport.firePropertyChange("ver", oldValue, ver);
+    }
+
+    public void setExp(String exp) {
+        String oldValue = this.exp;
+        this.exp = exp;
+        super.propertyChangeSupport.firePropertyChange("exp", oldValue, exp);
+    }
+
+    public void setAppSrc(String appSrc) {
+        String oldValue = this.appSrc;
+        this.appSrc = appSrc;
+        super.propertyChangeSupport.firePropertyChange("appSrc", oldValue, appSrc);
+    }
 }

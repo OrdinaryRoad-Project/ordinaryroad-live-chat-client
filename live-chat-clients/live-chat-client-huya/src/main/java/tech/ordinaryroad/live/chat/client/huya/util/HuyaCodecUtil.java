@@ -24,6 +24,9 @@
 
 package tech.ordinaryroad.live.chat.client.huya.util;
 
+import cn.hutool.core.codec.Base64;
+import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.ByteUtil;
 import com.qq.tars.protocol.tars.TarsInputStream;
 import com.qq.tars.protocol.tars.TarsStructBase;
 import io.netty.buffer.ByteBuf;
@@ -101,5 +104,18 @@ public class HuyaCodecUtil {
         TarsInputStream tarsInputStream = new TarsInputStream(bytes);
         tarsInputStream.setServerEncoding(StandardCharsets.UTF_8.name());
         return tarsInputStream;
+    }
+
+    public static String ab2str(byte[] bytes) {
+        char[] chars = new char[bytes.length];
+        for (int i = 0; i < bytes.length; i++) {
+            int unsignedInt = ByteUtil.byteToUnsignedInt(bytes[i]);
+            chars[i]= (char) unsignedInt;
+        }
+        return ArrayUtil.join(chars, "");
+    }
+
+    public static String btoa(String string) {
+        return Base64.encode(string);
     }
 }
