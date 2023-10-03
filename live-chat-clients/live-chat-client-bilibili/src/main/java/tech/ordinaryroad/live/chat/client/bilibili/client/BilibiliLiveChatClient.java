@@ -91,7 +91,7 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
     @Override
     public BilibiliConnectionHandler initConnectionHandler(IBaseConnectionListener<BilibiliConnectionHandler> clientConnectionListener) {
         return new BilibiliConnectionHandler(
-                WebSocketClientHandshakerFactory.newHandshaker(getWebsocketUri(), WebSocketVersion.V13, null, true, new DefaultHttpHeaders()),
+                WebSocketClientHandshakerFactory.newHandshaker(getWebsocketUri(), WebSocketVersion.V13, null, true, new DefaultHttpHeaders(), getConfig().getMaxFramePayloadLength()),
                 BilibiliLiveChatClient.this, clientConnectionListener
         );
     }

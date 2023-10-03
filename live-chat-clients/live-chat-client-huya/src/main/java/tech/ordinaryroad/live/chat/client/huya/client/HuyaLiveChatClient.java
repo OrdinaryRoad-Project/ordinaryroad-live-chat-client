@@ -55,8 +55,7 @@ public class HuyaLiveChatClient extends BaseNettyClient<
         IHuyaMsg,
         IHuyaMsgListener,
         HuyaConnectionHandler,
-        HuyaBinaryFrameHandler
-        > implements IHuyaMsgListener {
+        HuyaBinaryFrameHandler> {
 
     public HuyaLiveChatClient(HuyaLiveChatClientConfig config, List<IHuyaMsgListener> msgListeners, IHuyaConnectionListener connectionListener, EventLoopGroup workerGroup) {
         super(config, workerGroup, connectionListener);
@@ -86,11 +85,6 @@ public class HuyaLiveChatClient extends BaseNettyClient<
         this(config, null);
     }
 
-    @Override
-    public void init() {
-        super.init();
-        addMsgListener(HuyaLiveChatClient.this);
-    }
 
     @Override
     public HuyaConnectionHandler initConnectionHandler(IBaseConnectionListener<HuyaConnectionHandler> clientConnectionListener) {

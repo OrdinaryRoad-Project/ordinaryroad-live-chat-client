@@ -83,7 +83,7 @@ public class DouyuWsLiveChatClient extends BaseDouyuLiveChatClient implements ID
     @Override
     public DouyuConnectionHandler initConnectionHandler(IBaseConnectionListener<DouyuConnectionHandler> clientConnectionListener) {
         return new DouyuConnectionHandler(DouyuClientModeEnum.WS,
-                WebSocketClientHandshakerFactory.newHandshaker(getWebsocketUri(), WebSocketVersion.V13, null, true, new DefaultHttpHeaders()),
+                WebSocketClientHandshakerFactory.newHandshaker(getWebsocketUri(), WebSocketVersion.V13, null, true, new DefaultHttpHeaders(), getConfig().getMaxFramePayloadLength()),
                 DouyuWsLiveChatClient.this, clientConnectionListener
         );
     }

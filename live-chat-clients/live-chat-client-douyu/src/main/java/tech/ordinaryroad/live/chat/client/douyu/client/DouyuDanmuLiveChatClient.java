@@ -77,7 +77,7 @@ public class DouyuDanmuLiveChatClient extends BaseDouyuLiveChatClient implements
     @Override
     public DouyuConnectionHandler initConnectionHandler(IBaseConnectionListener<DouyuConnectionHandler> clientConnectionListener) {
         return new DouyuConnectionHandler(DouyuClientModeEnum.DANMU,
-                WebSocketClientHandshakerFactory.newHandshaker(getWebsocketUri(), WebSocketVersion.V13, null, true, new DefaultHttpHeaders()),
+                WebSocketClientHandshakerFactory.newHandshaker(getWebsocketUri(), WebSocketVersion.V13, null, true, new DefaultHttpHeaders(), getConfig().getMaxFramePayloadLength()),
                 DouyuDanmuLiveChatClient.this, clientConnectionListener
         );
     }
