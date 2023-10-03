@@ -22,12 +22,41 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.commons.base.msg;
+package tech.ordinaryroad.live.chat.client.huya.constant;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
  * @author mjz
- * @date 2023/8/26
+ * @date 2023/10/2
  */
-public abstract class BaseCmdMsg<CmdEnum extends Enum<CmdEnum>> extends BaseMsg
-        implements ICmdMsg<CmdEnum> {
+@Getter
+@RequiredArgsConstructor
+public enum HuyaOperationEnum {
+    EWSCmd_NULL(0),
+    EWSCmd_RegisterReq(1),
+    EWSCmd_RegisterRsp(2),
+    EWSCmd_WupReq(3),
+    EWSCmd_WupRsp(4),
+    EWSCmdC2S_HeartBeat(5),
+    EWSCmdS2C_HeartBeatAck(6),
+    EWSCmdS2C_MsgPushReq(7),
+    EWSCmdC2S_DeregisterReq(8),
+    EWSCmdS2C_DeRegisterRsp(9),
+    EWSCmdC2S_VerifyCookieReq(10),
+    EWSCmdS2C_VerifyCookieRsp(11),
+    EWSCmdC2S_VerifyHuyaTokenReq(12),
+    EWSCmdS2C_VerifyHuyaTokenRsp(13),
+    ;
+    private final int code;
+
+    public static HuyaOperationEnum getByCode(int code) {
+        for (HuyaOperationEnum value : HuyaOperationEnum.values()) {
+            if (value.code == code) {
+                return value;
+            }
+        }
+        return null;
+    }
 }

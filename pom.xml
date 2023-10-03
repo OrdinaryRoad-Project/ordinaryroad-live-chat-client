@@ -76,6 +76,7 @@
         <lombok.version>1.18.28</lombok.version>
         <junit-jupiter.version>5.10.0</junit-jupiter.version>
         <protobuf-java-util.version>3.24.3</protobuf-java-util.version>
+        <tars-core.version>1.7.2</tars-core.version>
     </properties>
 
     <dependencyManagement>
@@ -117,6 +118,18 @@
             </dependency>
 
             <dependency>
+                <groupId>tech.ordinaryroad</groupId>
+                <artifactId>live-chat-client-douyu</artifactId>
+                <version>0.0.10</version>
+            </dependency>
+
+            <dependency>
+                <groupId>tech.ordinaryroad</groupId>
+                <artifactId>live-chat-client-huya</artifactId>
+                <version>0.0.10</version>
+            </dependency>
+
+            <dependency>
                 <groupId>com.aayushatharva.brotli4j</groupId>
                 <artifactId>brotli4j</artifactId>
                 <version>${brotli4j.version}</version>
@@ -144,6 +157,12 @@
                 <groupId>io.netty</groupId>
                 <artifactId>netty-all</artifactId>
                 <version>${netty-all.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.tencent.tars</groupId>
+                <artifactId>tars-core</artifactId>
+                <version>${tars-core.version}</version>
             </dependency>
 
             <dependency>

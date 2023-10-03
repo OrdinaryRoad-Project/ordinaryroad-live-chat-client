@@ -22,12 +22,18 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.commons.base.msg;
+package tech.ordinaryroad.live.chat.client.huya.netty.frame.base;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 
 /**
  * @author mjz
- * @date 2023/8/26
+ * @date 2023/10/2
  */
-public abstract class BaseCmdMsg<CmdEnum extends Enum<CmdEnum>> extends BaseMsg
-        implements ICmdMsg<CmdEnum> {
+public abstract class BaseHuyaWebSocketFrame extends BinaryWebSocketFrame {
+
+    public BaseHuyaWebSocketFrame(ByteBuf byteBuf) {
+        super(byteBuf);
+    }
 }

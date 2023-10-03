@@ -22,12 +22,17 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.commons.base.msg;
+package tech.ordinaryroad.live.chat.client.huya.msg.base;
+
+import com.qq.tars.protocol.tars.TarsStructBase;
 
 /**
  * @author mjz
- * @date 2023/8/26
+ * @date 2023/10/2
  */
-public abstract class BaseCmdMsg<CmdEnum extends Enum<CmdEnum>> extends BaseMsg
-        implements ICmdMsg<CmdEnum> {
+public abstract class BaseHuyaMsg extends TarsStructBase implements IHuyaMsg {
+    @Override
+    public TarsStructBase newInit() {
+        return this;
+    }
 }

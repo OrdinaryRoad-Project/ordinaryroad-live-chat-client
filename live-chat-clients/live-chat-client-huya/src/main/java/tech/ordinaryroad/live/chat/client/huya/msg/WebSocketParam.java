@@ -22,12 +22,44 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.commons.base.msg;
+package tech.ordinaryroad.live.chat.client.huya.msg;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author mjz
- * @date 2023/8/26
+ * @date 2023/9/5
  */
-public abstract class BaseCmdMsg<CmdEnum extends Enum<CmdEnum>> extends BaseMsg
-        implements ICmdMsg<CmdEnum> {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class WebSocketParam {
+
+    private long lUid = 0;
+    private String sGuid = "";
+    private String sUA = "";
+    private String sAppSrc = "";
+    private String sExp = "";
+    private int iTokenType = 0;
+    private String sToken = "";
+    private String sCookie = "";
+    private String sTraceId = "";
+    private Map<String, String> mCustomHeaders;
+
+    public WebSocketParam(String ver, String sExp, String appSrc) {
+        this.sUA = "webh5&%s&websocket".formatted(ver);
+        this.sAppSrc = appSrc;
+        this.sExp = sExp;
+        this.mCustomHeaders = new HashMap<>() {{
+            put("HUYA_NET", "0");
+            put("HUYA_VSDKUA", "webh5&%s&websocket".formatted(ver));
+        }};
+    }
 }

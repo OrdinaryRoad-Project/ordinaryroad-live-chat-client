@@ -22,12 +22,30 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.commons.base.msg;
+package tech.ordinaryroad.live.chat.client.huya.config;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import tech.ordinaryroad.live.chat.client.servers.netty.client.config.BaseNettyClientConfig;
 
 /**
+ * 直播间弹幕客户端配置
+ *
  * @author mjz
- * @date 2023/8/26
+ * @date 2023/9/5
  */
-public abstract class BaseCmdMsg<CmdEnum extends Enum<CmdEnum>> extends BaseMsg
-        implements ICmdMsg<CmdEnum> {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder(toBuilder = true)
+public class HuyaLiveChatClientConfig extends BaseNettyClientConfig {
+
+    @Builder.Default
+    private String websocketUri = "wss://cdnws.api.huya.com:443";
+
+    @Builder.Default
+    private int maxFramePayloadLength = 64 * 1024 * 1024;
 }

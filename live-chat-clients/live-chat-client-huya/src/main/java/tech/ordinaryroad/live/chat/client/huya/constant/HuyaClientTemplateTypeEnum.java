@@ -22,12 +22,37 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.commons.base.msg;
+package tech.ordinaryroad.live.chat.client.huya.constant;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
  * @author mjz
- * @date 2023/8/26
+ * @date 2023/10/2
  */
-public abstract class BaseCmdMsg<CmdEnum extends Enum<CmdEnum>> extends BaseMsg
-        implements ICmdMsg<CmdEnum> {
+@Getter
+@RequiredArgsConstructor
+public enum HuyaClientTemplateTypeEnum {
+
+    TPL_PC(64),
+    TPL_WEB(32),
+    TPL_JIEDAI(16),
+    TPL_TEXAS(8),
+    TPL_MATCH(4),
+    TPL_HUYAAPP(2),
+    TPL_MIRROR(1),
+    ;
+
+    private final int code;
+
+    HuyaClientTemplateTypeEnum getByCode(int code) {
+        for (HuyaClientTemplateTypeEnum value : values()) {
+            if (value.getCode() == code) {
+                return value;
+            }
+        }
+        return null;
+    }
+
 }

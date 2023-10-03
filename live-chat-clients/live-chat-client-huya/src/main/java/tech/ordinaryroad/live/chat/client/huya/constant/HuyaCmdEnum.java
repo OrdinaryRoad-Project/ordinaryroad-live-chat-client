@@ -22,12 +22,44 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.commons.base.msg;
+package tech.ordinaryroad.live.chat.client.huya.constant;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
  * @author mjz
- * @date 2023/8/26
+ * @date 2023/10/2
  */
-public abstract class BaseCmdMsg<CmdEnum extends Enum<CmdEnum>> extends BaseMsg
-        implements ICmdMsg<CmdEnum> {
+@Getter
+@RequiredArgsConstructor
+public enum HuyaCmdEnum {
+    NobleEnterNotice(1002),
+    NobleSpeakBrst(1003),
+    // NobleEnterNotice(1005),
+    SendItemSubBroadcastPacket(6501),
+    SendItemNoticeWordBroadcastPacket(6052),
+    EnterPushInfo(6200),
+    VipBarListRsp(6210),
+    WeekRankListRsp(6220),
+    WeekRankEnterBanner(6221),
+    FansRankListRsp(6230),
+    BadgeInfo(6231),
+    BadgeScoreChanged(6232),
+    FansInfoNotice(6233),
+    UserGiftNotice(6234),
+    GiftBarRsp(6250),
+    MessageNotice(1400),
+    AttendeeCountNotice(8006),
+    ;
+    private final long code;
+
+    public static HuyaCmdEnum getByCode(long code) {
+        for (HuyaCmdEnum value : HuyaCmdEnum.values()) {
+            if (value.code == code) {
+                return value;
+            }
+        }
+        return null;
+    }
 }

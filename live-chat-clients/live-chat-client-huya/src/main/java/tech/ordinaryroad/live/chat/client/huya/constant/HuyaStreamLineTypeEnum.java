@@ -22,12 +22,26 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.commons.base.msg;
+package tech.ordinaryroad.live.chat.client.huya.constant;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
  * @author mjz
- * @date 2023/8/26
+ * @date 2023/10/2
  */
-public abstract class BaseCmdMsg<CmdEnum extends Enum<CmdEnum>> extends BaseMsg
-        implements ICmdMsg<CmdEnum> {
+@Getter
+@RequiredArgsConstructor
+public enum HuyaStreamLineTypeEnum {
+
+    STREAM_LINE_OLD_YY(0),
+    STREAM_LINE_WS(1),
+    STREAM_LINE_NEW_YY(2),
+    STREAM_LINE_AL(3),
+    STREAM_LINE_HUYA(4),
+    ;
+
+    private final int code;
+
 }

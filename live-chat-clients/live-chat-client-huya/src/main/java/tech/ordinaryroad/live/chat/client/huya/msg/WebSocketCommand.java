@@ -22,12 +22,48 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.commons.base.msg;
+package tech.ordinaryroad.live.chat.client.huya.msg;
+
+import com.qq.tars.protocol.tars.TarsInputStream;
+import com.qq.tars.protocol.tars.TarsOutputStream;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import tech.ordinaryroad.live.chat.client.huya.constant.HuyaOperationEnum;
+import tech.ordinaryroad.live.chat.client.huya.msg.base.BaseHuyaMsg;
 
 /**
  * @author mjz
- * @date 2023/8/26
+ * @date 2023/10/2
  */
-public abstract class BaseCmdMsg<CmdEnum extends Enum<CmdEnum>> extends BaseMsg
-        implements ICmdMsg<CmdEnum> {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class WebSocketCommand extends BaseHuyaMsg {
+
+    private int operation;
+    private byte[] vData;
+
+    public WebSocketCommand(TarsInputStream is) {
+        this.readFrom(is);
+    }
+
+    @Override
+    public void writeTo(TarsOutputStream os) {
+        os.write(this.operation, 0);
+        os.write(this.vData, 1);
+    }
+
+    @Override
+    public void readFrom(TarsInputStream is) {
+        this.operation = is.read(this.operation, 0, true);
+        this.vData = is.read(this.vData, 1, true);
+    }
+
+    @Override
+    public HuyaOperationEnum getOperationEnum() {
+        return HuyaOperationEnum.getByCode(operation);
+    }
 }

@@ -22,12 +22,51 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.commons.base.msg;
+package tech.ordinaryroad.live.chat.client.huya.msg.base;
+
+import cn.hutool.core.util.NumberUtil;
+import cn.hutool.core.util.StrUtil;
+import com.qq.tars.protocol.tars.TarsStructBase;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import tech.ordinaryroad.live.chat.client.huya.constant.HuyaCmdEnum;
+import tech.ordinaryroad.live.chat.client.huya.util.HuyaCodecUtil;
 
 /**
  * @author mjz
- * @date 2023/8/26
+ * @date 2023/10/2
  */
-public abstract class BaseCmdMsg<CmdEnum extends Enum<CmdEnum>> extends BaseMsg
-        implements ICmdMsg<CmdEnum> {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public abstract class BaseHuyaCmdMsg extends TarsStructBase implements IHuyaCmdMsg {
+
+    private long lUri;
+
+    public BaseHuyaCmdMsg(byte[] bytes) {
+        readFrom(HuyaCodecUtil.newUtf8TarsInputStream(bytes));
+    }
+
+    @Override
+    public String getCmd() {
+        return StrUtil.nullToEmpty(StrUtil.toStringOrNull(this.lUri));
+    }
+
+    @Override
+    public void setCmd(String cmd) {
+        this.lUri = NumberUtil.parseLong(cmd);
+    }
+
+    @Override
+    public HuyaCmdEnum getCmdEnum() {
+        return HuyaCmdEnum.getByCode(this.lUri);
+    }
+
+    @Override
+    public TarsStructBase newInit() {
+        return this;
+    }
 }

@@ -22,12 +22,17 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.commons.base.msg;
+package tech.ordinaryroad.live.chat.client.huya.msg.base;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
+import tech.ordinaryroad.live.chat.client.huya.constant.HuyaOperationEnum;
 
 /**
  * @author mjz
  * @date 2023/8/26
  */
-public abstract class BaseCmdMsg<CmdEnum extends Enum<CmdEnum>> extends BaseMsg
-        implements ICmdMsg<CmdEnum> {
+public interface IHuyaMsg extends IMsg {
+    @JsonIgnore
+    HuyaOperationEnum getOperationEnum();
 }

@@ -22,12 +22,37 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.commons.base.msg;
+package tech.ordinaryroad.live.chat.client.huya.constant;
+
+import cn.hutool.core.util.StrUtil;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
  * @author mjz
- * @date 2023/8/26
+ * @date 2023/10/3
  */
-public abstract class BaseCmdMsg<CmdEnum extends Enum<CmdEnum>> extends BaseMsg
-        implements ICmdMsg<CmdEnum> {
+@Getter
+@RequiredArgsConstructor
+public enum HuyaWupFunctionEnum {
+
+    doLaunch,
+    speak,
+    getPropsList,
+    OnUserHeartBeat,
+    getLivingInfo,
+    ;
+
+    public static HuyaWupFunctionEnum getByName(String name) {
+        if (StrUtil.isBlank(name)) {
+            return null;
+        }
+
+        for (HuyaWupFunctionEnum value : values()) {
+            if (value.name().equals(name)) {
+                return value;
+            }
+        }
+        return null;
+    }
 }

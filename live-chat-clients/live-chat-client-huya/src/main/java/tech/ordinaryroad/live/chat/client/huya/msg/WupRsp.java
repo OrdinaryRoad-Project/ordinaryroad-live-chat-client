@@ -22,12 +22,24 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.commons.base.msg;
+package tech.ordinaryroad.live.chat.client.huya.msg;
+
+import lombok.NoArgsConstructor;
+import tech.ordinaryroad.live.chat.client.huya.constant.HuyaOperationEnum;
 
 /**
  * @author mjz
- * @date 2023/8/26
+ * @date 2023/10/3
  */
-public abstract class BaseCmdMsg<CmdEnum extends Enum<CmdEnum>> extends BaseMsg
-        implements ICmdMsg<CmdEnum> {
+@NoArgsConstructor
+public class WupRsp extends BaseWup {
+
+    public WupRsp(byte[] vData) {
+        super.decode(vData);
+    }
+
+    @Override
+    public HuyaOperationEnum getOperationEnum() {
+        return HuyaOperationEnum.EWSCmd_WupRsp;
+    }
 }

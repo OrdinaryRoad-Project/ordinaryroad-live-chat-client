@@ -22,12 +22,49 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.commons.base.msg;
+package tech.ordinaryroad.live.chat.client.huya.msg.dto;
+
+import com.qq.tars.protocol.tars.TarsInputStream;
+import com.qq.tars.protocol.tars.TarsOutputStream;
+import com.qq.tars.protocol.tars.TarsStructBase;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author mjz
- * @date 2023/8/26
+ * @date 2023/10/3
  */
-public abstract class BaseCmdMsg<CmdEnum extends Enum<CmdEnum>> extends BaseMsg
-        implements ICmdMsg<CmdEnum> {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class PropView extends TarsStructBase {
+
+    private int id = 0;
+    private String name = "";
+    private Map<Long, Short> uids = new HashMap<>() {{
+        put(-1L, (short) -1);
+    }};
+    private String tips = "";
+
+    @Override
+    public void writeTo(TarsOutputStream os) {
+        os.write(this.id, 0);
+        os.write(this.name, 1);
+        os.write(this.uids, 2);
+        os.write(this.tips, 3);
+    }
+
+    @Override
+    public void readFrom(TarsInputStream is) {
+        this.id = is.read(this.id, 0, true);
+        this.name = is.read(this.name, 1, true);
+        this.uids = is.readMap(this.uids, 2, true);
+        this.tips = is.read(this.tips, 3, true);
+    }
 }

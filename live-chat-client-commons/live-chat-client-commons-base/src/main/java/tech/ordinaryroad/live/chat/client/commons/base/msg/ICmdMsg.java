@@ -26,8 +26,13 @@ package tech.ordinaryroad.live.chat.client.commons.base.msg;
 
 /**
  * @author mjz
- * @date 2023/8/26
+ * @date 2023/10/2
  */
-public abstract class BaseCmdMsg<CmdEnum extends Enum<CmdEnum>> extends BaseMsg
-        implements ICmdMsg<CmdEnum> {
+public interface ICmdMsg<CmdEnum extends Enum<CmdEnum>> extends IMsg {
+
+    String getCmd();
+
+    void setCmd(String cmd);
+
+    CmdEnum getCmdEnum();
 }

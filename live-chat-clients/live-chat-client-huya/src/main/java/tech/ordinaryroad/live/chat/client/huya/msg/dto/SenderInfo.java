@@ -22,12 +22,49 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.commons.base.msg;
+package tech.ordinaryroad.live.chat.client.huya.msg.dto;
+
+import com.qq.tars.protocol.tars.TarsInputStream;
+import com.qq.tars.protocol.tars.TarsOutputStream;
+import com.qq.tars.protocol.tars.TarsStructBase;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * @author mjz
- * @date 2023/8/26
+ * @date 2023/10/2
  */
-public abstract class BaseCmdMsg<CmdEnum extends Enum<CmdEnum>> extends BaseMsg
-        implements ICmdMsg<CmdEnum> {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class SenderInfo extends TarsStructBase {
+
+    private long lUid;
+    private long lImid;
+    private String sNickName = "";
+    private int iGender;
+
+    @Override
+    public void writeTo(TarsOutputStream os) {
+        os.write(this.lUid, 0);
+        os.write(this.lImid, 1);
+        os.write(this.sNickName, 2);
+        os.write(this.iGender, 3);
+    }
+
+    @Override
+    public void readFrom(TarsInputStream is) {
+        this.lUid = is.read(this.lUid, 0, true);
+        this.lImid = is.read(this.lImid, 1, true);
+        this.sNickName = is.read(this.sNickName, 2, true);
+        this.iGender = is.read(this.iGender, 3, true);
+    }
+
+    @Override
+    public TarsStructBase newInit() {
+        return this;
+    }
 }

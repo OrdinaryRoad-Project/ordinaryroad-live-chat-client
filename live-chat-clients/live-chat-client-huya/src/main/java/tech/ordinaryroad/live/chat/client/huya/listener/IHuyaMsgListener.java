@@ -22,12 +22,21 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.commons.base.msg;
+package tech.ordinaryroad.live.chat.client.huya.listener;
+
+import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener;
+import tech.ordinaryroad.live.chat.client.commons.base.listener.IDanmuMsgListener;
+import tech.ordinaryroad.live.chat.client.commons.base.listener.IGiftMsgListener;
+import tech.ordinaryroad.live.chat.client.huya.constant.HuyaCmdEnum;
+import tech.ordinaryroad.live.chat.client.huya.msg.MessageNoticeMsg;
+import tech.ordinaryroad.live.chat.client.huya.msg.SendItemSubBroadcastPacketMsg;
+import tech.ordinaryroad.live.chat.client.huya.netty.handler.HuyaBinaryFrameHandler;
 
 /**
  * @author mjz
- * @date 2023/8/26
+ * @date 2023/9/5
  */
-public abstract class BaseCmdMsg<CmdEnum extends Enum<CmdEnum>> extends BaseMsg
-        implements ICmdMsg<CmdEnum> {
+public interface IHuyaMsgListener extends IBaseMsgListener<HuyaBinaryFrameHandler, HuyaCmdEnum>,
+        IDanmuMsgListener<HuyaBinaryFrameHandler, MessageNoticeMsg>,
+        IGiftMsgListener<HuyaBinaryFrameHandler, SendItemSubBroadcastPacketMsg> {
 }

@@ -22,12 +22,46 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.commons.base.msg;
+package tech.ordinaryroad.live.chat.client.huya.msg.dto;
+
+import com.qq.tars.protocol.tars.TarsInputStream;
+import com.qq.tars.protocol.tars.TarsOutputStream;
+import com.qq.tars.protocol.tars.TarsStructBase;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * @author mjz
- * @date 2023/8/26
+ * @date 2023/10/2
  */
-public abstract class BaseCmdMsg<CmdEnum extends Enum<CmdEnum>> extends BaseMsg
-        implements ICmdMsg<CmdEnum> {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class ContentFormat extends TarsStructBase {
+
+    private int iFontColor = -1;
+    private int iFontSize = 4;
+    private int iPopupStyle = 0;
+
+    @Override
+    public void writeTo(TarsOutputStream os) {
+        os.write(this.iFontColor, 0);
+        os.write(this.iFontSize, 1);
+        os.write(this.iPopupStyle, 2);
+    }
+
+    @Override
+    public void readFrom(TarsInputStream is) {
+        this.iFontColor = is.read(this.iFontColor, 0, true);
+        this.iFontSize = is.read(this.iFontSize, 1, true);
+        this.iPopupStyle = is.read(this.iPopupStyle, 2, true);
+    }
+
+    @Override
+    public TarsStructBase newInit() {
+        return this;
+    }
 }
