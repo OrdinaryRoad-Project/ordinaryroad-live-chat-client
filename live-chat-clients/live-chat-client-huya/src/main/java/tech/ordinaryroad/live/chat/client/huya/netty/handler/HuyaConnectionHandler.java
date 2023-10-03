@@ -30,7 +30,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
-import tech.ordinaryroad.live.chat.client.huya.client.HuyaChatClient;
+import tech.ordinaryroad.live.chat.client.huya.client.HuyaLiveChatClient;
 import tech.ordinaryroad.live.chat.client.huya.config.HuyaLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.huya.netty.frame.factory.HuyaWebSocketFrameFactory;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientConnectionHandler;
@@ -44,7 +44,7 @@ import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNetty
  */
 @Slf4j
 @ChannelHandler.Sharable
-public class HuyaConnectionHandler extends BaseNettyClientConnectionHandler<HuyaChatClient, HuyaConnectionHandler> {
+public class HuyaConnectionHandler extends BaseNettyClientConnectionHandler<HuyaLiveChatClient, HuyaConnectionHandler> {
 
     /**
      * 以ClientConfig为主
@@ -55,13 +55,13 @@ public class HuyaConnectionHandler extends BaseNettyClientConnectionHandler<Huya
      */
     private String cookie;
 
-    public HuyaConnectionHandler(WebSocketClientHandshaker handshaker, HuyaChatClient client, IBaseConnectionListener<HuyaConnectionHandler> listener) {
+    public HuyaConnectionHandler(WebSocketClientHandshaker handshaker, HuyaLiveChatClient client, IBaseConnectionListener<HuyaConnectionHandler> listener) {
         super(handshaker, client, listener);
         this.roomId = client.getConfig().getRoomId();
         this.cookie = client.getConfig().getCookie();
     }
 
-    public HuyaConnectionHandler(WebSocketClientHandshaker handshaker, HuyaChatClient client) {
+    public HuyaConnectionHandler(WebSocketClientHandshaker handshaker, HuyaLiveChatClient client) {
         this(handshaker, client, null);
     }
 

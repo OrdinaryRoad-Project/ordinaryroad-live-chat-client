@@ -43,7 +43,7 @@ import tech.ordinaryroad.live.chat.client.huya.netty.handler.HuyaBinaryFrameHand
 class HuyaLiveChatClientTest {
 
     static Object lock = new Object();
-    HuyaChatClient client;
+    HuyaLiveChatClient client;
 
     @Test
     void example() throws InterruptedException {
@@ -55,7 +55,7 @@ class HuyaLiveChatClientTest {
                 .roomId(1995)
                 .build();
 
-        client = new HuyaChatClient(config, new IHuyaMsgListener() {
+        client = new HuyaLiveChatClient(config, new IHuyaMsgListener() {
             @Override
             public void onDanmuMsg(HuyaBinaryFrameHandler binaryFrameHandler, MessageNoticeMsg msg) {
                 log.info("{} 收到弹幕 {}({})：{}", binaryFrameHandler.getRoomId(), msg.getUsername(), msg.getUid(), msg.getContent());

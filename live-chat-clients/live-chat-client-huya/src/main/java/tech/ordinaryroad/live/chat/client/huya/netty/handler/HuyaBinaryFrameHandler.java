@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 import tech.ordinaryroad.live.chat.client.huya.api.HuyaApis;
-import tech.ordinaryroad.live.chat.client.huya.client.HuyaChatClient;
+import tech.ordinaryroad.live.chat.client.huya.client.HuyaLiveChatClient;
 import tech.ordinaryroad.live.chat.client.huya.constant.HuyaCmdEnum;
 import tech.ordinaryroad.live.chat.client.huya.constant.HuyaOperationEnum;
 import tech.ordinaryroad.live.chat.client.huya.constant.HuyaWupFunctionEnum;
@@ -59,15 +59,15 @@ import java.util.List;
  */
 @Slf4j
 @ChannelHandler.Sharable
-public class HuyaBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<HuyaChatClient, HuyaBinaryFrameHandler, HuyaCmdEnum, IHuyaMsg, IHuyaMsgListener> {
+public class HuyaBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<HuyaLiveChatClient, HuyaBinaryFrameHandler, HuyaCmdEnum, IHuyaMsg, IHuyaMsgListener> {
 
     private ChannelHandlerContext channelHandlerContext;
 
-    public HuyaBinaryFrameHandler(List<IHuyaMsgListener> iHuyaMsgListeners, HuyaChatClient client, long roomId) {
+    public HuyaBinaryFrameHandler(List<IHuyaMsgListener> iHuyaMsgListeners, HuyaLiveChatClient client, long roomId) {
         super(iHuyaMsgListeners, client, roomId);
     }
 
-    public HuyaBinaryFrameHandler(List<IHuyaMsgListener> iHuyaMsgListeners, HuyaChatClient client) {
+    public HuyaBinaryFrameHandler(List<IHuyaMsgListener> iHuyaMsgListeners, HuyaLiveChatClient client) {
         super(iHuyaMsgListeners, client);
     }
 

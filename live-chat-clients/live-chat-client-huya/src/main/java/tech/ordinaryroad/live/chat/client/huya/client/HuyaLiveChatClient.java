@@ -40,6 +40,8 @@ import tech.ordinaryroad.live.chat.client.huya.netty.handler.HuyaBinaryFrameHand
 import tech.ordinaryroad.live.chat.client.huya.netty.handler.HuyaConnectionHandler;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
 
+import java.util.List;
+
 /**
  * 虎牙直播间弹幕客户端
  *
@@ -47,7 +49,7 @@ import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyCli
  * @date 2023/8/20
  */
 @Slf4j
-public class HuyaChatClient extends BaseNettyClient<
+public class HuyaLiveChatClient extends BaseNettyClient<
         HuyaLiveChatClientConfig,
         HuyaCmdEnum,
         IHuyaMsg,
@@ -56,7 +58,15 @@ public class HuyaChatClient extends BaseNettyClient<
         HuyaBinaryFrameHandler
         > implements IHuyaMsgListener {
 
-    public HuyaChatClient(HuyaLiveChatClientConfig config, IHuyaMsgListener msgListener, IHuyaConnectionListener connectionListener, EventLoopGroup workerGroup) {
+    public HuyaLiveChatClient(HuyaLiveChatClientConfig config, List<IHuyaMsgListener> msgListeners, IHuyaConnectionListener connectionListener, EventLoopGroup workerGroup) {
+        super(config, workerGroup, connectionListener);
+        addMsgListeners(msgListeners);
+
+        // 初始化
+        this.init();
+    }
+
+    public HuyaLiveChatClient(HuyaLiveChatClientConfig config, IHuyaMsgListener msgListener, IHuyaConnectionListener connectionListener, EventLoopGroup workerGroup) {
         super(config, workerGroup, connectionListener);
         addMsgListener(msgListener);
 
@@ -64,30 +74,34 @@ public class HuyaChatClient extends BaseNettyClient<
         this.init();
     }
 
-    public HuyaChatClient(HuyaLiveChatClientConfig config, IHuyaMsgListener msgListener, IHuyaConnectionListener connectionListener) {
+    public HuyaLiveChatClient(HuyaLiveChatClientConfig config, IHuyaMsgListener msgListener, IHuyaConnectionListener connectionListener) {
         this(config, msgListener, connectionListener, new NioEventLoopGroup());
     }
 
-    public HuyaChatClient(HuyaLiveChatClientConfig config, IHuyaMsgListener msgListener) {
+    public HuyaLiveChatClient(HuyaLiveChatClientConfig config, IHuyaMsgListener msgListener) {
         this(config, msgListener, null, new NioEventLoopGroup());
+    }
+
+    public HuyaLiveChatClient(HuyaLiveChatClientConfig config) {
+        this(config, null);
     }
 
     @Override
     public void init() {
         super.init();
-        addMsgListener(HuyaChatClient.this);
+        addMsgListener(HuyaLiveChatClient.this);
     }
 
     @Override
     public HuyaConnectionHandler initConnectionHandler(IBaseConnectionListener<HuyaConnectionHandler> clientConnectionListener) {
         return new HuyaConnectionHandler(
                 WebSocketClientHandshakerFactory.newHandshaker(getWebsocketUri(), WebSocketVersion.V13, null, true, new DefaultHttpHeaders(), getConfig().getMaxFramePayloadLength()),
-                HuyaChatClient.this, clientConnectionListener
+                HuyaLiveChatClient.this, clientConnectionListener
         );
     }
 
     @Override
     public HuyaBinaryFrameHandler initBinaryFrameHandler() {
-        return new HuyaBinaryFrameHandler(super.msgListeners, HuyaChatClient.this);
+        return new HuyaBinaryFrameHandler(super.msgListeners, HuyaLiveChatClient.this);
     }
 }
