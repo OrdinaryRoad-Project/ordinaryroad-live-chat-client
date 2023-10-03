@@ -23,7 +23,11 @@
     - [x] 支持 短房间id
     - [x] 支持 弹幕发送
 
-- [ ] Huya
+- [x] Huya
+    - [x] DouyuLiveChatClient
+    - [ ] 支持 cookie
+    - [ ] 支持 短房间id
+    - [ ] 支持 弹幕发送
 - [ ] ...
 
 ---
