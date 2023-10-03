@@ -4,7 +4,7 @@
     <packaging>jar</packaging>
     <groupId>tech.ordinaryroad</groupId>
     <artifactId>live-chat-client-example-handler</artifactId>
-    <version>0.0.11</version>
+    <version>0.0.11-beta</version>
     <name>live-chat-client-example-handler</name>
     <description>live-chat-client-example-handler</description>
 
@@ -12,7 +12,6 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <ordinaryroad-live-chat-client.version>0.0.11</ordinaryroad-live-chat-client.version>
         <lombok.version>1.18.28</lombok.version>
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
     </properties>
@@ -22,14 +21,14 @@
             <groupId>tech.ordinaryroad</groupId>
             <artifactId>live-chat-client-bilibili</artifactId>
             <!-- 参考github release版本，不需要前缀`v` -->
-            <version>${ordinaryroad-live-chat-client.version}</version>
+            <version>0.0.11-beta</version>
         </dependency>
 
         <dependency>
             <groupId>tech.ordinaryroad</groupId>
             <artifactId>live-chat-client-douyu</artifactId>
             <!-- 参考github release版本，不需要前缀`v` -->
-            <version>${ordinaryroad-live-chat-client.version}</version>
+            <version>0.0.11-beta</version>
         </dependency>
 
         <dependency>
