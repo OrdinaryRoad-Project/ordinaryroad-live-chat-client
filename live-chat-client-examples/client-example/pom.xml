@@ -35,13 +35,13 @@
     <packaging>jar</packaging>
     <groupId>tech.ordinaryroad</groupId>
     <artifactId>live-chat-client-example-client</artifactId>
-    <version>0.0.10</version>
+    <version>0.0.11</version>
     <name>live-chat-client-example-client</name>
     <description>live-chat-client-example-client</description>
 
     <properties>
         <java.version>17</java.version>
-        <ordinaryroad-live-chat-client.version>0.0.10</ordinaryroad-live-chat-client.version>
+        <ordinaryroad-live-chat-client.version>0.0.11</ordinaryroad-live-chat-client.version>
     </properties>
 
     <dependencies>
