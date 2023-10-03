@@ -23,7 +23,7 @@
     - [x] 支持 短房间id
     - [x] 支持 弹幕发送
 
-- [x] Huya
+- [x] Huya（已知问题：主播下播后接收的弹幕信息不全）
     - [x] DouyuLiveChatClient
     - [ ] 支持 cookie
     - [ ] 支持 短房间id
