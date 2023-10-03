@@ -72,6 +72,18 @@ Live room WebSocket chat client
 </dependency>
 ```
 
+### 虎牙
+
+```xml
+
+<dependency>
+    <groupId>tech.ordinaryroad</groupId>
+    <artifactId>live-chat-client-huya</artifactId>
+    <!-- 参考github release版本，不需要前缀`v` -->
+    <version>${ordinaryroad-live-chat-client.version}</version>
+</dependency>
+```
+
 ## 2 使用
 
 > 测试类包含了多种样例，可供参考
