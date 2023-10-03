@@ -130,18 +130,27 @@ public class ClientModeExample {
 - commons（主要是抽象接口、抽象类的定义）
     - commons-base
         - 定义了一些基础的接口、抽象类：消息、消息监听器、连接连监听器
-        - 消息
-            - msg：收到的所有msg
-                - cmdMsg：有些平台的一些消息正文中没有消息类型cmd字段，例如B站的心跳包，因此再细分为cmdMsg
-            - IDanmuMsg: 内置用户名、弹幕内容等方法
-            - IGiftMsg：内置发送方、接收方、礼物ID、礼物个数等
+        - 消息接口
+            - IMsg：所有msg都应该继承该类
+                - ICmdMsg：有些平台的一些消息正文中没有消息类型cmd字段，例如B站的心跳包，因此再细分为cmdMsg
+                - IDanmuMsg: 内置获取用户ID、用户名、用户头像、弹幕内容等方法
+                - IGiftMsg：内置获取发送方ID、发送方用户名、发送方头像、接收方ID、接收方用户名、礼物ID、礼物个数、礼物单价等方法
+                - ISuperChatMsg：醒目留言，继承自IDanmuMsg
+        - 消息抽象类
+            - BaseMsg：实现IMsg接口，提供存放未知属性的字段
+                - BaseCmdMsg：实现ICmdMsg接口
         - 消息监听器
-            - onDanmuMsg：收到弹幕消息
-            - onGiftMsg：收到礼物消息
-            - onMsg：所有消息（不管消息内容）都会调用
-            - onCmdMsg：cmd消息（消息体中有表示消息类型的字段时），并且该类型需要处理（例如心跳回复包不需要处理）时调用
-            - onOtherCmdMsg：该消息类型不需要处理（例如PK、点赞数更新等类型）时调用
-            - onUnknownCmd：该消息类型未知（没有对应的枚举类）时调用
+            - IBaseMsgListener（所有平台都支持，其他消息监听器存在平台差异）
+                - onMsg：所有消息（不管消息内容）都会调用
+                - onCmdMsg：cmd消息（消息体中有表示消息类型的字段时），并且该类型需要处理（例如心跳回复包不需要处理）时调用
+                - onOtherCmdMsg：该消息类型不需要处理（例如PK、点赞数更新等类型）时调用
+                - onUnknownCmd：该消息类型未知（没有对应的枚举类）时调用
+            - IDanmuMsgListener（所有平台）
+                - onDanmuMsg：收到弹幕消息
+            - IGiftMsgListener（所有平台）
+                - onGiftMsg：收到礼物消息
+            - ISuperChatMsgListener（B站）
+                - onSuperChatMsg：收到醒目留言
     - commons-client
         - 定义了Client的配置：连接地址、房间id、Cookie、心跳、自动重连等相关参数
         - 定义了Client的一些方法：初始化、连接、断开、发送消息等
@@ -158,7 +167,10 @@ public class ClientModeExample {
 - clients（对servers-netty-client的具体实现）
     - client-bilibili
     - client-douyu
+    - client-huya
 
 ## 感谢以下开源项目
 
-- [douyu-crawler-demo](https://github.com/cj1128/douyu-crawler-demo)（登录状态的请求包构建）
+- [douyu-crawler-demo](https://github.com/cj1128/douyu-crawler-demo)（斗鱼登录状态的请求包构建）
+- [Kain-90/huya-danmu](https://githubfast.com/Kain-90/huya-danmu)
+  （虎牙流程参考，最新lib库[vplayerUI.js](https://a.msstatic.com/huya/h5player/room/2309271152/vplayerUI.js)、[taf-signal.global.0.0.4.prod.js](https://hd2.huya.com/fedbasic/huyabaselibs/taf-signal/taf-signal.global.0.0.4.prod.js)）
