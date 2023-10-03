@@ -135,13 +135,7 @@ public abstract class BaseConnectionHandler<ConnectionHandler extends BaseConnec
 
     protected abstract void sendHeartbeat(ChannelHandlerContext ctx);
 
-    /**
-     * 发送认证请求，通常在连接后需要发送一些直播间、用户信息等数据
-     *
-     * @param channel Channel
-     * @throws Exception 创建认证包时可能发生异常，例如Cookie解析失败、Cookie缺少字段等
-     */
-    public abstract void sendAuthRequest(Channel channel) throws Exception;
+    public abstract void sendAuthRequest(Channel channel);
 
     protected abstract long getHeartbeatPeriod();
 
