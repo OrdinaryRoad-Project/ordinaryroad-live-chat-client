@@ -33,6 +33,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseCmdMsg;
+import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 
@@ -144,5 +145,17 @@ public abstract class BaseBinaryFrameHandler<
         for (int i = 0; i < msgListeners.size(); i++) {
             consumer.accept(msgListeners.get(i));
         }
+    }
+
+    @Override
+    public void onCmdMsg(T t, CmdEnum cmd, BaseCmdMsg<CmdEnum> cmdMsg) {
+        IBaseMsgListener.super.onCmdMsg(t, cmd, cmdMsg);
+        iteratorMsgListeners(msgListener -> msgListener.onCmdMsg(t, cmd, cmdMsg));
+    }
+
+    @Override
+    public void onUnknownCmd(T t, String cmdString, BaseMsg msg) {
+        IBaseMsgListener.super.onUnknownCmd(t, cmdString, msg);
+        iteratorMsgListeners(msgListener -> msgListener.onUnknownCmd(t, cmdString, msg));
     }
 }
