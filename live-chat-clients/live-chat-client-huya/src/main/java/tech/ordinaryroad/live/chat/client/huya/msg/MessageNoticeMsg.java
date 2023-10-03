@@ -119,6 +119,11 @@ public class MessageNoticeMsg extends BaseHuyaCmdMsg implements IDanmuMsg {
     }
 
     @Override
+    public String getUserAvatar() {
+        return this.tUserInfo.getSAvatarUrl();
+    }
+
+    @Override
     public String getContent() {
         return this.sContent;
     }

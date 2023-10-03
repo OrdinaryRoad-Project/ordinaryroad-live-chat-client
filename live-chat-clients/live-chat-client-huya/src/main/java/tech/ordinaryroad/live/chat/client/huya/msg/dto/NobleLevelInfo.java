@@ -34,48 +34,27 @@ import lombok.Setter;
 
 /**
  * @author mjz
- * @date 2023/10/2
+ * @date 2023/10/3
  */
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SenderInfo extends TarsStructBase {
+public class NobleLevelInfo extends TarsStructBase {
 
-    private long lUid;
-    private long lImid;
-    private String sNickName = "";
-    private int iGender;
-    private String sAvatarUrl;
     private int iNobleLevel;
-    private NobleLevelInfo tNobleLevelInfo = new NobleLevelInfo();
-    private String sGuid;
-    private String sHuYaUA;
+    private int iAttrType;
 
     @Override
     public void writeTo(TarsOutputStream os) {
-        os.write(this.lUid, 0);
-        os.write(this.lImid, 1);
-        os.write(this.sNickName, 2);
-        os.write(this.iGender, 3);
-        os.write(this.sAvatarUrl, 4);
-        os.write(this.iNobleLevel, 5);
-        os.write(this.tNobleLevelInfo, 6);
-        os.write(this.sGuid, 7);
-        os.write(this.sHuYaUA, 8);
+        os.write(this.iNobleLevel, 0);
+        os.write(this.iAttrType, 1);
     }
 
     @Override
     public void readFrom(TarsInputStream is) {
-        this.lUid = is.read(this.lUid, 0, true);
-        this.lImid = is.read(this.lImid, 1, true);
-        this.sNickName = is.read(this.sNickName, 2, true);
-        this.iGender = is.read(this.iGender, 3, true);
-        this.sAvatarUrl = is.read(this.sAvatarUrl, 4, true);
-        this.iNobleLevel = is.read(this.iNobleLevel, 5, true);
-        this.tNobleLevelInfo = (NobleLevelInfo) is.directRead(this.tNobleLevelInfo, 6, true);
-        this.sGuid = is.read(this.sGuid, 7, true);
-        this.sHuYaUA = is.read(this.sHuYaUA, 8, true);
+        this.iNobleLevel = is.read(this.iNobleLevel, 0, true);
+        this.iAttrType = is.read(this.iAttrType, 1, true);
     }
 
     @Override
