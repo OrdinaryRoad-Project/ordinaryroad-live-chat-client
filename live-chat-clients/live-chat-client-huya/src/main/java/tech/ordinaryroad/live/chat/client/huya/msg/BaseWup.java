@@ -27,6 +27,7 @@ package tech.ordinaryroad.live.chat.client.huya.msg;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.qq.tars.protocol.tars.TarsInputStream;
 import com.qq.tars.protocol.tars.TarsOutputStream;
+import com.qq.tars.protocol.tars.support.TarsMethodInfo;
 import com.qq.tars.protocol.util.TarsHelper;
 import com.qq.tars.rpc.protocol.tars.TarsServantRequest;
 import com.qq.tars.rpc.protocol.tup.UniAttribute;
@@ -55,7 +56,9 @@ import java.util.Map;
 @NoArgsConstructor
 public abstract class BaseWup extends BaseHuyaMsg {
 
-    private TarsServantRequest tarsServantRequest = new TarsServantRequest(null);
+    private TarsServantRequest tarsServantRequest = new TarsServantRequest(null){{
+        tarsServantRequest.setMethodInfo(new TarsMethodInfo());
+    }};
     private UniAttribute uniAttribute = new UniAttribute();
 
     public BaseWup(TarsInputStream is) {
