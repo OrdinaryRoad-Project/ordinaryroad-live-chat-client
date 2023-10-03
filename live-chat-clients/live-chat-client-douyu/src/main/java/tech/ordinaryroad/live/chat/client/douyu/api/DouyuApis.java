@@ -77,6 +77,9 @@ public class DouyuApis {
         String realRoomIdString = null;
         @Cleanup
         HttpResponse execute = createGetRequest("https://www.douyu.com/" + roomId, cookie).execute();
+        if (execute.getStatus() == HttpStatus.HTTP_NOT_FOUND) {
+            throw new BaseException("获取" + roomId + "真实房间ID失败");
+        }
         if (HttpStatus.isRedirected(execute.getStatus())) {
             String location = execute.header(Header.LOCATION);
             Map<String, String> paramMap = HttpUtil.decodeParamMap(location, null);
