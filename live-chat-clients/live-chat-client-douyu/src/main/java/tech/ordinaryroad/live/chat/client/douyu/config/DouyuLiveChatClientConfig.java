@@ -49,12 +49,6 @@ public class DouyuLiveChatClientConfig extends BaseNettyClientConfig {
     @Builder.Default
     private String aver = "218101901";
 
-    /**
-     * TODO 支持多个uri
-     */
-    @Builder.Default
-    private String websocketUri = "wss://wsproxy.douyu.com:6673";
-
     public void setVer(String ver) {
         String oldValue = this.ver;
         this.ver = ver;

@@ -32,6 +32,7 @@ import io.netty.handler.codec.http.websocketx.WebSocketVersion;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
+import tech.ordinaryroad.live.chat.client.douyu.api.DouyuApis;
 import tech.ordinaryroad.live.chat.client.douyu.client.base.BaseDouyuLiveChatClient;
 import tech.ordinaryroad.live.chat.client.douyu.config.DouyuLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuClientModeEnum;
@@ -72,6 +73,11 @@ public class DouyuWsLiveChatClient extends BaseDouyuLiveChatClient implements ID
 
     public DouyuWsLiveChatClient(DouyuLiveChatClientConfig config) {
         this(config, null);
+    }
+
+    @Override
+    protected String getWebSocketUriString() {
+        return DouyuApis.getRandomWssUri(getConfig().getRoomId());
     }
 
     @Override

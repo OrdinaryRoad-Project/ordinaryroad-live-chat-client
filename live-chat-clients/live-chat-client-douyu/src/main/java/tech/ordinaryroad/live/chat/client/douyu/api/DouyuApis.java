@@ -26,6 +26,7 @@ package tech.ordinaryroad.live.chat.client.douyu.api;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.NumberUtil;
+import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.MD5;
@@ -109,6 +110,23 @@ public class DouyuApis {
         return getRealRoomId(roomId, null);
     }
 
+    public static JsonNode getServerInfo(long roomId, String cookie) {
+        @Cleanup
+        HttpResponse execute = createPostRequest("https://www.douyu.com/lapi/live/gateway/web/" + roomId + "?isH5=1", cookie).execute();
+        return responseInterceptor(execute.body());
+    }
+
+    public static JsonNode getServerInfo(long roomId) {
+        return getServerInfo(roomId, null);
+    }
+
+    public static String getRandomWssUri(long roomId) {
+        JsonNode serverInfo = getServerInfo(roomId);
+        JsonNode wss = serverInfo.get("wss");
+        JsonNode jsonNode = wss.get(RandomUtil.randomInt(0, wss.size()));
+        return "wss://" + jsonNode.get("domain").asText() + ":" + jsonNode.get("port").asInt();
+    }
+
     public static final String vk_secret = "r5*^5;}2#${XF[h+;'./.Q'1;,-]f'p[";
 
     /**
@@ -131,15 +149,20 @@ public class DouyuApis {
                 .cookie(cookie);
     }
 
+    public static HttpRequest createPostRequest(String url, String cookie) {
+        return HttpUtil.createPost(url)
+                .cookie(cookie);
+    }
+
     private static JsonNode responseInterceptor(String responseString) {
         try {
             JsonNode jsonNode = OBJECT_MAPPER.readTree(responseString);
-            int code = jsonNode.get("code").asInt();
+            int code = jsonNode.get("error").asInt();
             if (code == 0) {
                 // 成功
                 return jsonNode.get("data");
             } else {
-                throw new BaseException(jsonNode.get("message").asText());
+                throw new BaseException(jsonNode.get("msg").asText());
             }
         } catch (JsonProcessingException e) {
             throw new BaseException(e);
