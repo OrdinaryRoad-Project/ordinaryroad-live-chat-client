@@ -24,13 +24,18 @@
 
 package tech.ordinaryroad.live.chat.client.servers.netty.client.config;
 
+import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpObjectAggregator;
+import io.netty.handler.codec.http.websocketx.WebSocketClientHandshakerFactory;
+import io.netty.handler.codec.http.websocketx.WebSocketVersion;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import tech.ordinaryroad.live.chat.client.commons.client.config.BaseLiveChatClientConfig;
+
+import java.net.URI;
 
 /**
  * @author mjz
@@ -49,4 +54,12 @@ public abstract class BaseNettyClientConfig extends BaseLiveChatClientConfig {
      */
     @Builder.Default
     private int aggregatorMaxContentLength = 64 * 1024;
+
+    /**
+     * WebSocketClientHandshaker最大消息体长度，默认 64*1024 byte
+     *
+     * @see WebSocketClientHandshakerFactory#newHandshaker(URI, WebSocketVersion, String, boolean, HttpHeaders, int)
+     */
+    @Builder.Default
+    private int maxFramePayloadLength = 64 * 1024;
 }
