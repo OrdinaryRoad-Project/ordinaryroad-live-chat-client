@@ -1,7 +1,10 @@
 package tech.ordinaryroad.live.chat.client.huya.api;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Test;
+import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author mjz
@@ -11,7 +14,7 @@ class HuyaApisTest {
 
     @Test
     void roomInit() {
-        JsonNode jsonNode = HuyaApis.roomInit(189201);
-        jsonNode.size();
+        assertEquals(HuyaApis.roomInit(189201).size(), 3);
+        assertThrows(BaseException.class, () -> HuyaApis.roomInit(-1));
     }
 }

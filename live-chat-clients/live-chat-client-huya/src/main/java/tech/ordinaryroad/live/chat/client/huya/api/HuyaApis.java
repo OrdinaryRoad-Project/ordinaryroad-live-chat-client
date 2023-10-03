@@ -28,11 +28,13 @@ import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
+import cn.hutool.http.HttpStatus;
 import cn.hutool.http.HttpUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.Cleanup;
 import lombok.extern.slf4j.Slf4j;
+import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.huya.msg.dto.PropsItem;
 
 import java.util.HashMap;
@@ -47,13 +49,16 @@ import static tech.ordinaryroad.live.chat.client.commons.base.msg.BaseMsg.OBJECT
  * @date 2023/9/5
  */
 @Slf4j
-public class HuyaApis  {
+public class HuyaApis {
 
     public static final Map<Integer, PropsItem> GIFT_ITEMS = new HashMap<>();
 
     public static JsonNode roomInit(long roomId) {
         @Cleanup
         HttpResponse response = createGetRequest("https://www.huya.com/" + roomId, null).execute();
+        if (response.getStatus() != HttpStatus.HTTP_OK) {
+            throw new BaseException("获取" + roomId + "真实房间ID失败");
+        }
         String body = response.body();
         String lSubChannelId = ReUtil.getGroup1("\"lp\"\\D+(\\d+)", body);
         String lChannelId = ReUtil.getGroup1("\"lp\"\\D+(\\d+)", body);

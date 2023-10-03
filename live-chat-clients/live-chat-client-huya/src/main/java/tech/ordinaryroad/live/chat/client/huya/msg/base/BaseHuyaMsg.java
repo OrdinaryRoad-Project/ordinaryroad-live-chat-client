@@ -24,15 +24,28 @@
 
 package tech.ordinaryroad.live.chat.client.huya.msg.base;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.qq.tars.protocol.tars.TarsStructBase;
+import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
+import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseMsg;
 
 /**
  * @author mjz
  * @date 2023/10/2
  */
 public abstract class BaseHuyaMsg extends TarsStructBase implements IHuyaMsg {
+
     @Override
     public TarsStructBase newInit() {
         return this;
+    }
+
+    @Override
+    public String toString() {
+        try {
+            return BaseMsg.OBJECT_MAPPER.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            throw new BaseException(e);
+        }
     }
 }

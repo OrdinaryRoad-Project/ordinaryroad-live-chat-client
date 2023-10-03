@@ -22,9 +22,8 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.huya.msg;
+package tech.ordinaryroad.live.chat.client.huya.msg.req;
 
-import cn.hutool.core.util.StrUtil;
 import com.qq.tars.protocol.tars.TarsInputStream;
 import com.qq.tars.protocol.tars.TarsOutputStream;
 import com.qq.tars.protocol.tars.TarsStructBase;
@@ -42,39 +41,48 @@ import tech.ordinaryroad.live.chat.client.huya.msg.dto.UserId;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetPropsListReq extends TarsStructBase {
+public class UserHeartBeatReq extends TarsStructBase {
 
-    private UserId tUserId = new UserId();
-    private String sMd5 = StrUtil.EMPTY;
-    private int iTemplateType;
-    private String sVersion = StrUtil.EMPTY;
-    private int iAppId;
-    private long lPresenterUid;
+    private UserId tId = new UserId();
+    private long lTid;
     private long lSid;
-    private long lSubSid;
+    private long lShortTid;
+    private long lPid;
+    private boolean bWatchVideo;
+    private int eLineType;
+    private int iFps;
+    private int iAttendee;
+    private int iBandwidth;
+    private int iLastHeartElapseTime;
 
     @Override
     public void writeTo(TarsOutputStream os) {
-        os.write(this.tUserId, 1);
-        os.write(this.sMd5, 2);
-        os.write(this.iTemplateType, 3);
-        os.write(this.sVersion, 4);
-        os.write(this.iAppId, 5);
-        os.write(this.lPresenterUid, 6);
-        os.write(this.lSid, 7);
-        os.write(this.lSubSid, 8);
+        os.write(this.tId, 0);
+        os.write(this.lTid, 1);
+        os.write(this.lSid, 2);
+        os.write(this.lShortTid, 3);
+        os.write(this.lPid, 4);
+        os.write(this.bWatchVideo, 5);
+        os.write(this.eLineType, 6);
+        os.write(this.iFps, 7);
+        os.write(this.iAttendee, 8);
+        os.write(this.iBandwidth, 9);
+        os.write(this.iLastHeartElapseTime, 10);
     }
 
     @Override
     public void readFrom(TarsInputStream is) {
-        is.read(this.tUserId, 1, true);
-        is.read(this.sMd5, 2, true);
-        is.read(this.iTemplateType, 3, true);
-        is.read(this.sVersion, 4, true);
-        is.read(this.iAppId, 5, true);
-        is.read(this.lPresenterUid, 6, true);
-        is.read(this.lSid, 7, true);
-        is.read(this.lSubSid, 8, true);
+        this.tId = (UserId) is.directRead(new UserId(), 0, true);
+        this.lTid = is.read(this.lTid, 1, true);
+        this.lSid = is.read(this.lSid, 2, true);
+        this.lShortTid = is.read(this.lShortTid, 3, true);
+        this.lPid = is.read(this.lPid, 4, true);
+        this.bWatchVideo = is.read(this.bWatchVideo, 5, true);
+        this.eLineType = is.read(this.eLineType, 6, true);
+        this.iFps = is.read(this.iFps, 7, true);
+        this.iAttendee = is.read(this.iAttendee, 8, true);
+        this.iBandwidth = is.read(this.iBandwidth, 9, true);
+        this.iLastHeartElapseTime = is.read(this.iLastHeartElapseTime, 10, true);
     }
 
     @Override

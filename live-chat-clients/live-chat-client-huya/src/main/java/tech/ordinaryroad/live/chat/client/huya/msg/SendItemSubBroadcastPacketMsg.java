@@ -70,8 +70,8 @@ public class SendItemSubBroadcastPacketMsg extends BaseHuyaCmdMsg implements IGi
     private PropsItem propsItem = PropsItem.DEFAULT;
     // endregion
 
-    public SendItemSubBroadcastPacketMsg(byte[] bytes) {
-        super(bytes);
+    public SendItemSubBroadcastPacketMsg(TarsInputStream is) {
+        this.readFrom(is);
     }
 
     @Override

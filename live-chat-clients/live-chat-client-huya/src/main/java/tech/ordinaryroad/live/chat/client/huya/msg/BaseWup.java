@@ -24,6 +24,7 @@
 
 package tech.ordinaryroad.live.chat.client.huya.msg;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.qq.tars.protocol.tars.TarsInputStream;
 import com.qq.tars.protocol.tars.TarsOutputStream;
 import com.qq.tars.protocol.util.TarsHelper;
@@ -36,8 +37,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
+import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseMsg;
 import tech.ordinaryroad.live.chat.client.huya.msg.base.BaseHuyaMsg;
 import tech.ordinaryroad.live.chat.client.huya.util.HuyaCodecUtil;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author mjz
@@ -106,5 +112,24 @@ public abstract class BaseWup extends BaseHuyaMsg {
         bytes = new byte[byteBuf.readableBytes()];
         byteBuf.readBytes(bytes);
         this.readFrom(HuyaCodecUtil.newUtf8TarsInputStream(bytes));
+    }
+
+    @Override
+    public String toString() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("version", TarsHelper.VERSION3);
+        map.put("packetType", this.tarsServantRequest.getPacketType());
+        map.put("messageType", this.tarsServantRequest.getMessageType());
+        map.put("requestId", this.tarsServantRequest.getRequestId());
+        map.put("servantName", this.tarsServantRequest.getServantName());
+        map.put("functionName", this.tarsServantRequest.getFunctionName());
+        map.put("timeout", this.tarsServantRequest.getTimeout());
+        map.put("context", this.tarsServantRequest.getContext());
+        map.put("status", this.tarsServantRequest.getStatus());
+        try {
+            return BaseMsg.OBJECT_MAPPER.writeValueAsString(map);
+        } catch (JsonProcessingException e) {
+            throw new BaseException(e);
+        }
     }
 }

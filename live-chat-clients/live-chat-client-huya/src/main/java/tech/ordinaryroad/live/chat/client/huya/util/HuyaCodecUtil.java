@@ -33,9 +33,9 @@ import tech.ordinaryroad.live.chat.client.huya.constant.HuyaOperationEnum;
 import tech.ordinaryroad.live.chat.client.huya.constant.HuyaWupFunctionEnum;
 import tech.ordinaryroad.live.chat.client.huya.msg.PushMessage;
 import tech.ordinaryroad.live.chat.client.huya.msg.WebSocketCommand;
-import tech.ordinaryroad.live.chat.client.huya.msg.WupReq;
 import tech.ordinaryroad.live.chat.client.huya.msg.WupRsp;
 import tech.ordinaryroad.live.chat.client.huya.msg.base.IHuyaMsg;
+import tech.ordinaryroad.live.chat.client.huya.msg.req.WupReq;
 
 import java.nio.charset.StandardCharsets;
 import java.util.*;

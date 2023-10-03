@@ -22,10 +22,11 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.huya.msg;
+package tech.ordinaryroad.live.chat.client.huya.msg.req;
 
 import lombok.NoArgsConstructor;
 import tech.ordinaryroad.live.chat.client.huya.constant.HuyaOperationEnum;
+import tech.ordinaryroad.live.chat.client.huya.msg.BaseWup;
 
 /**
  * @author mjz

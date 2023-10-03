@@ -26,13 +26,15 @@ package tech.ordinaryroad.live.chat.client.huya.msg.base;
 
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.qq.tars.protocol.tars.TarsStructBase;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
+import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseMsg;
 import tech.ordinaryroad.live.chat.client.huya.constant.HuyaCmdEnum;
-import tech.ordinaryroad.live.chat.client.huya.util.HuyaCodecUtil;
 
 /**
  * @author mjz
@@ -45,10 +47,6 @@ import tech.ordinaryroad.live.chat.client.huya.util.HuyaCodecUtil;
 public abstract class BaseHuyaCmdMsg extends TarsStructBase implements IHuyaCmdMsg {
 
     private long lUri;
-
-    public BaseHuyaCmdMsg(byte[] bytes) {
-        readFrom(HuyaCodecUtil.newUtf8TarsInputStream(bytes));
-    }
 
     @Override
     public String getCmd() {
@@ -68,5 +66,14 @@ public abstract class BaseHuyaCmdMsg extends TarsStructBase implements IHuyaCmdM
     @Override
     public TarsStructBase newInit() {
         return this;
+    }
+
+    @Override
+    public String toString() {
+        try {
+            return BaseMsg.OBJECT_MAPPER.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            throw new BaseException(e);
+        }
     }
 }

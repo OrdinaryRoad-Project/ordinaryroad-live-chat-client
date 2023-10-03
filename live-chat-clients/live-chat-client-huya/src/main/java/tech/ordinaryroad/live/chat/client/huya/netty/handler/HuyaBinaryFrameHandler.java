@@ -24,6 +24,7 @@
 
 package tech.ordinaryroad.live.chat.client.huya.netty.handler;
 
+import com.qq.tars.protocol.tars.TarsInputStream;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -36,9 +37,13 @@ import tech.ordinaryroad.live.chat.client.huya.constant.HuyaCmdEnum;
 import tech.ordinaryroad.live.chat.client.huya.constant.HuyaOperationEnum;
 import tech.ordinaryroad.live.chat.client.huya.constant.HuyaWupFunctionEnum;
 import tech.ordinaryroad.live.chat.client.huya.listener.IHuyaMsgListener;
-import tech.ordinaryroad.live.chat.client.huya.msg.*;
+import tech.ordinaryroad.live.chat.client.huya.msg.MessageNoticeMsg;
+import tech.ordinaryroad.live.chat.client.huya.msg.PushMessage;
+import tech.ordinaryroad.live.chat.client.huya.msg.SendItemSubBroadcastPacketMsg;
+import tech.ordinaryroad.live.chat.client.huya.msg.WupRsp;
 import tech.ordinaryroad.live.chat.client.huya.msg.base.IHuyaMsg;
 import tech.ordinaryroad.live.chat.client.huya.msg.dto.PropsItem;
+import tech.ordinaryroad.live.chat.client.huya.msg.req.GetPropsListRsp;
 import tech.ordinaryroad.live.chat.client.huya.netty.frame.factory.HuyaWebSocketFrameFactory;
 import tech.ordinaryroad.live.chat.client.huya.util.HuyaCodecUtil;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientBinaryFrameHandler;
@@ -131,13 +136,14 @@ public class HuyaBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<Hu
         }
 
         PushMessage pushMessage = (PushMessage) cmdMsg;
+        TarsInputStream tarsInputStream = HuyaCodecUtil.newUtf8TarsInputStream(pushMessage.getDataBytes());
         switch (cmd) {
             case MessageNotice -> {
-                MessageNoticeMsg messageNoticeMsg = new MessageNoticeMsg(HuyaCodecUtil.newUtf8TarsInputStream(pushMessage.getDataBytes()));
+                MessageNoticeMsg messageNoticeMsg = new MessageNoticeMsg(tarsInputStream);
                 iteratorMsgListeners(msgListener -> msgListener.onDanmuMsg(HuyaBinaryFrameHandler.this, messageNoticeMsg));
             }
             case SendItemSubBroadcastPacket -> {
-                SendItemSubBroadcastPacketMsg sendItemSubBroadcastPacketMsg = new SendItemSubBroadcastPacketMsg(pushMessage.getDataBytes());
+                SendItemSubBroadcastPacketMsg sendItemSubBroadcastPacketMsg = new SendItemSubBroadcastPacketMsg(tarsInputStream);
                 sendItemSubBroadcastPacketMsg.setPropsItem(HuyaApis.GIFT_ITEMS.getOrDefault(sendItemSubBroadcastPacketMsg.getIItemType(), PropsItem.DEFAULT));
                 iteratorMsgListeners(msgListener -> msgListener.onGiftMsg(HuyaBinaryFrameHandler.this, sendItemSubBroadcastPacketMsg));
             }

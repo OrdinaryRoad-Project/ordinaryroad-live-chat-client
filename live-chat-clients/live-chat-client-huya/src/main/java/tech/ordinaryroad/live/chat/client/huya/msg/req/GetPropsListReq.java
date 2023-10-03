@@ -22,8 +22,9 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.huya.msg;
+package tech.ordinaryroad.live.chat.client.huya.msg.req;
 
+import cn.hutool.core.util.StrUtil;
 import com.qq.tars.protocol.tars.TarsInputStream;
 import com.qq.tars.protocol.tars.TarsOutputStream;
 import com.qq.tars.protocol.tars.TarsStructBase;
@@ -31,45 +32,49 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tech.ordinaryroad.live.chat.client.huya.msg.dto.PropsItem;
-
-import java.util.ArrayList;
-import java.util.List;
+import tech.ordinaryroad.live.chat.client.huya.msg.dto.UserId;
 
 /**
  * @author mjz
- * @date 2023/10/3
+ * @date 2023/10/2
  */
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetPropsListRsp extends TarsStructBase {
+public class GetPropsListReq extends TarsStructBase {
 
-    private List<PropsItem> vPropsItemList = new ArrayList<>() {{
-        add(new PropsItem());
-    }};
-    private String sMd5 = "";
-    private short iNewEffectSwitch = 0;
-    private short iMirrorRoomShowNum = 0;
-    private short iGameRoomShowNum = 0;
+    private UserId tUserId = new UserId();
+    private String sMd5 = StrUtil.EMPTY;
+    private int iTemplateType;
+    private String sVersion = StrUtil.EMPTY;
+    private int iAppId;
+    private long lPresenterUid;
+    private long lSid;
+    private long lSubSid;
 
     @Override
     public void writeTo(TarsOutputStream os) {
-        os.write(this.vPropsItemList, 1);
+        os.write(this.tUserId, 1);
         os.write(this.sMd5, 2);
-        os.write(this.iNewEffectSwitch, 3);
-        os.write(this.iMirrorRoomShowNum, 4);
-        os.write(this.iGameRoomShowNum, 5);
+        os.write(this.iTemplateType, 3);
+        os.write(this.sVersion, 4);
+        os.write(this.iAppId, 5);
+        os.write(this.lPresenterUid, 6);
+        os.write(this.lSid, 7);
+        os.write(this.lSubSid, 8);
     }
 
     @Override
     public void readFrom(TarsInputStream is) {
-        this.vPropsItemList = is.readArray(this.vPropsItemList, 1, true);
-        this.sMd5 = is.read(this.sMd5, 2, true);
-        this.iNewEffectSwitch = is.read(this.iNewEffectSwitch, 3, true);
-        this.iMirrorRoomShowNum = is.read(this.iMirrorRoomShowNum, 4, true);
-        this.iGameRoomShowNum = is.read(this.iGameRoomShowNum, 5, true);
+        is.read(this.tUserId, 1, true);
+        is.read(this.sMd5, 2, true);
+        is.read(this.iTemplateType, 3, true);
+        is.read(this.sVersion, 4, true);
+        is.read(this.iAppId, 5, true);
+        is.read(this.lPresenterUid, 6, true);
+        is.read(this.lSid, 7, true);
+        is.read(this.lSubSid, 8, true);
     }
 
     @Override

@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.huya.msg;
+package tech.ordinaryroad.live.chat.client.huya.msg.req;
 
 import com.qq.tars.protocol.tars.TarsInputStream;
 import com.qq.tars.protocol.tars.TarsOutputStream;
@@ -31,58 +31,45 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tech.ordinaryroad.live.chat.client.huya.msg.dto.UserId;
+import tech.ordinaryroad.live.chat.client.huya.msg.dto.PropsItem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author mjz
- * @date 2023/10/2
+ * @date 2023/10/3
  */
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserHeartBeatReq extends TarsStructBase {
+public class GetPropsListRsp extends TarsStructBase {
 
-    private UserId tId = new UserId();
-    private long lTid;
-    private long lSid;
-    private long lShortTid;
-    private long lPid;
-    private boolean bWatchVideo;
-    private int eLineType;
-    private int iFps;
-    private int iAttendee;
-    private int iBandwidth;
-    private int iLastHeartElapseTime;
+    private List<PropsItem> vPropsItemList = new ArrayList<>() {{
+        add(new PropsItem());
+    }};
+    private String sMd5 = "";
+    private short iNewEffectSwitch = 0;
+    private short iMirrorRoomShowNum = 0;
+    private short iGameRoomShowNum = 0;
 
     @Override
     public void writeTo(TarsOutputStream os) {
-        os.write(this.tId, 0);
-        os.write(this.lTid, 1);
-        os.write(this.lSid, 2);
-        os.write(this.lShortTid, 3);
-        os.write(this.lPid, 4);
-        os.write(this.bWatchVideo, 5);
-        os.write(this.eLineType, 6);
-        os.write(this.iFps, 7);
-        os.write(this.iAttendee, 8);
-        os.write(this.iBandwidth, 9);
-        os.write(this.iLastHeartElapseTime, 10);
+        os.write(this.vPropsItemList, 1);
+        os.write(this.sMd5, 2);
+        os.write(this.iNewEffectSwitch, 3);
+        os.write(this.iMirrorRoomShowNum, 4);
+        os.write(this.iGameRoomShowNum, 5);
     }
 
     @Override
     public void readFrom(TarsInputStream is) {
-        this.tId = (UserId) is.directRead(new UserId(), 0, true);
-        this.lTid = is.read(this.lTid, 1, true);
-        this.lSid = is.read(this.lSid, 2, true);
-        this.lShortTid = is.read(this.lShortTid, 3, true);
-        this.lPid = is.read(this.lPid, 4, true);
-        this.bWatchVideo = is.read(this.bWatchVideo, 5, true);
-        this.eLineType = is.read(this.eLineType, 6, true);
-        this.iFps = is.read(this.iFps, 7, true);
-        this.iAttendee = is.read(this.iAttendee, 8, true);
-        this.iBandwidth = is.read(this.iBandwidth, 9, true);
-        this.iLastHeartElapseTime = is.read(this.iLastHeartElapseTime, 10, true);
+        this.vPropsItemList = is.readArray(this.vPropsItemList, 1, true);
+        this.sMd5 = is.read(this.sMd5, 2, true);
+        this.iNewEffectSwitch = is.read(this.iNewEffectSwitch, 3, true);
+        this.iMirrorRoomShowNum = is.read(this.iMirrorRoomShowNum, 4, true);
+        this.iGameRoomShowNum = is.read(this.iGameRoomShowNum, 5, true);
     }
 
     @Override

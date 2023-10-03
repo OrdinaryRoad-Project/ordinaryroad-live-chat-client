@@ -33,10 +33,10 @@ import tech.ordinaryroad.live.chat.client.huya.constant.HuyaClientTemplateTypeEn
 import tech.ordinaryroad.live.chat.client.huya.constant.HuyaOperationEnum;
 import tech.ordinaryroad.live.chat.client.huya.constant.HuyaStreamLineTypeEnum;
 import tech.ordinaryroad.live.chat.client.huya.constant.HuyaWupFunctionEnum;
-import tech.ordinaryroad.live.chat.client.huya.msg.GetPropsListReq;
-import tech.ordinaryroad.live.chat.client.huya.msg.UserHeartBeatReq;
 import tech.ordinaryroad.live.chat.client.huya.msg.WSUserInfo;
 import tech.ordinaryroad.live.chat.client.huya.msg.WebSocketCommand;
+import tech.ordinaryroad.live.chat.client.huya.msg.req.GetPropsListReq;
+import tech.ordinaryroad.live.chat.client.huya.msg.req.UserHeartBeatReq;
 import tech.ordinaryroad.live.chat.client.huya.netty.frame.AuthWebSocketFrame;
 import tech.ordinaryroad.live.chat.client.huya.netty.frame.HeartbeatWebSocketFrame;
 import tech.ordinaryroad.live.chat.client.huya.util.HuyaCodecUtil;
