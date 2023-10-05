@@ -24,12 +24,27 @@
 
 package tech.ordinaryroad.live.chat.client.bilibili.msg.base;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import tech.ordinaryroad.live.chat.client.bilibili.constant.ProtoverEnum;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseMsg;
 
 /**
  * @author mjz
  * @date 2023/1/6
  */
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public abstract class BaseBilibiliMsg extends BaseMsg implements IBilibiliMsg {
 
+    private int protover;
+
+    @Override
+    public ProtoverEnum getProtoverEnum() {
+        return ProtoverEnum.getByCode(protover);
+    }
 }

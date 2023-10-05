@@ -28,7 +28,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.OperationEnum;
-import tech.ordinaryroad.live.chat.client.bilibili.msg.base.BaseBilibiliCmdMsg;
+import tech.ordinaryroad.live.chat.client.bilibili.msg.base.BaseBilibiliMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.dto.MedalInfo;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ISuperChatMsg;
 
@@ -40,7 +40,7 @@ import tech.ordinaryroad.live.chat.client.commons.base.msg.ISuperChatMsg;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SuperChatMessageMsg extends BaseBilibiliCmdMsg implements ISuperChatMsg {
+public class SuperChatMessageMsg extends BaseBilibiliMsg implements ISuperChatMsg {
 
     private long roomid;
     private Data data;
