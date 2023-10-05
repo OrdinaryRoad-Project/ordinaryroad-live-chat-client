@@ -41,6 +41,7 @@ public enum HuyaWupFunctionEnum {
     getPropsList,
     OnUserHeartBeat,
     getLivingInfo,
+    sendMessage,
     ;
 
     public static HuyaWupFunctionEnum getByName(String name) {

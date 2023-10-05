@@ -22,18 +22,46 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.huya.netty.frame.base;
+package tech.ordinaryroad.live.chat.client.huya.msg.dto;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
+import cn.hutool.core.collection.CollUtil;
+import com.qq.tars.protocol.tars.TarsInputStream;
+import com.qq.tars.protocol.tars.TarsOutputStream;
+import com.qq.tars.protocol.tars.TarsStructBase;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
 
 /**
  * @author mjz
- * @date 2023/10/2
+ * @date 2023/10/5
  */
-public abstract class BaseHuyaWebSocketFrame extends BinaryWebSocketFrame {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class LiveProxyValue extends TarsStructBase {
 
-    public BaseHuyaWebSocketFrame(ByteBuf byteBuf) {
-        super(byteBuf);
+    private int eProxyType;
+    private List<String> sProxy = CollUtil.newArrayList("");
+
+    @Override
+    public void writeTo(TarsOutputStream os) {
+        os.write(this.eProxyType, 0);
+        os.write(this.sProxy, 1);
+    }
+
+    @Override
+    public void readFrom(TarsInputStream is) {
+        this.eProxyType = is.read(this.eProxyType, 0, false);
+        this.sProxy = is.readArray(this.sProxy, 1, false);
+    }
+
+    @Override
+    public TarsStructBase newInit() {
+        return this;
     }
 }

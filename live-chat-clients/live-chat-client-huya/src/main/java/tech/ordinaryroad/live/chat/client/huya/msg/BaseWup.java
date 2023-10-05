@@ -56,7 +56,7 @@ import java.util.Map;
 @NoArgsConstructor
 public abstract class BaseWup extends BaseHuyaMsg {
 
-    private TarsServantRequest tarsServantRequest = new TarsServantRequest(null){{
+    private TarsServantRequest tarsServantRequest = new TarsServantRequest(null) {{
         setMethodInfo(new TarsMethodInfo());
     }};
     private UniAttribute uniAttribute = new UniAttribute();
@@ -82,16 +82,16 @@ public abstract class BaseWup extends BaseHuyaMsg {
 
     @Override
     public void readFrom(TarsInputStream is) {
-        this.tarsServantRequest.setVersion(is.read(this.tarsServantRequest.getVersion(), 1, true));
-        this.tarsServantRequest.setPacketType(is.read(this.tarsServantRequest.getPacketType(), 2, true));
-        this.tarsServantRequest.setMessageType(is.read(this.tarsServantRequest.getMessageType(), 3, true));
-        this.tarsServantRequest.setRequestId(is.read(this.tarsServantRequest.getRequestId(), 4, true));
-        this.tarsServantRequest.setServantName(is.read(this.tarsServantRequest.getServantName(), 5, true));
-        this.tarsServantRequest.setFunctionName(is.read(this.tarsServantRequest.getFunctionName(), 6, true));
-        this.uniAttribute.decode(is.read(new byte[]{}, 7, true));
-        this.tarsServantRequest.setTimeout(is.read(this.tarsServantRequest.getTimeout(), 8, true));
-        this.tarsServantRequest.setContext(is.readMap(this.tarsServantRequest.getContext(), 9, true));
-        this.tarsServantRequest.setStatus(is.readMap(this.tarsServantRequest.getStatus(), 10, true));
+        this.tarsServantRequest.setVersion(is.read(this.tarsServantRequest.getVersion(), 1, false));
+        this.tarsServantRequest.setPacketType(is.read(this.tarsServantRequest.getPacketType(), 2, false));
+        this.tarsServantRequest.setMessageType(is.read(this.tarsServantRequest.getMessageType(), 3, false));
+        this.tarsServantRequest.setRequestId(is.read(this.tarsServantRequest.getRequestId(), 4, false));
+        this.tarsServantRequest.setServantName(is.read(this.tarsServantRequest.getServantName(), 5, false));
+        this.tarsServantRequest.setFunctionName(is.read(this.tarsServantRequest.getFunctionName(), 6, false));
+        this.uniAttribute.decode(is.read(new byte[]{}, 7, false));
+        this.tarsServantRequest.setTimeout(is.read(this.tarsServantRequest.getTimeout(), 8, false));
+        this.tarsServantRequest.setContext(is.readMap(this.tarsServantRequest.getContext(), 9, false));
+        this.tarsServantRequest.setStatus(is.readMap(this.tarsServantRequest.getStatus(), 10, false));
     }
 
     public byte[] encode() {
@@ -120,7 +120,7 @@ public abstract class BaseWup extends BaseHuyaMsg {
     @Override
     public String toString() {
         Map<String, Object> map = new HashMap<>();
-        map.put("version", TarsHelper.VERSION3);
+        map.put("version", this.tarsServantRequest.getVersion());
         map.put("packetType", this.tarsServantRequest.getPacketType());
         map.put("messageType", this.tarsServantRequest.getMessageType());
         map.put("requestId", this.tarsServantRequest.getRequestId());

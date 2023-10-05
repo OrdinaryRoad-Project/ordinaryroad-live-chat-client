@@ -24,6 +24,7 @@
 
 package tech.ordinaryroad.live.chat.client.huya.msg.req;
 
+import cn.hutool.core.collection.CollUtil;
 import com.qq.tars.protocol.tars.TarsInputStream;
 import com.qq.tars.protocol.tars.TarsOutputStream;
 import com.qq.tars.protocol.tars.TarsStructBase;
@@ -31,56 +32,64 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tech.ordinaryroad.live.chat.client.huya.msg.dto.UserId;
+import tech.ordinaryroad.live.chat.client.huya.msg.dto.*;
+
+import java.util.List;
 
 /**
  * @author mjz
- * @date 2023/10/2
+ * @date 2023/10/5
  */
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserHeartBeatReq extends TarsStructBase {
+public class SendMessageReq extends TarsStructBase {
 
-    private UserId tId = new UserId();
+    private UserId tUserId = new UserId();
     private long lTid;
     private long lSid;
+    private String sContent = "";
+    private int iShowMode;
+    private ContentFormat tFormat = new ContentFormat();
+    private BulletFormat tBulletFormat = new BulletFormat();
+    private List<UidNickName> vAtSomeone;
     private long lPid;
-    private boolean bWatchVideo;
-    private int eLineType;
-    private int iFps;
-    private int iAttendee;
-    private int iBandwidth;
-    private int iLastHeartElapseTime;
+    private List<MessageTagInfo> vTagInfo = CollUtil.newArrayList(new MessageTagInfo());
+    private SendMessageFormat tSenceFormat = new SendMessageFormat();
+    private int iMessageMode;
 
     @Override
     public void writeTo(TarsOutputStream os) {
-        os.write(this.tId, 0);
+        os.write(this.tUserId, 0);
         os.write(this.lTid, 1);
         os.write(this.lSid, 2);
-        os.write(this.lPid, 4);
-        os.write(this.bWatchVideo, 5);
-        os.write(this.eLineType, 6);
-        os.write(this.iFps, 7);
-        os.write(this.iAttendee, 8);
-        os.write(this.iBandwidth, 9);
-        os.write(this.iLastHeartElapseTime, 10);
+        os.write(this.sContent, 3);
+        os.write(this.iShowMode, 4);
+        os.write(this.tFormat, 5);
+        os.write(this.tBulletFormat, 6);
+        os.write(this.vAtSomeone, 7);
+        os.write(this.lPid, 8);
+        os.write(this.vTagInfo, 9);
+        os.write(this.tSenceFormat, 10);
+        os.write(this.iMessageMode, 11);
 
     }
 
     @Override
     public void readFrom(TarsInputStream is) {
-        this.tId = (UserId) is.directRead(this.tId, 0, false);
+        this.tUserId = (UserId) is.directRead(this.tUserId, 0, false);
         this.lTid = is.read(this.lTid, 1, false);
         this.lSid = is.read(this.lSid, 2, false);
-        this.lPid = is.read(this.lPid, 4, false);
-        this.bWatchVideo = is.read(this.bWatchVideo, 5, false);
-        this.eLineType = is.read(this.eLineType, 6, false);
-        this.iFps = is.read(this.iFps, 7, false);
-        this.iAttendee = is.read(this.iAttendee, 8, false);
-        this.iBandwidth = is.read(this.iBandwidth, 9, false);
-        this.iLastHeartElapseTime = is.read(this.iLastHeartElapseTime, 10, false);
+        this.sContent = is.read(this.sContent, 3, false);
+        this.iShowMode = is.read(this.iShowMode, 4, false);
+        this.tFormat = (ContentFormat) is.directRead(this.tFormat, 5, false);
+        this.tBulletFormat = (BulletFormat) is.directRead(this.tBulletFormat, 6, false);
+        this.vAtSomeone = is.readArray(this.vAtSomeone, 7, false);
+        this.lPid = is.read(this.lPid, 8, false);
+        this.vTagInfo = is.readArray(this.vTagInfo, 9, false);
+        this.tSenceFormat = (SendMessageFormat) is.directRead(this.tSenceFormat, 10, false);
+        this.iMessageMode = is.read(this.iMessageMode, 11, false);
     }
 
     @Override

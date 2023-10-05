@@ -24,7 +24,6 @@
 
 package tech.ordinaryroad.live.chat.client.huya.msg.req;
 
-import cn.hutool.core.util.StrUtil;
 import com.qq.tars.protocol.tars.TarsInputStream;
 import com.qq.tars.protocol.tars.TarsOutputStream;
 import com.qq.tars.protocol.tars.TarsStructBase;
@@ -45,9 +44,9 @@ import tech.ordinaryroad.live.chat.client.huya.msg.dto.UserId;
 public class GetPropsListReq extends TarsStructBase {
 
     private UserId tUserId = new UserId();
-    private String sMd5 = StrUtil.EMPTY;
+    private String sMd5 = "";
     private int iTemplateType;
-    private String sVersion = StrUtil.EMPTY;
+    private String sVersion = "";
     private int iAppId;
     private long lPresenterUid;
     private long lSid;

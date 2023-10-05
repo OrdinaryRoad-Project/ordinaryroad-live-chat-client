@@ -43,11 +43,12 @@ import tech.ordinaryroad.live.chat.client.huya.msg.base.BaseHuyaCmdMsg;
 @NoArgsConstructor
 public class PushMessage extends BaseHuyaCmdMsg {
 
-    // region 额外属性
     private int ePushType;
     private byte[] dataBytes;
     private int iProtocolType;
-    // endregion
+    private String sGroupId = "";
+    private long lMsgId;
+    private int iMsgTag;
 
     public PushMessage(TarsInputStream is) {
         this.readFrom(is);
@@ -59,6 +60,10 @@ public class PushMessage extends BaseHuyaCmdMsg {
         os.write(super.getLUri(), 1);
         os.write(this.dataBytes, 2);
         os.write(this.iProtocolType, 3);
+        os.write(this.sGroupId, 4);
+        os.write(this.lMsgId, 5);
+        os.write(this.iMsgTag, 6);
+
     }
 
     @Override
@@ -67,10 +72,13 @@ public class PushMessage extends BaseHuyaCmdMsg {
         super.setLUri(is.read(super.getLUri(), 1, true));
         this.dataBytes = is.read(this.dataBytes, 2, true);
         this.iProtocolType = is.read(this.iProtocolType, 3, true);
+        this.sGroupId = is.read(this.sGroupId, 4, true);
+        this.lMsgId = is.read(this.lMsgId, 5, true);
+        this.iMsgTag = is.read(this.iMsgTag, 6, true);
     }
 
     @Override
     public HuyaOperationEnum getOperationEnum() {
-        return HuyaOperationEnum.EWSCmdS2C_MsgPushReq;
+        return HuyaOperationEnum.EWSCmdS2C_MsgPushReq_V2;
     }
 }

@@ -34,43 +34,48 @@ import lombok.Setter;
 
 /**
  * @author mjz
- * @date 2023/10/2
+ * @date 2023/10/5
  */
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserId extends TarsStructBase {
+public class BulletBorderGroundFormat extends TarsStructBase {
 
-    private long lUid;
-    private String sGuid = "";
-    private String sToken = "";
-    private String sHuYaUA = "";
-    private String sCookie = "";
-    private int iTokenType;
-    private String sDeviceInfo = "";
-
+    private int iEnableUse;
+    private int iBorderThickness;
+    private int iBorderColour = -1;
+    private int iBorderDiaphaneity = 100;
+    private int iGroundColour = -1;
+    private int iGroundColourDiaphaneity = 100;
+    private String sAvatarDecorationUrl = "";
+    private int iFontColor = -1;
+    private int iTerminalFlag = -1;
 
     @Override
     public void writeTo(TarsOutputStream os) {
-        os.write(this.lUid, 0);
-        os.write(this.sGuid, 1);
-        os.write(this.sToken, 2);
-        os.write(this.sHuYaUA, 3);
-        os.write(this.sCookie, 4);
-        os.write(this.iTokenType, 5);
-        os.write(this.sDeviceInfo, 6);
+        os.write(this.iEnableUse, 0);
+        os.write(this.iBorderThickness, 1);
+        os.write(this.iBorderColour, 2);
+        os.write(this.iBorderDiaphaneity, 3);
+        os.write(this.iGroundColour, 4);
+        os.write(this.iGroundColourDiaphaneity, 5);
+        os.write(this.sAvatarDecorationUrl, 6);
+        os.write(this.iFontColor, 7);
+        os.write(this.iTerminalFlag, 8);
     }
 
     @Override
     public void readFrom(TarsInputStream is) {
-        this.lUid = is.read(this.lUid, 0, true);
-        this.sGuid = is.read(this.sGuid, 1, true);
-        this.sToken = is.read(this.sToken, 2, true);
-        this.sHuYaUA = is.read(this.sHuYaUA, 3, true);
-        this.sCookie = is.read(this.sCookie, 4, true);
-        this.iTokenType = is.read(this.iTokenType, 5, true);
-        this.sDeviceInfo = is.read(this.sDeviceInfo, 6, true);
+        this.iEnableUse = is.read(this.iEnableUse, 0, false);
+        this.iBorderThickness = is.read(this.iBorderThickness, 1, false);
+        this.iBorderColour = is.read(this.iBorderColour, 2, false);
+        this.iBorderDiaphaneity = is.read(this.iBorderDiaphaneity, 3, false);
+        this.iGroundColour = is.read(this.iGroundColour, 4, false);
+        this.iGroundColourDiaphaneity = is.read(this.iGroundColourDiaphaneity, 5, false);
+        this.sAvatarDecorationUrl = is.read(this.sAvatarDecorationUrl, 6, false);
+        this.iFontColor = is.read(this.iFontColor, 7, false);
+        this.iTerminalFlag = is.read(this.iTerminalFlag, 8, false);
     }
 
     @Override

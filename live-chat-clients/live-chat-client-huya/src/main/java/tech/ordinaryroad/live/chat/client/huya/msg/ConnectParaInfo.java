@@ -43,7 +43,7 @@ import java.util.Map;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class WSConnectParaInfo extends TarsStructBase {
+public class ConnectParaInfo extends TarsStructBase {
 
     private long lUid = 0;
     private String sGuid = "";
@@ -76,21 +76,21 @@ public class WSConnectParaInfo extends TarsStructBase {
 
     @Override
     public void readFrom(TarsInputStream is) {
-        this.lUid = is.read(this.lUid, 0, true);
-        this.sGuid = is.read(this.sGuid, 1, true);
-        this.sUA = is.read(this.sUA, 2, true);
-        this.sAppSrc = is.read(this.sAppSrc, 3, true);
-        this.sMid = is.read(this.sMid, 4, true);
-        this.sExp = is.read(this.sExp, 5, true);
-        this.iTokenType = is.read(this.iTokenType, 6, true);
-        this.sToken = is.read(this.sToken, 7, true);
-        this.sCookie = is.read(this.sCookie, 8, true);
-        this.sTraceId = is.read(this.sTraceId, 9, true);
-        this.mCustomHeaders = is.readMap(this.mCustomHeaders, 10, true);
+        this.lUid = is.read(this.lUid, 0, false);
+        this.sGuid = is.read(this.sGuid, 1, false);
+        this.sUA = is.read(this.sUA, 2, false);
+        this.sAppSrc = is.read(this.sAppSrc, 3, false);
+        this.sMid = is.read(this.sMid, 4, false);
+        this.sExp = is.read(this.sExp, 5, false);
+        this.iTokenType = is.read(this.iTokenType, 6, false);
+        this.sToken = is.read(this.sToken, 7, false);
+        this.sCookie = is.read(this.sCookie, 8, false);
+        this.sTraceId = is.read(this.sTraceId, 9, false);
+        this.mCustomHeaders = is.readMap(this.mCustomHeaders, 10, false);
     }
 
-    public static WSConnectParaInfo newWSConnectParaInfo(String ver, String sExp, String appSrc) {
-        WSConnectParaInfo wsConnectParaInfo = new WSConnectParaInfo();
+    public static ConnectParaInfo newWSConnectParaInfo(String ver, String sExp, String appSrc) {
+        ConnectParaInfo wsConnectParaInfo = new ConnectParaInfo();
 //        wsConnectParaInfo.sGuid = UUID.fastUUID().toString(true);
 
         wsConnectParaInfo.sUA = "webh5&%s&websocket".formatted(ver);

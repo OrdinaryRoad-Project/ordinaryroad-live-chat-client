@@ -24,6 +24,7 @@
 
 package tech.ordinaryroad.live.chat.client.huya.msg.dto;
 
+import cn.hutool.core.collection.CollUtil;
 import com.qq.tars.protocol.tars.TarsInputStream;
 import com.qq.tars.protocol.tars.TarsOutputStream;
 import com.qq.tars.protocol.tars.TarsStructBase;
@@ -31,6 +32,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 /**
  * @author mjz
@@ -47,6 +50,10 @@ public class BulletFormat extends TarsStructBase {
     private int iTextSpeed = 0;
     private int iTransitionType = 1;
     private int iPopupStyle = 0;
+    private BulletBorderGroundFormat tBorderGroundFormat = new BulletBorderGroundFormat();
+    private List<Integer> vGraduatedColor = CollUtil.newArrayList(0);
+    private int iAvatarFlag = 0;
+    private int iAvatarTerminalFlag = -1;
 
     @Override
     public void writeTo(TarsOutputStream os) {
@@ -55,15 +62,24 @@ public class BulletFormat extends TarsStructBase {
         os.write(this.iTextSpeed, 2);
         os.write(this.iTransitionType, 3);
         os.write(this.iPopupStyle, 4);
+        os.write(this.tBorderGroundFormat, 5);
+        os.write(this.vGraduatedColor, 6);
+        os.write(this.iAvatarFlag, 7);
+        os.write(this.iAvatarTerminalFlag, 8);
     }
 
     @Override
     public void readFrom(TarsInputStream is) {
-        this.iFontColor = is.read(this.iFontColor, 0, true);
-        this.iFontSize = is.read(this.iFontSize, 1, true);
-        this.iPopupStyle = is.read(this.iTextSpeed, 2, true);
-        this.iPopupStyle = is.read(this.iTransitionType, 3, true);
-        this.iPopupStyle = is.read(this.iPopupStyle, 4, true);
+        this.iFontColor = is.read(this.iFontColor, 0, false);
+        this.iFontSize = is.read(this.iFontSize, 1, false);
+        this.iTextSpeed = is.read(this.iTextSpeed, 2, false);
+        this.iTransitionType = is.read(this.iTransitionType, 3, false);
+        this.iPopupStyle = is.read(this.iPopupStyle, 4, false);
+        this.tBorderGroundFormat = (BulletBorderGroundFormat) is.directRead(this.tBorderGroundFormat, 5, false);
+        this.vGraduatedColor = is.readArray(this.vGraduatedColor, 6, false);
+        this.iAvatarFlag = is.read(this.iAvatarFlag, 7, false);
+        this.iAvatarTerminalFlag = is.read(this.iAvatarTerminalFlag, 8, false);
+
     }
 
     @Override

@@ -45,6 +45,11 @@ public class WebSocketCommand extends BaseHuyaMsg {
 
     private int operation;
     private byte[] vData;
+    private long lRequestId;
+    private String traceId = "";
+    private int iEncryptType;
+    private long lTime;
+    private String sMD5 = "";
 
     public WebSocketCommand(TarsInputStream is) {
         this.readFrom(is);
@@ -54,12 +59,22 @@ public class WebSocketCommand extends BaseHuyaMsg {
     public void writeTo(TarsOutputStream os) {
         os.write(this.operation, 0);
         os.write(this.vData, 1);
+        os.write(this.lRequestId, 2);
+        os.write(this.traceId, 3);
+        os.write(this.iEncryptType, 4);
+        os.write(this.lTime, 5);
+        os.write(this.sMD5, 6);
     }
 
     @Override
     public void readFrom(TarsInputStream is) {
         this.operation = is.read(this.operation, 0, true);
         this.vData = is.read(this.vData, 1, true);
+        this.lRequestId = is.read(this.lRequestId, 2, true);
+        this.traceId = is.read(this.traceId, 3, true);
+        this.iEncryptType = is.read(this.iEncryptType, 4, true);
+        this.lTime = is.read(this.lTime, 5, true);
+        this.sMD5 = is.read(this.sMD5, 6, true);
     }
 
     @Override

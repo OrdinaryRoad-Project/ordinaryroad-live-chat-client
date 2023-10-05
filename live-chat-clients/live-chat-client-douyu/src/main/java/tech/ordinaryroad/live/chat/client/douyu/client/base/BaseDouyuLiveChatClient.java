@@ -91,7 +91,7 @@ public abstract class BaseDouyuLiveChatClient extends BaseNettyClient<
 
     @Override
     public void sendDanmu(Object danmu, Runnable success, Consumer<Throwable> failed) {
-        if (!checkCanSendDanmn()) {
+        if (!checkCanSendDanmu()) {
             return;
         }
         if (mode == DouyuClientModeEnum.WS && danmu instanceof String msg) {

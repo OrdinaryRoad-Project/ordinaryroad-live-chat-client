@@ -54,11 +54,16 @@ public class HuyaConnectionHandler extends BaseNettyClientConnectionHandler<Huya
     /**
      * 以ClientConfig为主
      */
+    private final String ver;
+    /**
+     * 以ClientConfig为主
+     */
     private String cookie;
 
     public HuyaConnectionHandler(WebSocketClientHandshaker handshaker, HuyaLiveChatClient client, IBaseConnectionListener<HuyaConnectionHandler> listener) {
         super(handshaker, client, listener);
         this.roomId = client.getConfig().getRoomId();
+        this.ver = client.getConfig().getVer();
         this.cookie = client.getConfig().getCookie();
     }
 
@@ -66,22 +71,23 @@ public class HuyaConnectionHandler extends BaseNettyClientConnectionHandler<Huya
         this(handshaker, client, null);
     }
 
-    public HuyaConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, IBaseConnectionListener<HuyaConnectionHandler> listener, String cookie) {
+    public HuyaConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, String ver, IBaseConnectionListener<HuyaConnectionHandler> listener, String cookie) {
         super(handshaker, listener);
         this.roomId = roomId;
+        this.ver = ver;
         this.cookie = cookie;
     }
 
-    public HuyaConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, IBaseConnectionListener<HuyaConnectionHandler> listener) {
-        this(handshaker, roomId, listener, null);
+    public HuyaConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, String ver, IBaseConnectionListener<HuyaConnectionHandler> listener) {
+        this(handshaker, roomId, ver, listener, null);
     }
 
-    public HuyaConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, String cookie) {
-        this(handshaker, roomId, null, cookie);
+    public HuyaConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, String ver, String cookie) {
+        this(handshaker, roomId, ver, null, cookie);
     }
 
-    public HuyaConnectionHandler(WebSocketClientHandshaker handshaker, long roomId) {
-        this(handshaker, roomId, null, null);
+    public HuyaConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, String ver) {
+        this(handshaker, roomId, ver, null, null);
     }
 
     @Override
@@ -90,7 +96,7 @@ public class HuyaConnectionHandler extends BaseNettyClientConnectionHandler<Huya
             log.debug("发送心跳包");
         }
         ctx.writeAndFlush(
-                getWebSocketFrameFactory(getRoomId()).createHeartbeat()
+                getWebSocketFrameFactory(getRoomId()).createHeartbeat(getVer(), getCookie())
         ).addListener((ChannelFutureListener) future -> {
             if (future.isSuccess()) {
                 if (log.isDebugEnabled()) {
@@ -111,11 +117,15 @@ public class HuyaConnectionHandler extends BaseNettyClientConnectionHandler<Huya
         if (log.isDebugEnabled()) {
             log.debug("发送认证包");
         }
-        channel.writeAndFlush(getWebSocketFrameFactory(getRoomId()).createAuth());
+        channel.writeAndFlush(getWebSocketFrameFactory(getRoomId()).createAuth(getVer(), getCookie()));
     }
 
     public long getRoomId() {
         return client != null ? client.getConfig().getRoomId() : roomId;
+    }
+
+    public String getVer() {
+        return client != null ? client.getConfig().getVer() : ver;
     }
 
     private String getCookie() {

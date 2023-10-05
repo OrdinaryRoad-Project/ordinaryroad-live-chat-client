@@ -24,6 +24,9 @@
 
 package tech.ordinaryroad.live.chat.client.huya.client;
 
+import cn.hutool.core.thread.ThreadUtil;
+import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
@@ -34,6 +37,8 @@ import tech.ordinaryroad.live.chat.client.huya.listener.IHuyaMsgListener;
 import tech.ordinaryroad.live.chat.client.huya.msg.MessageNoticeMsg;
 import tech.ordinaryroad.live.chat.client.huya.msg.SendItemSubBroadcastPacketMsg;
 import tech.ordinaryroad.live.chat.client.huya.netty.handler.HuyaBinaryFrameHandler;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author mjz
@@ -48,11 +53,13 @@ class HuyaLiveChatClientTest {
     @Test
     void example() throws InterruptedException {
         HuyaLiveChatClientConfig config = HuyaLiveChatClientConfig.builder()
-                // bagea
-//                .roomId(189201)
                 .roomId(353322)
                 .roomId(390001)
+                .roomId(527988)
                 .roomId(1995)
+                .roomId(116)
+                // bagea
+                .roomId(189201)
                 .build();
 
         client = new HuyaLiveChatClient(config, new IHuyaMsgListener() {
@@ -63,6 +70,10 @@ class HuyaLiveChatClientTest {
 
             @Override
             public void onGiftMsg(HuyaBinaryFrameHandler binaryFrameHandler, SendItemSubBroadcastPacketMsg msg) {
+                long lPayTotal = msg.getLPayTotal();
+                if (lPayTotal != 0) {
+                    int giftPrice = msg.getGiftPrice();
+                }
                 log.info("{} 收到礼物 {}({}) {} {}({})x{}({})", binaryFrameHandler.getRoomId(), msg.getUsername(), msg.getUid(), "赠送", msg.getGiftName(), msg.getGiftId(), msg.getGiftCount(), msg.getGiftPrice());
             }
 
@@ -87,6 +98,39 @@ class HuyaLiveChatClientTest {
             }
         });
         client.connect();
+
+        // 防止测试时直接退出
+        while (true) {
+            synchronized (lock) {
+                lock.wait();
+            }
+        }
+    }
+
+    @Test
+    void sendDanmuTest() throws InterruptedException {
+        String cookie = System.getenv("cookie");
+        assertTrue(StrUtil.isNotBlank(cookie));
+        log.error("cookie: {}", cookie);
+
+        HuyaLiveChatClientConfig config = HuyaLiveChatClientConfig.builder()
+                .cookie(cookie)
+                .roomId(189201)
+                .build();
+
+        client = new HuyaLiveChatClient(config);
+        client.connect(() -> {
+            String danmu = "66666" + RandomUtil.randomNumber();
+            log.info("连接成功，5s后发送弹幕{}", danmu);
+            ThreadUtil.sleep(5000);
+            client.sendDanmu(danmu);
+        });
+        client.addMsgListener(new IHuyaMsgListener() {
+            @Override
+            public void onMsg(IMsg msg) {
+                log.info("收到消息{}", msg);
+            }
+        });
 
         // 防止测试时直接退出
         while (true) {

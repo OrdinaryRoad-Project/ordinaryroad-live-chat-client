@@ -22,59 +22,57 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.huya.msg.dto;
+package tech.ordinaryroad.live.chat.client.huya.msg;
 
+import cn.hutool.core.collection.CollUtil;
 import com.qq.tars.protocol.tars.TarsInputStream;
 import com.qq.tars.protocol.tars.TarsOutputStream;
-import com.qq.tars.protocol.tars.TarsStructBase;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import tech.ordinaryroad.live.chat.client.huya.constant.HuyaOperationEnum;
+import tech.ordinaryroad.live.chat.client.huya.msg.base.BaseHuyaMsg;
+import tech.ordinaryroad.live.chat.client.huya.msg.dto.LiveProxyValue;
+
+import java.util.List;
 
 /**
  * @author mjz
- * @date 2023/10/2
+ * @date 2023/10/5
  */
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserId extends TarsStructBase {
+public class LiveLaunchRsp extends BaseHuyaMsg {
 
-    private long lUid;
     private String sGuid = "";
-    private String sToken = "";
-    private String sHuYaUA = "";
-    private String sCookie = "";
-    private int iTokenType;
-    private String sDeviceInfo = "";
-
+    private int iTime;
+    private List<LiveProxyValue> vProxyList = CollUtil.newArrayList(new LiveProxyValue());
+    private int eAccess;
+    private String sClientIp = "";
 
     @Override
     public void writeTo(TarsOutputStream os) {
-        os.write(this.lUid, 0);
-        os.write(this.sGuid, 1);
-        os.write(this.sToken, 2);
-        os.write(this.sHuYaUA, 3);
-        os.write(this.sCookie, 4);
-        os.write(this.iTokenType, 5);
-        os.write(this.sDeviceInfo, 6);
+        os.write(this.sGuid, 0);
+        os.write(this.iTime, 1);
+        os.write(this.vProxyList, 2);
+        os.write(this.eAccess, 3);
+        os.write(this.sClientIp, 4);
     }
 
     @Override
     public void readFrom(TarsInputStream is) {
-        this.lUid = is.read(this.lUid, 0, true);
-        this.sGuid = is.read(this.sGuid, 1, true);
-        this.sToken = is.read(this.sToken, 2, true);
-        this.sHuYaUA = is.read(this.sHuYaUA, 3, true);
-        this.sCookie = is.read(this.sCookie, 4, true);
-        this.iTokenType = is.read(this.iTokenType, 5, true);
-        this.sDeviceInfo = is.read(this.sDeviceInfo, 6, true);
+        this.sGuid = is.read(this.sGuid, 0, false);
+        this.iTime = is.read(this.iTime, 1, false);
+        this.vProxyList = is.readArray(this.vProxyList, 2, false);
+        this.eAccess = is.read(this.eAccess, 3, false);
+        this.sClientIp = is.read(this.sClientIp, 4, false);
     }
 
     @Override
-    public TarsStructBase newInit() {
-        return this;
+    public HuyaOperationEnum getOperationEnum() {
+        return HuyaOperationEnum.EWSCmd_WupRsp;
     }
 }

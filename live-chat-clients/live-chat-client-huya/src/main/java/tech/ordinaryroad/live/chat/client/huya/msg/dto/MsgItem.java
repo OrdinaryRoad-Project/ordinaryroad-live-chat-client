@@ -22,19 +22,46 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.huya.netty.frame;
+package tech.ordinaryroad.live.chat.client.huya.msg.dto;
 
-import io.netty.buffer.ByteBuf;
-import tech.ordinaryroad.live.chat.client.huya.netty.frame.base.BaseHuyaWebSocketFrame;
+import com.qq.tars.protocol.tars.TarsInputStream;
+import com.qq.tars.protocol.tars.TarsOutputStream;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import tech.ordinaryroad.live.chat.client.huya.constant.HuyaOperationEnum;
+import tech.ordinaryroad.live.chat.client.huya.msg.base.BaseHuyaCmdMsg;
 
 /**
  * @author mjz
- * @date 2023/1/5
+ * @date 2023/10/5
  */
-public class HeartbeatWebSocketFrame extends BaseHuyaWebSocketFrame {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class MsgItem extends BaseHuyaCmdMsg {
 
-    public HeartbeatWebSocketFrame(ByteBuf byteBuf) {
-        super(byteBuf);
+    private byte[] sMsg;
+    private long lMsgId;
+
+    @Override
+    public void writeTo(TarsOutputStream os) {
+        os.write(super.getLUri(), 0);
+        os.write(this.sMsg, 1);
+        os.write(this.lMsgId, 2);
     }
 
+    @Override
+    public void readFrom(TarsInputStream is) {
+        super.setLUri(is.read(super.getLUri(), 0, true));
+        this.sMsg = is.read(this.sMsg, 1, true);
+        this.lMsgId = is.read(this.lMsgId, 2, true);
+    }
+
+    @Override
+    public HuyaOperationEnum getOperationEnum() {
+        return HuyaOperationEnum.EWSCmdS2C_MsgPushReq_V2;
+    }
 }
