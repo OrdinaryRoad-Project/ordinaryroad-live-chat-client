@@ -28,6 +28,7 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshakerFactory;
+import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketVersion;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
@@ -36,11 +37,13 @@ import tech.ordinaryroad.live.chat.client.huya.constant.HuyaCmdEnum;
 import tech.ordinaryroad.live.chat.client.huya.listener.IHuyaConnectionListener;
 import tech.ordinaryroad.live.chat.client.huya.listener.IHuyaMsgListener;
 import tech.ordinaryroad.live.chat.client.huya.msg.base.IHuyaMsg;
+import tech.ordinaryroad.live.chat.client.huya.netty.frame.factory.HuyaWebSocketFrameFactory;
 import tech.ordinaryroad.live.chat.client.huya.netty.handler.HuyaBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.huya.netty.handler.HuyaConnectionHandler;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * 虎牙直播间弹幕客户端
@@ -97,5 +100,48 @@ public class HuyaLiveChatClient extends BaseNettyClient<
     @Override
     public HuyaBinaryFrameHandler initBinaryFrameHandler() {
         return new HuyaBinaryFrameHandler(super.msgListeners, HuyaLiveChatClient.this);
+    }
+
+    @Override
+    public void sendDanmu(Object danmu, Runnable success, Consumer<Throwable> failed) {
+        if (!checkCanSendDanmu()) {
+            return;
+        }
+
+        if (danmu instanceof String msg) {
+            if (log.isDebugEnabled()) {
+                log.debug("{} huya发送弹幕 {}", getConfig().getRoomId(), danmu);
+            }
+
+            WebSocketFrame webSocketFrame = null;
+            try {
+                webSocketFrame = HuyaWebSocketFrameFactory.getInstance(getConfig().getRoomId()).createSendMessageReq(msg, getConfig().getVer(), getConfig().getCookie());
+            } catch (Exception e) {
+                log.error("huya弹幕包创建失败", e);
+                if (failed != null) {
+                    failed.accept(e);
+                }
+            }
+            if (webSocketFrame == null) {
+                return;
+            }
+
+            send(webSocketFrame, () -> {
+                if (log.isDebugEnabled()) {
+                    log.debug("huya弹幕发送成功 {}", danmu);
+                }
+                if (success != null) {
+                    success.run();
+                }
+                finishSendDanmu();
+            }, throwable -> {
+                log.error("huya弹幕发送失败", throwable);
+                if (failed != null) {
+                    failed.accept(throwable);
+                }
+            });
+        } else {
+            super.sendDanmu(danmu);
+        }
     }
 }

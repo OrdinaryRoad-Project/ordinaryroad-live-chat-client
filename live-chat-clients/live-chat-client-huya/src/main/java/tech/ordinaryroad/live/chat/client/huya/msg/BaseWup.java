@@ -28,6 +28,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.qq.tars.protocol.tars.TarsInputStream;
 import com.qq.tars.protocol.tars.TarsOutputStream;
 import com.qq.tars.protocol.tars.support.TarsMethodInfo;
+import com.qq.tars.protocol.util.TarsHelper;
 import com.qq.tars.rpc.protocol.tars.TarsServantRequest;
 import com.qq.tars.rpc.protocol.tup.UniAttribute;
 import io.netty.buffer.ByteBuf;
@@ -55,7 +56,7 @@ import java.util.Map;
 @NoArgsConstructor
 public abstract class BaseWup extends BaseHuyaMsg {
 
-    private TarsServantRequest tarsServantRequest = new TarsServantRequest(null){{
+    private TarsServantRequest tarsServantRequest = new TarsServantRequest(null) {{
         setMethodInfo(new TarsMethodInfo());
     }};
     private UniAttribute uniAttribute = new UniAttribute();
@@ -66,7 +67,8 @@ public abstract class BaseWup extends BaseHuyaMsg {
 
     @Override
     public void writeTo(TarsOutputStream os) {
-        os.write(this.tarsServantRequest.getVersion(), 1);
+//        os.write(this.tarsServantRequest.getVersion(), 1);
+        os.write(TarsHelper.VERSION3, 1);
         os.write(this.tarsServantRequest.getPacketType(), 2);
         os.write(this.tarsServantRequest.getMessageType(), 3);
         os.write(this.tarsServantRequest.getRequestId(), 4);

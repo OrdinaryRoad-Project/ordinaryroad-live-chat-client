@@ -34,39 +34,27 @@ import lombok.Setter;
 
 /**
  * @author mjz
- * @date 2023/10/2
+ * @date 2023/10/5
  */
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ContentFormat extends TarsStructBase {
+public class MessageTagInfo extends TarsStructBase {
 
-    private int iFontColor = -1;
-    private int iFontSize = 4;
-    private int iPopupStyle = 0;
-    private int iNickNameFontColor = -1;
-    private int iDarkFontColor = -1;
-    private int iDarkNickNameFontColor = -1;
+    private int iAppId = 0;
+    private String sTag = "";
 
     @Override
     public void writeTo(TarsOutputStream os) {
-        os.write(this.iFontColor, 0);
-        os.write(this.iFontSize, 1);
-        os.write(this.iPopupStyle, 2);
-        os.write(this.iNickNameFontColor, 3);
-        os.write(this.iDarkFontColor, 4);
-        os.write(this.iDarkNickNameFontColor, 5);
+        os.write(this.iAppId, 0);
+        os.write(this.sTag, 1);
     }
 
     @Override
     public void readFrom(TarsInputStream is) {
-        this.iFontColor = is.read(this.iFontColor, 0, false);
-        this.iFontSize = is.read(this.iFontSize, 1, false);
-        this.iPopupStyle = is.read(this.iPopupStyle, 2, false);
-        this.iNickNameFontColor = is.read(this.iNickNameFontColor, 3, false);
-        this.iDarkFontColor = is.read(this.iDarkFontColor, 4, false);
-        this.iDarkNickNameFontColor = is.read(this.iDarkNickNameFontColor, 5, false);
+        this.iAppId = is.read(this.iAppId, 0, false);
+        this.sTag = is.read(this.sTag, 1, false);
     }
 
     @Override

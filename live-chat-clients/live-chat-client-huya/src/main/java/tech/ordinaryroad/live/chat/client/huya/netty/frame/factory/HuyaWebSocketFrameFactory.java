@@ -25,11 +25,15 @@
 package tech.ordinaryroad.live.chat.client.huya.netty.frame.factory;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
+import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
+import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCookieUtil;
 import tech.ordinaryroad.live.chat.client.huya.api.HuyaApis;
+import tech.ordinaryroad.live.chat.client.huya.config.HuyaLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.huya.constant.HuyaClientTemplateTypeEnum;
 import tech.ordinaryroad.live.chat.client.huya.constant.HuyaLiveSource;
 import tech.ordinaryroad.live.chat.client.huya.constant.HuyaOperationEnum;
@@ -47,6 +51,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class HuyaWebSocketFrameFactory {
 
     private static final ConcurrentHashMap<Long, HuyaWebSocketFrameFactory> CACHE = new ConcurrentHashMap<>();
+    public static final String KEY_COOKIE_GUID = "guid";
+    public static final String KEY_COOKIE_YYUID = "yyuid";
 
     /**
      * 浏览器地址中的房间id，支持短id
@@ -63,6 +69,41 @@ public class HuyaWebSocketFrameFactory {
 
     public synchronized static HuyaWebSocketFrameFactory getInstance(long roomId) {
         return CACHE.computeIfAbsent(roomId, aLong -> new HuyaWebSocketFrameFactory(roomId));
+    }
+
+    /**
+     * 创建弹幕包
+     *
+     * @param msg    弹幕内容
+     * @param ver    {@link HuyaLiveChatClientConfig#getVer()}
+     * @param cookie {@link HuyaLiveChatClientConfig#getCookie()} ()}
+     * @return BinaryWebSocketFrame
+     */
+    public BinaryWebSocketFrame createSendMessageReq(String msg, String ver, String cookie) {
+        String yyuid = OrLiveChatCookieUtil.getCookieByName(cookie, KEY_COOKIE_YYUID, () -> {
+            throw new BaseException("cookie中缺少参数" + KEY_COOKIE_YYUID);
+        });
+        String guid = OrLiveChatCookieUtil.getCookieByName(cookie, KEY_COOKIE_GUID, () -> {
+            throw new BaseException("cookie中缺少参数" + KEY_COOKIE_GUID);
+        });
+        SendMessageReq sendMessageReq = new SendMessageReq();
+        sendMessageReq.getTUserId().setLUid(NumberUtil.parseLong(yyuid));
+        sendMessageReq.getTUserId().setSGuid(guid);
+        sendMessageReq.getTUserId().setSHuYaUA("webh5&" + ver + "&websocket");
+        sendMessageReq.getTUserId().setSCookie(cookie);
+        sendMessageReq.getTUserId().setSDeviceInfo("chrome");
+        sendMessageReq.setSContent(msg);
+        sendMessageReq.setLPid(roomInfo.get("lChannelId").asLong());
+
+        WupReq wupReq = new WupReq();
+        wupReq.getTarsServantRequest().setServantName("liveui");
+        wupReq.getTarsServantRequest().setFunctionName("sendMessage");
+        wupReq.getUniAttribute().put("tReq", sendMessageReq);
+
+        WebSocketCommand webSocketCommand = new WebSocketCommand();
+        webSocketCommand.setOperation(HuyaOperationEnum.EWSCmd_WupReq.getCode());
+        webSocketCommand.setVData(wupReq.encode());
+        return new BinaryWebSocketFrame(Unpooled.wrappedBuffer(webSocketCommand.toByteArray()));
     }
 
     /**

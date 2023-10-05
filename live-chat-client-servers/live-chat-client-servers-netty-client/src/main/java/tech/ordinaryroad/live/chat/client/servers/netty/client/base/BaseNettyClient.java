@@ -304,7 +304,7 @@ public abstract class BaseNettyClient
     /**
      * 发送弹幕前判断是否可以发送
      */
-    protected boolean checkCanSendDanmn() {
+    protected boolean checkCanSendDanmu() {
         if (getStatus() != ClientStatusEnums.CONNECTED) {
             throw new BaseException("连接未建立，无法发送弹幕");
         }
