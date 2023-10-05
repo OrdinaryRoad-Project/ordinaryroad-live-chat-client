@@ -28,7 +28,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.qq.tars.protocol.tars.TarsInputStream;
 import com.qq.tars.protocol.tars.TarsOutputStream;
 import com.qq.tars.protocol.tars.support.TarsMethodInfo;
-import com.qq.tars.protocol.util.TarsHelper;
 import com.qq.tars.rpc.protocol.tars.TarsServantRequest;
 import com.qq.tars.rpc.protocol.tup.UniAttribute;
 import io.netty.buffer.ByteBuf;
@@ -67,8 +66,7 @@ public abstract class BaseWup extends BaseHuyaMsg {
 
     @Override
     public void writeTo(TarsOutputStream os) {
-//        os.write(this.tarsServantRequest.getVersion(), 1);
-        os.write(TarsHelper.VERSION3, 1);
+        os.write(this.tarsServantRequest.getVersion(), 1);
         os.write(this.tarsServantRequest.getPacketType(), 2);
         os.write(this.tarsServantRequest.getMessageType(), 3);
         os.write(this.tarsServantRequest.getRequestId(), 4);
@@ -82,16 +80,16 @@ public abstract class BaseWup extends BaseHuyaMsg {
 
     @Override
     public void readFrom(TarsInputStream is) {
-        this.tarsServantRequest.setVersion(is.read(this.tarsServantRequest.getVersion(), 1, true));
-        this.tarsServantRequest.setPacketType(is.read(this.tarsServantRequest.getPacketType(), 2, true));
-        this.tarsServantRequest.setMessageType(is.read(this.tarsServantRequest.getMessageType(), 3, true));
-        this.tarsServantRequest.setRequestId(is.read(this.tarsServantRequest.getRequestId(), 4, true));
-        this.tarsServantRequest.setServantName(is.read(this.tarsServantRequest.getServantName(), 5, true));
-        this.tarsServantRequest.setFunctionName(is.read(this.tarsServantRequest.getFunctionName(), 6, true));
-        this.uniAttribute.decode(is.read(new byte[]{}, 7, true));
-        this.tarsServantRequest.setTimeout(is.read(this.tarsServantRequest.getTimeout(), 8, true));
-        this.tarsServantRequest.setContext(is.readMap(this.tarsServantRequest.getContext(), 9, true));
-        this.tarsServantRequest.setStatus(is.readMap(this.tarsServantRequest.getStatus(), 10, true));
+        this.tarsServantRequest.setVersion(is.read(this.tarsServantRequest.getVersion(), 1, false));
+        this.tarsServantRequest.setPacketType(is.read(this.tarsServantRequest.getPacketType(), 2, false));
+        this.tarsServantRequest.setMessageType(is.read(this.tarsServantRequest.getMessageType(), 3, false));
+        this.tarsServantRequest.setRequestId(is.read(this.tarsServantRequest.getRequestId(), 4, false));
+        this.tarsServantRequest.setServantName(is.read(this.tarsServantRequest.getServantName(), 5, false));
+        this.tarsServantRequest.setFunctionName(is.read(this.tarsServantRequest.getFunctionName(), 6, false));
+        this.uniAttribute.decode(is.read(new byte[]{}, 7, false));
+        this.tarsServantRequest.setTimeout(is.read(this.tarsServantRequest.getTimeout(), 8, false));
+        this.tarsServantRequest.setContext(is.readMap(this.tarsServantRequest.getContext(), 9, false));
+        this.tarsServantRequest.setStatus(is.readMap(this.tarsServantRequest.getStatus(), 10, false));
     }
 
     public byte[] encode() {
@@ -120,7 +118,7 @@ public abstract class BaseWup extends BaseHuyaMsg {
     @Override
     public String toString() {
         Map<String, Object> map = new HashMap<>();
-        map.put("version", TarsHelper.VERSION3);
+        map.put("version", this.tarsServantRequest.getVersion());
         map.put("packetType", this.tarsServantRequest.getPacketType());
         map.put("messageType", this.tarsServantRequest.getMessageType());
         map.put("requestId", this.tarsServantRequest.getRequestId());

@@ -48,11 +48,13 @@ class HuyaLiveChatClientTest {
     @Test
     void example() throws InterruptedException {
         HuyaLiveChatClientConfig config = HuyaLiveChatClientConfig.builder()
-                // bagea
-//                .roomId(189201)
                 .roomId(353322)
                 .roomId(390001)
+                .roomId(527988)
                 .roomId(1995)
+                .roomId(116)
+                // bagea
+                .roomId(189201)
                 .build();
 
         client = new HuyaLiveChatClient(config, new IHuyaMsgListener() {
@@ -63,6 +65,10 @@ class HuyaLiveChatClientTest {
 
             @Override
             public void onGiftMsg(HuyaBinaryFrameHandler binaryFrameHandler, SendItemSubBroadcastPacketMsg msg) {
+                long lPayTotal = msg.getLPayTotal();
+                if (lPayTotal != 0) {
+                    int giftPrice = msg.getGiftPrice();
+                }
                 log.info("{} 收到礼物 {}({}) {} {}({})x{}({})", binaryFrameHandler.getRoomId(), msg.getUsername(), msg.getUid(), "赠送", msg.getGiftName(), msg.getGiftId(), msg.getGiftCount(), msg.getGiftPrice());
             }
 

@@ -34,10 +34,9 @@ import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.huya.constant.HuyaOperationEnum;
 import tech.ordinaryroad.live.chat.client.huya.constant.HuyaWupFunctionEnum;
-import tech.ordinaryroad.live.chat.client.huya.msg.PushMessage;
-import tech.ordinaryroad.live.chat.client.huya.msg.WebSocketCommand;
-import tech.ordinaryroad.live.chat.client.huya.msg.WupRsp;
+import tech.ordinaryroad.live.chat.client.huya.msg.*;
 import tech.ordinaryroad.live.chat.client.huya.msg.base.IHuyaMsg;
+import tech.ordinaryroad.live.chat.client.huya.msg.req.UpdateUserInfoReq;
 import tech.ordinaryroad.live.chat.client.huya.msg.req.WupReq;
 
 import java.nio.charset.StandardCharsets;
@@ -55,8 +54,7 @@ public class HuyaCodecUtil {
         Queue<ByteBuf> pendingByteBuf = new LinkedList<>();
 
         do {
-            Optional<IHuyaMsg> msg = doDecode(in, pendingByteBuf);
-            msg.ifPresent(msgList::add);
+            msgList.addAll(doDecode(in, pendingByteBuf));
             in = pendingByteBuf.poll();
         } while (in != null);
 
@@ -69,7 +67,7 @@ public class HuyaCodecUtil {
      * @param in             handler收到的一条消息
      * @param pendingByteBuf 用于存放未读取完的ByteBuf
      */
-    private static Optional<IHuyaMsg> doDecode(ByteBuf in, Queue<ByteBuf> pendingByteBuf) {
+    private static List<? extends IHuyaMsg> doDecode(ByteBuf in, Queue<ByteBuf> pendingByteBuf) {
         byte[] bytes = new byte[in.readableBytes()];
         in.readBytes(bytes);
 
@@ -80,14 +78,27 @@ public class HuyaCodecUtil {
         }
 
         switch (operationEnum) {
+            case EWSCmd_RegisterRsp -> {
+                return List.of(new RegisterRsp(newUtf8TarsInputStream(webSocketCommand.getVData())));
+            }
+            case EWSCmdS2C_RegisterGroupRsp -> {
+                return List.of(new RegisterGroupRsp(newUtf8TarsInputStream(webSocketCommand.getVData())));
+            }
             case EWSCmd_WupRsp -> {
-                return Optional.of(new WupRsp(webSocketCommand.getVData()));
+                return List.of(new WupRsp(webSocketCommand.getVData()));
             }
             case EWSCmdS2C_MsgPushReq -> {
-                return Optional.of(new PushMessage(newUtf8TarsInputStream(webSocketCommand.getVData())));
+                return List.of(new PushMessage(newUtf8TarsInputStream(webSocketCommand.getVData())));
+            }
+            case EWSCmdS2C_VerifyCookieRsp -> {
+                return List.of(new VerifyCookieRsp(newUtf8TarsInputStream(webSocketCommand.getVData())));
+            }
+            case EWSCmdS2C_MsgPushReq_V2 -> {
+                PushMessage_V2 pushMessageV2 = new PushMessage_V2(newUtf8TarsInputStream(webSocketCommand.getVData()));
+                return pushMessageV2.getVMsgItem();
             }
             default -> {
-                return Optional.of(webSocketCommand);
+                return List.of(webSocketCommand);
             }
         }
     }
@@ -110,7 +121,7 @@ public class HuyaCodecUtil {
         char[] chars = new char[bytes.length];
         for (int i = 0; i < bytes.length; i++) {
             int unsignedInt = ByteUtil.byteToUnsignedInt(bytes[i]);
-            chars[i]= (char) unsignedInt;
+            chars[i] = (char) unsignedInt;
         }
         return ArrayUtil.join(chars, "");
     }

@@ -34,43 +34,30 @@ import lombok.Setter;
 
 /**
  * @author mjz
- * @date 2023/10/2
+ * @date 2023/10/5
  */
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserId extends TarsStructBase {
+public class LiveUserbase extends TarsStructBase {
 
-    private long lUid;
-    private String sGuid = "";
-    private String sToken = "";
-    private String sHuYaUA = "";
-    private String sCookie = "";
-    private int iTokenType;
-    private String sDeviceInfo = "";
-
+    private int eSource;
+    private int eType;
+    private LiveAppUAEx tUAEx = new LiveAppUAEx();
 
     @Override
     public void writeTo(TarsOutputStream os) {
-        os.write(this.lUid, 0);
-        os.write(this.sGuid, 1);
-        os.write(this.sToken, 2);
-        os.write(this.sHuYaUA, 3);
-        os.write(this.sCookie, 4);
-        os.write(this.iTokenType, 5);
-        os.write(this.sDeviceInfo, 6);
+        os.write(this.eSource, 0);
+        os.write(this.eType, 1);
+        os.write(this.tUAEx, 2);
     }
 
     @Override
     public void readFrom(TarsInputStream is) {
-        this.lUid = is.read(this.lUid, 0, true);
-        this.sGuid = is.read(this.sGuid, 1, true);
-        this.sToken = is.read(this.sToken, 2, true);
-        this.sHuYaUA = is.read(this.sHuYaUA, 3, true);
-        this.sCookie = is.read(this.sCookie, 4, true);
-        this.iTokenType = is.read(this.iTokenType, 5, true);
-        this.sDeviceInfo = is.read(this.sDeviceInfo, 6, true);
+        this.eSource = is.read(this.eSource, 0, false);
+        this.eType = is.read(this.eType, 1, false);
+        this.tUAEx = (LiveAppUAEx) is.directRead(this.tUAEx, 2, false);
     }
 
     @Override

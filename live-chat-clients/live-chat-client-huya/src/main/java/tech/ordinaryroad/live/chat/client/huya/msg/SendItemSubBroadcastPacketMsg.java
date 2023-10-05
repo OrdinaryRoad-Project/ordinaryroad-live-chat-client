@@ -32,8 +32,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IGiftMsg;
 import tech.ordinaryroad.live.chat.client.huya.constant.HuyaOperationEnum;
-import tech.ordinaryroad.live.chat.client.huya.msg.base.BaseHuyaCmdMsg;
-import tech.ordinaryroad.live.chat.client.huya.msg.dto.PropsItem;
+import tech.ordinaryroad.live.chat.client.huya.msg.base.BaseHuyaMsg;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +45,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SendItemSubBroadcastPacketMsg extends BaseHuyaCmdMsg implements IGiftMsg {
+public class SendItemSubBroadcastPacketMsg extends BaseHuyaMsg implements IGiftMsg {
 
     private int iItemType;
     private String strPayId = "";
@@ -94,7 +93,7 @@ public class SendItemSubBroadcastPacketMsg extends BaseHuyaCmdMsg implements IGi
 //    private int vBizData = new V.Vector(new D.ItemEffectBizData);
 
     // region 礼物信息
-    private PropsItem propsItem = PropsItem.DEFAULT;
+    // private PropsItem propsItem = PropsItem.DEFAULT;
     // endregion
 
     public SendItemSubBroadcastPacketMsg(TarsInputStream is) {
@@ -210,7 +209,7 @@ public class SendItemSubBroadcastPacketMsg extends BaseHuyaCmdMsg implements IGi
 
     @Override
     public String getGiftName() {
-        return this.propsItem.getSPropsName();
+        return this.sPropsName;
     }
 
     @Override
@@ -223,9 +222,12 @@ public class SendItemSubBroadcastPacketMsg extends BaseHuyaCmdMsg implements IGi
         return this.iItemCount;
     }
 
+    /**
+     * 100 对应 1虎牙币
+     */
     @Override
     public int getGiftPrice() {
-        return this.propsItem.getIPropsYb();
+        return (int) (this.lPayTotal / this.iItemCount);
     }
 
     @Override

@@ -22,19 +22,33 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.huya.netty.frame;
+package tech.ordinaryroad.live.chat.client.huya.constant;
 
-import io.netty.buffer.ByteBuf;
-import tech.ordinaryroad.live.chat.client.huya.netty.frame.base.BaseHuyaWebSocketFrame;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
  * @author mjz
- * @date 2023/1/5
+ * @date 2023/10/5
  */
-public class AuthWebSocketFrame extends BaseHuyaWebSocketFrame {
+@Getter
+@RequiredArgsConstructor
+public enum HuyaLiveSource {
 
-    public AuthWebSocketFrame(ByteBuf byteBuf) {
-        super(byteBuf);
+    PC_YY(0),
+    PC_HUYA(1),
+    MOBILE_HUYA(2),
+    WEB_HUYA(3),
+    ;
+
+    private final int code;
+
+    public HuyaLiveSource getByCode(int code){
+        for (HuyaLiveSource value : values()) {
+            if (value.getCode()==code) {
+                return value;
+            }
+        }
+        return null;
     }
-
 }

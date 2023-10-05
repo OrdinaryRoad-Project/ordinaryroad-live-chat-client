@@ -32,7 +32,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IDanmuMsg;
 import tech.ordinaryroad.live.chat.client.huya.constant.HuyaOperationEnum;
-import tech.ordinaryroad.live.chat.client.huya.msg.base.BaseHuyaCmdMsg;
+import tech.ordinaryroad.live.chat.client.huya.msg.base.BaseHuyaMsg;
 import tech.ordinaryroad.live.chat.client.huya.msg.dto.*;
 
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MessageNoticeMsg extends BaseHuyaCmdMsg implements IDanmuMsg {
+public class MessageNoticeMsg extends BaseHuyaMsg implements IDanmuMsg {
 
     private SenderInfo tUserInfo = new SenderInfo();
     private long lTid;

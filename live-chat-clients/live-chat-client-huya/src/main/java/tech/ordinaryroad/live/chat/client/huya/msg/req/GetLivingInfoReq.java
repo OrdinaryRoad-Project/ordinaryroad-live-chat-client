@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.huya.msg.dto;
+package tech.ordinaryroad.live.chat.client.huya.msg.req;
 
 import com.qq.tars.protocol.tars.TarsInputStream;
 import com.qq.tars.protocol.tars.TarsOutputStream;
@@ -31,46 +31,52 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import tech.ordinaryroad.live.chat.client.huya.msg.dto.UserId;
 
 /**
  * @author mjz
- * @date 2023/10/2
+ * @date 2023/10/5
  */
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserId extends TarsStructBase {
+public class GetLivingInfoReq extends TarsStructBase {
 
-    private long lUid;
-    private String sGuid = "";
-    private String sToken = "";
-    private String sHuYaUA = "";
-    private String sCookie = "";
-    private int iTokenType;
-    private String sDeviceInfo = "";
-
+    private UserId tId = new UserId();
+    private long lTopSid;
+    private long lSubSid;
+    private long lPresenterUid;
+    private String sTraceSource = "";
+    private String sPassword = "";
+    private long iRoomId;
+    private int iFreeFlowFlag;
+    private int iIpStack;
 
     @Override
     public void writeTo(TarsOutputStream os) {
-        os.write(this.lUid, 0);
-        os.write(this.sGuid, 1);
-        os.write(this.sToken, 2);
-        os.write(this.sHuYaUA, 3);
-        os.write(this.sCookie, 4);
-        os.write(this.iTokenType, 5);
-        os.write(this.sDeviceInfo, 6);
+        os.write(this.tId, 0);
+        os.write(this.lTopSid, 1);
+        os.write(this.lSubSid, 2);
+        os.write(this.lPresenterUid, 3);
+        os.write(this.sTraceSource, 4);
+        os.write(this.sPassword, 5);
+        os.write(this.iRoomId, 6);
+        os.write(this.iFreeFlowFlag, 7);
+        os.write(this.iIpStack, 8);
     }
 
     @Override
     public void readFrom(TarsInputStream is) {
-        this.lUid = is.read(this.lUid, 0, true);
-        this.sGuid = is.read(this.sGuid, 1, true);
-        this.sToken = is.read(this.sToken, 2, true);
-        this.sHuYaUA = is.read(this.sHuYaUA, 3, true);
-        this.sCookie = is.read(this.sCookie, 4, true);
-        this.iTokenType = is.read(this.iTokenType, 5, true);
-        this.sDeviceInfo = is.read(this.sDeviceInfo, 6, true);
+        this.tId = (UserId) is.directRead(this.tId, 0, false);
+        this.lTopSid = is.read(this.lTopSid, 1, false);
+        this.lSubSid = is.read(this.lSubSid, 2, false);
+        this.lPresenterUid = is.read(this.lPresenterUid, 3, false);
+        this.sTraceSource = is.read(this.sTraceSource, 4, false);
+        this.sPassword = is.read(this.sPassword, 5, false);
+        this.iRoomId = is.read(this.iRoomId, 6, false);
+        this.iFreeFlowFlag = is.read(this.iFreeFlowFlag, 7, false);
+        this.iIpStack = is.read(this.iIpStack, 8, false);
     }
 
     @Override

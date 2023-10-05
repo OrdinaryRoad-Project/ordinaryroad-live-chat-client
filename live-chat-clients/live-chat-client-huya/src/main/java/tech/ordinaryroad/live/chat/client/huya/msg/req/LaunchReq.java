@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.huya.msg.dto;
+package tech.ordinaryroad.live.chat.client.huya.msg.req;
 
 import com.qq.tars.protocol.tars.TarsInputStream;
 import com.qq.tars.protocol.tars.TarsOutputStream;
@@ -31,46 +31,40 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import tech.ordinaryroad.live.chat.client.huya.msg.dto.DeviceInfo;
 
 /**
  * @author mjz
- * @date 2023/10/2
+ * @date 2023/10/5
  */
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserId extends TarsStructBase {
+public class LaunchReq extends TarsStructBase {
 
     private long lUid;
     private String sGuid = "";
-    private String sToken = "";
-    private String sHuYaUA = "";
-    private String sCookie = "";
-    private int iTokenType;
-    private String sDeviceInfo = "";
-
+    private String sUA = "";
+    private String sAppSrc = "";
+    private DeviceInfo tDeviceInfo = new DeviceInfo();
 
     @Override
     public void writeTo(TarsOutputStream os) {
         os.write(this.lUid, 0);
         os.write(this.sGuid, 1);
-        os.write(this.sToken, 2);
-        os.write(this.sHuYaUA, 3);
-        os.write(this.sCookie, 4);
-        os.write(this.iTokenType, 5);
-        os.write(this.sDeviceInfo, 6);
+        os.write(this.sUA, 2);
+        os.write(this.sAppSrc, 3);
+        os.write(this.tDeviceInfo, 4);
     }
 
     @Override
     public void readFrom(TarsInputStream is) {
-        this.lUid = is.read(this.lUid, 0, true);
-        this.sGuid = is.read(this.sGuid, 1, true);
-        this.sToken = is.read(this.sToken, 2, true);
-        this.sHuYaUA = is.read(this.sHuYaUA, 3, true);
-        this.sCookie = is.read(this.sCookie, 4, true);
-        this.iTokenType = is.read(this.iTokenType, 5, true);
-        this.sDeviceInfo = is.read(this.sDeviceInfo, 6, true);
+        this.lUid = is.read(this.lUid, 0, false);
+        this.sGuid = is.read(this.sGuid, 1, false);
+        this.sUA = is.read(this.sUA, 2, false);
+        this.sAppSrc = is.read(this.sAppSrc, 3, false);
+        this.tDeviceInfo = (DeviceInfo) is.directRead(this.tDeviceInfo, 4, false);
     }
 
     @Override

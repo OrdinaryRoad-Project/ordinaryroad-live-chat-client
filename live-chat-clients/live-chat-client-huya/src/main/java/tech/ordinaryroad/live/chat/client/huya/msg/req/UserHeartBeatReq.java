@@ -46,7 +46,6 @@ public class UserHeartBeatReq extends TarsStructBase {
     private UserId tId = new UserId();
     private long lTid;
     private long lSid;
-    private long lShortTid;
     private long lPid;
     private boolean bWatchVideo;
     private int eLineType;
@@ -60,7 +59,6 @@ public class UserHeartBeatReq extends TarsStructBase {
         os.write(this.tId, 0);
         os.write(this.lTid, 1);
         os.write(this.lSid, 2);
-        os.write(this.lShortTid, 3);
         os.write(this.lPid, 4);
         os.write(this.bWatchVideo, 5);
         os.write(this.eLineType, 6);
@@ -68,21 +66,21 @@ public class UserHeartBeatReq extends TarsStructBase {
         os.write(this.iAttendee, 8);
         os.write(this.iBandwidth, 9);
         os.write(this.iLastHeartElapseTime, 10);
+
     }
 
     @Override
     public void readFrom(TarsInputStream is) {
-        this.tId = (UserId) is.directRead(new UserId(), 0, true);
-        this.lTid = is.read(this.lTid, 1, true);
-        this.lSid = is.read(this.lSid, 2, true);
-        this.lShortTid = is.read(this.lShortTid, 3, true);
-        this.lPid = is.read(this.lPid, 4, true);
-        this.bWatchVideo = is.read(this.bWatchVideo, 5, true);
-        this.eLineType = is.read(this.eLineType, 6, true);
-        this.iFps = is.read(this.iFps, 7, true);
-        this.iAttendee = is.read(this.iAttendee, 8, true);
-        this.iBandwidth = is.read(this.iBandwidth, 9, true);
-        this.iLastHeartElapseTime = is.read(this.iLastHeartElapseTime, 10, true);
+        this.tId = (UserId) is.directRead(this.tId, 0, false);
+        this.lTid = is.read(this.lTid, 1, false);
+        this.lSid = is.read(this.lSid, 2, false);
+        this.lPid = is.read(this.lPid, 4, false);
+        this.bWatchVideo = is.read(this.bWatchVideo, 5, false);
+        this.eLineType = is.read(this.eLineType, 6, false);
+        this.iFps = is.read(this.iFps, 7, false);
+        this.iAttendee = is.read(this.iAttendee, 8, false);
+        this.iBandwidth = is.read(this.iBandwidth, 9, false);
+        this.iLastHeartElapseTime = is.read(this.iLastHeartElapseTime, 10, false);
     }
 
     @Override

@@ -46,7 +46,8 @@ public class HuyaLiveChatClientConfig extends BaseNettyClientConfig {
     public static final String VER = "2309271152";
 
     @Builder.Default
-    private String websocketUri = "wss://wsapi.huya.com:443";
+//    private String websocketUri = "wss://wsapi.huya.com:443";
+    private String websocketUri = "wss://cdnws.api.huya.com:443";
 
     @Builder.Default
     private int aggregatorMaxContentLength = 64 * 1024 * 1024;

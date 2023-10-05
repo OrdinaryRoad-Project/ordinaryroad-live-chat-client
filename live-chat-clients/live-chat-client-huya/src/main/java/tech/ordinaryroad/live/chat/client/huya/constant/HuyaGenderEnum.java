@@ -29,26 +29,23 @@ import lombok.RequiredArgsConstructor;
 
 /**
  * @author mjz
- * @date 2023/10/2
+ * @date 2023/10/5
  */
 @Getter
 @RequiredArgsConstructor
-public enum HuyaStreamLineTypeEnum {
+public enum HuyaGenderEnum {
 
-    STREAM_LINE_OLD_YY(0),
-    STREAM_LINE_WS(1),
-    STREAM_LINE_NEW_YY(2),
-    STREAM_LINE_AL(3),
-    STREAM_LINE_HUYA(4),
-    STREAM_LINE_TX(5),
-    STREAM_LINE_CDN(8),
-    STREAM_LINE_HW(6),
-    STREAM_LINE_BD(7),
-    STREAM_LINE_GG(9),
-    STREAM_LINE_CF(10),
-    STREAM_LINE_QUICK_HUYA(99),
+    MALE(0),
+    FEMALE(1),
     ;
-
     private final int code;
 
+    public HuyaGenderEnum getByCode(int code) {
+        for (HuyaGenderEnum value : values()) {
+            if (value.getCode() == code) {
+                return value;
+            }
+        }
+        return null;
+    }
 }

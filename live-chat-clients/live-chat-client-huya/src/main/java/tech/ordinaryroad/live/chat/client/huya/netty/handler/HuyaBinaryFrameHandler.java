@@ -42,6 +42,7 @@ import tech.ordinaryroad.live.chat.client.huya.msg.PushMessage;
 import tech.ordinaryroad.live.chat.client.huya.msg.SendItemSubBroadcastPacketMsg;
 import tech.ordinaryroad.live.chat.client.huya.msg.WupRsp;
 import tech.ordinaryroad.live.chat.client.huya.msg.base.IHuyaMsg;
+import tech.ordinaryroad.live.chat.client.huya.msg.dto.MsgItem;
 import tech.ordinaryroad.live.chat.client.huya.msg.dto.PropsItem;
 import tech.ordinaryroad.live.chat.client.huya.msg.req.GetPropsListRsp;
 import tech.ordinaryroad.live.chat.client.huya.netty.frame.factory.HuyaWebSocketFrameFactory;
@@ -91,16 +92,17 @@ public class HuyaBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<Hu
     public void onMsg(IMsg msg) {
         IHuyaMsg iHuyaMsg = (IHuyaMsg) msg;
         HuyaOperationEnum operationEnum = iHuyaMsg.getOperationEnum();
-        if (operationEnum == HuyaOperationEnum.EWSCmd_RegisterRsp) {
+        if (operationEnum == HuyaOperationEnum.EWSCmdS2C_RegisterGroupRsp) {
+//            channelHandlerContext.writeAndFlush(HuyaWebSocketFrameFactory.getInstance(getRoomId()).createUpdateUserInfoReq());
             // 获取礼物列表
-            if (channelHandlerContext == null) {
-                log.error("channelHandlerContext is null, cannot get gift list");
-                return;
-            }
-            if (log.isDebugEnabled()) {
-                log.debug("获取礼物列表");
-            }
-            channelHandlerContext.writeAndFlush(HuyaWebSocketFrameFactory.getInstance(getRoomId()).createGiftListReq());
+//            if (channelHandlerContext == null) {
+//                log.error("channelHandlerContext is null, cannot get gift list");
+//                return;
+//            }
+//            if (log.isDebugEnabled()) {
+//                log.debug("获取礼物列表");
+//            }
+            // channelHandlerContext.writeAndFlush(HuyaWebSocketFrameFactory.getInstance(getRoomId()).createGiftListReq());
         } else if (operationEnum == HuyaOperationEnum.EWSCmd_WupRsp) {
             WupRsp wupRsp = (WupRsp) msg;
             String functionName = wupRsp.getTarsServantRequest().getFunctionName();
@@ -113,6 +115,11 @@ public class HuyaBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<Hu
             }
 
             switch (wupFunctionEnum) {
+                case doLaunch -> {
+//                    LiveLaunchRsp liveLaunchRsp = new LiveLaunchRsp();
+//                    liveLaunchRsp = wupRsp.getUniAttribute().getByClass("tRsp", liveLaunchRsp);
+                    channelHandlerContext.writeAndFlush(HuyaWebSocketFrameFactory.getInstance(getRoomId()).createRegisterGroupReq());
+                }
                 case getPropsList -> {
                     GetPropsListRsp getPropsListRsp = new GetPropsListRsp();
                     getPropsListRsp = wupRsp.getUniAttribute().getByClass("tRsp", getPropsListRsp);
@@ -126,6 +133,8 @@ public class HuyaBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<Hu
                     }
                 }
             }
+        } else {
+            // ignore
         }
     }
 
@@ -135,8 +144,19 @@ public class HuyaBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<Hu
             return;
         }
 
-        PushMessage pushMessage = (PushMessage) cmdMsg;
-        TarsInputStream tarsInputStream = HuyaCodecUtil.newUtf8TarsInputStream(pushMessage.getDataBytes());
+        byte[] dataBytes;
+        if (cmdMsg instanceof PushMessage pushMessage) {
+            dataBytes = pushMessage.getDataBytes();
+        } else if (cmdMsg instanceof MsgItem msgItem) {
+            dataBytes = msgItem.getSMsg();
+        } else {
+            if (log.isDebugEnabled()) {
+                log.debug("非HuyaCmdMsg {}", cmdMsg.getClass());
+            }
+            return;
+        }
+        TarsInputStream tarsInputStream = HuyaCodecUtil.newUtf8TarsInputStream(dataBytes);
+
         switch (cmd) {
             case MessageNotice -> {
                 MessageNoticeMsg messageNoticeMsg = new MessageNoticeMsg(tarsInputStream);
@@ -144,7 +164,7 @@ public class HuyaBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<Hu
             }
             case SendItemSubBroadcastPacket -> {
                 SendItemSubBroadcastPacketMsg sendItemSubBroadcastPacketMsg = new SendItemSubBroadcastPacketMsg(tarsInputStream);
-                sendItemSubBroadcastPacketMsg.setPropsItem(HuyaApis.GIFT_ITEMS.getOrDefault(sendItemSubBroadcastPacketMsg.getIItemType(), PropsItem.DEFAULT));
+                // sendItemSubBroadcastPacketMsg.setPropsItem(HuyaApis.GIFT_ITEMS.getOrDefault(sendItemSubBroadcastPacketMsg.getIItemType(), PropsItem.DEFAULT));
                 iteratorMsgListeners(msgListener -> msgListener.onGiftMsg(HuyaBinaryFrameHandler.this, sendItemSubBroadcastPacketMsg));
             }
             default ->

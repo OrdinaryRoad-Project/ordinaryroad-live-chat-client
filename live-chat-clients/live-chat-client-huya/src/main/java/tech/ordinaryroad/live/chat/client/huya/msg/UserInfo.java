@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.huya.msg.dto;
+package tech.ordinaryroad.live.chat.client.huya.msg;
 
 import com.qq.tars.protocol.tars.TarsInputStream;
 import com.qq.tars.protocol.tars.TarsOutputStream;
@@ -34,43 +34,51 @@ import lombok.Setter;
 
 /**
  * @author mjz
- * @date 2023/10/2
+ * @date 2023/10/3
  */
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserId extends TarsStructBase {
+public class UserInfo extends TarsStructBase {
 
-    private long lUid;
+    private long lUid = 0;
+    private boolean bAnonymous = true;
     private String sGuid = "";
     private String sToken = "";
-    private String sHuYaUA = "";
-    private String sCookie = "";
-    private int iTokenType;
-    private String sDeviceInfo = "";
-
+    private long lTid = 0;
+    private long lSid = 0;
+    private long lGroupId = 0;
+    private long lGroupType = 0;
+    private String sAppId = "";
+    private String sUA = "";
 
     @Override
     public void writeTo(TarsOutputStream os) {
         os.write(this.lUid, 0);
-        os.write(this.sGuid, 1);
-        os.write(this.sToken, 2);
-        os.write(this.sHuYaUA, 3);
-        os.write(this.sCookie, 4);
-        os.write(this.iTokenType, 5);
-        os.write(this.sDeviceInfo, 6);
+        os.write(this.bAnonymous, 1);
+        os.write(this.sGuid, 2);
+        os.write(this.sToken, 3);
+        os.write(this.lTid, 4);
+        os.write(this.lSid, 5);
+        os.write(this.lGroupId, 6);
+        os.write(this.lGroupType, 7);
+        os.write(this.sAppId, 8);
+        os.write(this.sUA, 9);
     }
 
     @Override
     public void readFrom(TarsInputStream is) {
         this.lUid = is.read(this.lUid, 0, true);
-        this.sGuid = is.read(this.sGuid, 1, true);
-        this.sToken = is.read(this.sToken, 2, true);
-        this.sHuYaUA = is.read(this.sHuYaUA, 3, true);
-        this.sCookie = is.read(this.sCookie, 4, true);
-        this.iTokenType = is.read(this.iTokenType, 5, true);
-        this.sDeviceInfo = is.read(this.sDeviceInfo, 6, true);
+        this.bAnonymous = is.read(this.bAnonymous, 1, true);
+        this.sGuid = is.read(this.sGuid, 2, true);
+        this.sToken = is.read(this.sToken, 3, true);
+        this.lTid = is.read(this.lTid, 4, true);
+        this.lSid = is.read(this.lSid, 5, true);
+        this.lGroupId = is.read(this.lGroupId, 6, true);
+        this.lGroupType = is.read(this.lGroupType, 7, true);
+        this.sAppId = is.read(this.sAppId, 8, true);
+        this.sUA = is.read(this.sUA, 9, true);
     }
 
     @Override
