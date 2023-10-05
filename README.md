@@ -26,7 +26,7 @@
 - [x] Huya
     - [x] DouyuLiveChatClient
     - [ ] 支持 cookie
-    - [ ] 支持 短房间id
+    - [ ] 支持 短房间id（暂不支持字符串房间号）
     - [x] 支持 弹幕发送
 - [ ] ...
 
@@ -40,7 +40,7 @@ Live room WebSocket chat client
 - Feature 3: 支持同时监听多个直播间
 - Feature 4: 支持直播间短id
 - Feature 5: 支持弹幕发送
-- Feature 6: 内置收到弹幕、收到礼物回调
+- Feature 6: 内置收到弹幕、收到礼物、收到醒目留言回调
 
 [//]: # ([在线文档]&#40;https://ordinaryroad.tech/or_module/live-chat-client/&#41;)
 
