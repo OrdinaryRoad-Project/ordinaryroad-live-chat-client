@@ -74,6 +74,7 @@ public class BilibiliBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
         switch (cmd) {
             case DANMU_MSG -> {
                 DanmuMsgMsg danmuMsgMsg = new DanmuMsgMsg();
+                danmuMsgMsg.setProtover(sendSmsReplyMsg.getProtover());
                 danmuMsgMsg.setInfo(sendSmsReplyMsg.getInfo());
                 danmuMsgMsg.setDm_v2(StrUtil.toStringOrNull(sendSmsReplyMsg.getUnknownProperties().get("dm_v2")));
                 iteratorMsgListeners(msgListener -> msgListener.onDanmuMsg(BilibiliBinaryFrameHandler.this, danmuMsgMsg));
@@ -81,6 +82,7 @@ public class BilibiliBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
 
             case SEND_GIFT -> {
                 SendGiftMsg sendGiftMsg = new SendGiftMsg();
+                sendGiftMsg.setProtover(sendSmsReplyMsg.getProtover());
                 SendGiftMsg.Data data = BaseBilibiliMsg.OBJECT_MAPPER.treeToValue(sendSmsReplyMsg.getData(), SendGiftMsg.Data.class);
                 sendGiftMsg.setData(data);
                 iteratorMsgListeners(msgListener -> {
@@ -91,6 +93,7 @@ public class BilibiliBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
 
             case SUPER_CHAT_MESSAGE -> {
                 SuperChatMessageMsg superChatMessageMsg = new SuperChatMessageMsg();
+                superChatMessageMsg.setProtover(sendSmsReplyMsg.getProtover());
                 superChatMessageMsg.setRoomid(sendSmsReplyMsg.getRoomid());
                 SuperChatMessageMsg.Data data = BaseBilibiliMsg.OBJECT_MAPPER.treeToValue(sendSmsReplyMsg.getData(), SuperChatMessageMsg.Data.class);
                 superChatMessageMsg.setData(data);

@@ -31,7 +31,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.OperationEnum;
-import tech.ordinaryroad.live.chat.client.bilibili.msg.base.BaseBilibiliCmdMsg;
+import tech.ordinaryroad.live.chat.client.bilibili.msg.base.BaseBilibiliMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IDanmuMsg;
 
 /**
@@ -42,7 +42,7 @@ import tech.ordinaryroad.live.chat.client.commons.base.msg.IDanmuMsg;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DanmuMsgMsg extends BaseBilibiliCmdMsg implements IDanmuMsg {
+public class DanmuMsgMsg extends BaseBilibiliMsg implements IDanmuMsg {
 
     private JsonNode info;
     private String dm_v2;

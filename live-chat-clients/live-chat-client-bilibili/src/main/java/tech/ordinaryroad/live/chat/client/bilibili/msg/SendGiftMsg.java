@@ -33,7 +33,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.OperationEnum;
-import tech.ordinaryroad.live.chat.client.bilibili.msg.base.BaseBilibiliCmdMsg;
+import tech.ordinaryroad.live.chat.client.bilibili.msg.base.BaseBilibiliMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.dto.MedalInfo;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IGiftMsg;
 
@@ -48,14 +48,9 @@ import java.util.Map;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SendGiftMsg extends BaseBilibiliCmdMsg implements IGiftMsg {
+public class SendGiftMsg extends BaseBilibiliMsg implements IGiftMsg {
 
     private Data data;
-
-    @Override
-    public OperationEnum getOperationEnum() {
-        return OperationEnum.SEND_SMS_REPLY;
-    }
 
     @Override
     public long getUid() {
@@ -100,6 +95,11 @@ public class SendGiftMsg extends BaseBilibiliCmdMsg implements IGiftMsg {
     @Override
     public String getReceiveUsername() {
         return data.getReceive_user_info().getUname();
+    }
+
+    @Override
+    public OperationEnum getOperationEnum() {
+        return OperationEnum.SEND_SMS_REPLY;
     }
 
     @lombok.Data
