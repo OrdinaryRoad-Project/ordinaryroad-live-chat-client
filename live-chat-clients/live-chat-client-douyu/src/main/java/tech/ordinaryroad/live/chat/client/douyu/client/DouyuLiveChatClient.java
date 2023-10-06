@@ -110,6 +110,7 @@ public class DouyuLiveChatClient extends DouyuWsLiveChatClient implements IDouyu
                 Map<String, String> randomMap = list.get(randomIndex);
                 DouyuLiveChatClientConfig danmuClientConfig = BeanUtil.toBean(getConfig(), DouyuLiveChatClientConfig.class, CopyOptions.create().ignoreNullValue());
                 danmuClientConfig.setWebsocketUri("wss://%s:%s/".formatted(randomMap.get("ip"), randomMap.get("port")));
+                destroyDanmuClient();
                 this.danmuClient = new DouyuDanmuLiveChatClient(danmuClientConfig, new IDouyuMsgListener() {
                     @Override
                     public void onMsg(DouyuBinaryFrameHandler binaryFrameHandler, IMsg msg) {
@@ -189,9 +190,13 @@ public class DouyuLiveChatClient extends DouyuWsLiveChatClient implements IDouyu
 
     @Override
     public void destroy() {
+        destroyDanmuClient();
+        super.destroy();
+    }
+
+    private void destroyDanmuClient() {
         if (danmuClient != null) {
             danmuClient.destroy();
         }
-        super.destroy();
     }
 }
