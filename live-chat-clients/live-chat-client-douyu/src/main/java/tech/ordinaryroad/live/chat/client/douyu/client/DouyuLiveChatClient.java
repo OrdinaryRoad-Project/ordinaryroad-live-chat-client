@@ -33,6 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseCmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseMsg;
+import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
 import tech.ordinaryroad.live.chat.client.douyu.config.DouyuLiveChatClientConfig;
@@ -110,6 +111,7 @@ public class DouyuLiveChatClient extends DouyuWsLiveChatClient implements IDouyu
                 Map<String, String> randomMap = list.get(randomIndex);
                 DouyuLiveChatClientConfig danmuClientConfig = BeanUtil.toBean(getConfig(), DouyuLiveChatClientConfig.class, CopyOptions.create().ignoreNullValue());
                 danmuClientConfig.setWebsocketUri("wss://%s:%s/".formatted(randomMap.get("ip"), randomMap.get("port")));
+                destroyDanmuClient();
                 this.danmuClient = new DouyuDanmuLiveChatClient(danmuClientConfig, new IDouyuMsgListener() {
                     @Override
                     public void onMsg(DouyuBinaryFrameHandler binaryFrameHandler, IMsg msg) {
@@ -124,6 +126,21 @@ public class DouyuLiveChatClient extends DouyuWsLiveChatClient implements IDouyu
                     @Override
                     public void onGiftMsg(DouyuBinaryFrameHandler binaryFrameHandler, DgbMsg msg) {
                         proxyClient.iteratorMsgListeners(msgListener -> msgListener.onGiftMsg(binaryFrameHandler, msg));
+                    }
+
+                    @Override
+                    public void onCmdMsg(DouyuBinaryFrameHandler binaryFrameHandler, DouyuCmdEnum cmd, ICmdMsg<DouyuCmdEnum> cmdMsg) {
+                        proxyClient.iteratorMsgListeners(msgListener -> msgListener.onCmdMsg(binaryFrameHandler, cmd, cmdMsg));
+                    }
+
+                    @Override
+                    public void onOtherCmdMsg(DouyuBinaryFrameHandler binaryFrameHandler, DouyuCmdEnum cmd, ICmdMsg<DouyuCmdEnum> cmdMsg) {
+                        proxyClient.iteratorMsgListeners(msgListener -> msgListener.onOtherCmdMsg(binaryFrameHandler, cmd, cmdMsg));
+                    }
+
+                    @Override
+                    public void onUnknownCmd(DouyuBinaryFrameHandler binaryFrameHandler, String cmdString, IMsg msg) {
+                        proxyClient.iteratorMsgListeners(msgListener -> msgListener.onUnknownCmd(binaryFrameHandler, cmdString, msg));
                     }
 
                     @Override
@@ -189,9 +206,13 @@ public class DouyuLiveChatClient extends DouyuWsLiveChatClient implements IDouyu
 
     @Override
     public void destroy() {
+        destroyDanmuClient();
+        super.destroy();
+    }
+
+    private void destroyDanmuClient() {
         if (danmuClient != null) {
             danmuClient.destroy();
         }
-        super.destroy();
     }
 }
