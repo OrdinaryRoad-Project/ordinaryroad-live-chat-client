@@ -46,13 +46,13 @@
         </dependency>
 
         <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
+            <groupId>com.tencent.tars</groupId>
+            <artifactId>tars-core</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.tencent.tars</groupId>
-            <artifactId>tars-core</artifactId>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
         </dependency>
 
         <dependency>

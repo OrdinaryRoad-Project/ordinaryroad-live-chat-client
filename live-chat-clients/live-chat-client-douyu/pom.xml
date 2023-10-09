@@ -40,20 +40,9 @@
     </properties>
 
     <dependencies>
-<!--        <dependency>-->
-<!--            <groupId>com.yycdev</groupId>-->
-<!--            <artifactId>douyu-sdk</artifactId>-->
-<!--            <version>1.0.0</version>-->
-<!--        </dependency>-->
-
         <dependency>
             <groupId>tech.ordinaryroad</groupId>
             <artifactId>live-chat-client-servers-netty-client</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.aayushatharva.brotli4j</groupId>
-            <artifactId>brotli4j</artifactId>
         </dependency>
 
         <dependency>
