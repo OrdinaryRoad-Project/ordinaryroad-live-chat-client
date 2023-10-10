@@ -22,74 +22,46 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.commons.base.msg;
+package tech.ordinaryroad.live.chat.client.huya.msg.dto;
+
+import cn.hutool.core.collection.CollUtil;
+import com.qq.tars.protocol.tars.TarsInputStream;
+import com.qq.tars.protocol.tars.TarsOutputStream;
+import com.qq.tars.protocol.tars.TarsStructBase;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
 
 /**
  * @author mjz
- * @date 2023/9/8
+ * @date 2023/10/10
  */
-public interface IGiftMsg extends IMsg {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class UserIdentityInfo extends TarsStructBase {
 
-    /**
-     * 粉丝牌名称
-     */
-    default String getBadgeName() {
-        return "";
+    private List<DecorationInfo> vDecorationPrefix = CollUtil.newArrayList(new DecorationInfo());
+    private List<DecorationInfo> vDecorationSuffix = CollUtil.newArrayList(new DecorationInfo());
+
+    @Override
+    public void writeTo(TarsOutputStream os) {
+        os.write(this.vDecorationPrefix, 0);
+        os.write(this.vDecorationSuffix, 1);
     }
 
-    /**
-     * 粉丝牌等级
-     */
-    default byte getBadgeLevel() {
-        return 0;
+    @Override
+    public void readFrom(TarsInputStream is) {
+        this.vDecorationPrefix = is.readArray(this.vDecorationPrefix, 0, false);
+        this.vDecorationSuffix = is.readArray(this.vDecorationSuffix, 1, false);
     }
 
-    /**
-     * 发送方id
-     */
-    long getUid();
-
-    /**
-     * 发送方用户名
-     */
-    String getUsername();
-
-    /**
-     * 发送方头像地址
-     *
-     * @since 0.0.11
-     */
-    default String getUserAvatar() {
-        return null;
+    @Override
+    public TarsStructBase newInit() {
+        return this;
     }
-
-    /**
-     * 礼物名称
-     */
-    String getGiftName();
-
-    /**
-     * 礼物id
-     */
-    long getGiftId();
-
-    /**
-     * 礼物数量
-     */
-    int getGiftCount();
-
-    /**
-     * 单个礼物价格
-     */
-    int getGiftPrice();
-
-    /**
-     * 接收方id
-     */
-    long getReceiveUid();
-
-    /**
-     * 接收方用户名
-     */
-    String getReceiveUsername();
 }

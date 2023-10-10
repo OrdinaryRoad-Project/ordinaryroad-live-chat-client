@@ -53,6 +53,24 @@ public class SendGiftMsg extends BaseBilibiliMsg implements IGiftMsg {
     private Data data;
 
     @Override
+    public String getBadgeName() {
+        if (data.medal_info == null) {
+            return IGiftMsg.super.getBadgeName();
+        }
+
+        return data.medal_info.getMedal_name();
+    }
+
+    @Override
+    public byte getBadgeLevel() {
+        if (data.medal_info == null) {
+            return IGiftMsg.super.getBadgeLevel();
+        }
+
+        return data.medal_info.getMedal_level();
+    }
+
+    @Override
     public long getUid() {
         return data.getUid();
     }
