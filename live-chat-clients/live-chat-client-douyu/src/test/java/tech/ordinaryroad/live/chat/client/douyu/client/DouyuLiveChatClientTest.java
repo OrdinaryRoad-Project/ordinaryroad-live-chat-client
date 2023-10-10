@@ -74,7 +74,7 @@ class DouyuLiveChatClientTest implements IDouyuConnectionListener, IDouyuMsgList
             public void onDanmuMsg(DouyuBinaryFrameHandler binaryFrameHandler, ChatmsgMsg msg) {
                 IDouyuMsgListener.super.onDanmuMsg(binaryFrameHandler, msg);
 
-                log.info("{} 收到弹幕 {}({})：{}", binaryFrameHandler.getRoomId(), msg.getUsername(), msg.getUid(), msg.getContent());
+                log.info("{} 收到弹幕 {} {}({})：{}", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid(), msg.getContent());
             }
 
             @Override

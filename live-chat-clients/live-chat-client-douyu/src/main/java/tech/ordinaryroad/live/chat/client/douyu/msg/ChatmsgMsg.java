@@ -79,7 +79,7 @@ public class ChatmsgMsg extends BaseDouyuCmdMsg implements IDanmuMsg {
     private String level;
     private String cst;
     private String brid;
-    private String bl;
+    private byte bl;
     private String dms;
     private long rid;
     private long uid;
@@ -96,6 +96,16 @@ public class ChatmsgMsg extends BaseDouyuCmdMsg implements IDanmuMsg {
     @Override
     public String getType() {
         return DouyuCmdEnum.chatmsg.name();
+    }
+
+    @Override
+    public String getBadgeName() {
+        return this.bnn;
+    }
+
+    @Override
+    public byte getBadgeLevel() {
+        return this.bl;
     }
 
     @Override
