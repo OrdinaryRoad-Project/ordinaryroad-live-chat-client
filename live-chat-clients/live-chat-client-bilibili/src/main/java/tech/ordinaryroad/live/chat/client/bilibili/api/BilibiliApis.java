@@ -24,7 +24,10 @@
 
 package tech.ordinaryroad.live.chat.client.bilibili.api;
 
+import cn.hutool.cache.impl.TimedCache;
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.resource.ResourceUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
@@ -38,9 +41,11 @@ import tech.ordinaryroad.live.chat.client.bilibili.api.request.BilibiliSendMsgRe
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCookieUtil;
 
+import java.nio.charset.StandardCharsets;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * B站API简易版
@@ -51,6 +56,7 @@ import java.util.Map;
 @Slf4j
 public class BilibiliApis {
 
+    public static final TimedCache<Long, String> giftImgCache = new TimedCache<>(TimeUnit.DAYS.toMillis(1));
     public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     public static final String KEY_COOKIE_CSRF = "bili_jct";
 
@@ -94,6 +100,31 @@ public class BilibiliApis {
         @Cleanup
         HttpResponse response = createGetRequest("https://api.live.bilibili.com/xlive/web-room/v1/index/getDanmuInfo?id=" + roomId + "&type=" + type, cookie).execute();
         return responseInterceptor(response.body());
+    }
+
+    /**
+     * 从网页html中获得映射关系
+     */
+    public static String getGiftImgById(long giftId) {
+        if (giftImgCache.containsKey(giftId)) {
+            return giftImgCache.get(giftId);
+        }
+
+        String img = null;
+
+        boolean find = false;
+        for (String line : FileUtil.readLines(ResourceUtil.getResource("css/gift_background.css"), StandardCharsets.UTF_8)) {
+            if (find) {
+                img = line.substring(26, 101);
+                giftImgCache.put(giftId, img);
+                break;
+            }
+            if (line.startsWith(".gift-" + giftId)) {
+                find = true;
+            }
+        }
+
+        return img;
     }
 
     public static void sendMsg(BilibiliSendMsgRequest request, String cookie) {

@@ -32,6 +32,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import tech.ordinaryroad.live.chat.client.bilibili.api.BilibiliApis;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.OperationEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.base.BaseBilibiliMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.dto.MedalInfo;
@@ -88,6 +89,11 @@ public class SendGiftMsg extends BaseBilibiliMsg implements IGiftMsg {
     @Override
     public String getGiftName() {
         return data.getGiftName();
+    }
+
+    @Override
+    public String getGiftImg() {
+        return BilibiliApis.getGiftImgById(this.data.giftId);
     }
 
     @Override
