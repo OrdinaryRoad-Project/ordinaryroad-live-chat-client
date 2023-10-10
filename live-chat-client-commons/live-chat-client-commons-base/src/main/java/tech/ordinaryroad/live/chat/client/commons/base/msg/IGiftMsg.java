@@ -69,6 +69,11 @@ public interface IGiftMsg extends IMsg {
     String getGiftName();
 
     /**
+     * 礼物图像地址
+     */
+    String getGiftImg();
+
+    /**
      * 礼物id
      */
     long getGiftId();
