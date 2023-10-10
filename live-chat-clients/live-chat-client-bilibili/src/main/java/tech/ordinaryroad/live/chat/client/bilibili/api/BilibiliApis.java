@@ -119,7 +119,7 @@ public class BilibiliApis {
                 giftImgCache.put(giftId, img);
                 break;
             }
-            if (line.startsWith(".gift-" + giftId)) {
+            if (line.startsWith(".gift-" + giftId + "-")) {
                 find = true;
             }
         }
