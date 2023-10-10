@@ -62,18 +62,25 @@ import java.util.List;
 @ChannelHandler.Sharable
 public class HuyaBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<HuyaLiveChatClient, HuyaBinaryFrameHandler, HuyaCmdEnum, IHuyaMsg, IHuyaMsgListener> {
 
+    /**
+     * 以ClientConfig为主
+     */
+    private final String ver;
     private ChannelHandlerContext channelHandlerContext;
 
     public HuyaBinaryFrameHandler(List<IHuyaMsgListener> iHuyaMsgListeners, HuyaLiveChatClient client, long roomId) {
         super(iHuyaMsgListeners, client, roomId);
+        this.ver = client.getConfig().getVer();
     }
 
     public HuyaBinaryFrameHandler(List<IHuyaMsgListener> iHuyaMsgListeners, HuyaLiveChatClient client) {
         super(iHuyaMsgListeners, client);
+        this.ver = client.getConfig().getVer();
     }
 
-    public HuyaBinaryFrameHandler(List<IHuyaMsgListener> iHuyaMsgListeners, long roomId) {
+    public HuyaBinaryFrameHandler(List<IHuyaMsgListener> iHuyaMsgListeners, long roomId, String ver) {
         super(iHuyaMsgListeners, roomId);
+        this.ver = ver;
     }
 
     @Override
@@ -102,7 +109,7 @@ public class HuyaBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<Hu
 //            if (log.isDebugEnabled()) {
 //                log.debug("获取礼物列表");
 //            }
-            // channelHandlerContext.writeAndFlush(HuyaWebSocketFrameFactory.getInstance(getRoomId()).createGiftListReq());
+            channelHandlerContext.writeAndFlush(HuyaWebSocketFrameFactory.getInstance(getRoomId()).createGiftListReq(getVer()));
         } else if (operationEnum == HuyaOperationEnum.EWSCmd_WupRsp) {
             WupRsp wupRsp = (WupRsp) msg;
             String functionName = wupRsp.getTarsServantRequest().getFunctionName();
@@ -170,6 +177,10 @@ public class HuyaBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<Hu
             default ->
                     iteratorMsgListeners(msgListener -> msgListener.onOtherCmdMsg(HuyaBinaryFrameHandler.this, cmd, cmdMsg));
         }
+    }
+
+    public String getVer() {
+        return client != null ? client.getConfig().getVer() : ver;
     }
 
     @Override
