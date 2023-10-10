@@ -40,7 +40,7 @@ public class MedalInfo {
     private int icon_id;
     private String anchor_uname;
     private int anchor_roomid;
-    private int medal_level;
+    private byte medal_level;
     private String medal_name;
     private String medal_color;
     private long medal_color_start;
