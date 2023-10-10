@@ -31,6 +31,20 @@ package tech.ordinaryroad.live.chat.client.commons.base.msg;
 public interface IGiftMsg extends IMsg {
 
     /**
+     * 粉丝牌名称
+     */
+    default String getBadgeName() {
+        return "";
+    }
+
+    /**
+     * 粉丝牌等级
+     */
+    default byte getBadgeLevel() {
+        return 0;
+    }
+
+    /**
      * 发送方id
      */
     long getUid();
