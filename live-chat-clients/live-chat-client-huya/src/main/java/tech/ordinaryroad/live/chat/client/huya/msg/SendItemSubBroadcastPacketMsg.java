@@ -24,8 +24,10 @@
 
 package tech.ordinaryroad.live.chat.client.huya.msg;
 
+import cn.hutool.core.collection.CollUtil;
 import com.qq.tars.protocol.tars.TarsInputStream;
 import com.qq.tars.protocol.tars.TarsOutputStream;
+import com.qq.tars.protocol.tars.TarsStructBase;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,9 +35,14 @@ import lombok.Setter;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IGiftMsg;
 import tech.ordinaryroad.live.chat.client.huya.constant.HuyaOperationEnum;
 import tech.ordinaryroad.live.chat.client.huya.msg.base.BaseHuyaMsg;
+import tech.ordinaryroad.live.chat.client.huya.msg.dto.BadgeInfo;
+import tech.ordinaryroad.live.chat.client.huya.msg.dto.DecorationInfo;
+import tech.ordinaryroad.live.chat.client.huya.msg.dto.NobleLevelInfo;
+import tech.ordinaryroad.live.chat.client.huya.msg.dto.UserIdentityInfo;
+import tech.ordinaryroad.live.chat.client.huya.util.HuyaCodecUtil;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author mjz
@@ -70,17 +77,15 @@ public class SendItemSubBroadcastPacketMsg extends BaseHuyaMsg implements IGiftM
     private String sPropsName = "";
     private short iAccpet = 0;
     private short iEventType = 0;
-    //    private int userInfo = new D.UserIdentityInfo;
+    private UserIdentityInfo userInfo = new UserIdentityInfo();
     private long lRoomId = 0;
     private long lHomeOwnerUid = 0;
     //    private int streamerInfo = new D.StreamerNode;
     private int iPayType = -1;
     private int iNobleLevel = 0;
-    //    private int tNobleLevel = new D.NobleLevelInfo;
-//    private int tEffectInfo = new D.ItemEffectInfo;
-    private List<Long> vExUid = new ArrayList<>() {{
-        add(-1L);
-    }};
+    private NobleLevelInfo tNobleLevel = new NobleLevelInfo();
+    //    private ItemEffectInfo tEffectInfo = new ItemEffectInfo();
+    private List<Long> vExUid = CollUtil.newArrayList(-1L);
     private int iComboStatus = 0;
     private int iPidColorType = 0;
     private int iMultiSend = 0;
@@ -92,8 +97,8 @@ public class SendItemSubBroadcastPacketMsg extends BaseHuyaMsg implements IGiftM
     private long lPayTotal = 0;
 //    private int vBizData = new V.Vector(new D.ItemEffectBizData);
 
-    // region 礼物信息
-    // private PropsItem propsItem = PropsItem.DEFAULT;
+    // region 额外属性
+    private BadgeInfo badgeInfo;
     // endregion
 
     public SendItemSubBroadcastPacketMsg(TarsInputStream is) {
@@ -125,13 +130,13 @@ public class SendItemSubBroadcastPacketMsg extends BaseHuyaMsg implements IGiftM
         os.write(this.sPropsName, 20);
         os.write(this.iAccpet, 21);
         os.write(this.iEventType, 22);
-//        os.write(this.userInfo, 23);
+        os.write(this.userInfo, 23);
         os.write(this.lRoomId, 24);
         os.write(this.lHomeOwnerUid, 25);
 //        os.write(this.streamerInfo, 26);
         os.write(this.iPayType, 27);
         os.write(this.iNobleLevel, 28);
-//        os.write(this.tNobleLevel, 29);
+        os.write(this.tNobleLevel, 29);
 //        os.write(this.tEffectInfo, 30);
         os.write(this.vExUid, 31);
         os.write(this.iComboStatus, 32);
@@ -171,13 +176,13 @@ public class SendItemSubBroadcastPacketMsg extends BaseHuyaMsg implements IGiftM
         this.sPropsName = is.read(this.sPropsName, 20, true);
         this.iAccpet = is.read(this.iAccpet, 21, true);
         this.iEventType = is.read(this.iEventType, 22, true);
-//        this.userInfo = is.read(this.userInfo, 23, true);
+        this.userInfo = (UserIdentityInfo) is.directRead(this.userInfo, 23, true);
         this.lRoomId = is.read(this.lRoomId, 24, true);
         this.lHomeOwnerUid = is.read(this.lHomeOwnerUid, 25, true);
 //        this.streamerInfo = is.read(this.streamerInfo, 26, true);
         this.iPayType = is.read(this.iPayType, 27, true);
         this.iNobleLevel = is.read(this.iNobleLevel, 28, true);
-//        this.tNobleLevel = is.read(this.tNobleLevel, 29, true);
+        this.tNobleLevel = (NobleLevelInfo) is.directRead(this.tNobleLevel, 29, true);
 //        this.tEffectInfo = is.read(this.tEffectInfo, 30, true);
         this.vExUid = is.readArray(this.vExUid, 31, true);
         this.iComboStatus = is.read(this.iComboStatus, 32, true);
@@ -190,6 +195,18 @@ public class SendItemSubBroadcastPacketMsg extends BaseHuyaMsg implements IGiftM
         this.lComboSeqId = is.read(this.lComboSeqId, 39, true);
         this.lPayTotal = is.read(this.lPayTotal, 41, true);
 //        this.vBizData = is.read(this.vBizData, 42, true);
+
+        // 解析额外属性
+        for (DecorationInfo decorationPrefix : userInfo.getVDecorationPrefix()) {
+            Optional<? extends TarsStructBase> optional = HuyaCodecUtil.decodeDecorationInfo(decorationPrefix);
+            if (optional.isPresent()) {
+                TarsStructBase tarsStructBase = optional.get();
+                if (tarsStructBase instanceof BadgeInfo) {
+                    this.badgeInfo = (BadgeInfo) tarsStructBase;
+                    break;
+                }
+            }
+        }
     }
 
     @Override
