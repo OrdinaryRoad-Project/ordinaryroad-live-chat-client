@@ -71,7 +71,7 @@ public class SuperChatMessageMsg extends BaseBilibiliMsg implements ISuperChatMs
     }
 
     @lombok.Data
-    public class Data {
+    public static class Data {
         private String background_bottom_color;
         private String background_color;
         private String background_color_end;
