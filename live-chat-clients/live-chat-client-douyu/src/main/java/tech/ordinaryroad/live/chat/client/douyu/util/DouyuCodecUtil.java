@@ -32,12 +32,16 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatReflectUtil;
+import tech.ordinaryroad.live.chat.client.douyu.api.DouyuApis;
+import tech.ordinaryroad.live.chat.client.douyu.client.DouyuLiveChatClient;
 import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
+import tech.ordinaryroad.live.chat.client.douyu.msg.DgbMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.DouyuCmdMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.HeartbeatMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.HeartbeatReplyMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.base.BaseDouyuCmdMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.base.IDouyuMsg;
+import tech.ordinaryroad.live.chat.client.douyu.msg.dto.GiftPropSingle;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -227,6 +231,25 @@ public class DouyuCodecUtil {
                 ReflectUtil.setFieldValue(t, field, value);
             }
         });
+
+        // 礼物消息设置礼物信息字段（通用礼物）
+        if (t instanceof DgbMsg msg) {
+            String pid = msg.getPid();
+            // 通用礼物
+            if (StrUtil.isNotBlank(pid)) {
+                GiftPropSingle giftSingle = DouyuLiveChatClient.giftMap.get(pid, () -> {
+                    GiftPropSingle gift = GiftPropSingle.DEFAULT_GIFT;
+                    try {
+                        gift = DouyuApis.getGiftPropSingleByPid(pid);
+                    } catch (Exception e) {
+                        log.error("礼物信息获取失败, pid=" + pid, e);
+                    }
+                    return gift;
+                });
+                msg.setGiftInfo(giftSingle);
+            }
+        }
+
         return t;
     }
 

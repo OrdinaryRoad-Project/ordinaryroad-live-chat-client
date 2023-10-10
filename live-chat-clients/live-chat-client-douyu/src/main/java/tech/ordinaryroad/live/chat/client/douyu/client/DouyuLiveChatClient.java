@@ -24,10 +24,10 @@
 
 package tech.ordinaryroad.live.chat.client.douyu.client;
 
+import cn.hutool.cache.impl.TimedCache;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.util.RandomUtil;
-import cn.hutool.core.util.StrUtil;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import lombok.extern.slf4j.Slf4j;
@@ -53,6 +53,7 @@ import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuConnectionHan
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 直播间弹幕客户端
@@ -64,13 +65,15 @@ import java.util.Map;
 public class DouyuLiveChatClient extends DouyuWsLiveChatClient implements IDouyuMsgListener {
 
     /**
+     * 通用礼物缓存，过期时间1天
      * pid,Info
      */
-    private static final Map<String, GiftPropSingle> giftMap = new HashMap<>();
+    public static final TimedCache<String, GiftPropSingle> giftMap = new TimedCache<>(TimeUnit.DAYS.toMillis(1));
     /**
+     * 房间礼物缓存，过期时间1天
      * giftId,Info
      */
-    private final Map<String, GiftListInfo> roomGiftMap = new HashMap<>();
+    public static final TimedCache<String, Map<String, GiftListInfo>> roomGiftMap = new TimedCache<>(TimeUnit.DAYS.toMillis(1), new HashMap<>());
     private final DouyuWsLiveChatClient proxyClient = this;
     private DouyuDanmuLiveChatClient danmuClient = null;
     private DouyuConnectionHandler connectionHandler;
@@ -106,12 +109,13 @@ public class DouyuLiveChatClient extends DouyuWsLiveChatClient implements IDouyu
         super.init();
 
         // 初始化房间礼物列表
+        Map<String, GiftListInfo> map = new HashMap<>();
         DouyuApis.getGiftList(getConfig().getRoomId())
                 .get("giftList")
                 .forEach(jsonNode -> {
                     try {
                         GiftListInfo giftListInfo = BaseMsg.OBJECT_MAPPER.readValue(jsonNode.toString(), GiftListInfo.class);
-                        roomGiftMap.put(String.valueOf(giftListInfo.getId()), giftListInfo);
+                        map.put(String.valueOf(giftListInfo.getId()), giftListInfo);
                     } catch (Exception e) {
                         if (log.isDebugEnabled()) {
                             log.debug("获取房间礼物列表异常", e);
@@ -119,6 +123,7 @@ public class DouyuLiveChatClient extends DouyuWsLiveChatClient implements IDouyu
                         // ignore
                     }
                 });
+        roomGiftMap.put(String.valueOf(getConfig().getRoomId()), map);
     }
 
     @Override
@@ -158,26 +163,6 @@ public class DouyuLiveChatClient extends DouyuWsLiveChatClient implements IDouyu
 
                     @Override
                     public void onGiftMsg(DouyuBinaryFrameHandler binaryFrameHandler, DgbMsg msg) {
-                        String pid = msg.getPid();
-
-                        // 房间礼物
-                        if (StrUtil.isBlank(pid)) {
-                            msg.setRoomGiftInfo(roomGiftMap.getOrDefault(StrUtil.toString(msg.getGfid()), GiftListInfo.DEFAULT_GIFT));
-                        }
-                        // 通用礼物
-                        else {
-                            GiftPropSingle giftSingle = giftMap.computeIfAbsent(pid, k -> {
-                                GiftPropSingle gift = GiftPropSingle.DEFAULT_GIFT;
-                                try {
-                                    gift = DouyuApis.getGiftPropSingleByPid(k);
-                                } catch (Exception e) {
-                                    log.error("礼物信息获取失败, pid=" + k, e);
-                                }
-                                return gift;
-                            });
-                            msg.setGiftInfo(giftSingle);
-                        }
-
                         proxyClient.iteratorMsgListeners(msgListener -> msgListener.onGiftMsg(binaryFrameHandler, msg));
                     }
 
