@@ -178,6 +178,14 @@ public class DgbMsg extends BaseDouyuCmdMsg implements IGiftMsg {
     }
 
     @Override
+    public String getGiftImg() {
+        if (this.roomGiftInfo != GiftListInfo.DEFAULT_GIFT) {
+            return this.roomGiftInfo.getPicUrlPrefix() + this.roomGiftInfo.getBasicInfo().getChatPic();
+        }
+        return this.giftInfo.getPicUrlPrefix() + this.giftInfo.getChatPic();
+    }
+
+    @Override
     public long getGiftId() {
         return this.gfid;
     }

@@ -41,6 +41,7 @@ import tech.ordinaryroad.live.chat.client.douyu.msg.HeartbeatMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.HeartbeatReplyMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.base.BaseDouyuCmdMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.base.IDouyuMsg;
+import tech.ordinaryroad.live.chat.client.douyu.msg.dto.GiftListInfo;
 import tech.ordinaryroad.live.chat.client.douyu.msg.dto.GiftPropSingle;
 
 import java.lang.reflect.Field;
@@ -232,7 +233,7 @@ public class DouyuCodecUtil {
             }
         });
 
-        // 礼物消息设置礼物信息字段（通用礼物）
+        // 礼物消息设置礼物信息字段
         if (t instanceof DgbMsg msg) {
             String pid = msg.getPid();
             // 通用礼物
@@ -247,6 +248,14 @@ public class DouyuCodecUtil {
                     return gift;
                 });
                 msg.setGiftInfo(giftSingle);
+            }
+            // 房间礼物
+            else {
+                String realRoomId = msg.getRid();
+                if (DouyuLiveChatClient.roomGiftMap.containsKey(realRoomId)) {
+                    Map<String, GiftListInfo> stringGiftListInfoMap = DouyuLiveChatClient.roomGiftMap.get(realRoomId);
+                    msg.setRoomGiftInfo(stringGiftListInfoMap.getOrDefault(String.valueOf(msg.getGfid()), GiftListInfo.DEFAULT_GIFT));
+                }
             }
         }
 

@@ -33,12 +33,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IGiftMsg;
+import tech.ordinaryroad.live.chat.client.huya.api.HuyaApis;
 import tech.ordinaryroad.live.chat.client.huya.constant.HuyaOperationEnum;
 import tech.ordinaryroad.live.chat.client.huya.msg.base.BaseHuyaMsg;
-import tech.ordinaryroad.live.chat.client.huya.msg.dto.BadgeInfo;
-import tech.ordinaryroad.live.chat.client.huya.msg.dto.DecorationInfo;
-import tech.ordinaryroad.live.chat.client.huya.msg.dto.NobleLevelInfo;
-import tech.ordinaryroad.live.chat.client.huya.msg.dto.UserIdentityInfo;
+import tech.ordinaryroad.live.chat.client.huya.msg.dto.*;
 import tech.ordinaryroad.live.chat.client.huya.util.HuyaCodecUtil;
 
 import java.util.List;
@@ -84,7 +82,7 @@ public class SendItemSubBroadcastPacketMsg extends BaseHuyaMsg implements IGiftM
     private int iPayType = -1;
     private int iNobleLevel = 0;
     private NobleLevelInfo tNobleLevel = new NobleLevelInfo();
-    //    private ItemEffectInfo tEffectInfo = new ItemEffectInfo();
+    private ItemEffectInfo tEffectInfo = new ItemEffectInfo();
     private List<Long> vExUid = CollUtil.newArrayList(-1L);
     private int iComboStatus = 0;
     private int iPidColorType = 0;
@@ -92,7 +90,7 @@ public class SendItemSubBroadcastPacketMsg extends BaseHuyaMsg implements IGiftM
     private int iVFanLevel = 0;
     private int iUpgradeLevel = 0;
     private String sCustomText = "";
-    //    private int tDIYEffect = new D.DIYBigGiftEffect;
+    private DIYBigGiftEffect tDIYEffect = new DIYBigGiftEffect();
     private long lComboSeqId = 0;
     private long lPayTotal = 0;
 //    private int vBizData = new V.Vector(new D.ItemEffectBizData);
@@ -137,7 +135,7 @@ public class SendItemSubBroadcastPacketMsg extends BaseHuyaMsg implements IGiftM
         os.write(this.iPayType, 27);
         os.write(this.iNobleLevel, 28);
         os.write(this.tNobleLevel, 29);
-//        os.write(this.tEffectInfo, 30);
+        os.write(this.tEffectInfo, 30);
         os.write(this.vExUid, 31);
         os.write(this.iComboStatus, 32);
         os.write(this.iPidColorType, 33);
@@ -145,7 +143,7 @@ public class SendItemSubBroadcastPacketMsg extends BaseHuyaMsg implements IGiftM
         os.write(this.iVFanLevel, 35);
         os.write(this.iUpgradeLevel, 36);
         os.write(this.sCustomText, 37);
-//        os.write(this.tDIYEffect, 38);
+        os.write(this.tDIYEffect, 38);
         os.write(this.lComboSeqId, 39);
         os.write(this.lPayTotal, 41);
 //        os.write(this.vBizData, 42);
@@ -183,7 +181,7 @@ public class SendItemSubBroadcastPacketMsg extends BaseHuyaMsg implements IGiftM
         this.iPayType = is.read(this.iPayType, 27, true);
         this.iNobleLevel = is.read(this.iNobleLevel, 28, true);
         this.tNobleLevel = (NobleLevelInfo) is.directRead(this.tNobleLevel, 29, true);
-//        this.tEffectInfo = is.read(this.tEffectInfo, 30, true);
+        this.tEffectInfo = (ItemEffectInfo) is.directRead(this.tEffectInfo, 30, true);
         this.vExUid = is.readArray(this.vExUid, 31, true);
         this.iComboStatus = is.read(this.iComboStatus, 32, true);
         this.iPidColorType = is.read(this.iPidColorType, 33, true);
@@ -191,7 +189,7 @@ public class SendItemSubBroadcastPacketMsg extends BaseHuyaMsg implements IGiftM
         this.iVFanLevel = is.read(this.iVFanLevel, 35, true);
         this.iUpgradeLevel = is.read(this.iUpgradeLevel, 36, true);
         this.sCustomText = is.read(this.sCustomText, 37, true);
-//        this.tDIYEffect = is.read(this.tDIYEffect, 38, true);
+        this.tDIYEffect = (DIYBigGiftEffect) is.directRead(this.tDIYEffect, 38, true);
         this.lComboSeqId = is.read(this.lComboSeqId, 39, true);
         this.lPayTotal = is.read(this.lPayTotal, 41, true);
 //        this.vBizData = is.read(this.vBizData, 42, true);
@@ -227,6 +225,23 @@ public class SendItemSubBroadcastPacketMsg extends BaseHuyaMsg implements IGiftM
     @Override
     public String getGiftName() {
         return this.sPropsName;
+    }
+
+    @Override
+    public String getGiftImg() {
+        if (!HuyaApis.GIFT_ITEMS.containsKey(this.iTemplateType)) {
+            return null;
+        }
+
+        PropsItem propsItem = HuyaApis.GIFT_ITEMS.get(this.iTemplateType);
+        List<PropsIdentity> vPropsIdentity = propsItem.getVPropsIdentity();
+        if (vPropsIdentity.isEmpty()) {
+            return null;
+        }
+
+        PropsIdentity propsIdentity = vPropsIdentity.get(0);
+        String sPropsWeb = propsIdentity.getSPropsWeb();
+        return sPropsWeb.substring(0, sPropsWeb.indexOf("&"));
     }
 
     @Override

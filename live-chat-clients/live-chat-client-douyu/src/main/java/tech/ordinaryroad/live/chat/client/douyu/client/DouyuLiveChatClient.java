@@ -71,7 +71,7 @@ public class DouyuLiveChatClient extends DouyuWsLiveChatClient implements IDouyu
     public static final TimedCache<String, GiftPropSingle> giftMap = new TimedCache<>(TimeUnit.DAYS.toMillis(1));
     /**
      * 房间礼物缓存，过期时间1天
-     * giftId,Info
+     * realRoomId,(giftId,Info)
      */
     public static final TimedCache<String, Map<String, GiftListInfo>> roomGiftMap = new TimedCache<>(TimeUnit.DAYS.toMillis(1), new HashMap<>());
     private final DouyuWsLiveChatClient proxyClient = this;
@@ -123,7 +123,7 @@ public class DouyuLiveChatClient extends DouyuWsLiveChatClient implements IDouyu
                         // ignore
                     }
                 });
-        roomGiftMap.put(String.valueOf(getConfig().getRoomId()), map);
+        roomGiftMap.put(String.valueOf(DouyuApis.getRealRoomId(getConfig().getRoomId())), map);
     }
 
     @Override
