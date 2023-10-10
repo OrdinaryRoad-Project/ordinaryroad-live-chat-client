@@ -96,7 +96,7 @@ public class DgbMsg extends BaseDouyuCmdMsg implements IGiftMsg {
     private String pma;
     private String bnid;
     private long gfid;
-    private String bl;
+    private byte bl;
     private String pid;
     private String rid;
     private String mss;
@@ -147,6 +147,16 @@ public class DgbMsg extends BaseDouyuCmdMsg implements IGiftMsg {
     @Override
     public String getType() {
         return DouyuCmdEnum.dgb.name();
+    }
+
+    @Override
+    public String getBadgeName() {
+        return this.bnn;
+    }
+
+    @Override
+    public byte getBadgeLevel() {
+        return this.bl;
     }
 
     @Override
