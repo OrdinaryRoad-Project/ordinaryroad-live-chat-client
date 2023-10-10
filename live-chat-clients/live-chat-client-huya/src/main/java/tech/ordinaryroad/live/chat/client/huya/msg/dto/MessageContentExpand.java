@@ -22,41 +22,46 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.huya.constant;
+package tech.ordinaryroad.live.chat.client.huya.msg.dto;
 
+import com.qq.tars.protocol.tars.TarsInputStream;
+import com.qq.tars.protocol.tars.TarsOutputStream;
+import com.qq.tars.protocol.tars.TarsStructBase;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * @author mjz
- * @date 2023/10/2
+ * @date 2023/10/10
  */
 @Getter
-@RequiredArgsConstructor
-public enum HuyaStreamLineTypeEnum {
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class MessageContentExpand extends TarsStructBase {
 
-    STREAM_LINE_OLD_YY(0),
-    STREAM_LINE_WS(1),
-    STREAM_LINE_NEW_YY(2),
-    STREAM_LINE_AL(3),
-    STREAM_LINE_HUYA(4),
-    STREAM_LINE_TX(5),
-    STREAM_LINE_CDN(8),
-    STREAM_LINE_HW(6),
-    STREAM_LINE_BD(7),
-    STREAM_LINE_GG(9),
-    STREAM_LINE_CF(10),
-    STREAM_LINE_QUICK_HUYA(99),
-    ;
+    private int iAppId = 0;
+    private String sToast = "";
+    private byte[] vData;
 
-    private final int code;
+    @Override
+    public void writeTo(TarsOutputStream os) {
+        os.write(this.iAppId, 0);
+        os.write(this.sToast, 1);
+        os.write(this.vData, 2);
+    }
 
-    public static HuyaStreamLineTypeEnum getByCode(int code) {
-        for (HuyaStreamLineTypeEnum value : values()) {
-            if (value.getCode() == code) {
-                return value;
-            }
-        }
-        return null;
+    @Override
+    public void readFrom(TarsInputStream is) {
+        this.iAppId = is.read(this.iAppId, 0, false);
+        this.sToast = is.read(this.sToast, 1, false);
+        this.vData = is.read(this.vData, 2, false);
+    }
+
+    @Override
+    public TarsStructBase newInit() {
+        return this;
     }
 }

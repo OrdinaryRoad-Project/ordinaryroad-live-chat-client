@@ -46,7 +46,7 @@ public enum HuyaClientTemplateTypeEnum {
 
     private final int code;
 
-    HuyaClientTemplateTypeEnum getByCode(int code) {
+    public static HuyaClientTemplateTypeEnum getByCode(int code) {
         for (HuyaClientTemplateTypeEnum value : values()) {
             if (value.getCode() == code) {
                 return value;
