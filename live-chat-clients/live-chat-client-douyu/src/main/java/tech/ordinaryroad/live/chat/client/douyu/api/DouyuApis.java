@@ -35,9 +35,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Cleanup;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
+import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseMsg;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLocalDateTimeUtil;
+import tech.ordinaryroad.live.chat.client.douyu.msg.dto.GiftPropSingle;
 
 import java.util.List;
 import java.util.Map;
@@ -59,6 +62,13 @@ public class DouyuApis {
     public static final String KEY_COOKIE_ACF_STK = "acf_stk";
     public static final String KEY_COOKIE_ACF_LTKID = "acf_ltkid";
     public static final String API_AVATAR = "https://apic.douyucdn.cn/upload/";
+    // https://webconf.douyucdn.cn/resource/common/gift/flash/gift_effect.json
+    // https://webconf.douyucdn.cn/resource/common/gift/common_config_v2.json
+    // https://webconf.douyucdn.cn/resource/common/prop_gift_list/prop_gift_config.json
+    // 用PID查询礼物信息：https://gift.douyucdn.cn/api/prop/v1/web/single?pid=
+    // 查询房间礼物列表：https://gift.douyucdn.cn/api/gift/v3/web/list?rid=
+    public static final String API_GIFT_LIST = "https://gift.douyucdn.cn/api/gift/v3/web/list?rid=";
+    public static final String API_PROP_SINGLE = "https://gift.douyucdn.cn/api/prop/v1/web/single?pid=";
     public static final String API_AVATAR_PREFIX_SMALL = "_small.jpg";
     public static final String API_AVATAR_PREFIX_MIDDLE = "_middle.jpg";
     public static final String API_AVATAR_PREFIX_BIG = "_big.jpg";
@@ -125,6 +135,20 @@ public class DouyuApis {
         JsonNode wss = serverInfo.get("wss");
         JsonNode jsonNode = wss.get(RandomUtil.randomInt(0, wss.size()));
         return "wss://" + jsonNode.get("domain").asText() + ":" + jsonNode.get("port").asInt();
+    }
+
+    public static JsonNode getGiftList(long roomId) {
+        @Cleanup
+        HttpResponse execute = createGetRequest(API_GIFT_LIST + roomId, null).execute();
+        return responseInterceptor(execute.body());
+    }
+
+    @SneakyThrows
+    public static GiftPropSingle getGiftPropSingleByPid(String pid) {
+        @Cleanup
+        HttpResponse execute = createGetRequest(API_PROP_SINGLE + pid, null).execute();
+        JsonNode jsonNode = responseInterceptor(execute.body());
+        return BaseMsg.OBJECT_MAPPER.readValue(jsonNode.toString(), GiftPropSingle.class);
     }
 
     public static final String vk_secret = "r5*^5;}2#${XF[h+;'./.Q'1;,-]f'p[";

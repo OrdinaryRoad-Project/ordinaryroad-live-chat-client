@@ -32,6 +32,8 @@ import tech.ordinaryroad.live.chat.client.commons.base.msg.IGiftMsg;
 import tech.ordinaryroad.live.chat.client.douyu.api.DouyuApis;
 import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyu.msg.base.BaseDouyuCmdMsg;
+import tech.ordinaryroad.live.chat.client.douyu.msg.dto.GiftListInfo;
+import tech.ordinaryroad.live.chat.client.douyu.msg.dto.GiftPropSingle;
 
 import java.util.List;
 
@@ -134,6 +136,13 @@ public class DgbMsg extends BaseDouyuCmdMsg implements IGiftMsg {
     private String hc;
     private String fc;
     private String eic;
+    private String bsfl;
+    private String skinid;
+
+    // region 额外属性
+    private GiftPropSingle giftInfo = GiftPropSingle.DEFAULT_GIFT;
+    private GiftListInfo roomGiftInfo = GiftListInfo.DEFAULT_GIFT;
+    // endregion
 
     @Override
     public String getType() {
@@ -152,7 +161,10 @@ public class DgbMsg extends BaseDouyuCmdMsg implements IGiftMsg {
 
     @Override
     public String getGiftName() {
-        return "";
+        if (this.roomGiftInfo != GiftListInfo.DEFAULT_GIFT) {
+            return this.roomGiftInfo.getName();
+        }
+        return this.giftInfo.getName();
     }
 
     @Override
@@ -165,9 +177,15 @@ public class DgbMsg extends BaseDouyuCmdMsg implements IGiftMsg {
         return this.gfcnt;
     }
 
+    /**
+     * 100 => 1鱼翅
+     */
     @Override
     public int getGiftPrice() {
-        return -1;
+        if (this.roomGiftInfo != GiftListInfo.DEFAULT_GIFT) {
+            return this.roomGiftInfo.getPriceInfo().getPrice();
+        }
+        return this.giftInfo.getPrice();
     }
 
     @Override
