@@ -23,6 +23,9 @@
  */
 package tech.ordinaryroad.live.chat.client.bilibili.msg;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,6 +34,9 @@ import tech.ordinaryroad.live.chat.client.bilibili.constant.OperationEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.base.BaseBilibiliMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.dto.MedalInfo;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ISuperChatMsg;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author mjz
@@ -99,6 +105,21 @@ public class SuperChatMessageMsg extends BaseBilibiliMsg implements ISuperChatMs
         private long ts;
         private long uid;
         private User_info user_info;
+
+        /**
+         * 未知属性都放在这
+         */
+        private final Map<String, JsonNode> unknownProperties = new HashMap<>();
+
+        @JsonAnyGetter
+        public Map<String, JsonNode> getUnknownProperties() {
+            return unknownProperties;
+        }
+
+        @JsonAnySetter
+        public void setOther(String key, JsonNode value) {
+            this.unknownProperties.put(key, value);
+        }
     }
 
     @lombok.Data
@@ -106,10 +127,25 @@ public class SuperChatMessageMsg extends BaseBilibiliMsg implements ISuperChatMs
         private int gift_id;
         private String gift_name;
         private int num;
+
+        /**
+         * 未知属性都放在这
+         */
+        private final Map<String, JsonNode> unknownProperties = new HashMap<>();
+
+        @JsonAnyGetter
+        public Map<String, JsonNode> getUnknownProperties() {
+            return unknownProperties;
+        }
+
+        @JsonAnySetter
+        public void setOther(String key, JsonNode value) {
+            this.unknownProperties.put(key, value);
+        }
     }
 
     @lombok.Data
-    public class User_info {
+    public static class User_info {
         private String face;
         private String face_frame;
         private int guard_level;
@@ -122,5 +158,20 @@ public class SuperChatMessageMsg extends BaseBilibiliMsg implements ISuperChatMs
         private String title;
         private String uname;
         private int user_level;
+
+        /**
+         * 未知属性都放在这
+         */
+        private final Map<String, JsonNode> unknownProperties = new HashMap<>();
+
+        @JsonAnyGetter
+        public Map<String, JsonNode> getUnknownProperties() {
+            return unknownProperties;
+        }
+
+        @JsonAnySetter
+        public void setOther(String key, JsonNode value) {
+            this.unknownProperties.put(key, value);
+        }
     }
 }
