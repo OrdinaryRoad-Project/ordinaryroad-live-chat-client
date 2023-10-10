@@ -40,7 +40,7 @@ public enum HuyaGenderEnum {
     ;
     private final int code;
 
-    public HuyaGenderEnum getByCode(int code) {
+    public static HuyaGenderEnum getByCode(int code) {
         for (HuyaGenderEnum value : values()) {
             if (value.getCode() == code) {
                 return value;

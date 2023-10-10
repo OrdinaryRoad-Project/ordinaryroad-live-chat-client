@@ -31,6 +31,16 @@ package tech.ordinaryroad.live.chat.client.commons.base.msg;
 public interface IDanmuMsg extends IMsg {
 
     /**
+     * 粉丝牌名称
+     */
+    String getBadgeName();
+
+    /**
+     * 粉丝牌等级
+     */
+    byte getBadgeLevel();
+
+    /**
      * 弹幕发送者id
      */
     long getUid();

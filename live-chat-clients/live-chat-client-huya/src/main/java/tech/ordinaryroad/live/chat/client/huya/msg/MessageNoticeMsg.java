@@ -24,8 +24,10 @@
 
 package tech.ordinaryroad.live.chat.client.huya.msg;
 
+import cn.hutool.core.collection.CollUtil;
 import com.qq.tars.protocol.tars.TarsInputStream;
 import com.qq.tars.protocol.tars.TarsOutputStream;
+import com.qq.tars.protocol.tars.TarsStructBase;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,9 +36,10 @@ import tech.ordinaryroad.live.chat.client.commons.base.msg.IDanmuMsg;
 import tech.ordinaryroad.live.chat.client.huya.constant.HuyaOperationEnum;
 import tech.ordinaryroad.live.chat.client.huya.msg.base.BaseHuyaMsg;
 import tech.ordinaryroad.live.chat.client.huya.msg.dto.*;
+import tech.ordinaryroad.live.chat.client.huya.util.HuyaCodecUtil;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author mjz
@@ -56,16 +59,22 @@ public class MessageNoticeMsg extends BaseHuyaMsg implements IDanmuMsg {
     private ContentFormat tFormat = new ContentFormat();
     private BulletFormat tBulletFormat = new BulletFormat();
     private int iTermType;
-    private List<DecorationInfo> vDecorationPrefix = new ArrayList<>() {{
-        add(new DecorationInfo());
-    }};
-    private List<DecorationInfo> vDecorationSuffix = new ArrayList<>() {{
-        add(new DecorationInfo());
-    }};
-    private List<UidNickName> vAtSomeone = new ArrayList<>() {{
-        add(new UidNickName());
-    }};
+    private List<DecorationInfo> vDecorationPrefix = CollUtil.newArrayList(new DecorationInfo());
+    private List<DecorationInfo> vDecorationSuffix = CollUtil.newArrayList(new DecorationInfo());
+    private List<UidNickName> vAtSomeone = CollUtil.newArrayList(new UidNickName());
     private long lPid;
+    private List<DecorationInfo> vBulletPrefix = CollUtil.newArrayList(new DecorationInfo());
+    private String sIconUrl = "";
+    private int iType;
+    private List<DecorationInfo> vBulletSuffix = CollUtil.newArrayList(new DecorationInfo());
+    private List<MessageTagInfo> vTagInfo = CollUtil.newArrayList(new MessageTagInfo());
+    private SendMessageFormat tSenceFormat = new SendMessageFormat();
+    private MessageContentExpand tContentExpand = new MessageContentExpand();
+    private int iMessageMode;
+
+    // region 额外属性
+    private BadgeInfo badgeInfo;
+    // endregion
 
     public MessageNoticeMsg(TarsInputStream is) {
         this.readFrom(is);
@@ -85,6 +94,14 @@ public class MessageNoticeMsg extends BaseHuyaMsg implements IDanmuMsg {
         os.write(this.vDecorationSuffix, 9);
         os.write(this.vAtSomeone, 10);
         os.write(this.lPid, 11);
+        os.write(this.vBulletPrefix, 12);
+        os.write(this.sIconUrl, 13);
+        os.write(this.iType, 14);
+        os.write(this.vBulletSuffix, 15);
+        os.write(this.vTagInfo, 16);
+        os.write(this.tSenceFormat, 17);
+        os.write(this.tContentExpand, 18);
+        os.write(this.iMessageMode, 19);
     }
 
     @Override
@@ -101,11 +118,49 @@ public class MessageNoticeMsg extends BaseHuyaMsg implements IDanmuMsg {
         this.vDecorationSuffix = is.readArray(this.vDecorationSuffix, 9, true);
         this.vAtSomeone = is.readArray(this.vAtSomeone, 10, true);
         this.lPid = is.read(this.lPid, 11, true);
+        this.vBulletPrefix = is.readArray(this.vBulletPrefix, 12, false);
+        this.sIconUrl = is.read(this.sIconUrl, 13, false);
+        this.iType = is.read(this.iType, 14, false);
+        this.vBulletSuffix = is.readArray(this.vBulletSuffix, 15, false);
+        this.vTagInfo = is.readArray(this.vTagInfo, 16, false);
+        this.tSenceFormat = (SendMessageFormat) is.directRead(this.tSenceFormat, 17, false);
+        this.tContentExpand = (MessageContentExpand) is.directRead(this.tContentExpand, 18, false);
+        this.iMessageMode = is.read(this.iMessageMode, 19, false);
+
+        // 解析额外属性
+        for (DecorationInfo decorationPrefix : vDecorationPrefix) {
+            Optional<? extends TarsStructBase> optional = HuyaCodecUtil.decodeDecorationInfo(decorationPrefix);
+            if (optional.isPresent()) {
+                TarsStructBase tarsStructBase = optional.get();
+                if (tarsStructBase instanceof BadgeInfo) {
+                    this.badgeInfo = (BadgeInfo) tarsStructBase;
+                    break;
+                }
+            }
+        }
     }
 
     @Override
     public HuyaOperationEnum getOperationEnum() {
         return HuyaOperationEnum.EWSCmdS2C_MsgPushReq;
+    }
+
+    @Override
+    public String getBadgeName() {
+        if (this.badgeInfo == null) {
+            return "";
+        }
+
+        return this.badgeInfo.getSBadgeName();
+    }
+
+    @Override
+    public byte getBadgeLevel() {
+        if (this.badgeInfo == null) {
+            return 0;
+        }
+
+        return (byte) this.badgeInfo.getIBadgeLevel();
     }
 
     @Override

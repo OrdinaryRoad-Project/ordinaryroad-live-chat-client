@@ -22,41 +22,43 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.huya.constant;
+package tech.ordinaryroad.live.chat.client.huya.msg.dto;
 
+import com.qq.tars.protocol.tars.TarsInputStream;
+import com.qq.tars.protocol.tars.TarsOutputStream;
+import com.qq.tars.protocol.tars.TarsStructBase;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * @author mjz
- * @date 2023/10/2
+ * @date 2023/10/10
  */
 @Getter
-@RequiredArgsConstructor
-public enum HuyaStreamLineTypeEnum {
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class CustomBadgeDynamicExternal extends TarsStructBase {
 
-    STREAM_LINE_OLD_YY(0),
-    STREAM_LINE_WS(1),
-    STREAM_LINE_NEW_YY(2),
-    STREAM_LINE_AL(3),
-    STREAM_LINE_HUYA(4),
-    STREAM_LINE_TX(5),
-    STREAM_LINE_CDN(8),
-    STREAM_LINE_HW(6),
-    STREAM_LINE_BD(7),
-    STREAM_LINE_GG(9),
-    STREAM_LINE_CF(10),
-    STREAM_LINE_QUICK_HUYA(99),
-    ;
+    private String sFloorExter = "";
+    private int iFansIdentity;
 
-    private final int code;
+    @Override
+    public void writeTo(TarsOutputStream os) {
+        os.write(this.sFloorExter, 0);
+        os.write(this.iFansIdentity, 1);
+    }
 
-    public static HuyaStreamLineTypeEnum getByCode(int code) {
-        for (HuyaStreamLineTypeEnum value : values()) {
-            if (value.getCode() == code) {
-                return value;
-            }
-        }
-        return null;
+    @Override
+    public void readFrom(TarsInputStream is) {
+        this.sFloorExter = is.read(this.sFloorExter, 0, false);
+        this.iFansIdentity = is.read(this.iFansIdentity, 1, false);
+    }
+
+    @Override
+    public TarsStructBase newInit() {
+        return this;
     }
 }

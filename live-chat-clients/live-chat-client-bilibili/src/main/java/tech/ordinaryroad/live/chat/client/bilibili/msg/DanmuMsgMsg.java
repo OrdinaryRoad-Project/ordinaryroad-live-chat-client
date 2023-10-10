@@ -53,6 +53,24 @@ public class DanmuMsgMsg extends BaseBilibiliMsg implements IDanmuMsg {
     }
 
     @Override
+    public String getBadgeName() {
+        JsonNode jsonNode3 = info.get(3);
+        if (jsonNode3.isEmpty()) {
+            return "";
+        }
+        return jsonNode3.get(1).asText();
+    }
+
+    @Override
+    public byte getBadgeLevel() {
+        JsonNode jsonNode3 = info.get(3);
+        if (jsonNode3.isEmpty()) {
+            return 0;
+        }
+        return (byte) jsonNode3.get(0).asInt();
+    }
+
+    @Override
     public long getUid() {
         JsonNode jsonNode2 = info.get(2);
         return jsonNode2.get(0).asLong();

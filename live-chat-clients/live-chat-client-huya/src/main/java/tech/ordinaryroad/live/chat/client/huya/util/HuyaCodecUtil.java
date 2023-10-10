@@ -32,11 +32,14 @@ import com.qq.tars.protocol.tars.TarsStructBase;
 import io.netty.buffer.ByteBuf;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
+import tech.ordinaryroad.live.chat.client.huya.constant.HuyaDecorationAppTypeEnum;
+import tech.ordinaryroad.live.chat.client.huya.constant.HuyaDecorationViewTypeEnum;
 import tech.ordinaryroad.live.chat.client.huya.constant.HuyaOperationEnum;
 import tech.ordinaryroad.live.chat.client.huya.constant.HuyaWupFunctionEnum;
 import tech.ordinaryroad.live.chat.client.huya.msg.*;
 import tech.ordinaryroad.live.chat.client.huya.msg.base.IHuyaMsg;
-import tech.ordinaryroad.live.chat.client.huya.msg.req.UpdateUserInfoReq;
+import tech.ordinaryroad.live.chat.client.huya.msg.dto.BadgeInfo;
+import tech.ordinaryroad.live.chat.client.huya.msg.dto.DecorationInfo;
 import tech.ordinaryroad.live.chat.client.huya.msg.req.WupReq;
 
 import java.nio.charset.StandardCharsets;
@@ -115,6 +118,38 @@ public class HuyaCodecUtil {
         TarsInputStream tarsInputStream = new TarsInputStream(bytes);
         tarsInputStream.setServerEncoding(StandardCharsets.UTF_8.name());
         return tarsInputStream;
+    }
+
+    public static Optional<? extends TarsStructBase> decodeDecorationInfo(DecorationInfo decorationInfo) {
+        int iViewType = decorationInfo.getIViewType();
+        HuyaDecorationViewTypeEnum huyaDecorationViewTypeEnum = HuyaDecorationViewTypeEnum.getByCode(iViewType);
+        if (huyaDecorationViewTypeEnum == null) {
+            return Optional.empty();
+        }
+
+        switch (huyaDecorationViewTypeEnum) {
+            case kDecorationViewTypeCustomized -> {
+                int iAppId = decorationInfo.getIAppId();
+                HuyaDecorationAppTypeEnum huyaDecorationAppTypeEnum = HuyaDecorationAppTypeEnum.getByCode(iAppId);
+                if (huyaDecorationAppTypeEnum == null) {
+                    return Optional.empty();
+                }
+
+                switch (huyaDecorationAppTypeEnum) {
+                    case kDecorationAppTypeFans -> {
+                        BadgeInfo badgeInfo = new BadgeInfo();
+                        badgeInfo.readFrom(HuyaCodecUtil.newUtf8TarsInputStream(decorationInfo.getVData()));
+                        return Optional.of(badgeInfo);
+                    }
+                    default -> {
+                        return Optional.empty();
+                    }
+                }
+            }
+            default -> {
+                return Optional.empty();
+            }
+        }
     }
 
     public static String ab2str(byte[] bytes) {

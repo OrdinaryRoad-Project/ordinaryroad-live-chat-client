@@ -32,4 +32,13 @@ package tech.ordinaryroad.live.chat.client.commons.base.msg;
  */
 public interface ISuperChatMsg extends IDanmuMsg {
 
+    @Override
+    default String getBadgeName() {
+        return "";
+    }
+
+    @Override
+    default byte getBadgeLevel() {
+        return 0;
+    }
 }

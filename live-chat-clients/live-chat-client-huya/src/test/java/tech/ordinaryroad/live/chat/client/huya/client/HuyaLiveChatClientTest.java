@@ -65,7 +65,7 @@ class HuyaLiveChatClientTest {
         client = new HuyaLiveChatClient(config, new IHuyaMsgListener() {
             @Override
             public void onDanmuMsg(HuyaBinaryFrameHandler binaryFrameHandler, MessageNoticeMsg msg) {
-                log.info("{} 收到弹幕 {}({})：{}", binaryFrameHandler.getRoomId(), msg.getUsername(), msg.getUid(), msg.getContent());
+                log.info("{} 收到弹幕 {} {}({})：{}", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid(), msg.getContent());
             }
 
             @Override

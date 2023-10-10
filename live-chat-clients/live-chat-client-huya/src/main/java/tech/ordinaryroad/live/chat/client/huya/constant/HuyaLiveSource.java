@@ -43,7 +43,7 @@ public enum HuyaLiveSource {
 
     private final int code;
 
-    public HuyaLiveSource getByCode(int code){
+    public static HuyaLiveSource getByCode(int code){
         for (HuyaLiveSource value : values()) {
             if (value.getCode()==code) {
                 return value;
