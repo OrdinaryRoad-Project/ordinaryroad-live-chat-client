@@ -70,7 +70,7 @@ public class DouyuLiveChatClient extends DouyuWsLiveChatClient implements IDouyu
     /**
      * giftId,Info
      */
-    private static final Map<String, GiftListInfo> roomGiftMap = new HashMap<>();
+    private final Map<String, GiftListInfo> roomGiftMap = new HashMap<>();
     private final DouyuWsLiveChatClient proxyClient = this;
     private DouyuDanmuLiveChatClient danmuClient = null;
     private DouyuConnectionHandler connectionHandler;
