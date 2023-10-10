@@ -25,7 +25,7 @@
 
 - [x] Huya
     - [x] DouyuLiveChatClient
-    - [ ] 支持 cookie
+    - [x] 支持 cookie（发送弹幕时需要）
     - [ ] 支持 短房间id（暂不支持字符串房间号）
     - [x] 支持 弹幕发送
 - [ ] ...
@@ -145,7 +145,7 @@ public class ClientModeExample {
         - 消息接口
             - IMsg：所有msg都应该继承该类
                 - ICmdMsg：有些平台的一些消息正文中没有消息类型cmd字段，例如B站的心跳包，因此再细分为cmdMsg
-                - IDanmuMsg: 内置获取用户ID、用户名、用户头像、弹幕内容等方法
+                - IDanmuMsg: 内置获取用户ID、用户名、用户头像、粉丝牌名称、粉丝牌等级、弹幕内容等方法
                 - IGiftMsg：内置获取发送方ID、发送方用户名、发送方头像、接收方ID、接收方用户名、礼物ID、礼物个数、礼物单价等方法
                 - ISuperChatMsg：醒目留言，继承自IDanmuMsg
         - 消息抽象类
