@@ -107,15 +107,13 @@ public class ClientModeExample {
             @Override
             public void onDanmuMsg(BilibiliBinaryFrameHandler binaryFrameHandler, DanmuMsgMsg msg) {
                 IBilibiliMsgListener.super.onDanmuMsg(binaryFrameHandler, msg);
-
-                System.out.printf("%s 收到弹幕 %s(%d)：%s%n", binaryFrameHandler.getRoomId(), msg.getUsername(), msg.getUid(), msg.getContent());
+                System.out.printf("%s 收到弹幕 %s %s(%s)：%s\n", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid(), msg.getContent());
             }
 
             @Override
             public void onGiftMsg(BilibiliBinaryFrameHandler binaryFrameHandler, SendGiftMsg msg) {
                 IBilibiliMsgListener.super.onGiftMsg(binaryFrameHandler, msg);
-
-                log.info("{} 收到礼物 {}({}) {} {}({})x{}({})", binaryFrameHandler.getRoomId(), msg.getUsername(), msg.getUid(), msg.getData().getAction(), msg.getGiftName(), msg.getGiftId(), msg.getGiftCount(), msg.getGiftPrice());
+                System.out.printf("%s 收到礼物 %s %s(%s) %s %s(%s)x%s(%s)\n", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid(), msg.getData().getAction(), msg.getGiftName(), msg.getGiftId(), msg.getGiftCount(), msg.getGiftPrice());
             }
         });
         client.connect();
@@ -146,11 +144,11 @@ public class ClientModeExample {
             - IMsg：所有msg都应该继承该类
                 - ICmdMsg：有些平台的一些消息正文中没有消息类型cmd字段，例如B站的心跳包，因此再细分为cmdMsg
                 - IDanmuMsg: 内置获取用户ID、用户名、用户头像、粉丝牌名称、粉丝牌等级、弹幕内容等方法
-                - IGiftMsg：内置获取发送方ID、发送方用户名、发送方头像、接收方ID、接收方用户名、礼物ID、礼物个数、礼物单价等方法
-                - ISuperChatMsg：醒目留言，继承自IDanmuMsg
+                    - ISuperChatMsg：醒目留言，内置获取持续时间方法
+                - IGiftMsg：内置获取发送方ID、发送方用户名、发送方头像、接收方ID、接收方用户名、礼物名称、礼物图片、礼物ID、礼物个数、礼物单价等方法
         - 消息抽象类
             - BaseMsg：实现IMsg接口，提供存放未知属性的字段
-                - BaseCmdMsg：实现ICmdMsg接口
+                - BaseCmdMsg：继承自BaseMsg，实现ICmdMsg接口
         - 消息监听器
             - IBaseMsgListener（所有平台都支持，其他消息监听器存在平台差异）
                 - onMsg：所有消息（不管消息内容）都会调用
