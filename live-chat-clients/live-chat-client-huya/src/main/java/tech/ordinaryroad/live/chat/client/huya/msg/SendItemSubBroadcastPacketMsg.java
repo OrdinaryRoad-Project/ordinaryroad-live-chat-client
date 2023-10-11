@@ -25,6 +25,7 @@
 package tech.ordinaryroad.live.chat.client.huya.msg;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import com.qq.tars.protocol.tars.TarsInputStream;
 import com.qq.tars.protocol.tars.TarsOutputStream;
 import com.qq.tars.protocol.tars.TarsStructBase;
@@ -33,7 +34,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IGiftMsg;
-import tech.ordinaryroad.live.chat.client.huya.api.HuyaApis;
 import tech.ordinaryroad.live.chat.client.huya.constant.HuyaOperationEnum;
 import tech.ordinaryroad.live.chat.client.huya.msg.base.BaseHuyaMsg;
 import tech.ordinaryroad.live.chat.client.huya.msg.dto.*;
@@ -97,6 +97,7 @@ public class SendItemSubBroadcastPacketMsg extends BaseHuyaMsg implements IGiftM
 
     // region 额外属性
     private BadgeInfo badgeInfo;
+    private PropsItem propsItem;
     // endregion
 
     public SendItemSubBroadcastPacketMsg(TarsInputStream is) {
@@ -229,18 +230,21 @@ public class SendItemSubBroadcastPacketMsg extends BaseHuyaMsg implements IGiftM
 
     @Override
     public String getGiftImg() {
-        if (!HuyaApis.GIFT_ITEMS.containsKey(this.iTemplateType)) {
-            return null;
+        if (this.propsItem == null) {
+            return "";
         }
 
-        PropsItem propsItem = HuyaApis.GIFT_ITEMS.get(this.iTemplateType);
-        List<PropsIdentity> vPropsIdentity = propsItem.getVPropsIdentity();
+        List<PropsIdentity> vPropsIdentity = this.propsItem.getVPropsIdentity();
         if (vPropsIdentity.isEmpty()) {
-            return null;
+            return "";
         }
 
         PropsIdentity propsIdentity = vPropsIdentity.get(0);
         String sPropsWeb = propsIdentity.getSPropsWeb();
+        if (StrUtil.isBlank(sPropsWeb)){
+            return "";
+        }
+
         return sPropsWeb.substring(0, sPropsWeb.indexOf("&"));
     }
 

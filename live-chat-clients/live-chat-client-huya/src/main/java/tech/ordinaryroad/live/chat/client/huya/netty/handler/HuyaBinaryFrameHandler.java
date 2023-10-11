@@ -171,7 +171,7 @@ public class HuyaBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<Hu
             }
             case SendItemSubBroadcastPacket -> {
                 SendItemSubBroadcastPacketMsg sendItemSubBroadcastPacketMsg = new SendItemSubBroadcastPacketMsg(tarsInputStream);
-                // sendItemSubBroadcastPacketMsg.setPropsItem(HuyaApis.GIFT_ITEMS.getOrDefault(sendItemSubBroadcastPacketMsg.getIItemType(), PropsItem.DEFAULT));
+                sendItemSubBroadcastPacketMsg.setPropsItem(HuyaApis.GIFT_ITEMS.getOrDefault(sendItemSubBroadcastPacketMsg.getIItemType(), PropsItem.DEFAULT));
                 iteratorMsgListeners(msgListener -> msgListener.onGiftMsg(HuyaBinaryFrameHandler.this, sendItemSubBroadcastPacketMsg));
             }
             default ->
