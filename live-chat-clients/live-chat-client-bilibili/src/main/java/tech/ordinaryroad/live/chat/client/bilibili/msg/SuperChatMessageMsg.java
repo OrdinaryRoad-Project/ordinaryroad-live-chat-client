@@ -58,26 +58,46 @@ public class SuperChatMessageMsg extends BaseBilibiliMsg implements ISuperChatMs
 
     @Override
     public long getUid() {
-        return data.uid;
+        if (this.data == null) {
+            return 0;
+        }
+
+        return this.data.uid;
     }
 
     @Override
     public String getUsername() {
-        return data.user_info.uname;
+        if (this.data == null || this.data.getUser_info() == null) {
+            return "";
+        }
+
+        return this.data.user_info.uname;
     }
 
     @Override
     public String getUserAvatar() {
-        return data.user_info.face;
+        if (this.data == null || this.data.getUser_info() == null) {
+            return "";
+        }
+
+        return this.data.user_info.face;
     }
 
     @Override
     public String getContent() {
-        return data.message;
+        if (this.data == null) {
+            return "";
+        }
+
+        return this.data.message;
     }
 
     @Override
     public int getDuration() {
+        if (this.data == null) {
+            return 0;
+        }
+
         return this.data.time;
     }
 

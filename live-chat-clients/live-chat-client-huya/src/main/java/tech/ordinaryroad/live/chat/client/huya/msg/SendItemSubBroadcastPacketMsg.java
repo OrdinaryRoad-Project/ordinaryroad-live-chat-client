@@ -97,7 +97,7 @@ public class SendItemSubBroadcastPacketMsg extends BaseHuyaMsg implements IGiftM
 
     // region 额外属性
     private BadgeInfo badgeInfo;
-    private PropsItem propsItem;
+    private PropsItem propsItem = PropsItem.DEFAULT;
     // endregion
 
     public SendItemSubBroadcastPacketMsg(TarsInputStream is) {

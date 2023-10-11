@@ -46,7 +46,7 @@ import java.util.List;
 public class PropsItem extends TarsStructBase {
 
     public static final PropsItem DEFAULT = new PropsItem() {{
-        setSPropsName("");
+        setSPropsName("未知礼物");
         setIPropsYb(-1);
     }};
 

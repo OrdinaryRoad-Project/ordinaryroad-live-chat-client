@@ -165,16 +165,28 @@ public class MessageNoticeMsg extends BaseHuyaMsg implements IDanmuMsg {
 
     @Override
     public long getUid() {
+        if (this.tUserInfo == null) {
+            return 0;
+        }
+
         return this.tUserInfo.getLUid();
     }
 
     @Override
     public String getUsername() {
+        if (this.tUserInfo == null) {
+            return "";
+        }
+
         return this.tUserInfo.getSNickName();
     }
 
     @Override
     public String getUserAvatar() {
+        if (this.tUserInfo == null) {
+            return "";
+        }
+
         return this.tUserInfo.getSAvatarUrl();
     }
 

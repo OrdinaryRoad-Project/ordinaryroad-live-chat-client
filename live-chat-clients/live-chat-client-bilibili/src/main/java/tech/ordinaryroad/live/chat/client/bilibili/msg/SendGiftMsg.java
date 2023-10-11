@@ -55,7 +55,7 @@ public class SendGiftMsg extends BaseBilibiliMsg implements IGiftMsg {
 
     @Override
     public String getBadgeName() {
-        if (data.medal_info == null) {
+        if (data == null || data.medal_info == null) {
             return IGiftMsg.super.getBadgeName();
         }
 
@@ -64,7 +64,7 @@ public class SendGiftMsg extends BaseBilibiliMsg implements IGiftMsg {
 
     @Override
     public byte getBadgeLevel() {
-        if (data.medal_info == null) {
+        if (data == null || data.medal_info == null) {
             return IGiftMsg.super.getBadgeLevel();
         }
 
@@ -73,22 +73,38 @@ public class SendGiftMsg extends BaseBilibiliMsg implements IGiftMsg {
 
     @Override
     public long getUid() {
-        return data.getUid();
+        if (this.data == null) {
+            return 0;
+        }
+
+        return this.data.getUid();
     }
 
     @Override
     public String getUsername() {
-        return data.getUname();
+        if (this.data == null) {
+            return "";
+        }
+
+        return this.data.getUname();
     }
 
     @Override
     public String getUserAvatar() {
-        return data.getFace();
+        if (this.data == null) {
+            return "";
+        }
+
+        return this.data.getFace();
     }
 
     @Override
     public String getGiftName() {
-        return data.getGiftName();
+        if (this.data == null) {
+            return "未知礼物";
+        }
+
+        return this.data.getGiftName();
     }
 
     @Override
@@ -98,26 +114,46 @@ public class SendGiftMsg extends BaseBilibiliMsg implements IGiftMsg {
 
     @Override
     public long getGiftId() {
+        if (this.data == null) {
+            return 0;
+        }
+
         return data.getGiftId();
     }
 
     @Override
     public int getGiftCount() {
+        if (this.data == null) {
+            return 0;
+        }
+
         return data.getNum();
     }
 
     @Override
     public int getGiftPrice() {
+        if (this.data == null) {
+            return -1;
+        }
+
         return data.getPrice();
     }
 
     @Override
     public long getReceiveUid() {
+        if (this.data == null || this.data.getReceive_user_info() == null) {
+            return 0;
+        }
+
         return data.getReceive_user_info().getUid();
     }
 
     @Override
     public String getReceiveUsername() {
+        if (this.data == null || this.data.getReceive_user_info() == null) {
+            return "";
+        }
+
         return data.getReceive_user_info().getUname();
     }
 

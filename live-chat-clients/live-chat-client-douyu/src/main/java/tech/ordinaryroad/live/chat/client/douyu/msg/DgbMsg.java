@@ -171,17 +171,27 @@ public class DgbMsg extends BaseDouyuCmdMsg implements IGiftMsg {
 
     @Override
     public String getGiftName() {
-        if (this.roomGiftInfo != GiftListInfo.DEFAULT_GIFT) {
+        if (this.roomGiftInfo != null && this.roomGiftInfo != GiftListInfo.DEFAULT_GIFT) {
             return this.roomGiftInfo.getName();
         }
+
+        if (this.giftInfo == null) {
+            return "未知礼物";
+        }
+
         return this.giftInfo.getName();
     }
 
     @Override
     public String getGiftImg() {
-        if (this.roomGiftInfo != GiftListInfo.DEFAULT_GIFT) {
+        if (this.roomGiftInfo != null && this.roomGiftInfo != GiftListInfo.DEFAULT_GIFT && this.roomGiftInfo.getBasicInfo() != null) {
             return this.roomGiftInfo.getPicUrlPrefix() + this.roomGiftInfo.getBasicInfo().getChatPic();
         }
+
+        if (this.giftInfo == null) {
+            return "";
+        }
+
         return this.giftInfo.getPicUrlPrefix() + this.giftInfo.getChatPic();
     }
 
@@ -200,9 +210,14 @@ public class DgbMsg extends BaseDouyuCmdMsg implements IGiftMsg {
      */
     @Override
     public int getGiftPrice() {
-        if (this.roomGiftInfo != GiftListInfo.DEFAULT_GIFT) {
+        if (this.roomGiftInfo != null && this.roomGiftInfo != GiftListInfo.DEFAULT_GIFT && this.roomGiftInfo.getPriceInfo() != null) {
             return this.roomGiftInfo.getPriceInfo().getPrice();
         }
+
+        if (this.giftInfo == null) {
+            return -1;
+        }
+
         return this.giftInfo.getPrice();
     }
 
