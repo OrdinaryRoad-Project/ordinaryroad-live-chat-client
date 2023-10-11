@@ -177,7 +177,7 @@ public class SendGiftMsg extends BaseBilibiliMsg implements IGiftMsg {
         private String name_color;
         private MedalInfo medal_info;
         private int svga_block;
-        private String blind_gift;
+        private JsonNode blind_gift;
         private int float_sc_resource_id;
         @JsonProperty("switch")
         private boolean _switch;
