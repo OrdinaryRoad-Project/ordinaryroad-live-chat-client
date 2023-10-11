@@ -32,6 +32,11 @@ package tech.ordinaryroad.live.chat.client.commons.base.msg;
  */
 public interface ISuperChatMsg extends IDanmuMsg {
 
+    /**
+     * 醒目留言持续时间，单位秒
+     */
+    int getDuration();
+
     @Override
     default String getBadgeName() {
         return "";
