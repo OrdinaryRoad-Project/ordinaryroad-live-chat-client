@@ -76,6 +76,11 @@ public class SuperChatMessageMsg extends BaseBilibiliMsg implements ISuperChatMs
         return data.message;
     }
 
+    @Override
+    public int getDuration() {
+        return this.data.time;
+    }
+
     @lombok.Data
     public static class Data {
         private String background_bottom_color;
