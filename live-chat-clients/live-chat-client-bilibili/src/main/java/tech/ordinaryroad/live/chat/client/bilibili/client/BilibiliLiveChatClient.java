@@ -103,7 +103,7 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
 
     @Override
     public void sendDanmu(Object danmu, Runnable success, Consumer<Throwable> failed) {
-        if (!checkCanSendDanmu()) {
+        if (!checkCanSendDanmu(false)) {
             return;
         }
         if (danmu instanceof String msg) {

@@ -303,9 +303,10 @@ public abstract class BaseNettyClient
 
     /**
      * 发送弹幕前判断是否可以发送
+     * @param checkConnected 是否检查Client连接状态
      */
-    protected boolean checkCanSendDanmu() {
-        if (getStatus() != ClientStatusEnums.CONNECTED) {
+    protected boolean checkCanSendDanmu(boolean checkConnected) {
+        if (checkConnected && getStatus() != ClientStatusEnums.CONNECTED) {
             throw new BaseException("连接未建立，无法发送弹幕");
         }
         if (System.currentTimeMillis() - this.lastSendDanmuTimeInMillis <= getConfig().getMinSendDanmuPeriod()) {
@@ -315,6 +316,10 @@ public abstract class BaseNettyClient
             return false;
         }
         return true;
+    }
+
+    protected boolean checkCanSendDanmu() {
+        return checkCanSendDanmu(true);
     }
 
     /**
