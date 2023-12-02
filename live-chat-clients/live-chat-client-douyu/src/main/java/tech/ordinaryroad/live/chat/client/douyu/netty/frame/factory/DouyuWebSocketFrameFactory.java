@@ -33,7 +33,6 @@ import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCookieUtil;
 import tech.ordinaryroad.live.chat.client.douyu.api.DouyuApis;
-import tech.ordinaryroad.live.chat.client.douyu.client.DouyuLiveChatClient;
 import tech.ordinaryroad.live.chat.client.douyu.config.DouyuLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuClientModeEnum;
 import tech.ordinaryroad.live.chat.client.douyu.msg.*;
@@ -70,7 +69,7 @@ public class DouyuWebSocketFrameFactory {
     /**
      * 创建认证包
      *
-     * @param mode   {@link DouyuLiveChatClient#MODE_DANMU}, {@link DouyuLiveChatClient#MODE_WS}
+     * @param mode   {@link DouyuClientModeEnum#DANMU}, {@link DouyuClientModeEnum#WS}
      * @param ver    {@link DouyuLiveChatClientConfig#getVer()}
      * @param aver   {@link DouyuLiveChatClientConfig#getAver()}
      * @param cookie 浏览器Cookie，发送弹幕时必传
