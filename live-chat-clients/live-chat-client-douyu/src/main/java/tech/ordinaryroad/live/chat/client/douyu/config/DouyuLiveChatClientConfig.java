@@ -29,6 +29,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatNumberUtil;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.config.BaseNettyClientConfig;
 
 /**
@@ -48,6 +49,11 @@ public class DouyuLiveChatClientConfig extends BaseNettyClientConfig {
 
     @Builder.Default
     private String aver = "218101901";
+
+    @Override
+    public Long getRoomId() {
+        return OrLiveChatNumberUtil.parseLong(super.getRoomId());
+    }
 
     public void setVer(String ver) {
         String oldValue = this.ver;

@@ -55,7 +55,7 @@ public class LiveChatClientController {
     }
 
     @GetMapping("roomId/{roomId}")
-    public Long roomId(@RequestParam String platform, @PathVariable Long roomId) {
+    public Object roomId(@RequestParam String platform, @PathVariable String roomId) {
         getClient(platform).getConfig().setRoomId(roomId);
         return getClient(platform).getConfig().getRoomId();
     }

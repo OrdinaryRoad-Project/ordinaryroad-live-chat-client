@@ -50,7 +50,7 @@ public class HuyaConnectionHandler extends BaseNettyClientConnectionHandler<Huya
     /**
      * 以ClientConfig为主
      */
-    private final long roomId;
+    private final Object roomId;
     /**
      * 以ClientConfig为主
      */
@@ -108,7 +108,7 @@ public class HuyaConnectionHandler extends BaseNettyClientConnectionHandler<Huya
         });
     }
 
-    private static HuyaWebSocketFrameFactory getWebSocketFrameFactory(long roomId) {
+    private static HuyaWebSocketFrameFactory getWebSocketFrameFactory(Object roomId) {
         return HuyaWebSocketFrameFactory.getInstance(roomId);
     }
 
@@ -120,7 +120,7 @@ public class HuyaConnectionHandler extends BaseNettyClientConnectionHandler<Huya
         channel.writeAndFlush(getWebSocketFrameFactory(getRoomId()).createAuth(getVer(), getCookie()));
     }
 
-    public long getRoomId() {
+    public Object getRoomId() {
         return client != null ? client.getConfig().getRoomId() : roomId;
     }
 

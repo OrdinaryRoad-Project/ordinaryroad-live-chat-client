@@ -30,6 +30,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -61,7 +62,7 @@ public abstract class BaseLiveChatClientConfig {
     /**
      * 直播间id
      */
-    private long roomId;
+    private Object roomId;
 
     /**
      * 是否启用自动重连
@@ -99,8 +100,11 @@ public abstract class BaseLiveChatClientConfig {
         this.propertyChangeSupport.firePropertyChange("cookie", oldValue, cookie);
     }
 
-    public void setRoomId(long roomId) {
-        long oldValue = this.roomId;
+    public void setRoomId(Object roomId) {
+        if (!(roomId instanceof Number || roomId instanceof String)) {
+            throw new BaseException("房间ID仅支持数字或字符串，所传参数类型：" + roomId.getClass() + "值：" + roomId);
+        }
+        Object oldValue = this.roomId;
         this.roomId = roomId;
         this.propertyChangeSupport.firePropertyChange("roomId", oldValue, roomId);
     }
