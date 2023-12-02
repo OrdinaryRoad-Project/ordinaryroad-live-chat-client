@@ -50,24 +50,24 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class HuyaWebSocketFrameFactory {
 
-    private static final ConcurrentHashMap<Long, HuyaWebSocketFrameFactory> CACHE = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<Object, HuyaWebSocketFrameFactory> CACHE = new ConcurrentHashMap<>();
     public static final String KEY_COOKIE_GUID = "guid";
     public static final String KEY_COOKIE_YYUID = "yyuid";
 
     /**
      * 浏览器地址中的房间id，支持短id
      */
-    private final long roomId;
+    private final Object roomId;
     private final JsonNode roomInfo;
     private volatile static byte[] heartbeatMsg;
     private volatile static byte[] giftListReqMsg;
 
-    public HuyaWebSocketFrameFactory(long roomId) {
+    public HuyaWebSocketFrameFactory(Object roomId) {
         this.roomId = roomId;
         this.roomInfo = HuyaApis.roomInit(roomId);
     }
 
-    public synchronized static HuyaWebSocketFrameFactory getInstance(long roomId) {
+    public synchronized static HuyaWebSocketFrameFactory getInstance(Object roomId) {
         return CACHE.computeIfAbsent(roomId, aLong -> new HuyaWebSocketFrameFactory(roomId));
     }
 

@@ -30,6 +30,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.ProtoverEnum;
+import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatNumberUtil;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.config.BaseNettyClientConfig;
 
 /**
@@ -52,6 +53,11 @@ public class BilibiliLiveChatClientConfig extends BaseNettyClientConfig {
 
     @Builder.Default
     private String websocketUri = "wss://broadcastlv.chat.bilibili.com:443/sub";
+
+    @Override
+    public Long getRoomId() {
+        return OrLiveChatNumberUtil.parseLong(super.getRoomId());
+    }
 
     public void setProtover(ProtoverEnum protover) {
         ProtoverEnum oldValue = this.protover;

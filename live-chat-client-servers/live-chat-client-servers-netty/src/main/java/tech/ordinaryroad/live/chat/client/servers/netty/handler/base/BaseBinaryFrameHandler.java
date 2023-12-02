@@ -57,10 +57,10 @@ public abstract class BaseBinaryFrameHandler<
         implements IBaseMsgListener<T, CmdEnum> {
 
     @Getter
-    private final long roomId;
+    private final Object roomId;
     protected final List<MsgListener> msgListeners;
 
-    public BaseBinaryFrameHandler(List<MsgListener> msgListeners, long roomId) {
+    public BaseBinaryFrameHandler(List<MsgListener> msgListeners, Object roomId) {
         this.msgListeners = msgListeners;
         this.roomId = roomId;
         if (this.msgListeners == null || this.msgListeners.isEmpty()) {

@@ -57,7 +57,7 @@ public class HuyaApis {
 
     public static final Map<Integer, PropsItem> GIFT_ITEMS = new HashMap<>();
 
-    public static JsonNode roomInit(long roomId) {
+    public static JsonNode roomInit(Object roomId) {
         @Cleanup
         HttpResponse response = createGetRequest("https://www.huya.com/" + roomId, null).execute();
         if (response.getStatus() != HttpStatus.HTTP_OK) {
