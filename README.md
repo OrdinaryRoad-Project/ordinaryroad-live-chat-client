@@ -12,23 +12,24 @@
 >
 > ToDo List: https://github.com/orgs/OrdinaryRoad-Project/projects/1
 
-- [x] Bilibili
+- [x] B站
     - [x] BilibiliLiveChatClient
     - [x] 支持 cookie
     - [x] 支持 短房间id
     - [x] 支持 弹幕发送
-- [x] Douyu
+- [x] 斗鱼
     - [x] DouyuLiveChatClient
     - [x] 支持 cookie
     - [x] 支持 短房间id
     - [x] 支持 弹幕发送
 
-- [x] Huya
+- [x] 虎牙
     - [x] DouyuLiveChatClient
     - [x] 支持 cookie（发送弹幕时需要）
-    - [ ] 支持 短房间id（暂不支持字符串房间号）
+    - [x] 支持 短房间id（支持字符串房间号，例如`bagea`）
     - [x] 支持 弹幕发送
-- [ ] ...
+- [ ] 抖音
+- [ ] 快手
 
 ---
 
@@ -88,6 +89,10 @@ Live room WebSocket chat client
 
 > 测试类包含了多种样例，可供参考
 
+1. 创建配置
+2. 创建Client并传入配置
+3. 开始监听直播间
+
 ### 2.1 Client模式
 
 > Spring Boot 示例 [client-example](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/tree/main/live-chat-client-examples/client-example)
@@ -96,6 +101,7 @@ Live room WebSocket chat client
 public class ClientModeExample {
     public static void main(String[] args) {
         String cookie = System.getenv("cookie");
+        // 1. 创建配置
         BilibiliLiveChatClientConfig config = BilibiliLiveChatClientConfig.builder()
                 // TODO 浏览器Cookie
                 .cookie(cookie)
@@ -103,6 +109,7 @@ public class ClientModeExample {
                 .roomId(7777)
                 .build();
 
+        // 2. 创建Client并传入配置
         BilibiliLiveChatClient client = new BilibiliLiveChatClient(config, new IBilibiliMsgListener() {
             @Override
             public void onDanmuMsg(BilibiliBinaryFrameHandler binaryFrameHandler, DanmuMsgMsg msg) {
@@ -116,8 +123,10 @@ public class ClientModeExample {
                 System.out.printf("%s 收到礼物 %s %s(%s) %s %s(%s)x%s(%s)\n", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid(), msg.getData().getAction(), msg.getGiftName(), msg.getGiftId(), msg.getGiftCount(), msg.getGiftPrice());
             }
         });
+        // 3. 开始监听直播间
         client.connect();
 
+        // 客户端连接状态回调
         client.addStatusChangeListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
