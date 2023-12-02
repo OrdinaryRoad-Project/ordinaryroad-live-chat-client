@@ -72,7 +72,7 @@
         <jackson-databind.version>2.15.2</jackson-databind.version>
         <hutool-all.version>5.8.21</hutool-all.version>
         <netty-all.version>4.1.97.Final</netty-all.version>
-        <logback-classic.version>1.4.11</logback-classic.version>
+        <logback-classic.version>1.4.12</logback-classic.version>
         <lombok.version>1.18.28</lombok.version>
         <junit-jupiter.version>5.10.0</junit-jupiter.version>
         <protobuf-java-util.version>3.24.3</protobuf-java-util.version>
