@@ -38,6 +38,7 @@ import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 
@@ -157,5 +158,13 @@ public abstract class BaseBinaryFrameHandler<
     public void onUnknownCmd(T t, String cmdString, BaseMsg msg) {
         IBaseMsgListener.super.onUnknownCmd(t, cmdString, msg);
         iteratorMsgListeners(msgListener -> msgListener.onUnknownCmd(t, cmdString, msg));
+    }
+
+    public String getRoomIdAsString() {
+        return Objects.requireNonNullElse(this.roomId, "").toString();
+    }
+
+    public long getRoomIdAsLong() {
+        return Long.parseLong(this.getRoomIdAsString());
     }
 }
