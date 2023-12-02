@@ -89,13 +89,13 @@ Live room WebSocket chat client
 
 > 测试类包含了多种样例，可供参考
 
-1. 创建配置
-2. 创建Client并传入配置
-3. 开始监听直播间
-
 ### 2.1 Client模式
 
 > Spring Boot 示例 [client-example](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/tree/main/live-chat-client-examples/client-example)
+
+1. 创建配置
+2. 创建Client并传入配置
+3. 开始监听直播间
 
 ```java
 public class ClientModeExample {
