@@ -68,15 +68,15 @@
         <maven-gpg-plugin.version>3.1.0</maven-gpg-plugin.version>
         <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
 
-        <brotli4j.version>1.12.0</brotli4j.version>
-        <jackson-databind.version>2.15.2</jackson-databind.version>
+        <brotli4j.version>1.13.0</brotli4j.version>
+        <jackson-databind.version>2.16.0</jackson-databind.version>
         <hutool-all.version>5.8.23</hutool-all.version>
-        <netty-all.version>4.1.97.Final</netty-all.version>
+        <netty-all.version>4.1.101.Final</netty-all.version>
         <logback-classic.version>1.4.12</logback-classic.version>
-        <lombok.version>1.18.28</lombok.version>
-        <junit-jupiter.version>5.10.0</junit-jupiter.version>
-        <protobuf-java-util.version>3.24.3</protobuf-java-util.version>
-        <tars-core.version>1.7.2</tars-core.version>
+        <lombok.version>1.18.30</lombok.version>
+        <junit-jupiter.version>5.10.1</junit-jupiter.version>
+        <protobuf-java-util.version>3.25.0</protobuf-java-util.version>
+        <tars-core.version>1.7.3</tars-core.version>
     </properties>
 
     <dependencyManagement>
