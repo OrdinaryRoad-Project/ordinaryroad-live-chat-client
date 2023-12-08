@@ -165,6 +165,10 @@ public abstract class BaseBinaryFrameHandler<
     }
 
     public long getRoomIdAsLong() {
-        return Long.parseLong(this.getRoomIdAsString());
+        String roomIdAsString = this.getRoomIdAsString();
+        if (roomIdAsString.isBlank()) {
+            return 0L;
+        }
+        return Long.parseLong(roomIdAsString);
     }
 }
