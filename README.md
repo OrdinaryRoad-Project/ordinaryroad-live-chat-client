@@ -2,12 +2,10 @@
 
 ![license](https://img.shields.io/github/license/OrdinaryRoad-Project/ordinaryroad-live-chat-client) ![release](https://img.shields.io/github/v/release/OrdinaryRoad-Project/ordinaryroad-live-chat-client) ![Maven Central](https://img.shields.io/maven-central/v/tech.ordinaryroad/live-chat-client)
 
-> This project is in progress... 👨‍💻
->
-> 有问题欢迎提交[issuse](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/issues)，
+> This project is in progress... 👨‍💻，有问题欢迎[提交issuse](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/issues/new/choose)，
 > 觉得有用的话可以点个小星星⭐️鼓励一下，感谢
 >
-> 如果对项目感兴趣也欢迎[交流讨论](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/discussions)，
+> 如果对项目感兴趣也欢迎[加入QQ频道](https://pd.qq.com/s/3id0n7fvs)交流讨论，
 > 提交PR
 >
 > ToDo List: https://github.com/orgs/OrdinaryRoad-Project/projects/1
@@ -187,6 +185,10 @@ public class ClientModeExample {
     - client-bilibili
     - client-douyu
     - client-huya
+
+## 交流讨论
+扫描二维码<img src="assets/QQ频道.jpg" width="200px">
+或点击链接加入QQ频道【OrdinaryRoad】：https://pd.qq.com/s/3id0n7fvs
 
 ## 感谢以下开源项目
 
