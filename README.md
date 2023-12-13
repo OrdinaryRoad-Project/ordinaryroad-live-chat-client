@@ -45,6 +45,12 @@ Live room WebSocket chat client
 
 ## [⭐BarrageFly——让弹幕飞](https://barragefly.ordinaryroad.tech/)，基于该项目的一个弹幕转发、过滤、处理平台
 
+## 0 原理
+
+直接人工抓取浏览器的WebSocket二进制流，然后分析模拟浏览器的行为；这样做的好处是不需要进行开发者认证，代价就是没有官方文档，分析过程比较费时费力，并且需要适配不同平台的流程变化（一般不会有大变化）
+
+以后可能会考虑支持平台的开放协议，文档更全
+
 ## 1 安装
 
 ### B站
@@ -92,7 +98,7 @@ Live room WebSocket chat client
 > Spring Boot 示例 [client-example](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/tree/main/live-chat-client-examples/client-example)
 
 1. 创建配置
-2. 创建Client并传入配置
+2. 创建Client并传入配置、添加消息回调
 3. 开始监听直播间
 
 ```java
@@ -107,7 +113,7 @@ public class ClientModeExample {
                 .roomId(7777)
                 .build();
 
-        // 2. 创建Client并传入配置
+        // 2. 创建Client并传入配置、添加消息回调
         BilibiliLiveChatClient client = new BilibiliLiveChatClient(config, new IBilibiliMsgListener() {
             @Override
             public void onDanmuMsg(BilibiliBinaryFrameHandler binaryFrameHandler, DanmuMsgMsg msg) {
@@ -170,7 +176,7 @@ public class ClientModeExample {
                 - onSuperChatMsg：收到醒目留言
     - commons-client
         - 定义了Client的配置：连接地址、房间id、Cookie、心跳、自动重连等相关参数
-        - 定义了Client的一些方法：初始化、连接、断开、发送消息等
+        - 定义了Client的一些方法：初始化、销毁、连接、断开、添加消息回调、移除消息回调、发送弹幕等
         - 定义了Client的生命周期
     - commons-util
         - 一些工具类：时间、反射、Cookie
