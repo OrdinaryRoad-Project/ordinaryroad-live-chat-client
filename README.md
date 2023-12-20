@@ -93,6 +93,34 @@ Live room WebSocket chat client
 
 > 测试类包含了多种样例，可供参考
 
+### 2.0 不同平台的CMD定义
+
+- B站：[BilibiliCmdEnum](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/blob/main/live-chat-clients/live-chat-client-bilibili/src/main/java/tech/ordinaryroad/live/chat/client/bilibili/constant/BilibiliCmdEnum.java)
+- 斗鱼：[DouyuCmdEnum](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/blob/main/live-chat-clients/live-chat-client-douyu/src/main/java/tech/ordinaryroad/live/chat/client/douyu/constant/DouyuCmdEnum.java)
+- 虎牙：[HuyaCmdEnum](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/blob/main/live-chat-clients/live-chat-client-huya/src/main/java/tech/ordinaryroad/live/chat/client/huya/constant/HuyaCmdEnum.java)
+
+可以重写`onCmdMsg(收到的所有CMD消息)`或`onOtherCmdMsg(框架未处理的CMD消息)`回调方法，判断CMD来监听框架已经定义的CMD类型
+
+如果要监听的消息枚举类中未定义，可以考虑重写`onUnknownCmdMsg(未知CMD消息)`方法
+
+```java
+@Override
+public void onOtherCmdMsg(BilibiliCmdEnum cmd, ICmdMsg<BilibiliCmdEnum> cmdMsg) {
+        switch (cmd) {
+            case GUARD_BUY -> {
+                // 有人上舰
+                SendSmsReplyMsg sendSmsReplyMsg = (SendSmsReplyMsg) cmdMsg;
+                ...
+            }
+            case SUPER_CHAT_MESSAGE_DELETE -> {
+                // 删除醒目留言
+                SendSmsReplyMsg sendSmsReplyMsg = (SendSmsReplyMsg) cmdMsg;
+                ...
+            }
+        }
+}
+```
+
 ### 2.1 Client模式
 
 > Spring Boot 示例 [client-example](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/tree/main/live-chat-client-examples/client-example)
@@ -193,6 +221,7 @@ public class ClientModeExample {
     - client-huya
 
 ## 交流讨论
+
 扫描二维码<img src="assets/QQ频道.jpg" width="200px">
 或点击链接加入QQ频道【OrdinaryRoad】：https://pd.qq.com/s/3id0n7fvs
 
