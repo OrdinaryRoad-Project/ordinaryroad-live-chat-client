@@ -47,6 +47,9 @@ public enum HuyaCmdEnum {
     PublicMessageAreaGuideWindow(6074),
     //    WeekStarPropsIds(6100),
     WeekStarPropsIdsTab(6102),
+    /**
+     * <a href="https://dev.huya.com/docs/miniapp/dev/scenario/vip-event/">https://dev.huya.com/docs/miniapp/dev/scenario/vip-event/</a>
+     */
     VipEnterBanner(6110),
     VipBarListStatInfo(6211),
     EnterPushInfo(6200),

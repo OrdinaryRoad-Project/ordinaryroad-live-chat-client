@@ -22,24 +22,43 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.huya.listener;
+package tech.ordinaryroad.live.chat.client.huya.msg.dto;
 
-import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener;
-import tech.ordinaryroad.live.chat.client.commons.base.listener.IDanmuMsgListener;
-import tech.ordinaryroad.live.chat.client.commons.base.listener.IEnterRoomMsgListener;
-import tech.ordinaryroad.live.chat.client.commons.base.listener.IGiftMsgListener;
-import tech.ordinaryroad.live.chat.client.huya.constant.HuyaCmdEnum;
-import tech.ordinaryroad.live.chat.client.huya.msg.MessageNoticeMsg;
-import tech.ordinaryroad.live.chat.client.huya.msg.SendItemSubBroadcastPacketMsg;
-import tech.ordinaryroad.live.chat.client.huya.msg.VipEnterBannerMsg;
-import tech.ordinaryroad.live.chat.client.huya.netty.handler.HuyaBinaryFrameHandler;
+import com.qq.tars.protocol.tars.TarsInputStream;
+import com.qq.tars.protocol.tars.TarsOutputStream;
+import com.qq.tars.protocol.tars.TarsStructBase;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * @author mjz
- * @date 2023/9/5
+ * @date 2023/12/27
  */
-public interface IHuyaMsgListener extends IBaseMsgListener<HuyaBinaryFrameHandler, HuyaCmdEnum>,
-        IDanmuMsgListener<HuyaBinaryFrameHandler, MessageNoticeMsg>,
-        IGiftMsgListener<HuyaBinaryFrameHandler, SendItemSubBroadcastPacketMsg>,
-        IEnterRoomMsgListener<HuyaBinaryFrameHandler, VipEnterBannerMsg> {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class WeekRankInfo extends TarsStructBase {
+
+    private long lUid;
+    private int iRank;
+
+    @Override
+    public void writeTo(TarsOutputStream os) {
+        os.write(this.lUid, 0);
+        os.write(this.iRank, 1);
+    }
+
+    @Override
+    public void readFrom(TarsInputStream is) {
+        this.lUid = is.read(this.lUid, 0, false);
+        this.iRank = is.read(this.iRank, 1, false);
+    }
+
+    @Override
+    public TarsStructBase newInit() {
+        return this;
+    }
 }
