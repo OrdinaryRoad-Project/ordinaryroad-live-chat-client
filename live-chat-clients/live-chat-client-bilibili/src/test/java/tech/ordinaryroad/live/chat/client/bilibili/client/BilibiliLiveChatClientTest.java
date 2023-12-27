@@ -77,7 +77,7 @@ class BilibiliLiveChatClientTest {
 
             @Override
             public void onEnterRoomMsg(InteractWordMsg msg) {
-                log.error("{} {}({}) 进入直播间", msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid());
+                log.info("{} {}({}) 进入直播间", msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid());
             }
 
             @Override
