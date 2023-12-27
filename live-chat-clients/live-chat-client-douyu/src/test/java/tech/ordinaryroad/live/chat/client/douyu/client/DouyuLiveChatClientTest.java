@@ -38,6 +38,7 @@ import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuConnectionListene
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuMsgListener;
 import tech.ordinaryroad.live.chat.client.douyu.msg.ChatmsgMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.DgbMsg;
+import tech.ordinaryroad.live.chat.client.douyu.msg.UenterMsg;
 import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuConnectionHandler;
 
@@ -82,6 +83,11 @@ class DouyuLiveChatClientTest implements IDouyuConnectionListener, IDouyuMsgList
                 IDouyuMsgListener.super.onGiftMsg(binaryFrameHandler, msg);
 
                 log.info("{} 收到礼物 {} {}({}) {} {}({})x{}({})", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid(), "赠送", msg.getGiftName(), msg.getGiftId(), msg.getGiftCount(), msg.getGiftPrice());
+            }
+
+            @Override
+            public void onEnterRoomMsg(UenterMsg msg) {
+                log.info("{} {}({}) 进入直播间", msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid());
             }
 
             @Override

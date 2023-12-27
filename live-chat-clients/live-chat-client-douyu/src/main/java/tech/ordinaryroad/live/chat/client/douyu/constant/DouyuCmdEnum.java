@@ -108,9 +108,9 @@ public enum DouyuCmdEnum {
     dgb(DgbMsg.class),
     /**
      * 用户进房通知消息
-     * type@=uenter/rid@=1/ uid@=1/nn@=someone/str@=1/l evel@=1/el@=eid@AA=1@ASetp@AA=1@ASsc@AA=1@AS@S/
+     * type@=uenter/rid@=1/ uid@=1/nn@=someone/str@=1/level@=1/el@=eid@AA=1@ASetp@AA=1@ASsc@AA=1@AS@S/
      */
-    uenter,
+    uenter(UenterMsg.class),
     /**
      * 房间开关播提醒
      * type@=rss/rid@=1/ss@=1/code@=1/rt@=0/notify@=1/endtime@=1/
