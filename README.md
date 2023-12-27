@@ -39,7 +39,7 @@ Live room WebSocket chat client
 - Feature 3: 支持同时监听多个直播间
 - Feature 4: 支持直播间短id
 - Feature 5: 支持弹幕发送
-- Feature 6: 内置收到弹幕、收到礼物、收到醒目留言回调
+- Feature 6: 内置收到弹幕、收到礼物、收到醒目留言、用户入房回调
 
 [//]: # ([在线文档]&#40;https://ordinaryroad.tech/or_module/live-chat-client/&#41;)
 
@@ -202,6 +202,8 @@ public class ClientModeExample {
                 - onGiftMsg：收到礼物消息
             - ISuperChatMsgListener（B站）
                 - onSuperChatMsg：收到醒目留言
+            - IEnterRoomMsgListener（B站、斗鱼，虎牙只能接收到高级用户的入房回调）
+                - onEnterRoomMsg：进入房间消息回调
     - commons-client
         - 定义了Client的配置：连接地址、房间id、Cookie、心跳、自动重连等相关参数
         - 定义了Client的一些方法：初始化、销毁、连接、断开、添加消息回调、移除消息回调、发送弹幕等
