@@ -24,19 +24,16 @@
 
 package tech.ordinaryroad.live.chat.client.bilibili.client;
 
+import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import tech.ordinaryroad.live.chat.client.bilibili.config.BilibiliLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.BilibiliCmdEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliMsgListener;
-import tech.ordinaryroad.live.chat.client.bilibili.msg.DanmuMsgMsg;
-import tech.ordinaryroad.live.chat.client.bilibili.msg.SendGiftMsg;
-import tech.ordinaryroad.live.chat.client.bilibili.msg.SendSmsReplyMsg;
-import tech.ordinaryroad.live.chat.client.bilibili.msg.SuperChatMessageMsg;
+import tech.ordinaryroad.live.chat.client.bilibili.msg.*;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliBinaryFrameHandler;
-import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseCmdMsg;
-import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseMsg;
+import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 
 /**
@@ -79,8 +76,8 @@ class BilibiliLiveChatClientTest {
             }
 
             @Override
-            public void onEnterRoom(SendSmsReplyMsg msg) {
-                log.debug("普通用户进入直播间 {}", msg.getData().get("uname").asText());
+            public void onEnterRoomMsg(InteractWordMsg msg) {
+                log.error("{} {}({}) 进入直播间", msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid());
             }
 
             @Override
@@ -120,17 +117,27 @@ class BilibiliLiveChatClientTest {
             }
 
             @Override
-            public void onCmdMsg(BilibiliCmdEnum cmd, BaseCmdMsg<BilibiliCmdEnum> cmdMsg) {
+            public void onCmdMsg(BilibiliCmdEnum cmd, ICmdMsg<BilibiliCmdEnum> cmdMsg) {
                 log.debug("收到CMD消息{} {}", cmd, cmdMsg);
             }
 
             @Override
-            public void onOtherCmdMsg(BilibiliCmdEnum cmd, BaseCmdMsg<BilibiliCmdEnum> cmdMsg) {
-                log.debug("收到其他CMD消息 {}", cmd);
+            public void onOtherCmdMsg(BilibiliCmdEnum cmd, ICmdMsg<BilibiliCmdEnum> cmdMsg) {
+//                log.debug("收到其他CMD消息 {}", cmd);
+                switch (cmd) {
+                    case GUARD_BUY -> {
+                        // 有人上舰
+                        SendSmsReplyMsg sendSmsReplyMsg = (SendSmsReplyMsg) cmdMsg;
+                    }
+                    case SUPER_CHAT_MESSAGE_DELETE -> {
+                        // 删除醒目留言
+                        SendSmsReplyMsg sendSmsReplyMsg = (SendSmsReplyMsg) cmdMsg;
+                    }
+                }
             }
 
             @Override
-            public void onUnknownCmd(String cmdString, BaseMsg msg) {
+            public void onUnknownCmd(String cmdString, IMsg msg) {
                 log.debug("收到未知CMD消息 {}", cmdString);
             }
         });
