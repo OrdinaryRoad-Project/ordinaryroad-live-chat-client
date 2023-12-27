@@ -32,10 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.bilibili.client.BilibiliLiveChatClient;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.BilibiliCmdEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliMsgListener;
-import tech.ordinaryroad.live.chat.client.bilibili.msg.DanmuMsgMsg;
-import tech.ordinaryroad.live.chat.client.bilibili.msg.SendGiftMsg;
-import tech.ordinaryroad.live.chat.client.bilibili.msg.SendSmsReplyMsg;
-import tech.ordinaryroad.live.chat.client.bilibili.msg.SuperChatMessageMsg;
+import tech.ordinaryroad.live.chat.client.bilibili.msg.*;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.base.BaseBilibiliMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.base.IBilibiliMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.util.BilibiliCodecUtil;
@@ -100,8 +97,16 @@ public class BilibiliBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
                 iteratorMsgListeners(msgListener -> msgListener.onSuperChatMsg(BilibiliBinaryFrameHandler.this, superChatMessageMsg));
             }
 
-            case INTERACT_WORD ->
-                    iteratorMsgListeners(msgListener -> msgListener.onEnterRoom(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg));
+            case INTERACT_WORD -> {
+                InteractWordMsg interactWordMsg = new InteractWordMsg();
+                interactWordMsg.setProtover(sendSmsReplyMsg.getProtover());
+                InteractWordMsg.Data data = BaseBilibiliMsg.OBJECT_MAPPER.treeToValue(sendSmsReplyMsg.getData(), InteractWordMsg.Data.class);
+                interactWordMsg.setData(data);
+                iteratorMsgListeners(msgListener -> {
+                    msgListener.onEnterRoomMsg(BilibiliBinaryFrameHandler.this, interactWordMsg);
+                    msgListener.onEnterRoom(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg);
+                });
+            }
 
             case ENTRY_EFFECT ->
                     iteratorMsgListeners(msgListener -> msgListener.onEntryEffect(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg));

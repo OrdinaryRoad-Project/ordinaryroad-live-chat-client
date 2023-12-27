@@ -25,15 +25,9 @@
 package tech.ordinaryroad.live.chat.client.bilibili.listener;
 
 import tech.ordinaryroad.live.chat.client.bilibili.constant.BilibiliCmdEnum;
-import tech.ordinaryroad.live.chat.client.bilibili.msg.DanmuMsgMsg;
-import tech.ordinaryroad.live.chat.client.bilibili.msg.SendGiftMsg;
-import tech.ordinaryroad.live.chat.client.bilibili.msg.SendSmsReplyMsg;
-import tech.ordinaryroad.live.chat.client.bilibili.msg.SuperChatMessageMsg;
+import tech.ordinaryroad.live.chat.client.bilibili.msg.*;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliBinaryFrameHandler;
-import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener;
-import tech.ordinaryroad.live.chat.client.commons.base.listener.IDanmuMsgListener;
-import tech.ordinaryroad.live.chat.client.commons.base.listener.IGiftMsgListener;
-import tech.ordinaryroad.live.chat.client.commons.base.listener.ISuperChatMsgListener;
+import tech.ordinaryroad.live.chat.client.commons.base.listener.*;
 
 /**
  * @author mjz
@@ -42,7 +36,8 @@ import tech.ordinaryroad.live.chat.client.commons.base.listener.ISuperChatMsgLis
 public interface IBilibiliMsgListener extends IBaseMsgListener<BilibiliBinaryFrameHandler, BilibiliCmdEnum>,
         IDanmuMsgListener<BilibiliBinaryFrameHandler, DanmuMsgMsg>,
         IGiftMsgListener<BilibiliBinaryFrameHandler, SendGiftMsg>,
-        ISuperChatMsgListener<BilibiliBinaryFrameHandler, SuperChatMessageMsg> {
+        ISuperChatMsgListener<BilibiliBinaryFrameHandler, SuperChatMessageMsg>,
+        IEnterRoomMsgListener<BilibiliBinaryFrameHandler, InteractWordMsg> {
 
     /**
      * 收到礼物
@@ -67,11 +62,15 @@ public interface IBilibiliMsgListener extends IBaseMsgListener<BilibiliBinaryFra
      *
      * @param binaryFrameHandler BilibiliBinaryFrameHandler
      * @param msg                SendSmsReplyMsg
+     * @deprecated use {@link IEnterRoomMsgListener#onEnterRoomMsg}
      */
     default void onEnterRoom(BilibiliBinaryFrameHandler binaryFrameHandler, SendSmsReplyMsg msg) {
         this.onEnterRoom(msg);
     }
 
+    /**
+     * @deprecated use {@link IEnterRoomMsgListener#onEnterRoomMsg}
+     */
     default void onEnterRoom(SendSmsReplyMsg msg) {
         // ignore
     }
