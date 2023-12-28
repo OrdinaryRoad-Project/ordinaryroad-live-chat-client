@@ -80,6 +80,7 @@ class HuyaLiveChatClientTest {
 
             @Override
             public void onEnterRoomMsg(HuyaBinaryFrameHandler binaryFrameHandler, VipEnterBannerMsg msg) {
+                // 虎牙目前只支持监听VIP用户的入房消息
                 log.info("{} {}({}) 进入直播间", msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid());
             }
 
