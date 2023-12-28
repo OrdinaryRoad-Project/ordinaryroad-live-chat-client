@@ -45,6 +45,7 @@ import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuMsgListener;
 import tech.ordinaryroad.live.chat.client.douyu.msg.ChatmsgMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.DgbMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.MsgrepeaterproxylistMsg;
+import tech.ordinaryroad.live.chat.client.douyu.msg.UenterMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.dto.GiftListInfo;
 import tech.ordinaryroad.live.chat.client.douyu.msg.dto.GiftPropSingle;
 import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuBinaryFrameHandler;
@@ -164,6 +165,11 @@ public class DouyuLiveChatClient extends DouyuWsLiveChatClient implements IDouyu
                     @Override
                     public void onGiftMsg(DouyuBinaryFrameHandler binaryFrameHandler, DgbMsg msg) {
                         proxyClient.iteratorMsgListeners(msgListener -> msgListener.onGiftMsg(binaryFrameHandler, msg));
+                    }
+
+                    @Override
+                    public void onEnterRoomMsg(DouyuBinaryFrameHandler binaryFrameHandler, UenterMsg uenterMsg) {
+                        proxyClient.iteratorMsgListeners(msgListener -> msgListener.onEnterRoomMsg(binaryFrameHandler, uenterMsg));
                     }
 
                     @Override

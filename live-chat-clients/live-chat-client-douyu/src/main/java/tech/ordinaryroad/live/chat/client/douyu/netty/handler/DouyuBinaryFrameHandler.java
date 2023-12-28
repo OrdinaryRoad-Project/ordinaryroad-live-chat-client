@@ -34,6 +34,7 @@ import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuMsgListener;
 import tech.ordinaryroad.live.chat.client.douyu.msg.ChatmsgMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.DgbMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.DouyuCmdMsg;
+import tech.ordinaryroad.live.chat.client.douyu.msg.UenterMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.base.IDouyuMsg;
 import tech.ordinaryroad.live.chat.client.douyu.util.DouyuCodecUtil;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientBinaryFrameHandler;
@@ -70,6 +71,8 @@ public class DouyuBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<B
                     iteratorMsgListeners(msgListener -> msgListener.onDanmuMsg(DouyuBinaryFrameHandler.this, (ChatmsgMsg) cmdMsg));
             case dgb ->
                     iteratorMsgListeners(msgListener -> msgListener.onGiftMsg(DouyuBinaryFrameHandler.this, (DgbMsg) cmdMsg));
+            case uenter ->
+                    iteratorMsgListeners(msgListener -> msgListener.onEnterRoomMsg(DouyuBinaryFrameHandler.this, (UenterMsg) cmdMsg));
             default -> {
                 if (!(cmdMsg instanceof DouyuCmdMsg)) {
                     if (log.isDebugEnabled()) {

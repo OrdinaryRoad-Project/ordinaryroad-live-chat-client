@@ -36,6 +36,7 @@ import tech.ordinaryroad.live.chat.client.huya.constant.HuyaCmdEnum;
 import tech.ordinaryroad.live.chat.client.huya.listener.IHuyaMsgListener;
 import tech.ordinaryroad.live.chat.client.huya.msg.MessageNoticeMsg;
 import tech.ordinaryroad.live.chat.client.huya.msg.SendItemSubBroadcastPacketMsg;
+import tech.ordinaryroad.live.chat.client.huya.msg.VipEnterBannerMsg;
 import tech.ordinaryroad.live.chat.client.huya.netty.handler.HuyaBinaryFrameHandler;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -75,6 +76,12 @@ class HuyaLiveChatClientTest {
                     int giftPrice = msg.getGiftPrice();
                 }
                 log.info("{} 收到礼物 {}({}) {} {}({})x{}({})", binaryFrameHandler.getRoomId(), msg.getUsername(), msg.getUid(), "赠送", msg.getGiftName(), msg.getGiftId(), msg.getGiftCount(), msg.getGiftPrice());
+            }
+
+            @Override
+            public void onEnterRoomMsg(HuyaBinaryFrameHandler binaryFrameHandler, VipEnterBannerMsg msg) {
+                // 虎牙目前只支持监听VIP用户的入房消息
+                log.info("{} {}({}) 进入直播间", msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid());
             }
 
             @Override

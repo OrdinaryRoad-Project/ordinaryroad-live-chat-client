@@ -22,24 +22,41 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.huya.listener;
-
-import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener;
-import tech.ordinaryroad.live.chat.client.commons.base.listener.IDanmuMsgListener;
-import tech.ordinaryroad.live.chat.client.commons.base.listener.IEnterRoomMsgListener;
-import tech.ordinaryroad.live.chat.client.commons.base.listener.IGiftMsgListener;
-import tech.ordinaryroad.live.chat.client.huya.constant.HuyaCmdEnum;
-import tech.ordinaryroad.live.chat.client.huya.msg.MessageNoticeMsg;
-import tech.ordinaryroad.live.chat.client.huya.msg.SendItemSubBroadcastPacketMsg;
-import tech.ordinaryroad.live.chat.client.huya.msg.VipEnterBannerMsg;
-import tech.ordinaryroad.live.chat.client.huya.netty.handler.HuyaBinaryFrameHandler;
+package tech.ordinaryroad.live.chat.client.commons.base.msg;
 
 /**
+ * 入房消息
+ *
  * @author mjz
- * @date 2023/9/5
+ * @date 2023/12/26
+ * @since 0.0.16
  */
-public interface IHuyaMsgListener extends IBaseMsgListener<HuyaBinaryFrameHandler, HuyaCmdEnum>,
-        IDanmuMsgListener<HuyaBinaryFrameHandler, MessageNoticeMsg>,
-        IGiftMsgListener<HuyaBinaryFrameHandler, SendItemSubBroadcastPacketMsg>,
-        IEnterRoomMsgListener<HuyaBinaryFrameHandler, VipEnterBannerMsg> {
+public interface IEnterRoomMsg extends IMsg {
+
+    /**
+     * 粉丝牌名称
+     */
+    String getBadgeName();
+
+    /**
+     * 粉丝牌等级
+     */
+    byte getBadgeLevel();
+
+    /**
+     * 用户id
+     */
+    long getUid();
+
+    /**
+     * 用户名
+     */
+    String getUsername();
+
+    /**
+     * 头像地址
+     */
+    default String getUserAvatar() {
+        return null;
+    }
 }

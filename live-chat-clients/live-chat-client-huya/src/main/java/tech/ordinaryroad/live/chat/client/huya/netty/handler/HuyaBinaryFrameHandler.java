@@ -37,10 +37,7 @@ import tech.ordinaryroad.live.chat.client.huya.constant.HuyaCmdEnum;
 import tech.ordinaryroad.live.chat.client.huya.constant.HuyaOperationEnum;
 import tech.ordinaryroad.live.chat.client.huya.constant.HuyaWupFunctionEnum;
 import tech.ordinaryroad.live.chat.client.huya.listener.IHuyaMsgListener;
-import tech.ordinaryroad.live.chat.client.huya.msg.MessageNoticeMsg;
-import tech.ordinaryroad.live.chat.client.huya.msg.PushMessage;
-import tech.ordinaryroad.live.chat.client.huya.msg.SendItemSubBroadcastPacketMsg;
-import tech.ordinaryroad.live.chat.client.huya.msg.WupRsp;
+import tech.ordinaryroad.live.chat.client.huya.msg.*;
 import tech.ordinaryroad.live.chat.client.huya.msg.base.IHuyaMsg;
 import tech.ordinaryroad.live.chat.client.huya.msg.dto.MsgItem;
 import tech.ordinaryroad.live.chat.client.huya.msg.dto.PropsItem;
@@ -174,8 +171,13 @@ public class HuyaBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<Hu
                 sendItemSubBroadcastPacketMsg.setPropsItem(HuyaApis.GIFT_ITEMS.getOrDefault(sendItemSubBroadcastPacketMsg.getIItemType(), PropsItem.DEFAULT));
                 iteratorMsgListeners(msgListener -> msgListener.onGiftMsg(HuyaBinaryFrameHandler.this, sendItemSubBroadcastPacketMsg));
             }
-            default ->
-                    iteratorMsgListeners(msgListener -> msgListener.onOtherCmdMsg(HuyaBinaryFrameHandler.this, cmd, cmdMsg));
+            case VipEnterBanner -> {
+                VipEnterBannerMsg vipEnterBannerMsg = new VipEnterBannerMsg(tarsInputStream);
+                iteratorMsgListeners(msgListener -> msgListener.onEnterRoomMsg(HuyaBinaryFrameHandler.this, vipEnterBannerMsg));
+            }
+            default -> {
+                iteratorMsgListeners(msgListener -> msgListener.onOtherCmdMsg(HuyaBinaryFrameHandler.this, cmd, cmdMsg));
+            }
         }
     }
 

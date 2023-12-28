@@ -22,24 +22,57 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.huya.listener;
+package tech.ordinaryroad.live.chat.client.douyu.msg;
 
-import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener;
-import tech.ordinaryroad.live.chat.client.commons.base.listener.IDanmuMsgListener;
-import tech.ordinaryroad.live.chat.client.commons.base.listener.IEnterRoomMsgListener;
-import tech.ordinaryroad.live.chat.client.commons.base.listener.IGiftMsgListener;
-import tech.ordinaryroad.live.chat.client.huya.constant.HuyaCmdEnum;
-import tech.ordinaryroad.live.chat.client.huya.msg.MessageNoticeMsg;
-import tech.ordinaryroad.live.chat.client.huya.msg.SendItemSubBroadcastPacketMsg;
-import tech.ordinaryroad.live.chat.client.huya.msg.VipEnterBannerMsg;
-import tech.ordinaryroad.live.chat.client.huya.netty.handler.HuyaBinaryFrameHandler;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import tech.ordinaryroad.live.chat.client.commons.base.msg.IEnterRoomMsg;
+import tech.ordinaryroad.live.chat.client.douyu.api.DouyuApis;
+import tech.ordinaryroad.live.chat.client.douyu.msg.base.BaseDouyuCmdMsg;
+
+import java.util.List;
 
 /**
  * @author mjz
- * @date 2023/9/5
+ * @date 2023/12/27
  */
-public interface IHuyaMsgListener extends IBaseMsgListener<HuyaBinaryFrameHandler, HuyaCmdEnum>,
-        IDanmuMsgListener<HuyaBinaryFrameHandler, MessageNoticeMsg>,
-        IGiftMsgListener<HuyaBinaryFrameHandler, SendItemSubBroadcastPacketMsg>,
-        IEnterRoomMsgListener<HuyaBinaryFrameHandler, VipEnterBannerMsg> {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class UenterMsg extends BaseDouyuCmdMsg implements IEnterRoomMsg {
+
+    private String nn;
+    private long uid;
+    private int level;
+    private String sahf;
+    private List<String> ic;
+    private String rid;
+
+    @Override
+    public String getBadgeName() {
+        return null;
+    }
+
+    @Override
+    public byte getBadgeLevel() {
+        return 0;
+    }
+
+    @Override
+    public long getUid() {
+        return uid;
+    }
+
+    @Override
+    public String getUsername() {
+        return nn;
+    }
+
+    @Override
+    public String getUserAvatar() {
+        return DouyuApis.getSmallAvatarUrl(ic);
+    }
 }
