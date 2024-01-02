@@ -79,6 +79,7 @@ public class BilibiliBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
 
             case SEND_GIFT -> {
                 SendGiftMsg sendGiftMsg = new SendGiftMsg();
+                sendGiftMsg.setRoomId(getRoomIdAsLong());
                 sendGiftMsg.setProtover(sendSmsReplyMsg.getProtover());
                 SendGiftMsg.Data data = BaseBilibiliMsg.OBJECT_MAPPER.treeToValue(sendSmsReplyMsg.getData(), SendGiftMsg.Data.class);
                 sendGiftMsg.setData(data);

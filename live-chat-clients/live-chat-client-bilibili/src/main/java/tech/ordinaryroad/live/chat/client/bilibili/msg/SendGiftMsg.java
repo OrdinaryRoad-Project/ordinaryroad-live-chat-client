@@ -53,6 +53,11 @@ public class SendGiftMsg extends BaseBilibiliMsg implements IGiftMsg {
 
     private Data data;
 
+    /**
+     * 额外属性，获取礼物图片时可能会用到
+     */
+    private long roomId;
+
     @Override
     public String getBadgeName() {
         if (data == null || data.medal_info == null) {
@@ -109,7 +114,7 @@ public class SendGiftMsg extends BaseBilibiliMsg implements IGiftMsg {
 
     @Override
     public String getGiftImg() {
-        return BilibiliApis.getGiftImgById(this.data.giftId);
+        return BilibiliApis.getGiftImgById(this.data.giftId, this.roomId);
     }
 
     @Override

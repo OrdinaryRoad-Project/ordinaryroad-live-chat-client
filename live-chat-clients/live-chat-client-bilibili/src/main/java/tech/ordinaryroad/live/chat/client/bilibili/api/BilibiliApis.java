@@ -26,8 +26,7 @@ package tech.ordinaryroad.live.chat.client.bilibili.api;
 
 import cn.hutool.cache.impl.TimedCache;
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.resource.ResourceUtil;
+import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
@@ -41,7 +40,6 @@ import tech.ordinaryroad.live.chat.client.bilibili.api.request.BilibiliSendMsgRe
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCookieUtil;
 
-import java.nio.charset.StandardCharsets;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Map;
@@ -56,13 +54,19 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class BilibiliApis {
 
-    public static final TimedCache<Long, String> giftImgCache = new TimedCache<>(TimeUnit.DAYS.toMillis(1));
+    public static final TimedCache<Long, String> GIFT_IMG_CACHE = new TimedCache<>(TimeUnit.DAYS.toMillis(1));
     public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     public static final String KEY_COOKIE_CSRF = "bili_jct";
 
     public static JsonNode roomInit(long roomId, String cookie) {
         @Cleanup
         HttpResponse response = createGetRequest("https://api.live.bilibili.com/room/v1/Room/room_init?id=" + roomId, cookie).execute();
+        return responseInterceptor(response.body());
+    }
+
+    public static JsonNode roomGiftConfig(long roomId, String cookie) {
+        @Cleanup
+        HttpResponse response = createGetRequest("https://api.live.bilibili.com/xlive/web-room/v1/giftPanel/roomGiftConfig?platform=pc&source=live&build=0&global_version=0&room_id=" + roomId, cookie).execute();
         return responseInterceptor(response.body());
     }
 
@@ -102,29 +106,26 @@ public class BilibiliApis {
         return responseInterceptor(response.body());
     }
 
+    public static String getGiftImgById(long giftId, long roomId) {
+        if (!GIFT_IMG_CACHE.containsKey(giftId)) {
+            ThreadUtil.execAsync(() -> {
+                updateGiftImgCache(roomId, null);
+            });
+        }
+
+        return GIFT_IMG_CACHE.get(giftId);
+    }
+
     /**
-     * 从网页html中获得映射关系
+     * 更新礼物图片缓存
      */
-    public static String getGiftImgById(long giftId) {
-        if (giftImgCache.containsKey(giftId)) {
-            return giftImgCache.get(giftId);
+    public static void updateGiftImgCache(long roomId, String cookie) {
+        JsonNode jsonNode = roomGiftConfig(roomId, cookie);
+        for (JsonNode node : jsonNode.get("global_gift").get("list")) {
+            long giftId = node.get("id").asLong();
+            String giftImgUrl = node.get("webp").asText();
+            GIFT_IMG_CACHE.put(giftId, giftImgUrl);
         }
-
-        String img = null;
-
-        boolean find = false;
-        for (String line : FileUtil.readLines(ResourceUtil.getResource("css/gift_background.css"), StandardCharsets.UTF_8)) {
-            if (find) {
-                img = line.substring(26, 101);
-                giftImgCache.put(giftId, img);
-                break;
-            }
-            if (line.startsWith(".gift-" + giftId + "-")) {
-                find = true;
-            }
-        }
-
-        return img;
     }
 
     public static void sendMsg(BilibiliSendMsgRequest request, String cookie) {
