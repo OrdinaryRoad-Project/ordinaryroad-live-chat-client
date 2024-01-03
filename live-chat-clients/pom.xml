@@ -39,5 +39,6 @@
         <module>live-chat-client-bilibili</module>
         <module>live-chat-client-douyu</module>
         <module>live-chat-client-huya</module>
+        <module>live-chat-client-douyin</module>
     </modules>
 </project>
