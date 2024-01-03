@@ -28,10 +28,14 @@ import cn.hutool.core.util.ZipUtil;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
+import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 import tech.ordinaryroad.live.chat.client.douyin.client.DouyinLiveChatClient;
 import tech.ordinaryroad.live.chat.client.douyin.constant.DouyinCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyin.listener.IDouyinMsgListener;
@@ -54,12 +58,26 @@ import java.util.List;
 @ChannelHandler.Sharable
 public class DouyinBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<DouyinLiveChatClient, DouyinBinaryFrameHandler, DouyinCmdEnum, IDouyinMsg, IDouyinMsgListener> {
 
+    private ChannelHandlerContext channelHandlerContext;
+
     public DouyinBinaryFrameHandler(List<IDouyinMsgListener> iDouyinMsgListeners, DouyinLiveChatClient client) {
         super(iDouyinMsgListeners, client);
     }
 
     public DouyinBinaryFrameHandler(List<IDouyinMsgListener> iDouyinMsgListeners, long roomId) {
         super(iDouyinMsgListeners, roomId);
+    }
+
+    @Override
+    public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
+        super.handlerAdded(ctx);
+        channelHandlerContext = ctx;
+    }
+
+    @Override
+    public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
+        super.handlerRemoved(ctx);
+        channelHandlerContext = null;
     }
 
     @Override
@@ -95,6 +113,16 @@ public class DouyinBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<
             ByteString payload = douyinWebsocketFrame.getPayload();
             byte[] bytes = ZipUtil.unGzip(payload.newInput());
             douyin_websocket_frame_msg douyinWebsocketFrameMsg = douyin_websocket_frame_msg.parseFrom(bytes);
+
+            if (douyinWebsocketFrameMsg.getNeedAck()) {
+                douyin_websocket_frame ack = douyin_websocket_frame.newBuilder()
+                        .setLogId(douyinWebsocketFrame.getLogId())
+                        .setPayloadType("ack")
+                        .setPayload(douyinWebsocketFrameMsg.getInternalExtBytes())
+                        .build();
+                channelHandlerContext.writeAndFlush(new BinaryWebSocketFrame(Unpooled.wrappedBuffer(ack.toByteArray())));
+            }
+
             return new ArrayList<>(douyinWebsocketFrameMsg.getMessagesListList());
         } catch (InvalidProtocolBufferException e) {
             throw new BaseException(e);
