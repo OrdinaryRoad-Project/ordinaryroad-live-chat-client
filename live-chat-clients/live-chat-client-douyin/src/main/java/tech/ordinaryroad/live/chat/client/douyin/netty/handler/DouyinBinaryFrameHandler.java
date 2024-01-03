@@ -24,15 +24,26 @@
 
 package tech.ordinaryroad.live.chat.client.douyin.netty.handler;
 
+import cn.hutool.core.util.ZipUtil;
+import com.google.protobuf.ByteString;
+import com.google.protobuf.InvalidProtocolBufferException;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import lombok.extern.slf4j.Slf4j;
+import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
+import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.douyin.client.DouyinLiveChatClient;
 import tech.ordinaryroad.live.chat.client.douyin.constant.DouyinCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyin.listener.IDouyinMsgListener;
 import tech.ordinaryroad.live.chat.client.douyin.msg.base.IDouyinMsg;
+import tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg;
+import tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_chat_message_msg;
+import tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame;
+import tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame_msg;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientBinaryFrameHandler;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -52,7 +63,41 @@ public class DouyinBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<
     }
 
     @Override
+    public void onCmdMsg(DouyinCmdEnum cmd, ICmdMsg<DouyinCmdEnum> cmdMsg) {
+        if (super.msgListeners.isEmpty()) {
+            return;
+        }
+
+        switch (cmd) {
+            case WebcastChatMessage -> {
+                ByteString payload = ((douyin_cmd_msg) cmdMsg).getPayload();
+                try {
+                    douyin_webcast_chat_message_msg douyinWebcastChatMessageMsg = douyin_webcast_chat_message_msg.parseFrom(payload.newInput());
+                    iteratorMsgListeners(msgListener -> msgListener.onDanmuMsg(DouyinBinaryFrameHandler.this, douyinWebcastChatMessageMsg));
+                } catch (IOException e) {
+                    throw new BaseException(e);
+                }
+            }
+//      TODO      case WebcastGiftMessage ->
+//                    iteratorMsgListeners(msgListener -> msgListener.onGiftMsg(DouyinBinaryFrameHandler.this, (DgbMsg) cmdMsg));
+//            case WebcastMemberMessage ->
+//                    iteratorMsgListeners(msgListener -> msgListener.onEnterRoomMsg(DouyinBinaryFrameHandler.this, (UenterMsg) cmdMsg));
+            default -> {
+                iteratorMsgListeners(msgListener -> msgListener.onOtherCmdMsg(DouyinBinaryFrameHandler.this, cmd, cmdMsg));
+            }
+        }
+    }
+
+    @Override
     protected List<IDouyinMsg> decode(ByteBuf byteBuf) {
-        return null;
+        try {
+            douyin_websocket_frame douyinWebsocketFrame = douyin_websocket_frame.parseFrom(byteBuf.nioBuffer());
+            ByteString payload = douyinWebsocketFrame.getPayload();
+            byte[] bytes = ZipUtil.unGzip(payload.newInput());
+            douyin_websocket_frame_msg douyinWebsocketFrameMsg = douyin_websocket_frame_msg.parseFrom(bytes);
+            return new ArrayList<>(douyinWebsocketFrameMsg.getMessagesListList());
+        } catch (InvalidProtocolBufferException e) {
+            throw new BaseException(e);
+        }
     }
 }

@@ -41,6 +41,12 @@ import tech.ordinaryroad.live.chat.client.servers.netty.client.config.BaseNettyC
 @SuperBuilder(toBuilder = true)
 public class DouyinLiveChatClientConfig extends BaseNettyClientConfig {
 
+    @Builder.Default
+    private int aggregatorMaxContentLength = 64 * 1024 * 1024;
+
+    @Builder.Default
+    private int maxFramePayloadLength = 64 * 1024 * 1024;
+
     private String versionCode = "180800";
 
     private String webcastSdkVersion = "1.0.12";

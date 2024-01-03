@@ -167,7 +167,6 @@ public class DouyinLiveChatClient extends BaseNettyClient<
                 "seq:1|" +
                 "wss_info:0-" + System.currentTimeMillis() + "-0-0|" +
                 "wrds_kvs:WebcastRoomStatsMessage-" + System.nanoTime() + "_WebcastRoomRankMessage-" + System.nanoTime() + "_LotteryInfoSyncData-" + System.nanoTime() + "_WebcastActivityEmojiGroupsMessage-" + System.nanoTime());
-//        queryParams.put("ttwid", ttwid);
         return webSocketUriString + "?" + HttpUtil.toParams(queryParams);
     }
 

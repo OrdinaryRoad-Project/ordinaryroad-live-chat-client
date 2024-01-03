@@ -24,6 +24,7 @@
 
 package tech.ordinaryroad.live.chat.client.douyin.constant;
 
+import cn.hutool.core.util.StrUtil;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -34,4 +35,39 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum DouyinCmdEnum {
+
+    /**
+     * 弹幕
+     */
+    WebcastChatMessage,
+    /**
+     * 礼物
+     */
+    WebcastGiftMessage,
+    /**
+     * 点赞
+     */
+    WebcastLikeMessage,
+    /**
+     * 入房
+     */
+    WebcastMemberMessage,
+    WebcastSocialMessage,
+    WebcastRoomUserSeqMessage,
+    WebcastFansclubMessage,
+    WebcastControlMessage,
+    ;
+
+    public static DouyinCmdEnum getByName(String name) {
+        if (StrUtil.isBlank(name)) {
+            return null;
+        }
+
+        for (DouyinCmdEnum value : values()) {
+            if (value.name().equals(name)) {
+                return value;
+            }
+        }
+        return null;
+    }
 }
