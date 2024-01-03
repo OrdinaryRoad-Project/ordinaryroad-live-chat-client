@@ -7,6 +7,7 @@ import tech.ordinaryroad.live.chat.client.douyin.config.DouyinLiveChatClientConf
 import tech.ordinaryroad.live.chat.client.douyin.listener.IDouyinMsgListener;
 import tech.ordinaryroad.live.chat.client.douyin.netty.handler.DouyinBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_chat_message_msg;
+import tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_gift_message_msg;
 
 /**
  * @author mjz
@@ -29,6 +30,8 @@ class DouyinLiveChatClientTest {
                 .roomId("567789235524")
                 .roomId("166163409118")
                 .roomId("722266687616")
+                .roomId("o333")
+                .roomId("qilongmusic")
                 .build();
 
         client = new DouyinLiveChatClient(config, new IDouyinMsgListener() {
@@ -40,6 +43,11 @@ class DouyinLiveChatClientTest {
             @Override
             public void onDanmuMsg(DouyinBinaryFrameHandler binaryFrameHandler, douyin_webcast_chat_message_msg msg) {
                 log.info("{} 收到弹幕 {} {}({})：{}", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid(), msg.getContent());
+            }
+
+            @Override
+            public void onGiftMsg(DouyinBinaryFrameHandler binaryFrameHandler, douyin_webcast_gift_message_msg msg) {
+                log.info("{} 收到礼物 {} {}({}) {} {}({})x{}({})", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid(), "赠送", msg.getGiftName(), msg.getGiftId(), msg.getGiftCount(), msg.getGiftPrice());
             }
         });
         client.connect();
