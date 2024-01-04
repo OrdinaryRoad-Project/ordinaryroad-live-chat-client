@@ -168,7 +168,7 @@ public class DouyinLiveChatClient extends BaseNettyClient<
     }
 
     public void sendDanmu(Object danmu, Runnable success, Consumer<Throwable> failed) {
-
+        super.sendDanmu(danmu, success, failed);
     }
 
 }
