@@ -81,12 +81,12 @@ public class DouyinConnectionHandler extends BaseNettyClientConnectionHandler<Do
 
     @Override
     protected void sendHeartbeat(ChannelHandlerContext ctx) {
-
+        // ignore
     }
 
     @Override
     public void sendAuthRequest(Channel channel) {
-
+        // ignore
     }
 
     @Override

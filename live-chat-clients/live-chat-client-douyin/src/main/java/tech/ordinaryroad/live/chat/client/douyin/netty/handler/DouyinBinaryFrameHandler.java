@@ -100,9 +100,14 @@ public class DouyinBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<
                     throw new BaseException(e);
                 }
             }
-
-//      TODO      case WebcastMemberMessage ->
-//                    iteratorMsgListeners(msgListener -> msgListener.onEnterRoomMsg(DouyinBinaryFrameHandler.this, (UenterMsg) cmdMsg));
+            case WebcastMemberMessage -> {
+                try {
+                    douyin_webcast_member_message_msg douyinWebcastMemberMessageMsg = douyin_webcast_member_message_msg.parseFrom(payload);
+                    iteratorMsgListeners(msgListener -> msgListener.onEnterRoomMsg(DouyinBinaryFrameHandler.this, douyinWebcastMemberMessageMsg));
+                } catch (InvalidProtocolBufferException e) {
+                    throw new BaseException(e);
+                }
+            }
             default -> {
                 iteratorMsgListeners(msgListener -> msgListener.onOtherCmdMsg(DouyinBinaryFrameHandler.this, cmd, cmdMsg));
             }
@@ -117,6 +122,7 @@ public class DouyinBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<
             byte[] bytes = ZipUtil.unGzip(payload.newInput());
             douyin_websocket_frame_msg douyinWebsocketFrameMsg = douyin_websocket_frame_msg.parseFrom(bytes);
 
+            // 抖音不是使用心跳，而是ACK
             if (douyinWebsocketFrameMsg.getNeedAck()) {
                 douyin_websocket_frame ack = douyin_websocket_frame.newBuilder()
                         .setLogId(douyinWebsocketFrame.getLogId())

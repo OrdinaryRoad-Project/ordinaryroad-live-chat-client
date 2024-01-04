@@ -2,12 +2,15 @@ package tech.ordinaryroad.live.chat.client.douyin.client;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 import tech.ordinaryroad.live.chat.client.douyin.config.DouyinLiveChatClientConfig;
+import tech.ordinaryroad.live.chat.client.douyin.constant.DouyinCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyin.listener.IDouyinMsgListener;
 import tech.ordinaryroad.live.chat.client.douyin.netty.handler.DouyinBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_chat_message_msg;
 import tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_gift_message_msg;
+import tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_member_message_msg;
 
 /**
  * @author mjz
@@ -32,12 +35,28 @@ class DouyinLiveChatClientTest {
                 .roomId("722266687616")
                 .roomId("o333")
                 .roomId("qilongmusic")
+                .roomId("yimei20210922")
                 .build();
 
         client = new DouyinLiveChatClient(config, new IDouyinMsgListener() {
             @Override
             public void onMsg(IMsg msg) {
-                // log.debug("收到消息 {}", msg);
+                // log.debug("收到{}消息 {}", msg.getClass(), msg);
+            }
+
+            @Override
+            public void onCmdMsg(DouyinCmdEnum cmd, ICmdMsg<DouyinCmdEnum> cmdMsg) {
+                // log.debug("收到CMD消息{} {}", cmd, cmdMsg);
+            }
+
+            @Override
+            public void onOtherCmdMsg(DouyinCmdEnum cmd, ICmdMsg<DouyinCmdEnum> cmdMsg) {
+                log.debug("收到其他CMD消息 {}", cmd);
+            }
+
+            @Override
+            public void onUnknownCmd(String cmdString, IMsg msg) {
+                log.debug("收到未知CMD消息 {}", cmdString);
             }
 
             @Override
@@ -48,6 +67,11 @@ class DouyinLiveChatClientTest {
             @Override
             public void onGiftMsg(DouyinBinaryFrameHandler binaryFrameHandler, douyin_webcast_gift_message_msg msg) {
                 log.info("{} 收到礼物 {} {}({}) {} {}({})x{}({})", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid(), "赠送", msg.getGiftName(), msg.getGiftId(), msg.getGiftCount(), msg.getGiftPrice());
+            }
+
+            @Override
+            public void onEnterRoomMsg(DouyinBinaryFrameHandler binaryFrameHandler, douyin_webcast_member_message_msg msg) {
+                log.info("{} {}({}) 进入直播间", msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid());
             }
         });
         client.connect();
