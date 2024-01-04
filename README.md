@@ -27,6 +27,10 @@
     - [x] 支持 短房间id（支持字符串房间号，例如`bagea`）
     - [x] 支持 弹幕发送
 - [ ] 抖音
+  - [x] DouyinLiveChatClient
+  - [ ] 支持 cookie
+  - [x] 支持 短房间id（支持字符串房间号）
+  - [ ] 支持 弹幕发送
 - [ ] 快手
 
 ---
@@ -98,6 +102,7 @@ Live room WebSocket chat client
 - B站：[BilibiliCmdEnum](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/blob/main/live-chat-clients/live-chat-client-bilibili/src/main/java/tech/ordinaryroad/live/chat/client/bilibili/constant/BilibiliCmdEnum.java)
 - 斗鱼：[DouyuCmdEnum](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/blob/main/live-chat-clients/live-chat-client-douyu/src/main/java/tech/ordinaryroad/live/chat/client/douyu/constant/DouyuCmdEnum.java)
 - 虎牙：[HuyaCmdEnum](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/blob/main/live-chat-clients/live-chat-client-huya/src/main/java/tech/ordinaryroad/live/chat/client/huya/constant/HuyaCmdEnum.java)
+- 抖音：[DouyinCmdEnum](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/blob/main/live-chat-clients/live-chat-client-douyin/src/main/java/tech/ordinaryroad/live/chat/client/douyin/constant/DouyinCmdEnum.java)
 
 可以重写`onCmdMsg(收到的所有CMD消息)`或`onOtherCmdMsg(框架未处理的CMD消息)`回调方法，判断CMD来监听框架已经定义的CMD类型
 
@@ -202,7 +207,7 @@ public class ClientModeExample {
                 - onGiftMsg：收到礼物消息
             - ISuperChatMsgListener（B站）
                 - onSuperChatMsg：收到醒目留言
-            - IEnterRoomMsgListener（B站、斗鱼，虎牙只能接收到高级用户的入房回调）
+            - IEnterRoomMsgListener（B站、斗鱼、抖音，虎牙只能接收到高级用户的入房回调）
                 - onEnterRoomMsg：进入房间消息回调
     - commons-client
         - 定义了Client的配置：连接地址、房间id、Cookie、心跳、自动重连等相关参数
@@ -221,14 +226,16 @@ public class ClientModeExample {
     - client-bilibili
     - client-douyu
     - client-huya
+    - client-douyin
 
 ## 交流讨论
 
 扫描二维码<img src="assets/QQ频道.jpg" width="200px">
 或点击链接加入QQ频道【OrdinaryRoad】：https://pd.qq.com/s/3id0n7fvs
 
-## 感谢以下开源项目
+## 感谢
 
 - [douyu-crawler-demo](https://github.com/cj1128/douyu-crawler-demo)（斗鱼登录状态的请求包构建）
 - [Kain-90/huya-danmu](https://githubfast.com/Kain-90/huya-danmu)
   （虎牙流程参考，最新lib库[vplayerUI.js](https://a.msstatic.com/huya/h5player/room/2309271152/vplayerUI.js)、[taf-signal.global.0.0.4.prod.js](https://hd2.huya.com/fedbasic/huyabaselibs/taf-signal/taf-signal.global.0.0.4.prod.js)）
+- [saermart/DouyinLiveWebFetcher](https://github.com/saermart/DouyinLiveWebFetcher)（抖音流程参考）

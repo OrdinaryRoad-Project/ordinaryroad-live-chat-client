@@ -83,6 +83,12 @@ public abstract class BaseBinaryFrameHandler<
     protected void channelRead0(ChannelHandlerContext ctx, BinaryWebSocketFrame message) {
         ByteBuf byteBuf = message.content();
         List<Msg> msgList = this.decode(byteBuf);
+        if (msgList == null || msgList.isEmpty()) {
+            if (log.isDebugEnabled()) {
+                log.debug("msgList is empty");
+            }
+            return;
+        }
         for (Msg msg : msgList) {
             this.onMsg((T) BaseBinaryFrameHandler.this, msg);
             if (msg instanceof ICmdMsg<?> cmdMsg) {
