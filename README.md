@@ -232,8 +232,9 @@ public class ClientModeExample {
 扫描二维码<img src="assets/QQ频道.jpg" width="200px">
 或点击链接加入QQ频道【OrdinaryRoad】：https://pd.qq.com/s/3id0n7fvs
 
-## 感谢以下开源项目
+## 感谢
 
 - [douyu-crawler-demo](https://github.com/cj1128/douyu-crawler-demo)（斗鱼登录状态的请求包构建）
 - [Kain-90/huya-danmu](https://githubfast.com/Kain-90/huya-danmu)
   （虎牙流程参考，最新lib库[vplayerUI.js](https://a.msstatic.com/huya/h5player/room/2309271152/vplayerUI.js)、[taf-signal.global.0.0.4.prod.js](https://hd2.huya.com/fedbasic/huyabaselibs/taf-signal/taf-signal.global.0.0.4.prod.js)）
+- [saermart/DouyinLiveWebFetcher](https://github.com/saermart/DouyinLiveWebFetcher)（抖音流程参考）

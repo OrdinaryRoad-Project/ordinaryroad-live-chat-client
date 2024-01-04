@@ -27,16 +27,16 @@ package tech.ordinaryroad.live.chat.client.douyin.api;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.ReUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpStatus;
 import cn.hutool.http.HttpUtil;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import lombok.Cleanup;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
+import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCookieUtil;
 
-import static tech.ordinaryroad.live.chat.client.commons.base.msg.BaseMsg.OBJECT_MAPPER;
+import java.util.Map;
 
 /**
  * @author mjz
@@ -45,33 +45,64 @@ import static tech.ordinaryroad.live.chat.client.commons.base.msg.BaseMsg.OBJECT
 @Slf4j
 public class DouyinApis {
 
-    public static JsonNode roomInit(Object roomId) {
+    public static final String KEY_COOKIE_TTWID = "ttwid";
+    public static final String KEY_COOKIE_MS_TOKEN = "msToken";
+    public static final String KEY_COOKIE_AC_NONCE = "__ac_nonce";
+    public static final String MS_TOKEN_BASE_STRING = RandomUtil.BASE_CHAR_NUMBER_LOWER + "=_";
+    public static final int MS_TOKEN_LENGTH = 107;
+    public static final int AC_NONCE_LENGTH = 21;
+    public static final String PATTERN_USER_UNIQUE_ID = "\\\\\"user_unique_id\\\\\":\\\\\"(\\d+)\\\\\"";
+    public static final String PATTERN_ROOM_ID = "\\\\\"roomId\\\\\":\\\\\"(\\d+)\\\\\"";
+
+    public static RoomInitResult roomInit(Object roomId, String cookie) {
+        Map<String, String> cookieMap = OrLiveChatCookieUtil.parseCookieString(cookie);
+
         @Cleanup
-        HttpResponse response1 = HttpUtil.createGet("https://live.douyin.com/").execute();
-        String ttwid = response1.getCookie("ttwid").getValue();
-        String msToken = RandomUtil.randomString(RandomUtil.BASE_CHAR_NUMBER_LOWER + "=_", 107);
-        String __ac_nonce = RandomUtil.randomString(21);
+        HttpResponse response1 = HttpUtil.createGet("https://live.douyin.com/").cookie(cookie).execute();
+        String ttwid = OrLiveChatCookieUtil.getCookieByName(cookieMap, KEY_COOKIE_TTWID, () -> response1.getCookie(KEY_COOKIE_TTWID).getValue());
+        String msToken = OrLiveChatCookieUtil.getCookieByName(cookieMap, KEY_COOKIE_MS_TOKEN, () -> RandomUtil.randomString(MS_TOKEN_BASE_STRING, MS_TOKEN_LENGTH));
+        String __ac_nonce = OrLiveChatCookieUtil.getCookieByName(cookieMap, KEY_COOKIE_AC_NONCE, () -> RandomUtil.randomString(AC_NONCE_LENGTH));
+
         @Cleanup
         HttpResponse response2 = HttpUtil.createGet("https://live.douyin.com/" + roomId)
-                .cookie("ttwid=" + ttwid + "; msToken=" + msToken + "; __ac_nonce=" + __ac_nonce)
+                .cookie(StrUtil.emptyToDefault(cookie, KEY_COOKIE_TTWID + "=" + ttwid + "; " + KEY_COOKIE_MS_TOKEN + "=" + msToken + "; " + KEY_COOKIE_AC_NONCE + "=" + __ac_nonce))
                 .execute();
         if (response2.getStatus() != HttpStatus.HTTP_OK) {
             throw new BaseException("获取" + roomId + "真实房间ID失败");
         }
+        String user_unique_id = StrUtil.emptyToDefault(ReUtil.getGroup1(PATTERN_USER_UNIQUE_ID, response2.body()), RandomUtil.randomNumbers(19));
         long realRoomId;
-        String realRoomIdString = ReUtil.getGroup1("\\\\\"roomId\\\\\":\\\\\"(\\d+)\\\\\"", response2.body());
+        String realRoomIdString = ReUtil.getGroup1(PATTERN_ROOM_ID, response2.body());
         try {
             realRoomId = NumberUtil.parseLong(realRoomIdString);
         } catch (Exception e) {
             throw new BaseException("获取" + roomId + "真实房间ID失败");
         }
 
-        ObjectNode objectNode = OBJECT_MAPPER.createObjectNode();
-        objectNode.put("ttwid", ttwid);
-        objectNode.put("msToken", msToken);
-        objectNode.put("__ac_nonce", __ac_nonce);
-        objectNode.put("realRoomId", realRoomId);
-        objectNode.put("user_unique_id", RandomUtil.randomNumbers(19));
-        return objectNode;
+
+        return RoomInitResult.builder()
+                .ttwid(ttwid)
+                .msToken(msToken)
+                .acNonce(__ac_nonce)
+                .realRoomId(realRoomId)
+                .userUniqueId(user_unique_id)
+                .build();
+    }
+
+    public static RoomInitResult roomInit(Object roomId) {
+        return roomInit(roomId, null);
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class RoomInitResult {
+        private String ttwid;
+        private String msToken;
+        private String acNonce;
+        private long realRoomId;
+        private String userUniqueId;
     }
 }

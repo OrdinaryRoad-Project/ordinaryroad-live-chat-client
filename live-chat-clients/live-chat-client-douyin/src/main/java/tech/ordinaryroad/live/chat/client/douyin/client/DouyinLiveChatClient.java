@@ -29,7 +29,6 @@ import cn.hutool.core.util.RandomUtil;
 import cn.hutool.http.GlobalHeaders;
 import cn.hutool.http.Header;
 import cn.hutool.http.HttpUtil;
-import com.fasterxml.jackson.databind.JsonNode;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
@@ -53,8 +52,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import static tech.ordinaryroad.live.chat.client.commons.base.msg.BaseMsg.OBJECT_MAPPER;
-
 /**
  * @author mjz
  * @date 2024/1/2
@@ -68,7 +65,7 @@ public class DouyinLiveChatClient extends BaseNettyClient<
         DouyinConnectionHandler,
         DouyinBinaryFrameHandler> {
 
-    private JsonNode roomInfo = OBJECT_MAPPER.createObjectNode();
+    private DouyinApis.RoomInitResult roomInitResult = new DouyinApis.RoomInitResult();
 
     public DouyinLiveChatClient(DouyinLiveChatClientConfig config, List<IDouyinMsgListener> msgListeners, IDouyinConnectionListener connectionListener, EventLoopGroup workerGroup) {
         super(config, workerGroup, connectionListener);
@@ -100,14 +97,14 @@ public class DouyinLiveChatClient extends BaseNettyClient<
 
     @Override
     public void init() {
-        roomInfo = DouyinApis.roomInit(getConfig().getRoomId());
+        roomInitResult = DouyinApis.roomInit(getConfig().getRoomId(), getConfig().getCookie());
         super.init();
     }
 
     @Override
     public DouyinConnectionHandler initConnectionHandler(IBaseConnectionListener<DouyinConnectionHandler> clientConnectionListener) {
         DefaultHttpHeaders headers = new DefaultHttpHeaders();
-        headers.add(Header.COOKIE.name(), "ttwid=" + roomInfo.get("ttwid").asText());
+        headers.add(Header.COOKIE.name(), DouyinApis.KEY_COOKIE_TTWID + "=" + roomInitResult.getTtwid());
         headers.add(Header.USER_AGENT.name(), GlobalHeaders.INSTANCE.header(Header.USER_AGENT));
         return new DouyinConnectionHandler(
                 WebSocketClientHandshakerFactory.newHandshaker(getWebsocketUri(), WebSocketVersion.V13, null, true, headers, getConfig().getMaxFramePayloadLength()),
@@ -122,8 +119,8 @@ public class DouyinLiveChatClient extends BaseNettyClient<
 
     @Override
     protected String getWebSocketUriString() {
-        String realRoomId = roomInfo.get("realRoomId").asText();
-        String user_unique_id = roomInfo.get("user_unique_id").asText();
+        long realRoomId = roomInitResult.getRealRoomId();
+        String userUniqueId = roomInitResult.getUserUniqueId();
 
         String webSocketUriString = super.getWebSocketUriString();
         Map<String, String> queryParams = new HashMap<>();
@@ -153,14 +150,14 @@ public class DouyinLiveChatClient extends BaseNettyClient<
         queryParams.put("did_rule", "3");
         queryParams.put("aid", "6383");
 
-        queryParams.put("room_id", realRoomId);
-        queryParams.put("user_unique_id", user_unique_id);
+        queryParams.put("room_id", Long.toString(realRoomId));
+        queryParams.put("user_unique_id", userUniqueId);
         // TODO 生成signature
         queryParams.put("signature", "00000000");
         queryParams.put("cursor", "t-" + System.currentTimeMillis() + "_r-1_d-1_u-1_h-1");
         queryParams.put("internal_ext", "internal_src:dim|" +
                 "wss_push_room_id:" + realRoomId + "|" +
-                "wss_push_did:" + user_unique_id + "|" +
+                "wss_push_did:" + userUniqueId + "|" +
                 "dim_log_id:" + DateUtil.format(new Date(), "yyyy-MM-dd") + RandomUtil.randomNumbers(6) + RandomUtil.randomString("0123456789ABCDEF", 20) + "|" +
                 "first_req_ms:" + System.currentTimeMillis() + "|" +
                 "fetch_time:" + System.currentTimeMillis() + "|" +
