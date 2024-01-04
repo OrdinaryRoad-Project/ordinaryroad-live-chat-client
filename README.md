@@ -207,7 +207,7 @@ public class ClientModeExample {
                 - onGiftMsg：收到礼物消息
             - ISuperChatMsgListener（B站）
                 - onSuperChatMsg：收到醒目留言
-            - IEnterRoomMsgListener（B站、斗鱼，虎牙只能接收到高级用户的入房回调）
+            - IEnterRoomMsgListener（B站、斗鱼、抖音，虎牙只能接收到高级用户的入房回调）
                 - onEnterRoomMsg：进入房间消息回调
     - commons-client
         - 定义了Client的配置：连接地址、房间id、Cookie、心跳、自动重连等相关参数
@@ -226,6 +226,7 @@ public class ClientModeExample {
     - client-bilibili
     - client-douyu
     - client-huya
+    - client-douyin
 
 ## 交流讨论
 
