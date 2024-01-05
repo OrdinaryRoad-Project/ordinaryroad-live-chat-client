@@ -28,29 +28,29 @@
 package tech.ordinaryroad.live.chat.client.douyin.protobuf;
 
 public interface douyin_websocket_frame_msgOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_websocket_frame_msg)
+    // @@protoc_insertion_point(interface_extends:tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame_msg)
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>repeated .tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_cmd_msg messages_list = 1;</code>
+   * <code>repeated .tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg messages_list = 1;</code>
    */
   java.util.List<tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg> 
       getMessagesListList();
   /**
-   * <code>repeated .tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_cmd_msg messages_list = 1;</code>
+   * <code>repeated .tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg messages_list = 1;</code>
    */
   tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg getMessagesList(int index);
   /**
-   * <code>repeated .tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_cmd_msg messages_list = 1;</code>
+   * <code>repeated .tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg messages_list = 1;</code>
    */
   int getMessagesListCount();
   /**
-   * <code>repeated .tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_cmd_msg messages_list = 1;</code>
+   * <code>repeated .tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg messages_list = 1;</code>
    */
   java.util.List<? extends tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msgOrBuilder> 
       getMessagesListOrBuilderList();
   /**
-   * <code>repeated .tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_cmd_msg messages_list = 1;</code>
+   * <code>repeated .tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg messages_list = 1;</code>
    */
   tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msgOrBuilder getMessagesListOrBuilder(
       int index);

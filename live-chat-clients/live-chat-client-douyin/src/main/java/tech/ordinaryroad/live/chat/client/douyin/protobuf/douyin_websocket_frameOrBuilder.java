@@ -28,7 +28,7 @@
 package tech.ordinaryroad.live.chat.client.douyin.protobuf;
 
 public interface douyin_websocket_frameOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_websocket_frame)
+    // @@protoc_insertion_point(interface_extends:tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame)
     com.google.protobuf.MessageOrBuilder {
 
   /**

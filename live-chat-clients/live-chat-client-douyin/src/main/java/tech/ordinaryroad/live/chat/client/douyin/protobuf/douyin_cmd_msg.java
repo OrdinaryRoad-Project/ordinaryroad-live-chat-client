@@ -31,29 +31,28 @@ import tech.ordinaryroad.live.chat.client.douyin.constant.DouyinCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyin.msg.base.IDouyinCmdMsg;
 
 /**
- * Protobuf type {@code tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_cmd_msg}
+ * Protobuf type {@code tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg}
  */
 public final class douyin_cmd_msg extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_cmd_msg)
-        douyin_cmd_msgOrBuilder, IDouyinCmdMsg {
+    // @@protoc_insertion_point(message_implements:tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg)
+    douyin_cmd_msgOrBuilder, IDouyinCmdMsg {
 
-    @Override
-    public String getCmd() {
-        return getMethod();
-    }
+  @Override
+  public String getCmd() {
+    return getMethod();
+  }
 
-    @Override
-    public void setCmd(String cmd) {
-        // ignore
-        // method_ = cmd;
-    }
+  @Override
+  public void setCmd(String cmd) {
+    // ignore
+    // method_ = cmd;
+  }
 
-    @Override
-    public DouyinCmdEnum getCmdEnum() {
-        return DouyinCmdEnum.getByName(getMethod());
-    }
-
+  @Override
+  public DouyinCmdEnum getCmdEnum() {
+    return DouyinCmdEnum.getByName(getMethod());
+  }
 
 private static final long serialVersionUID = 0L;
   // Use douyin_cmd_msg.newBuilder() to construct.
@@ -75,13 +74,13 @@ private static final long serialVersionUID = 0L;
 
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_cmd_msgProto.internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_cmd_msg_descriptor;
+    return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_cmd_msgProto.internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_cmd_msg_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_cmd_msgProto.internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_cmd_msg_fieldAccessorTable
+    return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_cmd_msgProto.internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_cmd_msg_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
             tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg.class, tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg.Builder.class);
   }
@@ -99,7 +98,7 @@ private static final long serialVersionUID = 0L;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
     } else {
-      com.google.protobuf.ByteString bs =
+      com.google.protobuf.ByteString bs = 
           (com.google.protobuf.ByteString) ref;
       java.lang.String s = bs.toStringUtf8();
       method_ = s;
@@ -115,7 +114,7 @@ private static final long serialVersionUID = 0L;
       getMethodBytes() {
     java.lang.Object ref = method_;
     if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b =
+      com.google.protobuf.ByteString b = 
           com.google.protobuf.ByteString.copyFromUtf8(
               (java.lang.String) ref);
       method_ = b;
@@ -204,7 +203,7 @@ private static final long serialVersionUID = 0L;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
     } else {
-      com.google.protobuf.ByteString bs =
+      com.google.protobuf.ByteString bs = 
           (com.google.protobuf.ByteString) ref;
       java.lang.String s = bs.toStringUtf8();
       wrdsSubKey_ = s;
@@ -220,7 +219,7 @@ private static final long serialVersionUID = 0L;
       getWrdsSubKeyBytes() {
     java.lang.Object ref = wrdsSubKey_;
     if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b =
+      com.google.protobuf.ByteString b = 
           com.google.protobuf.ByteString.copyFromUtf8(
               (java.lang.String) ref);
       wrdsSubKey_ = b;
@@ -466,23 +465,22 @@ private static final long serialVersionUID = 0L;
     Builder builder = new Builder(parent);
     return builder;
   }
-
   /**
-   * Protobuf type {@code tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_cmd_msg}
+   * Protobuf type {@code tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_cmd_msg)
+      // @@protoc_insertion_point(builder_implements:tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg)
       tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msgOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_cmd_msgProto.internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_cmd_msg_descriptor;
+      return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_cmd_msgProto.internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_cmd_msg_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_cmd_msgProto.internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_cmd_msg_fieldAccessorTable
+      return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_cmd_msgProto.internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_cmd_msg_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg.class, tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg.Builder.class);
     }
@@ -515,7 +513,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_cmd_msgProto.internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_cmd_msg_descriptor;
+      return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_cmd_msgProto.internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_cmd_msg_descriptor;
     }
 
     @java.lang.Override
@@ -748,7 +746,7 @@ private static final long serialVersionUID = 0L;
         getMethodBytes() {
       java.lang.Object ref = method_;
       if (ref instanceof String) {
-        com.google.protobuf.ByteString b =
+        com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         method_ = b;
@@ -1012,7 +1010,7 @@ private static final long serialVersionUID = 0L;
         getWrdsSubKeyBytes() {
       java.lang.Object ref = wrdsSubKey_;
       if (ref instanceof String) {
-        com.google.protobuf.ByteString b =
+        com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         wrdsSubKey_ = b;
@@ -1071,10 +1069,10 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_cmd_msg)
+    // @@protoc_insertion_point(builder_scope:tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg)
   }
 
-  // @@protoc_insertion_point(class_scope:tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_cmd_msg)
+  // @@protoc_insertion_point(class_scope:tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg)
   private static final tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg DEFAULT_INSTANCE;
   static {
     DEFAULT_INSTANCE = new tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg();

@@ -31,11 +31,11 @@ import cn.hutool.core.collection.CollUtil;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IDanmuMsg;
 
 /**
- * Protobuf type {@code tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_webcast_chat_message_msg}
+ * Protobuf type {@code tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_chat_message_msg}
  */
 public final class douyin_webcast_chat_message_msg extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_webcast_chat_message_msg)
+    // @@protoc_insertion_point(message_implements:tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_chat_message_msg)
     douyin_webcast_chat_message_msgOrBuilder, IDanmuMsg {
 
   @Override
@@ -83,13 +83,13 @@ public final class douyin_webcast_chat_message_msg extends
 
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_webcast_chat_message_msgProto.internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_webcast_chat_message_msg_descriptor;
+    return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_webcast_chat_message_msgProto.internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_webcast_chat_message_msg_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_webcast_chat_message_msgProto.internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_webcast_chat_message_msg_fieldAccessorTable
+    return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_webcast_chat_message_msgProto.internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_webcast_chat_message_msg_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
             tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_chat_message_msg.class, tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_chat_message_msg.Builder.class);
   }
@@ -159,7 +159,7 @@ public final class douyin_webcast_chat_message_msg extends
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
     } else {
-      com.google.protobuf.ByteString bs =
+      com.google.protobuf.ByteString bs = 
           (com.google.protobuf.ByteString) ref;
       java.lang.String s = bs.toStringUtf8();
       content_ = s;
@@ -175,7 +175,7 @@ public final class douyin_webcast_chat_message_msg extends
       getContentBytes() {
     java.lang.Object ref = content_;
     if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b =
+      com.google.protobuf.ByteString b = 
           com.google.protobuf.ByteString.copyFromUtf8(
               (java.lang.String) ref);
       content_ = b;
@@ -235,7 +235,7 @@ public final class douyin_webcast_chat_message_msg extends
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
     } else {
-      com.google.protobuf.ByteString bs =
+      com.google.protobuf.ByteString bs = 
           (com.google.protobuf.ByteString) ref;
       java.lang.String s = bs.toStringUtf8();
       fullScreenTextColor_ = s;
@@ -251,7 +251,7 @@ public final class douyin_webcast_chat_message_msg extends
       getFullScreenTextColorBytes() {
     java.lang.Object ref = fullScreenTextColor_;
     if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b =
+      com.google.protobuf.ByteString b = 
           com.google.protobuf.ByteString.copyFromUtf8(
               (java.lang.String) ref);
       fullScreenTextColor_ = b;
@@ -412,7 +412,7 @@ public final class douyin_webcast_chat_message_msg extends
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
     } else {
-      com.google.protobuf.ByteString bs =
+      com.google.protobuf.ByteString bs = 
           (com.google.protobuf.ByteString) ref;
       java.lang.String s = bs.toStringUtf8();
       chatBy_ = s;
@@ -432,7 +432,7 @@ public final class douyin_webcast_chat_message_msg extends
       getChatByBytes() {
     java.lang.Object ref = chatBy_;
     if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b =
+      com.google.protobuf.ByteString b = 
           com.google.protobuf.ByteString.copyFromUtf8(
               (java.lang.String) ref);
       chatBy_ = b;
@@ -808,21 +808,21 @@ public final class douyin_webcast_chat_message_msg extends
     return builder;
   }
   /**
-   * Protobuf type {@code tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_webcast_chat_message_msg}
+   * Protobuf type {@code tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_chat_message_msg}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_webcast_chat_message_msg)
+      // @@protoc_insertion_point(builder_implements:tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_chat_message_msg)
       tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_chat_message_msgOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_webcast_chat_message_msgProto.internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_webcast_chat_message_msg_descriptor;
+      return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_webcast_chat_message_msgProto.internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_webcast_chat_message_msg_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_webcast_chat_message_msgProto.internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_webcast_chat_message_msg_fieldAccessorTable
+      return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_webcast_chat_message_msgProto.internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_webcast_chat_message_msg_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_chat_message_msg.class, tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_chat_message_msg.Builder.class);
     }
@@ -883,7 +883,7 @@ public final class douyin_webcast_chat_message_msg extends
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_webcast_chat_message_msgProto.internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_webcast_chat_message_msg_descriptor;
+      return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_webcast_chat_message_msgProto.internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_webcast_chat_message_msg_descriptor;
     }
 
     @java.lang.Override
@@ -1307,7 +1307,7 @@ public final class douyin_webcast_chat_message_msg extends
      * <code>.Common common = 1;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        tech.ordinaryroad.live.chat.client.douyin.protobuf.dto.CommonOuterClass.Common, tech.ordinaryroad.live.chat.client.douyin.protobuf.dto.CommonOuterClass.Common.Builder, tech.ordinaryroad.live.chat.client.douyin.protobuf.dto.CommonOuterClass.CommonOrBuilder>
+        tech.ordinaryroad.live.chat.client.douyin.protobuf.dto.CommonOuterClass.Common, tech.ordinaryroad.live.chat.client.douyin.protobuf.dto.CommonOuterClass.Common.Builder, tech.ordinaryroad.live.chat.client.douyin.protobuf.dto.CommonOuterClass.CommonOrBuilder> 
         getCommonFieldBuilder() {
       if (commonBuilder_ == null) {
         commonBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
@@ -1426,7 +1426,7 @@ public final class douyin_webcast_chat_message_msg extends
      * <code>.User user = 2;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        tech.ordinaryroad.live.chat.client.douyin.protobuf.dto.UserOuterClass.User, tech.ordinaryroad.live.chat.client.douyin.protobuf.dto.UserOuterClass.User.Builder, tech.ordinaryroad.live.chat.client.douyin.protobuf.dto.UserOuterClass.UserOrBuilder>
+        tech.ordinaryroad.live.chat.client.douyin.protobuf.dto.UserOuterClass.User, tech.ordinaryroad.live.chat.client.douyin.protobuf.dto.UserOuterClass.User.Builder, tech.ordinaryroad.live.chat.client.douyin.protobuf.dto.UserOuterClass.UserOrBuilder> 
         getUserFieldBuilder() {
       if (userBuilder_ == null) {
         userBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
@@ -1464,7 +1464,7 @@ public final class douyin_webcast_chat_message_msg extends
         getContentBytes() {
       java.lang.Object ref = content_;
       if (ref instanceof String) {
-        com.google.protobuf.ByteString b =
+        com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         content_ = b;
@@ -1649,7 +1649,7 @@ public final class douyin_webcast_chat_message_msg extends
      * <code>.Image background_image = 5;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        tech.ordinaryroad.live.chat.client.douyin.protobuf.dto.ImageOuterClass.Image, tech.ordinaryroad.live.chat.client.douyin.protobuf.dto.ImageOuterClass.Image.Builder, tech.ordinaryroad.live.chat.client.douyin.protobuf.dto.ImageOuterClass.ImageOrBuilder>
+        tech.ordinaryroad.live.chat.client.douyin.protobuf.dto.ImageOuterClass.Image, tech.ordinaryroad.live.chat.client.douyin.protobuf.dto.ImageOuterClass.Image.Builder, tech.ordinaryroad.live.chat.client.douyin.protobuf.dto.ImageOuterClass.ImageOrBuilder> 
         getBackgroundImageFieldBuilder() {
       if (backgroundImageBuilder_ == null) {
         backgroundImageBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
@@ -1687,7 +1687,7 @@ public final class douyin_webcast_chat_message_msg extends
         getFullScreenTextColorBytes() {
       java.lang.Object ref = fullScreenTextColor_;
       if (ref instanceof String) {
-        com.google.protobuf.ByteString b =
+        com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         fullScreenTextColor_ = b;
@@ -1840,7 +1840,7 @@ public final class douyin_webcast_chat_message_msg extends
      * <code>.Image background_image_v2 = 7;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        tech.ordinaryroad.live.chat.client.douyin.protobuf.dto.ImageOuterClass.Image, tech.ordinaryroad.live.chat.client.douyin.protobuf.dto.ImageOuterClass.Image.Builder, tech.ordinaryroad.live.chat.client.douyin.protobuf.dto.ImageOuterClass.ImageOrBuilder>
+        tech.ordinaryroad.live.chat.client.douyin.protobuf.dto.ImageOuterClass.Image, tech.ordinaryroad.live.chat.client.douyin.protobuf.dto.ImageOuterClass.Image.Builder, tech.ordinaryroad.live.chat.client.douyin.protobuf.dto.ImageOuterClass.ImageOrBuilder> 
         getBackgroundImageV2FieldBuilder() {
       if (backgroundImageV2Builder_ == null) {
         backgroundImageV2Builder_ = new com.google.protobuf.SingleFieldBuilderV3<
@@ -1995,7 +1995,7 @@ public final class douyin_webcast_chat_message_msg extends
      * <code>.Image gift_image = 10;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        tech.ordinaryroad.live.chat.client.douyin.protobuf.dto.ImageOuterClass.Image, tech.ordinaryroad.live.chat.client.douyin.protobuf.dto.ImageOuterClass.Image.Builder, tech.ordinaryroad.live.chat.client.douyin.protobuf.dto.ImageOuterClass.ImageOrBuilder>
+        tech.ordinaryroad.live.chat.client.douyin.protobuf.dto.ImageOuterClass.Image, tech.ordinaryroad.live.chat.client.douyin.protobuf.dto.ImageOuterClass.Image.Builder, tech.ordinaryroad.live.chat.client.douyin.protobuf.dto.ImageOuterClass.ImageOrBuilder> 
         getGiftImageFieldBuilder() {
       if (giftImageBuilder_ == null) {
         giftImageBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
@@ -2245,7 +2245,7 @@ public final class douyin_webcast_chat_message_msg extends
         getChatByBytes() {
       java.lang.Object ref = chatBy_;
       if (ref instanceof String) {
-        com.google.protobuf.ByteString b =
+        com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         chatBy_ = b;
@@ -2360,10 +2360,10 @@ public final class douyin_webcast_chat_message_msg extends
     }
 
 
-    // @@protoc_insertion_point(builder_scope:tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_webcast_chat_message_msg)
+    // @@protoc_insertion_point(builder_scope:tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_chat_message_msg)
   }
 
-  // @@protoc_insertion_point(class_scope:tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_webcast_chat_message_msg)
+  // @@protoc_insertion_point(class_scope:tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_chat_message_msg)
   private static final tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_chat_message_msg DEFAULT_INSTANCE;
   static {
     DEFAULT_INSTANCE = new tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_chat_message_msg();
