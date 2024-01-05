@@ -28,7 +28,7 @@
 package tech.ordinaryroad.live.chat.client.douyin.protobuf;
 
 public interface douyin_cmd_msgOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_cmd_msg)
+    // @@protoc_insertion_point(interface_extends:tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg)
     com.google.protobuf.MessageOrBuilder {
 
   /**

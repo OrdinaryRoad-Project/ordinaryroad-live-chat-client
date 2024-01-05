@@ -31,11 +31,11 @@ import cn.hutool.core.collection.CollUtil;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IEnterRoomMsg;
 
 /**
- * Protobuf type {@code tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_webcast_member_message_msg}
+ * Protobuf type {@code tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_member_message_msg}
  */
 public final class douyin_webcast_member_message_msg extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_webcast_member_message_msg)
+    // @@protoc_insertion_point(message_implements:tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_member_message_msg)
     douyin_webcast_member_message_msgOrBuilder, IEnterRoomMsg {
 
   @Override
@@ -82,7 +82,7 @@ public final class douyin_webcast_member_message_msg extends
 
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_webcast_member_message_msgProto.internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_webcast_member_message_msg_descriptor;
+    return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_webcast_member_message_msgProto.internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_webcast_member_message_msg_descriptor;
   }
 
   @SuppressWarnings({"rawtypes"})
@@ -100,7 +100,7 @@ public final class douyin_webcast_member_message_msg extends
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_webcast_member_message_msgProto.internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_webcast_member_message_msg_fieldAccessorTable
+    return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_webcast_member_message_msgProto.internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_webcast_member_message_msg_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
             tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_member_message_msg.class, tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_member_message_msg.Builder.class);
   }
@@ -479,7 +479,7 @@ public final class douyin_webcast_member_message_msg extends
         java.lang.String, java.lang.String> defaultEntry =
             com.google.protobuf.MapEntry
             .<java.lang.String, java.lang.String>newDefaultInstance(
-                tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_webcast_member_message_msgProto.internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_webcast_member_message_msg_BuriedPointMapEntry_descriptor, 
+                tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_webcast_member_message_msgProto.internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_webcast_member_message_msg_BuriedPointMapEntry_descriptor, 
                 com.google.protobuf.WireFormat.FieldType.STRING,
                 "",
                 com.google.protobuf.WireFormat.FieldType.STRING,
@@ -957,15 +957,15 @@ java.lang.String defaultValue) {
     return builder;
   }
   /**
-   * Protobuf type {@code tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_webcast_member_message_msg}
+   * Protobuf type {@code tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_member_message_msg}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_webcast_member_message_msg)
+      // @@protoc_insertion_point(builder_implements:tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_member_message_msg)
       tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_member_message_msgOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_webcast_member_message_msgProto.internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_webcast_member_message_msg_descriptor;
+      return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_webcast_member_message_msgProto.internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_webcast_member_message_msg_descriptor;
     }
 
     @SuppressWarnings({"rawtypes"})
@@ -993,7 +993,7 @@ java.lang.String defaultValue) {
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_webcast_member_message_msgProto.internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_webcast_member_message_msg_fieldAccessorTable
+      return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_webcast_member_message_msgProto.internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_webcast_member_message_msg_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_member_message_msg.class, tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_member_message_msg.Builder.class);
     }
@@ -1061,7 +1061,7 @@ java.lang.String defaultValue) {
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_webcast_member_message_msgProto.internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_webcast_member_message_msg_descriptor;
+      return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_webcast_member_message_msgProto.internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_webcast_member_message_msg_descriptor;
     }
 
     @java.lang.Override
@@ -2804,10 +2804,10 @@ java.lang.String defaultValue) {
     }
 
 
-    // @@protoc_insertion_point(builder_scope:tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_webcast_member_message_msg)
+    // @@protoc_insertion_point(builder_scope:tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_member_message_msg)
   }
 
-  // @@protoc_insertion_point(class_scope:tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_webcast_member_message_msg)
+  // @@protoc_insertion_point(class_scope:tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_member_message_msg)
   private static final tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_member_message_msg DEFAULT_INSTANCE;
   static {
     DEFAULT_INSTANCE = new tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_member_message_msg();

@@ -39,15 +39,15 @@ public final class Douyin_websocket_frameProto {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_websocket_frame_descriptor;
+    internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_websocket_frame_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_websocket_frame_fieldAccessorTable;
+      internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_websocket_frame_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_websocket_frame_HeadersListEntry_descriptor;
+    internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_websocket_frame_HeadersListEntry_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_websocket_frame_HeadersListEntry_fieldAccessorTable;
+      internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_websocket_frame_HeadersListEntry_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -57,35 +57,35 @@ public final class Douyin_websocket_frameProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\034douyin_websocket_frame.proto\0224tech.ord" +
-      "inaryroad.live.chat.client.bilibili.prot" +
-      "obuf\"\303\002\n\026douyin_websocket_frame\022\016\n\006seq_i" +
-      "d\030\001 \001(\004\022\016\n\006log_id\030\002 \001(\004\022\017\n\007service\030\003 \001(\004" +
-      "\022\016\n\006method\030\004 \001(\004\022s\n\014headers_list\030\005 \003(\0132]" +
-      ".tech.ordinaryroad.live.chat.client.bili" +
-      "bili.protobuf.douyin_websocket_frame.Hea" +
-      "dersListEntry\022\030\n\020payload_encoding\030\006 \001(\t\022" +
-      "\024\n\014payload_type\030\007 \001(\t\022\017\n\007payload\030\010 \001(\014\0322" +
-      "\n\020HeadersListEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value" +
-      "\030\002 \001(\t:\0028\001BY\n2tech.ordinaryroad.live.cha" +
-      "t.client.douyin.protobufB\033Douyin_websock" +
-      "et_frameProtoP\001\242\002\003GPBb\006proto3"
+      "\n\034douyin_websocket_frame.proto\0222tech.ord" +
+      "inaryroad.live.chat.client.douyin.protob" +
+      "uf\"\301\002\n\026douyin_websocket_frame\022\016\n\006seq_id\030" +
+      "\001 \001(\004\022\016\n\006log_id\030\002 \001(\004\022\017\n\007service\030\003 \001(\004\022\016" +
+      "\n\006method\030\004 \001(\004\022q\n\014headers_list\030\005 \003(\0132[.t" +
+      "ech.ordinaryroad.live.chat.client.douyin" +
+      ".protobuf.douyin_websocket_frame.Headers" +
+      "ListEntry\022\030\n\020payload_encoding\030\006 \001(\t\022\024\n\014p" +
+      "ayload_type\030\007 \001(\t\022\017\n\007payload\030\010 \001(\014\0322\n\020He" +
+      "adersListEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001" +
+      "(\t:\0028\001BY\n2tech.ordinaryroad.live.chat.cl" +
+      "ient.douyin.protobufB\033Douyin_websocket_f" +
+      "rameProtoP\001\242\002\003GPBb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         });
-    internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_websocket_frame_descriptor =
+    internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_websocket_frame_descriptor =
       getDescriptor().getMessageTypes().get(0);
-    internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_websocket_frame_fieldAccessorTable = new
+    internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_websocket_frame_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_websocket_frame_descriptor,
+        internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_websocket_frame_descriptor,
         new java.lang.String[] { "SeqId", "LogId", "Service", "Method", "HeadersList", "PayloadEncoding", "PayloadType", "Payload", });
-    internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_websocket_frame_HeadersListEntry_descriptor =
-      internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_websocket_frame_descriptor.getNestedTypes().get(0);
-    internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_websocket_frame_HeadersListEntry_fieldAccessorTable = new
+    internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_websocket_frame_HeadersListEntry_descriptor =
+      internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_websocket_frame_descriptor.getNestedTypes().get(0);
+    internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_websocket_frame_HeadersListEntry_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_websocket_frame_HeadersListEntry_descriptor,
+        internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_websocket_frame_HeadersListEntry_descriptor,
         new java.lang.String[] { "Key", "Value", });
   }
 

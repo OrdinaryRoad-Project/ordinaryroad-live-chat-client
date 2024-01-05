@@ -28,13 +28,12 @@
 package tech.ordinaryroad.live.chat.client.douyin.protobuf;
 
 /**
- * Protobuf type {@code tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_websocket_frame_msg}
+ * Protobuf type {@code tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame_msg}
  */
 public final class douyin_websocket_frame_msg extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_websocket_frame_msg)
-    douyin_websocket_frame_msgOrBuilder
-{
+    // @@protoc_insertion_point(message_implements:tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame_msg)
+    douyin_websocket_frame_msgOrBuilder {
 private static final long serialVersionUID = 0L;
   // Use douyin_websocket_frame_msg.newBuilder() to construct.
   private douyin_websocket_frame_msg(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
@@ -57,7 +56,7 @@ private static final long serialVersionUID = 0L;
 
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame_msgProto.internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_websocket_frame_msg_descriptor;
+    return tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame_msgProto.internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_websocket_frame_msg_descriptor;
   }
 
   @SuppressWarnings({"rawtypes"})
@@ -75,7 +74,7 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame_msgProto.internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_websocket_frame_msg_fieldAccessorTable
+    return tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame_msgProto.internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_websocket_frame_msg_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
             tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame_msg.class, tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame_msg.Builder.class);
   }
@@ -84,36 +83,36 @@ private static final long serialVersionUID = 0L;
   @SuppressWarnings("serial")
   private java.util.List<tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg> messagesList_;
   /**
-   * <code>repeated .tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_cmd_msg messages_list = 1;</code>
+   * <code>repeated .tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg messages_list = 1;</code>
    */
   @java.lang.Override
   public java.util.List<tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg> getMessagesListList() {
     return messagesList_;
   }
   /**
-   * <code>repeated .tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_cmd_msg messages_list = 1;</code>
+   * <code>repeated .tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg messages_list = 1;</code>
    */
   @java.lang.Override
-  public java.util.List<? extends tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msgOrBuilder>
+  public java.util.List<? extends tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msgOrBuilder> 
       getMessagesListOrBuilderList() {
     return messagesList_;
   }
   /**
-   * <code>repeated .tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_cmd_msg messages_list = 1;</code>
+   * <code>repeated .tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg messages_list = 1;</code>
    */
   @java.lang.Override
   public int getMessagesListCount() {
     return messagesList_.size();
   }
   /**
-   * <code>repeated .tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_cmd_msg messages_list = 1;</code>
+   * <code>repeated .tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg messages_list = 1;</code>
    */
   @java.lang.Override
   public tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg getMessagesList(int index) {
     return messagesList_.get(index);
   }
   /**
-   * <code>repeated .tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_cmd_msg messages_list = 1;</code>
+   * <code>repeated .tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg messages_list = 1;</code>
    */
   @java.lang.Override
   public tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msgOrBuilder getMessagesListOrBuilder(
@@ -134,7 +133,7 @@ private static final long serialVersionUID = 0L;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
     } else {
-      com.google.protobuf.ByteString bs =
+      com.google.protobuf.ByteString bs = 
           (com.google.protobuf.ByteString) ref;
       java.lang.String s = bs.toStringUtf8();
       cursor_ = s;
@@ -150,7 +149,7 @@ private static final long serialVersionUID = 0L;
       getCursorBytes() {
     java.lang.Object ref = cursor_;
     if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b =
+      com.google.protobuf.ByteString b = 
           com.google.protobuf.ByteString.copyFromUtf8(
               (java.lang.String) ref);
       cursor_ = b;
@@ -195,7 +194,7 @@ private static final long serialVersionUID = 0L;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
     } else {
-      com.google.protobuf.ByteString bs =
+      com.google.protobuf.ByteString bs = 
           (com.google.protobuf.ByteString) ref;
       java.lang.String s = bs.toStringUtf8();
       internalExt_ = s;
@@ -211,7 +210,7 @@ private static final long serialVersionUID = 0L;
       getInternalExtBytes() {
     java.lang.Object ref = internalExt_;
     if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b =
+      com.google.protobuf.ByteString b = 
           com.google.protobuf.ByteString.copyFromUtf8(
               (java.lang.String) ref);
       internalExt_ = b;
@@ -238,7 +237,7 @@ private static final long serialVersionUID = 0L;
         java.lang.String, java.lang.String> defaultEntry =
             com.google.protobuf.MapEntry
             .<java.lang.String, java.lang.String>newDefaultInstance(
-                tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame_msgProto.internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_websocket_frame_msg_RouteParamsEntry_descriptor,
+                tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame_msgProto.internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_websocket_frame_msg_RouteParamsEntry_descriptor, 
                 com.google.protobuf.WireFormat.FieldType.STRING,
                 "",
                 com.google.protobuf.WireFormat.FieldType.STRING,
@@ -346,7 +345,7 @@ java.lang.String defaultValue) {
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
     } else {
-      com.google.protobuf.ByteString bs =
+      com.google.protobuf.ByteString bs = 
           (com.google.protobuf.ByteString) ref;
       java.lang.String s = bs.toStringUtf8();
       pushServer_ = s;
@@ -362,7 +361,7 @@ java.lang.String defaultValue) {
       getPushServerBytes() {
     java.lang.Object ref = pushServer_;
     if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b =
+      com.google.protobuf.ByteString b = 
           com.google.protobuf.ByteString.copyFromUtf8(
               (java.lang.String) ref);
       pushServer_ = b;
@@ -385,7 +384,7 @@ java.lang.String defaultValue) {
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
     } else {
-      com.google.protobuf.ByteString bs =
+      com.google.protobuf.ByteString bs = 
           (com.google.protobuf.ByteString) ref;
       java.lang.String s = bs.toStringUtf8();
       liveCursor_ = s;
@@ -401,7 +400,7 @@ java.lang.String defaultValue) {
       getLiveCursorBytes() {
     java.lang.Object ref = liveCursor_;
     if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b =
+      com.google.protobuf.ByteString b = 
           com.google.protobuf.ByteString.copyFromUtf8(
               (java.lang.String) ref);
       liveCursor_ = b;
@@ -715,15 +714,15 @@ java.lang.String defaultValue) {
     return builder;
   }
   /**
-   * Protobuf type {@code tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_websocket_frame_msg}
+   * Protobuf type {@code tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame_msg}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_websocket_frame_msg)
+      // @@protoc_insertion_point(builder_implements:tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame_msg)
       tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame_msgOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame_msgProto.internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_websocket_frame_msg_descriptor;
+      return tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame_msgProto.internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_websocket_frame_msg_descriptor;
     }
 
     @SuppressWarnings({"rawtypes"})
@@ -751,7 +750,7 @@ java.lang.String defaultValue) {
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame_msgProto.internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_websocket_frame_msg_fieldAccessorTable
+      return tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame_msgProto.internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_websocket_frame_msg_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame_msg.class, tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame_msg.Builder.class);
     }
@@ -794,7 +793,7 @@ java.lang.String defaultValue) {
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame_msgProto.internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_websocket_frame_msg_descriptor;
+      return tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame_msgProto.internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_websocket_frame_msg_descriptor;
     }
 
     @java.lang.Override
@@ -932,7 +931,7 @@ java.lang.String defaultValue) {
             messagesListBuilder_ = null;
             messagesList_ = other.messagesList_;
             bitField0_ = (bitField0_ & ~0x00000001);
-            messagesListBuilder_ =
+            messagesListBuilder_ = 
               com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                  getMessagesListFieldBuilder() : null;
           } else {
@@ -1109,7 +1108,7 @@ java.lang.String defaultValue) {
         tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg, tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg.Builder, tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msgOrBuilder> messagesListBuilder_;
 
     /**
-     * <code>repeated .tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_cmd_msg messages_list = 1;</code>
+     * <code>repeated .tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg messages_list = 1;</code>
      */
     public java.util.List<tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg> getMessagesListList() {
       if (messagesListBuilder_ == null) {
@@ -1119,7 +1118,7 @@ java.lang.String defaultValue) {
       }
     }
     /**
-     * <code>repeated .tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_cmd_msg messages_list = 1;</code>
+     * <code>repeated .tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg messages_list = 1;</code>
      */
     public int getMessagesListCount() {
       if (messagesListBuilder_ == null) {
@@ -1129,7 +1128,7 @@ java.lang.String defaultValue) {
       }
     }
     /**
-     * <code>repeated .tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_cmd_msg messages_list = 1;</code>
+     * <code>repeated .tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg messages_list = 1;</code>
      */
     public tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg getMessagesList(int index) {
       if (messagesListBuilder_ == null) {
@@ -1139,7 +1138,7 @@ java.lang.String defaultValue) {
       }
     }
     /**
-     * <code>repeated .tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_cmd_msg messages_list = 1;</code>
+     * <code>repeated .tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg messages_list = 1;</code>
      */
     public Builder setMessagesList(
         int index, tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg value) {
@@ -1156,7 +1155,7 @@ java.lang.String defaultValue) {
       return this;
     }
     /**
-     * <code>repeated .tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_cmd_msg messages_list = 1;</code>
+     * <code>repeated .tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg messages_list = 1;</code>
      */
     public Builder setMessagesList(
         int index, tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg.Builder builderForValue) {
@@ -1170,7 +1169,7 @@ java.lang.String defaultValue) {
       return this;
     }
     /**
-     * <code>repeated .tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_cmd_msg messages_list = 1;</code>
+     * <code>repeated .tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg messages_list = 1;</code>
      */
     public Builder addMessagesList(tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg value) {
       if (messagesListBuilder_ == null) {
@@ -1186,7 +1185,7 @@ java.lang.String defaultValue) {
       return this;
     }
     /**
-     * <code>repeated .tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_cmd_msg messages_list = 1;</code>
+     * <code>repeated .tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg messages_list = 1;</code>
      */
     public Builder addMessagesList(
         int index, tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg value) {
@@ -1203,7 +1202,7 @@ java.lang.String defaultValue) {
       return this;
     }
     /**
-     * <code>repeated .tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_cmd_msg messages_list = 1;</code>
+     * <code>repeated .tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg messages_list = 1;</code>
      */
     public Builder addMessagesList(
         tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg.Builder builderForValue) {
@@ -1217,7 +1216,7 @@ java.lang.String defaultValue) {
       return this;
     }
     /**
-     * <code>repeated .tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_cmd_msg messages_list = 1;</code>
+     * <code>repeated .tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg messages_list = 1;</code>
      */
     public Builder addMessagesList(
         int index, tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg.Builder builderForValue) {
@@ -1231,7 +1230,7 @@ java.lang.String defaultValue) {
       return this;
     }
     /**
-     * <code>repeated .tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_cmd_msg messages_list = 1;</code>
+     * <code>repeated .tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg messages_list = 1;</code>
      */
     public Builder addAllMessagesList(
         java.lang.Iterable<? extends tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg> values) {
@@ -1246,7 +1245,7 @@ java.lang.String defaultValue) {
       return this;
     }
     /**
-     * <code>repeated .tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_cmd_msg messages_list = 1;</code>
+     * <code>repeated .tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg messages_list = 1;</code>
      */
     public Builder clearMessagesList() {
       if (messagesListBuilder_ == null) {
@@ -1259,7 +1258,7 @@ java.lang.String defaultValue) {
       return this;
     }
     /**
-     * <code>repeated .tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_cmd_msg messages_list = 1;</code>
+     * <code>repeated .tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg messages_list = 1;</code>
      */
     public Builder removeMessagesList(int index) {
       if (messagesListBuilder_ == null) {
@@ -1272,14 +1271,14 @@ java.lang.String defaultValue) {
       return this;
     }
     /**
-     * <code>repeated .tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_cmd_msg messages_list = 1;</code>
+     * <code>repeated .tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg messages_list = 1;</code>
      */
     public tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg.Builder getMessagesListBuilder(
         int index) {
       return getMessagesListFieldBuilder().getBuilder(index);
     }
     /**
-     * <code>repeated .tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_cmd_msg messages_list = 1;</code>
+     * <code>repeated .tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg messages_list = 1;</code>
      */
     public tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msgOrBuilder getMessagesListOrBuilder(
         int index) {
@@ -1289,9 +1288,9 @@ java.lang.String defaultValue) {
       }
     }
     /**
-     * <code>repeated .tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_cmd_msg messages_list = 1;</code>
+     * <code>repeated .tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg messages_list = 1;</code>
      */
-    public java.util.List<? extends tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msgOrBuilder>
+    public java.util.List<? extends tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msgOrBuilder> 
          getMessagesListOrBuilderList() {
       if (messagesListBuilder_ != null) {
         return messagesListBuilder_.getMessageOrBuilderList();
@@ -1300,14 +1299,14 @@ java.lang.String defaultValue) {
       }
     }
     /**
-     * <code>repeated .tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_cmd_msg messages_list = 1;</code>
+     * <code>repeated .tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg messages_list = 1;</code>
      */
     public tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg.Builder addMessagesListBuilder() {
       return getMessagesListFieldBuilder().addBuilder(
           tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg.getDefaultInstance());
     }
     /**
-     * <code>repeated .tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_cmd_msg messages_list = 1;</code>
+     * <code>repeated .tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg messages_list = 1;</code>
      */
     public tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg.Builder addMessagesListBuilder(
         int index) {
@@ -1315,14 +1314,14 @@ java.lang.String defaultValue) {
           index, tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg.getDefaultInstance());
     }
     /**
-     * <code>repeated .tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_cmd_msg messages_list = 1;</code>
+     * <code>repeated .tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg messages_list = 1;</code>
      */
-    public java.util.List<tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg.Builder>
+    public java.util.List<tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg.Builder> 
          getMessagesListBuilderList() {
       return getMessagesListFieldBuilder().getBuilderList();
     }
     private com.google.protobuf.RepeatedFieldBuilderV3<
-        tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg, tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg.Builder, tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msgOrBuilder>
+        tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg, tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg.Builder, tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msgOrBuilder> 
         getMessagesListFieldBuilder() {
       if (messagesListBuilder_ == null) {
         messagesListBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
@@ -1361,7 +1360,7 @@ java.lang.String defaultValue) {
         getCursorBytes() {
       java.lang.Object ref = cursor_;
       if (ref instanceof String) {
-        com.google.protobuf.ByteString b =
+        com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         cursor_ = b;
@@ -1497,7 +1496,7 @@ java.lang.String defaultValue) {
         getInternalExtBytes() {
       java.lang.Object ref = internalExt_;
       if (ref instanceof String) {
-        com.google.protobuf.ByteString b =
+        com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         internalExt_ = b;
@@ -1792,7 +1791,7 @@ java.lang.String defaultValue) {
         getPushServerBytes() {
       java.lang.Object ref = pushServer_;
       if (ref instanceof String) {
-        com.google.protobuf.ByteString b =
+        com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         pushServer_ = b;
@@ -1864,7 +1863,7 @@ java.lang.String defaultValue) {
         getLiveCursorBytes() {
       java.lang.Object ref = liveCursor_;
       if (ref instanceof String) {
-        com.google.protobuf.ByteString b =
+        com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         liveCursor_ = b;
@@ -1955,10 +1954,10 @@ java.lang.String defaultValue) {
     }
 
 
-    // @@protoc_insertion_point(builder_scope:tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_websocket_frame_msg)
+    // @@protoc_insertion_point(builder_scope:tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame_msg)
   }
 
-  // @@protoc_insertion_point(class_scope:tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_websocket_frame_msg)
+  // @@protoc_insertion_point(class_scope:tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame_msg)
   private static final tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame_msg DEFAULT_INSTANCE;
   static {
     DEFAULT_INSTANCE = new tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame_msg();

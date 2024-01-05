@@ -39,15 +39,15 @@ public final class douyin_websocket_frame_msgProto {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_websocket_frame_msg_descriptor;
+    internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_websocket_frame_msg_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_websocket_frame_msg_fieldAccessorTable;
+      internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_websocket_frame_msg_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_websocket_frame_msg_RouteParamsEntry_descriptor;
+    internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_websocket_frame_msg_RouteParamsEntry_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_websocket_frame_msg_RouteParamsEntry_fieldAccessorTable;
+      internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_websocket_frame_msg_RouteParamsEntry_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -57,41 +57,41 @@ public final class douyin_websocket_frame_msgProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n douyin_websocket_frame_msg.proto\0224tech" +
-      ".ordinaryroad.live.chat.client.bilibili." +
-      "protobuf\032\024douyin_cmd_msg.proto\"\366\003\n\032douyi" +
-      "n_websocket_frame_msg\022[\n\rmessages_list\030\001" +
-      " \003(\0132D.tech.ordinaryroad.live.chat.clien" +
-      "t.bilibili.protobuf.douyin_cmd_msg\022\016\n\006cu" +
-      "rsor\030\002 \001(\t\022\026\n\016fetch_interval\030\003 \001(\004\022\013\n\003no" +
-      "w\030\004 \001(\004\022\024\n\014internal_ext\030\005 \001(\t\022\022\n\nfetch_t" +
-      "ype\030\006 \001(\r\022w\n\014route_params\030\007 \003(\0132a.tech.o" +
-      "rdinaryroad.live.chat.client.bilibili.pr" +
-      "otobuf.douyin_websocket_frame_msg.RouteP" +
-      "aramsEntry\022\032\n\022heartbeat_duration\030\010 \001(\004\022\020" +
-      "\n\010need_ack\030\t \001(\010\022\023\n\013push_server\030\n \001(\t\022\023\n" +
-      "\013live_cursor\030\013 \001(\t\022\027\n\017history_no_more\030\014 " +
-      "\001(\010\0322\n\020RouteParamsEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005" +
-      "value\030\002 \001(\t:\0028\001B]\n2tech.ordinaryroad.liv" +
-      "e.chat.client.douyin.protobufB\037douyin_we" +
-      "bsocket_frame_msgProtoP\001\242\002\003GPBb\006proto3"
+      "\n douyin_websocket_frame_msg.proto\0222tech" +
+      ".ordinaryroad.live.chat.client.douyin.pr" +
+      "otobuf\032\024douyin_cmd_msg.proto\"\362\003\n\032douyin_" +
+      "websocket_frame_msg\022Y\n\rmessages_list\030\001 \003" +
+      "(\0132B.tech.ordinaryroad.live.chat.client." +
+      "douyin.protobuf.douyin_cmd_msg\022\016\n\006cursor" +
+      "\030\002 \001(\t\022\026\n\016fetch_interval\030\003 \001(\004\022\013\n\003now\030\004 " +
+      "\001(\004\022\024\n\014internal_ext\030\005 \001(\t\022\022\n\nfetch_type\030" +
+      "\006 \001(\r\022u\n\014route_params\030\007 \003(\0132_.tech.ordin" +
+      "aryroad.live.chat.client.douyin.protobuf" +
+      ".douyin_websocket_frame_msg.RouteParamsE" +
+      "ntry\022\032\n\022heartbeat_duration\030\010 \001(\004\022\020\n\010need" +
+      "_ack\030\t \001(\010\022\023\n\013push_server\030\n \001(\t\022\023\n\013live_" +
+      "cursor\030\013 \001(\t\022\027\n\017history_no_more\030\014 \001(\010\0322\n" +
+      "\020RouteParamsEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030" +
+      "\002 \001(\t:\0028\001B]\n2tech.ordinaryroad.live.chat" +
+      ".client.douyin.protobufB\037douyin_websocke" +
+      "t_frame_msgProtoP\001\242\002\003GPBb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_cmd_msgProto.getDescriptor(),
         });
-    internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_websocket_frame_msg_descriptor =
+    internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_websocket_frame_msg_descriptor =
       getDescriptor().getMessageTypes().get(0);
-    internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_websocket_frame_msg_fieldAccessorTable = new
+    internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_websocket_frame_msg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_websocket_frame_msg_descriptor,
+        internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_websocket_frame_msg_descriptor,
         new java.lang.String[] { "MessagesList", "Cursor", "FetchInterval", "Now", "InternalExt", "FetchType", "RouteParams", "HeartbeatDuration", "NeedAck", "PushServer", "LiveCursor", "HistoryNoMore", });
-    internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_websocket_frame_msg_RouteParamsEntry_descriptor =
-      internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_websocket_frame_msg_descriptor.getNestedTypes().get(0);
-    internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_websocket_frame_msg_RouteParamsEntry_fieldAccessorTable = new
+    internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_websocket_frame_msg_RouteParamsEntry_descriptor =
+      internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_websocket_frame_msg_descriptor.getNestedTypes().get(0);
+    internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_websocket_frame_msg_RouteParamsEntry_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_websocket_frame_msg_RouteParamsEntry_descriptor,
+        internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_websocket_frame_msg_RouteParamsEntry_descriptor,
         new java.lang.String[] { "Key", "Value", });
     tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_cmd_msgProto.getDescriptor();
   }

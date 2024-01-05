@@ -130,6 +130,12 @@
             </dependency>
 
             <dependency>
+                <groupId>tech.ordinaryroad</groupId>
+                <artifactId>live-chat-client-douyin</artifactId>
+                <version>0.0.16</version>
+            </dependency>
+
+            <dependency>
                 <groupId>com.aayushatharva.brotli4j</groupId>
                 <artifactId>brotli4j</artifactId>
                 <version>${brotli4j.version}</version>

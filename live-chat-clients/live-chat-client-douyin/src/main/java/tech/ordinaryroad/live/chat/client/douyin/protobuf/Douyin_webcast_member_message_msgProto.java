@@ -39,15 +39,15 @@ public final class Douyin_webcast_member_message_msgProto {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_webcast_member_message_msg_descriptor;
+    internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_webcast_member_message_msg_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_webcast_member_message_msg_fieldAccessorTable;
+      internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_webcast_member_message_msg_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_webcast_member_message_msg_BuriedPointMapEntry_descriptor;
+    internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_webcast_member_message_msg_BuriedPointMapEntry_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_webcast_member_message_msg_BuriedPointMapEntry_fieldAccessorTable;
+      internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_webcast_member_message_msg_BuriedPointMapEntry_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -58,28 +58,28 @@ public final class Douyin_webcast_member_message_msgProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\'douyin_webcast_member_message_msg.prot" +
-      "o\0224tech.ordinaryroad.live.chat.client.bi" +
-      "libili.protobuf\032\014Common.proto\032\nUser.prot" +
-      "o\032\013Image.proto\032\nText.proto\"\205\005\n!douyin_we" +
-      "bcast_member_message_msg\022\027\n\006common\030\001 \001(\013" +
-      "2\007.Common\022\023\n\004user\030\002 \001(\0132\005.User\022\023\n\013member" +
-      "Count\030\003 \001(\004\022\027\n\010operator\030\004 \001(\0132\005.User\022\024\n\014" +
-      "isSetToAdmin\030\005 \001(\010\022\021\n\tisTopUser\030\006 \001(\010\022\021\n" +
-      "\trankScore\030\007 \001(\003\022\021\n\ttopUserNo\030\010 \001(\003\022\021\n\te" +
-      "nterType\030\t \001(\003\022\016\n\006action\030\n \001(\003\022\031\n\021action" +
-      "Description\030\013 \001(\t\022\016\n\006userId\030\014 \001(\003\022\016\n\006pop" +
-      "Str\030\016 \001(\t\022\037\n\017backgroundImage\030\020 \001(\0132\006.Ima" +
-      "ge\022!\n\021backgroundImageV2\030\021 \001(\0132\006.Image\022 \n" +
-      "\021anchorDisplayText\030\022 \001(\0132\005.Text\022\030\n\020userE" +
-      "nterTipType\030\024 \001(\003\022\032\n\022anchorEnterTipType\030" +
-      "\025 \001(\003\022\203\001\n\016buriedPointMap\030\026 \003(\0132k.tech.or" +
-      "dinaryroad.live.chat.client.bilibili.pro" +
-      "tobuf.douyin_webcast_member_message_msg." +
-      "BuriedPointMapEntry\0325\n\023BuriedPointMapEnt" +
-      "ry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001Bd\n2te" +
-      "ch.ordinaryroad.live.chat.client.douyin." +
-      "protobufB&Douyin_webcast_member_message_" +
-      "msgProtoP\001\242\002\003GPBb\006proto3"
+      "o\0222tech.ordinaryroad.live.chat.client.do" +
+      "uyin.protobuf\032\014Common.proto\032\nUser.proto\032" +
+      "\013Image.proto\032\nText.proto\"\203\005\n!douyin_webc" +
+      "ast_member_message_msg\022\027\n\006common\030\001 \001(\0132\007" +
+      ".Common\022\023\n\004user\030\002 \001(\0132\005.User\022\023\n\013memberCo" +
+      "unt\030\003 \001(\004\022\027\n\010operator\030\004 \001(\0132\005.User\022\024\n\014is" +
+      "SetToAdmin\030\005 \001(\010\022\021\n\tisTopUser\030\006 \001(\010\022\021\n\tr" +
+      "ankScore\030\007 \001(\003\022\021\n\ttopUserNo\030\010 \001(\003\022\021\n\tent" +
+      "erType\030\t \001(\003\022\016\n\006action\030\n \001(\003\022\031\n\021actionDe" +
+      "scription\030\013 \001(\t\022\016\n\006userId\030\014 \001(\003\022\016\n\006popSt" +
+      "r\030\016 \001(\t\022\037\n\017backgroundImage\030\020 \001(\0132\006.Image" +
+      "\022!\n\021backgroundImageV2\030\021 \001(\0132\006.Image\022 \n\021a" +
+      "nchorDisplayText\030\022 \001(\0132\005.Text\022\030\n\020userEnt" +
+      "erTipType\030\024 \001(\003\022\032\n\022anchorEnterTipType\030\025 " +
+      "\001(\003\022\201\001\n\016buriedPointMap\030\026 \003(\0132i.tech.ordi" +
+      "naryroad.live.chat.client.douyin.protobu" +
+      "f.douyin_webcast_member_message_msg.Buri" +
+      "edPointMapEntry\0325\n\023BuriedPointMapEntry\022\013" +
+      "\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001Bd\n2tech.o" +
+      "rdinaryroad.live.chat.client.douyin.prot" +
+      "obufB&Douyin_webcast_member_message_msgP" +
+      "rotoP\001\242\002\003GPBb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -89,17 +89,17 @@ public final class Douyin_webcast_member_message_msgProto {
           tech.ordinaryroad.live.chat.client.douyin.protobuf.dto.ImageOuterClass.getDescriptor(),
           tech.ordinaryroad.live.chat.client.douyin.protobuf.dto.TextOuterClass.getDescriptor(),
         });
-    internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_webcast_member_message_msg_descriptor =
+    internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_webcast_member_message_msg_descriptor =
       getDescriptor().getMessageTypes().get(0);
-    internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_webcast_member_message_msg_fieldAccessorTable = new
+    internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_webcast_member_message_msg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_webcast_member_message_msg_descriptor,
+        internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_webcast_member_message_msg_descriptor,
         new java.lang.String[] { "Common", "User", "MemberCount", "Operator", "IsSetToAdmin", "IsTopUser", "RankScore", "TopUserNo", "EnterType", "Action", "ActionDescription", "UserId", "PopStr", "BackgroundImage", "BackgroundImageV2", "AnchorDisplayText", "UserEnterTipType", "AnchorEnterTipType", "BuriedPointMap", });
-    internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_webcast_member_message_msg_BuriedPointMapEntry_descriptor =
-      internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_webcast_member_message_msg_descriptor.getNestedTypes().get(0);
-    internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_webcast_member_message_msg_BuriedPointMapEntry_fieldAccessorTable = new
+    internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_webcast_member_message_msg_BuriedPointMapEntry_descriptor =
+      internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_webcast_member_message_msg_descriptor.getNestedTypes().get(0);
+    internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_webcast_member_message_msg_BuriedPointMapEntry_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_webcast_member_message_msg_BuriedPointMapEntry_descriptor,
+        internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_webcast_member_message_msg_BuriedPointMapEntry_descriptor,
         new java.lang.String[] { "Key", "Value", });
     tech.ordinaryroad.live.chat.client.douyin.protobuf.dto.CommonOuterClass.getDescriptor();
     tech.ordinaryroad.live.chat.client.douyin.protobuf.dto.UserOuterClass.getDescriptor();

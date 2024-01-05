@@ -28,11 +28,11 @@
 package tech.ordinaryroad.live.chat.client.douyin.protobuf;
 
 /**
- * Protobuf type {@code tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_websocket_frame}
+ * Protobuf type {@code tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame}
  */
 public final class douyin_websocket_frame extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_websocket_frame)
+    // @@protoc_insertion_point(message_implements:tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame)
     douyin_websocket_frameOrBuilder {
 private static final long serialVersionUID = 0L;
   // Use douyin_websocket_frame.newBuilder() to construct.
@@ -54,7 +54,7 @@ private static final long serialVersionUID = 0L;
 
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_websocket_frameProto.internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_websocket_frame_descriptor;
+    return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_websocket_frameProto.internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_websocket_frame_descriptor;
   }
 
   @SuppressWarnings({"rawtypes"})
@@ -72,7 +72,7 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_websocket_frameProto.internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_websocket_frame_fieldAccessorTable
+    return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_websocket_frameProto.internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_websocket_frame_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
             tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame.class, tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame.Builder.class);
   }
@@ -127,7 +127,7 @@ private static final long serialVersionUID = 0L;
         java.lang.String, java.lang.String> defaultEntry =
             com.google.protobuf.MapEntry
             .<java.lang.String, java.lang.String>newDefaultInstance(
-                tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_websocket_frameProto.internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_websocket_frame_HeadersListEntry_descriptor, 
+                tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_websocket_frameProto.internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_websocket_frame_HeadersListEntry_descriptor, 
                 com.google.protobuf.WireFormat.FieldType.STRING,
                 "",
                 com.google.protobuf.WireFormat.FieldType.STRING,
@@ -537,15 +537,15 @@ java.lang.String defaultValue) {
     return builder;
   }
   /**
-   * Protobuf type {@code tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_websocket_frame}
+   * Protobuf type {@code tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_websocket_frame)
+      // @@protoc_insertion_point(builder_implements:tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame)
       tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frameOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_websocket_frameProto.internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_websocket_frame_descriptor;
+      return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_websocket_frameProto.internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_websocket_frame_descriptor;
     }
 
     @SuppressWarnings({"rawtypes"})
@@ -573,7 +573,7 @@ java.lang.String defaultValue) {
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_websocket_frameProto.internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_websocket_frame_fieldAccessorTable
+      return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_websocket_frameProto.internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_websocket_frame_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame.class, tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame.Builder.class);
     }
@@ -606,7 +606,7 @@ java.lang.String defaultValue) {
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_websocket_frameProto.internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_websocket_frame_descriptor;
+      return tech.ordinaryroad.live.chat.client.douyin.protobuf.Douyin_websocket_frameProto.internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_websocket_frame_descriptor;
     }
 
     @java.lang.Override
@@ -1262,10 +1262,10 @@ java.lang.String defaultValue) {
     }
 
 
-    // @@protoc_insertion_point(builder_scope:tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_websocket_frame)
+    // @@protoc_insertion_point(builder_scope:tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame)
   }
 
-  // @@protoc_insertion_point(class_scope:tech.ordinaryroad.live.chat.client.bilibili.protobuf.douyin_websocket_frame)
+  // @@protoc_insertion_point(class_scope:tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame)
   private static final tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame DEFAULT_INSTANCE;
   static {
     DEFAULT_INSTANCE = new tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame();

@@ -39,10 +39,10 @@ public final class Douyin_cmd_msgProto {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_cmd_msg_descriptor;
+    internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_cmd_msg_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_cmd_msg_fieldAccessorTable;
+      internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_cmd_msg_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -52,25 +52,25 @@ public final class Douyin_cmd_msgProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\024douyin_cmd_msg.proto\0224tech.ordinaryroa" +
-      "d.live.chat.client.bilibili.protobuf\"\250\001\n" +
-      "\016douyin_cmd_msg\022\016\n\006method\030\001 \001(\t\022\017\n\007paylo" +
-      "ad\030\002 \001(\014\022\016\n\006msg_id\030\003 \001(\003\022\020\n\010msg_type\030\004 \001" +
-      "(\005\022\016\n\006offset\030\005 \001(\003\022\027\n\017need_wrds_store\030\006 " +
-      "\001(\010\022\024\n\014wrds_version\030\007 \001(\003\022\024\n\014wrds_sub_ke" +
-      "y\030\010 \001(\tBQ\n2tech.ordinaryroad.live.chat.c" +
-      "lient.douyin.protobufB\023Douyin_cmd_msgPro" +
-      "toP\001\242\002\003GPBb\006proto3"
+      "\n\024douyin_cmd_msg.proto\0222tech.ordinaryroa" +
+      "d.live.chat.client.douyin.protobuf\"\250\001\n\016d" +
+      "ouyin_cmd_msg\022\016\n\006method\030\001 \001(\t\022\017\n\007payload" +
+      "\030\002 \001(\014\022\016\n\006msg_id\030\003 \001(\003\022\020\n\010msg_type\030\004 \001(\005" +
+      "\022\016\n\006offset\030\005 \001(\003\022\027\n\017need_wrds_store\030\006 \001(" +
+      "\010\022\024\n\014wrds_version\030\007 \001(\003\022\024\n\014wrds_sub_key\030" +
+      "\010 \001(\tBQ\n2tech.ordinaryroad.live.chat.cli" +
+      "ent.douyin.protobufB\023Douyin_cmd_msgProto" +
+      "P\001\242\002\003GPBb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         });
-    internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_cmd_msg_descriptor =
+    internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_cmd_msg_descriptor =
       getDescriptor().getMessageTypes().get(0);
-    internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_cmd_msg_fieldAccessorTable = new
+    internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_cmd_msg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_tech_ordinaryroad_live_chat_client_bilibili_protobuf_douyin_cmd_msg_descriptor,
+        internal_static_tech_ordinaryroad_live_chat_client_douyin_protobuf_douyin_cmd_msg_descriptor,
         new java.lang.String[] { "Method", "Payload", "MsgId", "MsgType", "Offset", "NeedWrdsStore", "WrdsVersion", "WrdsSubKey", });
   }
 
