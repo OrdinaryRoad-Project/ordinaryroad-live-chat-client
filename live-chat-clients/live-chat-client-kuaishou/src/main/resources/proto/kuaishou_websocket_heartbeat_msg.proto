@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package tech.ordinaryroad.live.chat.client.kuaishou.protobuf;
+
+option java_package = "tech.ordinaryroad.live.chat.client.kuaishou.protobuf";
+option java_outer_classname = "kuaishou_websocket_heartbeat_msgProto";
+option java_multiple_files = true;
+option objc_class_prefix = "GPB";
+
+message kuaishou_websocket_heartbeat_msg {
+  uint64 timestamp = 1;
+}
