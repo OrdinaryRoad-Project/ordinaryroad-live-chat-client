@@ -4,7 +4,7 @@ import "User.proto";
 import "Image.proto";
 import "Text.proto";
 
-package tech.ordinaryroad.live.chat.client.bilibili.protobuf;
+package tech.ordinaryroad.live.chat.client.douyin.protobuf;
 
 option java_package = "tech.ordinaryroad.live.chat.client.douyin.protobuf";
 option java_outer_classname = "Douyin_webcast_member_message_msgProto";
