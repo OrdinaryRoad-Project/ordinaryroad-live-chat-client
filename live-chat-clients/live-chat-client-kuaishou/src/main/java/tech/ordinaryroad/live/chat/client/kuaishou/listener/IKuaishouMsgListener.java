@@ -26,14 +26,17 @@ package tech.ordinaryroad.live.chat.client.kuaishou.listener;
 
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IDanmuMsgListener;
-import tech.ordinaryroad.live.chat.client.kuaishou.constant.KuaishouCmdEnum;
+import tech.ordinaryroad.live.chat.client.commons.base.listener.IGiftMsgListener;
 import tech.ordinaryroad.live.chat.client.kuaishou.netty.handler.KuaishouBinaryFrameHandler;
-import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.kuaishou_websocket_danmu_msg;
+import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PayloadTypeOuterClass;
+import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass;
+import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass;
 
 /**
  * @author mjz
  * @date 2024/1/5
  */
-public interface IKuaishouMsgListener extends IBaseMsgListener<KuaishouBinaryFrameHandler, KuaishouCmdEnum>,
-        IDanmuMsgListener<KuaishouBinaryFrameHandler, kuaishou_websocket_danmu_msg> {
+public interface IKuaishouMsgListener extends IBaseMsgListener<KuaishouBinaryFrameHandler, PayloadTypeOuterClass.PayloadType>,
+        IDanmuMsgListener<KuaishouBinaryFrameHandler, WebCommentFeedOuterClass.WebCommentFeed>,
+        IGiftMsgListener<KuaishouBinaryFrameHandler, WebGiftFeedOuterClass.WebGiftFeed> {
 }

@@ -24,6 +24,7 @@
 
 package tech.ordinaryroad.live.chat.client.kuaishou.netty.handler;
 
+import cn.hutool.core.util.ZipUtil;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import io.netty.buffer.ByteBuf;
@@ -33,11 +34,11 @@ import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.kuaishou.client.KuaishouLiveChatClient;
-import tech.ordinaryroad.live.chat.client.kuaishou.constant.KuaishouCmdEnum;
 import tech.ordinaryroad.live.chat.client.kuaishou.listener.IKuaishouMsgListener;
 import tech.ordinaryroad.live.chat.client.kuaishou.msg.base.IKuaishouMsg;
-import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.kuaishou_websocket_danmu_msg;
-import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.kuaishou_websocket_frame;
+import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PayloadTypeOuterClass;
+import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SCWebFeedPushOuterClass;
+import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SocketMessageOuterClass;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientBinaryFrameHandler;
 
 import java.util.Collections;
@@ -49,7 +50,7 @@ import java.util.List;
  */
 @Slf4j
 @ChannelHandler.Sharable
-public class KuaishouBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<KuaishouLiveChatClient, KuaishouBinaryFrameHandler, KuaishouCmdEnum, IKuaishouMsg, IKuaishouMsgListener> {
+public class KuaishouBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<KuaishouLiveChatClient, KuaishouBinaryFrameHandler, PayloadTypeOuterClass.PayloadType, IKuaishouMsg, IKuaishouMsgListener> {
 
     public KuaishouBinaryFrameHandler(List<IKuaishouMsgListener> iKuaishouMsgListeners, KuaishouLiveChatClient client) {
         super(iKuaishouMsgListeners, client);
@@ -61,26 +62,58 @@ public class KuaishouBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
 
     @SneakyThrows
     @Override
-    public void onCmdMsg(KuaishouCmdEnum cmd, ICmdMsg<KuaishouCmdEnum> cmdMsg) {
+    public void onCmdMsg(PayloadTypeOuterClass.PayloadType cmd, ICmdMsg<PayloadTypeOuterClass.PayloadType> cmdMsg) {
         if (super.msgListeners.isEmpty()) {
             return;
         }
 
-        ByteString payload = ((kuaishou_websocket_frame) cmdMsg).getPayload();
-        switch (cmd) {
-            case DANMU -> {
-                kuaishou_websocket_danmu_msg kuaishouWebsocketDanmuFrame = kuaishou_websocket_danmu_msg.parseFrom(payload);
-                iteratorMsgListeners(msgListener -> msgListener.onDanmuMsg(KuaishouBinaryFrameHandler.this, kuaishouWebsocketDanmuFrame));
+        SocketMessageOuterClass.SocketMessage socketMessage = (SocketMessageOuterClass.SocketMessage) cmdMsg;
+        ByteString payloadByteString = socketMessage.getPayload();
+        switch (socketMessage.getPayloadType()) {
+            case SC_FEED_PUSH -> {
+                SCWebFeedPushOuterClass.SCWebFeedPush scWebFeedPush = SCWebFeedPushOuterClass.SCWebFeedPush.parseFrom(payloadByteString);
+                if (scWebFeedPush.hasCommentFeeds()) {
+                    iteratorMsgListeners(msgListener -> msgListener.onDanmuMsg(KuaishouBinaryFrameHandler.this, scWebFeedPush.getCommentFeeds()));
+                }
+                if (scWebFeedPush.hasGiftFeeds()) {
+                    iteratorMsgListeners(msgListener -> msgListener.onGiftMsg(KuaishouBinaryFrameHandler.this, scWebFeedPush.getGiftFeeds()));
+                }
+
+                // TODO 入房消息
+//                if (scWebFeedPush.hasSystemNoticeFeeds()) {
+//                    WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed systemNoticeFeeds = scWebFeedPush.getSystemNoticeFeeds();
+//                    String content = systemNoticeFeeds.getContent();
+//                }
             }
+//            case CS_ENTER_ROOM -> {
+//                // TODO 入房消息
+//                CSWebEnterRoomOuterClass.CSWebEnterRoom csWebEnterRoom = CSWebEnterRoomOuterClass.CSWebEnterRoom.parseFrom(payload);
+//            }
             default ->
-                    iteratorMsgListeners(msgListener -> msgListener.onOtherCmdMsg(KuaishouBinaryFrameHandler.this, cmd, cmdMsg));
+                    iteratorMsgListeners(msgListener -> msgListener.onOtherCmdMsg(KuaishouBinaryFrameHandler.this, cmd, socketMessage));
         }
     }
 
     @Override
     protected List<IKuaishouMsg> decode(ByteBuf byteBuf) {
         try {
-            return Collections.singletonList(kuaishou_websocket_frame.parseFrom(byteBuf.nioBuffer()));
+            SocketMessageOuterClass.SocketMessage socketMessage = SocketMessageOuterClass.SocketMessage.parseFrom(byteBuf.nioBuffer());
+            SocketMessageOuterClass.SocketMessage.CompressionType compressionType = socketMessage.getCompressionType();
+            ByteString payloadByteString = socketMessage.getPayload();
+            byte[] payload;
+            switch (compressionType) {
+                case NONE -> payload = payloadByteString.toByteArray();
+                case GZIP -> payload = ZipUtil.unGzip(payloadByteString.newInput());
+                case AES -> {
+                    log.warn("暂不支持的压缩方式 " + compressionType);
+                    return Collections.emptyList();
+                }
+                default -> {
+                    log.warn("暂不支持的压缩方式 " + compressionType);
+                    return Collections.emptyList();
+                }
+            }
+            return Collections.singletonList(socketMessage.toBuilder().setPayload(ByteString.copyFrom(payload)).build());
         } catch (InvalidProtocolBufferException e) {
             throw new BaseException(e);
         }

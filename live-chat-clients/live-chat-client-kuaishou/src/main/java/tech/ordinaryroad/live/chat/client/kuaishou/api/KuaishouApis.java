@@ -26,13 +26,14 @@ package tech.ordinaryroad.live.chat.client.kuaishou.api;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ReUtil;
-import cn.hutool.http.HttpResponse;
-import cn.hutool.http.HttpUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.http.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import lombok.*;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
+import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCookieUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,13 +46,18 @@ import static tech.ordinaryroad.live.chat.client.commons.base.msg.BaseMsg.OBJECT
  */
 public class KuaishouApis {
 
-    public static final String PATTERN_LIVE_STREAM_ID = "\"liveStream\":\\{\"id\":\"([\\w\\d-]+)\"";
+    public static final String PATTERN_LIVE_STREAM_ID = "\"liveStream\":\\{\"id\":\"([\\w\\d-_]+)\"";
+    public static final String USER_AGENT = GlobalHeaders.INSTANCE.header(Header.USER_AGENT).replace("Hutool", "");
 
     public static RoomInitResult roomInit(Object roomId, String cookie) {
         @Cleanup
-        HttpResponse response = HttpUtil.createGet("https://live.kuaishou.com/u/" + roomId)
-                .cookie(cookie)
+        HttpResponse response = createGetRequest("https://live.kuaishou.com/u/" + roomId, cookie)
                 .execute();
+
+        if (StrUtil.isBlank(cookie)) {
+            cookie = OrLiveChatCookieUtil.toString(response.getCookies());
+        }
+
         String body = response.body();
         String liveStreamId = ReUtil.getGroup1(PATTERN_LIVE_STREAM_ID, body);
         JsonNode websocketinfo = websocketinfo(liveStreamId, cookie);
@@ -75,19 +81,33 @@ public class KuaishouApis {
     }
 
     public static JsonNode websocketinfo(String liveStreamId, String cookie) {
+        if (StrUtil.isBlank(liveStreamId)) {
+            throw new BaseException("主播未开播，liveStreamId为空");
+        }
         @Cleanup
-        HttpResponse response = HttpUtil.createGet("https://live.kuaishou.com/live_api/liveroom/websocketinfo?liveStreamId=" + liveStreamId)
-                .cookie(cookie)
-                .execute();
+        HttpResponse response = createGetRequest("https://live.kuaishou.com/live_api/liveroom/websocketinfo?liveStreamId=" + liveStreamId, cookie).execute();
         return responseInterceptor(response.body());
+    }
+
+    public static HttpRequest createGetRequest(String url, String cookie) {
+        return HttpUtil.createGet(url)
+                .cookie(cookie)
+                .header(Header.USER_AGENT, USER_AGENT);
     }
 
     private static JsonNode responseInterceptor(String responseString) {
         try {
             JsonNode jsonNode = OBJECT_MAPPER.readTree(responseString);
             JsonNode data = jsonNode.required("data");
-            if (data.required("result").asInt() != 1) {
-                throw new BaseException("接口访问失败，返回结果：" + jsonNode);
+            int result = data.required("result").asInt();
+            if (result != 1) {
+                String message = "";
+                switch (result) {
+                    case 2 -> message = "请求过快，请稍后重试";
+                    case 400002 -> message = "需要进行验证";
+                    default -> message = "";
+                }
+                throw new BaseException("接口访问失败：" + message + "，返回结果：" + jsonNode);
             }
             return data;
         } catch (JsonProcessingException e) {

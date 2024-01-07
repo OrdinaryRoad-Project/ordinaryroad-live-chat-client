@@ -25,11 +25,11 @@
 package tech.ordinaryroad.live.chat.client.kuaishou.msg.base;
 
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
-import tech.ordinaryroad.live.chat.client.kuaishou.constant.KuaishouCmdEnum;
+import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PayloadTypeOuterClass;
 
 /**
  * @author mjz
  * @date 2024/1/5
  */
-public interface IKuaishouCmdMsg extends IKuaishouMsg, ICmdMsg<KuaishouCmdEnum> {
+public interface IKuaishouCmdMsg extends IKuaishouMsg, ICmdMsg<PayloadTypeOuterClass.PayloadType> {
 }

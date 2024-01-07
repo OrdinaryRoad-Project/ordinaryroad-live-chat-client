@@ -37,12 +37,12 @@ import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.kuaishou.api.KuaishouApis;
 import tech.ordinaryroad.live.chat.client.kuaishou.config.KuaishouLiveChatClientConfig;
-import tech.ordinaryroad.live.chat.client.kuaishou.constant.KuaishouCmdEnum;
 import tech.ordinaryroad.live.chat.client.kuaishou.listener.IKuaishouConnectionListener;
 import tech.ordinaryroad.live.chat.client.kuaishou.listener.IKuaishouMsgListener;
 import tech.ordinaryroad.live.chat.client.kuaishou.msg.base.IKuaishouMsg;
 import tech.ordinaryroad.live.chat.client.kuaishou.netty.handler.KuaishouBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.kuaishou.netty.handler.KuaishouConnectionHandler;
+import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PayloadTypeOuterClass;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
 
 import java.util.List;
@@ -55,7 +55,7 @@ import java.util.function.Consumer;
 @Slf4j
 public class KuaishouLiveChatClient extends BaseNettyClient<
         KuaishouLiveChatClientConfig,
-        KuaishouCmdEnum,
+        PayloadTypeOuterClass.PayloadType,
         IKuaishouMsg,
         IKuaishouMsgListener,
         KuaishouConnectionHandler,

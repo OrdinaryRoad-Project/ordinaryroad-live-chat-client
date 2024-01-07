@@ -36,10 +36,10 @@ import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionL
 import tech.ordinaryroad.live.chat.client.kuaishou.api.KuaishouApis;
 import tech.ordinaryroad.live.chat.client.kuaishou.client.KuaishouLiveChatClient;
 import tech.ordinaryroad.live.chat.client.kuaishou.config.KuaishouLiveChatClientConfig;
-import tech.ordinaryroad.live.chat.client.kuaishou.constant.KuaishouCmdEnum;
-import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.kuaishou_websocket_auth_msg;
-import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.kuaishou_websocket_frame;
-import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.kuaishou_websocket_heartbeat_msg;
+import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.CSHeartbeatOuterClass;
+import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.CSWebEnterRoomOuterClass;
+import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PayloadTypeOuterClass;
+import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SocketMessageOuterClass;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientConnectionHandler;
 
 /**
@@ -94,10 +94,10 @@ public class KuaishouConnectionHandler extends BaseNettyClientConnectionHandler<
     protected void sendHeartbeat(ChannelHandlerContext ctx) {
         ctx.writeAndFlush(
                 new BinaryWebSocketFrame(
-                        Unpooled.wrappedBuffer(kuaishou_websocket_frame.newBuilder()
-                                .setType(KuaishouCmdEnum.HEARTBEAT.getCode())
+                        Unpooled.wrappedBuffer(SocketMessageOuterClass.SocketMessage.newBuilder()
+                                .setPayloadType(PayloadTypeOuterClass.PayloadType.CS_HEARTBEAT)
                                 .setPayload(
-                                        kuaishou_websocket_heartbeat_msg.newBuilder()
+                                        CSHeartbeatOuterClass.CSHeartbeat.newBuilder()
                                                 .setTimestamp(System.currentTimeMillis())
                                                 .build()
                                                 .toByteString()
@@ -113,13 +113,13 @@ public class KuaishouConnectionHandler extends BaseNettyClientConnectionHandler<
     public void sendAuthRequest(Channel channel) {
         channel.writeAndFlush(
                 new BinaryWebSocketFrame(
-                        Unpooled.wrappedBuffer(kuaishou_websocket_frame.newBuilder()
-                                .setType(KuaishouCmdEnum.AUTH.getCode())
+                        Unpooled.wrappedBuffer(SocketMessageOuterClass.SocketMessage.newBuilder()
+                                .setPayloadType(PayloadTypeOuterClass.PayloadType.CS_ENTER_ROOM)
                                 .setPayload(
-                                        kuaishou_websocket_auth_msg.newBuilder()
+                                        CSWebEnterRoomOuterClass.CSWebEnterRoom.newBuilder()
                                                 .setToken(roomInitResult.getToken())
                                                 .setLiveStreamId(roomInitResult.getLiveStreamId())
-                                                .setString3(RandomUtil.randomString(16) + System.currentTimeMillis())
+                                                .setPageId(RandomUtil.randomString(16) + System.currentTimeMillis())
                                                 .build()
                                                 .toByteString()
                                 )
