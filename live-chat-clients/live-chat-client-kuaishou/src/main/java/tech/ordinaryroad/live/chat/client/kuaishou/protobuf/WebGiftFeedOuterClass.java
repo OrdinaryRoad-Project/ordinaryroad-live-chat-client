@@ -28,6 +28,7 @@
 package tech.ordinaryroad.live.chat.client.kuaishou.protobuf;
 
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IGiftMsg;
+import tech.ordinaryroad.live.chat.client.kuaishou.api.KuaishouApis;
 
 public final class WebGiftFeedOuterClass {
   private WebGiftFeedOuterClass() {}
@@ -218,12 +219,12 @@ public final class WebGiftFeedOuterClass {
 
     @Override
     public String getGiftName() {
-      return null;
+      return KuaishouApis.getGiftInfoById(this.getGiftId()).getGiftName();
     }
 
     @Override
     public String getGiftImg() {
-      return null;
+      return KuaishouApis.getGiftInfoById(this.getGiftId()).getGiftUrl();
     }
 
     @Override
