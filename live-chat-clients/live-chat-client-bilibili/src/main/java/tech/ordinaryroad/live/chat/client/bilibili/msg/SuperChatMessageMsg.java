@@ -57,12 +57,12 @@ public class SuperChatMessageMsg extends BaseBilibiliMsg implements ISuperChatMs
     }
 
     @Override
-    public long getUid() {
+    public String getUid() {
         if (this.data == null) {
-            return 0;
+            return null;
         }
 
-        return this.data.uid;
+        return Long.toString(this.data.uid);
     }
 
     @Override

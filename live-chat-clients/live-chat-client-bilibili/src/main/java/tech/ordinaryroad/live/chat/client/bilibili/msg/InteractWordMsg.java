@@ -73,11 +73,11 @@ public class InteractWordMsg extends BaseBilibiliMsg implements IEnterRoomMsg {
     }
 
     @Override
-    public long getUid() {
+    public String getUid() {
         if (data == null) {
-            return 0;
+            return null;
         }
-        return data.uid;
+        return Long.toString(data.uid);
     }
 
     @Override

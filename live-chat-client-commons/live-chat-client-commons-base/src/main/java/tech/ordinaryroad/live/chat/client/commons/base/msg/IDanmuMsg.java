@@ -43,7 +43,7 @@ public interface IDanmuMsg extends IMsg {
     /**
      * 弹幕发送者id
      */
-    long getUid();
+    String getUid();
 
     /**
      * 弹幕发送者用户名

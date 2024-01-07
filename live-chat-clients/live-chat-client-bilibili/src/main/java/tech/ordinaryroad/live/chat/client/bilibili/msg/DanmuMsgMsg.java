@@ -71,9 +71,9 @@ public class DanmuMsgMsg extends BaseBilibiliMsg implements IDanmuMsg {
     }
 
     @Override
-    public long getUid() {
+    public String getUid() {
         JsonNode jsonNode2 = info.get(2);
-        return jsonNode2.get(0).asLong();
+        return jsonNode2.get(0).asText();
     }
 
     @Override

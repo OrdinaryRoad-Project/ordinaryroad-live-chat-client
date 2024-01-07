@@ -62,8 +62,8 @@ public class UenterMsg extends BaseDouyuCmdMsg implements IEnterRoomMsg {
     }
 
     @Override
-    public long getUid() {
-        return uid;
+    public String getUid() {
+        return Long.toString(uid);
     }
 
     @Override

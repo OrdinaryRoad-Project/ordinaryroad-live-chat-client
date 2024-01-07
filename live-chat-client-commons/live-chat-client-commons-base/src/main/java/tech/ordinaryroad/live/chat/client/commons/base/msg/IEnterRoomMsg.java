@@ -46,7 +46,7 @@ public interface IEnterRoomMsg extends IMsg {
     /**
      * 用户id
      */
-    long getUid();
+    String getUid();
 
     /**
      * 用户名

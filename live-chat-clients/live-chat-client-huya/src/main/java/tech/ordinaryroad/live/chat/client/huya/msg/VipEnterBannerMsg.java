@@ -122,8 +122,8 @@ public class VipEnterBannerMsg extends BaseHuyaMsg implements IEnterRoomMsg {
     }
 
     @Override
-    public long getUid() {
-        return lUid;
+    public String getUid() {
+        return Long.toString(lUid);
     }
 
     @Override

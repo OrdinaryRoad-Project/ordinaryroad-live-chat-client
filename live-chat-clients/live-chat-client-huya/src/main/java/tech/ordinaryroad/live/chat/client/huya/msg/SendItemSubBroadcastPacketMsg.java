@@ -209,8 +209,8 @@ public class SendItemSubBroadcastPacketMsg extends BaseHuyaMsg implements IGiftM
     }
 
     @Override
-    public long getUid() {
-        return this.lSenderUid;
+    public String getUid() {
+        return Long.toString(this.lSenderUid);
     }
 
     @Override
@@ -241,7 +241,7 @@ public class SendItemSubBroadcastPacketMsg extends BaseHuyaMsg implements IGiftM
 
         PropsIdentity propsIdentity = vPropsIdentity.get(0);
         String sPropsWeb = propsIdentity.getSPropsWeb();
-        if (StrUtil.isBlank(sPropsWeb)){
+        if (StrUtil.isBlank(sPropsWeb)) {
             return "";
         }
 
@@ -249,8 +249,8 @@ public class SendItemSubBroadcastPacketMsg extends BaseHuyaMsg implements IGiftM
     }
 
     @Override
-    public long getGiftId() {
-        return this.iItemType;
+    public String getGiftId() {
+        return Long.toString(this.iItemType);
     }
 
     @Override
@@ -267,8 +267,8 @@ public class SendItemSubBroadcastPacketMsg extends BaseHuyaMsg implements IGiftM
     }
 
     @Override
-    public long getReceiveUid() {
-        return this.lPresenterUid;
+    public String getReceiveUid() {
+        return Long.toString(this.lPresenterUid);
     }
 
     @Override

@@ -47,10 +47,10 @@ public interface douyin_webcast_gift_message_msgOrBuilder extends
   tech.ordinaryroad.live.chat.client.douyin.protobuf.dto.CommonOuterClass.CommonOrBuilder getCommonOrBuilder();
 
   /**
-   * <code>uint64 gift_id = 2;</code>
-   * @return The giftId.
+   * <code>uint64 long_gift_id = 2;</code>
+   * @return The longGiftId.
    */
-  long getGiftId();
+  long getLongGiftId();
 
   /**
    * <code>uint64 fan_ticket_count = 3;</code>
