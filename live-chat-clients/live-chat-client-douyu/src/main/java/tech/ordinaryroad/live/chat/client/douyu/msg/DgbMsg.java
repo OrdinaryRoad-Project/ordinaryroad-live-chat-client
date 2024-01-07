@@ -104,7 +104,7 @@ public class DgbMsg extends BaseDouyuCmdMsg implements IGiftMsg {
     /**
      * 用户id
      */
-    private long uid;
+    private String uid;
     /**
      * 收礼物用户id
      */

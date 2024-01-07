@@ -82,7 +82,7 @@ public class ChatmsgMsg extends BaseDouyuCmdMsg implements IDanmuMsg {
     private byte bl;
     private String dms;
     private long rid;
-    private long uid;
+    private String uid;
     private String txt;
     private String pdg;
     private String pdk;
