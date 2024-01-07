@@ -24,18 +24,33 @@
 
 package tech.ordinaryroad.live.chat.client.commons.util;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
 
+import java.net.HttpCookie;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * @author mjz
  * @date 2023/8/27
  */
 public class OrLiveChatCookieUtil {
+
+    public static String toString(List<HttpCookie> cookies) {
+        if (CollUtil.isEmpty(cookies)) {
+            return StrUtil.EMPTY;
+        }
+
+        return cookies.stream().map(httpCookie -> {
+            httpCookie.setVersion(0);
+            return httpCookie.toString();
+        }).collect(Collectors.joining("; "));
+    }
 
     public static Map<String, String> parseCookieString(String cookies) {
         Map<String, String> map = new HashMap<>();
