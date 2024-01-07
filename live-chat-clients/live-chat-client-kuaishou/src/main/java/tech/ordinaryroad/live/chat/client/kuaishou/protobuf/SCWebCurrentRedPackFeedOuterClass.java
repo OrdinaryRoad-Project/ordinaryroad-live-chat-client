@@ -43,19 +43,28 @@ public final class SCWebCurrentRedPackFeedOuterClass {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.WebRedPackInfo redPack = 1;</code>
-     * @return Whether the redPack field is set.
+     * <code>repeated .WebRedPackInfo redPack = 1;</code>
      */
-    boolean hasRedPack();
+    java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo> 
+        getRedPackList();
     /**
-     * <code>.WebRedPackInfo redPack = 1;</code>
-     * @return The redPack.
+     * <code>repeated .WebRedPackInfo redPack = 1;</code>
      */
-    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo getRedPack();
+    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo getRedPack(int index);
     /**
-     * <code>.WebRedPackInfo redPack = 1;</code>
+     * <code>repeated .WebRedPackInfo redPack = 1;</code>
      */
-    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfoOrBuilder getRedPackOrBuilder();
+    int getRedPackCount();
+    /**
+     * <code>repeated .WebRedPackInfo redPack = 1;</code>
+     */
+    java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfoOrBuilder> 
+        getRedPackOrBuilderList();
+    /**
+     * <code>repeated .WebRedPackInfo redPack = 1;</code>
+     */
+    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfoOrBuilder getRedPackOrBuilder(
+        int index);
   }
   /**
    * Protobuf type {@code SCWebCurrentRedPackFeed}
@@ -70,6 +79,7 @@ public final class SCWebCurrentRedPackFeedOuterClass {
       super(builder);
     }
     private SCWebCurrentRedPackFeed() {
+      redPack_ = java.util.Collections.emptyList();
     }
 
     @java.lang.Override
@@ -93,29 +103,44 @@ public final class SCWebCurrentRedPackFeedOuterClass {
     }
 
     public static final int REDPACK_FIELD_NUMBER = 1;
-    private tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo redPack_;
+    @SuppressWarnings("serial")
+    private java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo> redPack_;
     /**
-     * <code>.WebRedPackInfo redPack = 1;</code>
-     * @return Whether the redPack field is set.
+     * <code>repeated .WebRedPackInfo redPack = 1;</code>
      */
     @java.lang.Override
-    public boolean hasRedPack() {
-      return redPack_ != null;
+    public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo> getRedPackList() {
+      return redPack_;
     }
     /**
-     * <code>.WebRedPackInfo redPack = 1;</code>
-     * @return The redPack.
+     * <code>repeated .WebRedPackInfo redPack = 1;</code>
      */
     @java.lang.Override
-    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo getRedPack() {
-      return redPack_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo.getDefaultInstance() : redPack_;
+    public java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfoOrBuilder> 
+        getRedPackOrBuilderList() {
+      return redPack_;
     }
     /**
-     * <code>.WebRedPackInfo redPack = 1;</code>
+     * <code>repeated .WebRedPackInfo redPack = 1;</code>
      */
     @java.lang.Override
-    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfoOrBuilder getRedPackOrBuilder() {
-      return redPack_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo.getDefaultInstance() : redPack_;
+    public int getRedPackCount() {
+      return redPack_.size();
+    }
+    /**
+     * <code>repeated .WebRedPackInfo redPack = 1;</code>
+     */
+    @java.lang.Override
+    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo getRedPack(int index) {
+      return redPack_.get(index);
+    }
+    /**
+     * <code>repeated .WebRedPackInfo redPack = 1;</code>
+     */
+    @java.lang.Override
+    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfoOrBuilder getRedPackOrBuilder(
+        int index) {
+      return redPack_.get(index);
     }
 
     private byte memoizedIsInitialized = -1;
@@ -132,8 +157,8 @@ public final class SCWebCurrentRedPackFeedOuterClass {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (redPack_ != null) {
-        output.writeMessage(1, getRedPack());
+      for (int i = 0; i < redPack_.size(); i++) {
+        output.writeMessage(1, redPack_.get(i));
       }
       getUnknownFields().writeTo(output);
     }
@@ -144,9 +169,9 @@ public final class SCWebCurrentRedPackFeedOuterClass {
       if (size != -1) return size;
 
       size = 0;
-      if (redPack_ != null) {
+      for (int i = 0; i < redPack_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, getRedPack());
+          .computeMessageSize(1, redPack_.get(i));
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
@@ -163,11 +188,8 @@ public final class SCWebCurrentRedPackFeedOuterClass {
       }
       tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SCWebCurrentRedPackFeedOuterClass.SCWebCurrentRedPackFeed other = (tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SCWebCurrentRedPackFeedOuterClass.SCWebCurrentRedPackFeed) obj;
 
-      if (hasRedPack() != other.hasRedPack()) return false;
-      if (hasRedPack()) {
-        if (!getRedPack()
-            .equals(other.getRedPack())) return false;
-      }
+      if (!getRedPackList()
+          .equals(other.getRedPackList())) return false;
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
@@ -179,9 +201,9 @@ public final class SCWebCurrentRedPackFeedOuterClass {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      if (hasRedPack()) {
+      if (getRedPackCount() > 0) {
         hash = (37 * hash) + REDPACK_FIELD_NUMBER;
-        hash = (53 * hash) + getRedPack().hashCode();
+        hash = (53 * hash) + getRedPackList().hashCode();
       }
       hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
@@ -314,11 +336,13 @@ public final class SCWebCurrentRedPackFeedOuterClass {
       public Builder clear() {
         super.clear();
         bitField0_ = 0;
-        redPack_ = null;
-        if (redPackBuilder_ != null) {
-          redPackBuilder_.dispose();
-          redPackBuilder_ = null;
+        if (redPackBuilder_ == null) {
+          redPack_ = java.util.Collections.emptyList();
+        } else {
+          redPack_ = null;
+          redPackBuilder_.clear();
         }
+        bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
 
@@ -345,18 +369,26 @@ public final class SCWebCurrentRedPackFeedOuterClass {
       @java.lang.Override
       public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SCWebCurrentRedPackFeedOuterClass.SCWebCurrentRedPackFeed buildPartial() {
         tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SCWebCurrentRedPackFeedOuterClass.SCWebCurrentRedPackFeed result = new tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SCWebCurrentRedPackFeedOuterClass.SCWebCurrentRedPackFeed(this);
+        buildPartialRepeatedFields(result);
         if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
       }
 
+      private void buildPartialRepeatedFields(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SCWebCurrentRedPackFeedOuterClass.SCWebCurrentRedPackFeed result) {
+        if (redPackBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) != 0)) {
+            redPack_ = java.util.Collections.unmodifiableList(redPack_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.redPack_ = redPack_;
+        } else {
+          result.redPack_ = redPackBuilder_.build();
+        }
+      }
+
       private void buildPartial0(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SCWebCurrentRedPackFeedOuterClass.SCWebCurrentRedPackFeed result) {
         int from_bitField0_ = bitField0_;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          result.redPack_ = redPackBuilder_ == null
-              ? redPack_
-              : redPackBuilder_.build();
-        }
       }
 
       @java.lang.Override
@@ -403,8 +435,31 @@ public final class SCWebCurrentRedPackFeedOuterClass {
 
       public Builder mergeFrom(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SCWebCurrentRedPackFeedOuterClass.SCWebCurrentRedPackFeed other) {
         if (other == tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SCWebCurrentRedPackFeedOuterClass.SCWebCurrentRedPackFeed.getDefaultInstance()) return this;
-        if (other.hasRedPack()) {
-          mergeRedPack(other.getRedPack());
+        if (redPackBuilder_ == null) {
+          if (!other.redPack_.isEmpty()) {
+            if (redPack_.isEmpty()) {
+              redPack_ = other.redPack_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureRedPackIsMutable();
+              redPack_.addAll(other.redPack_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.redPack_.isEmpty()) {
+            if (redPackBuilder_.isEmpty()) {
+              redPackBuilder_.dispose();
+              redPackBuilder_ = null;
+              redPack_ = other.redPack_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              redPackBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getRedPackFieldBuilder() : null;
+            } else {
+              redPackBuilder_.addAllMessages(other.redPack_);
+            }
+          }
         }
         this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
@@ -433,10 +488,16 @@ public final class SCWebCurrentRedPackFeedOuterClass {
                 done = true;
                 break;
               case 10: {
-                input.readMessage(
-                    getRedPackFieldBuilder().getBuilder(),
-                    extensionRegistry);
-                bitField0_ |= 0x00000001;
+                tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo m =
+                    input.readMessage(
+                        tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo.parser(),
+                        extensionRegistry);
+                if (redPackBuilder_ == null) {
+                  ensureRedPackIsMutable();
+                  redPack_.add(m);
+                } else {
+                  redPackBuilder_.addMessage(m);
+                }
                 break;
               } // case 10
               default: {
@@ -456,118 +517,239 @@ public final class SCWebCurrentRedPackFeedOuterClass {
       }
       private int bitField0_;
 
-      private tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo redPack_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfoOrBuilder> redPackBuilder_;
-      /**
-       * <code>.WebRedPackInfo redPack = 1;</code>
-       * @return Whether the redPack field is set.
-       */
-      public boolean hasRedPack() {
-        return ((bitField0_ & 0x00000001) != 0);
+      private java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo> redPack_ =
+        java.util.Collections.emptyList();
+      private void ensureRedPackIsMutable() {
+        if (!((bitField0_ & 0x00000001) != 0)) {
+          redPack_ = new java.util.ArrayList<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo>(redPack_);
+          bitField0_ |= 0x00000001;
+         }
       }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfoOrBuilder> redPackBuilder_;
+
       /**
-       * <code>.WebRedPackInfo redPack = 1;</code>
-       * @return The redPack.
+       * <code>repeated .WebRedPackInfo redPack = 1;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo getRedPack() {
+      public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo> getRedPackList() {
         if (redPackBuilder_ == null) {
-          return redPack_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo.getDefaultInstance() : redPack_;
+          return java.util.Collections.unmodifiableList(redPack_);
         } else {
-          return redPackBuilder_.getMessage();
+          return redPackBuilder_.getMessageList();
         }
       }
       /**
-       * <code>.WebRedPackInfo redPack = 1;</code>
+       * <code>repeated .WebRedPackInfo redPack = 1;</code>
        */
-      public Builder setRedPack(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo value) {
+      public int getRedPackCount() {
+        if (redPackBuilder_ == null) {
+          return redPack_.size();
+        } else {
+          return redPackBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .WebRedPackInfo redPack = 1;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo getRedPack(int index) {
+        if (redPackBuilder_ == null) {
+          return redPack_.get(index);
+        } else {
+          return redPackBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .WebRedPackInfo redPack = 1;</code>
+       */
+      public Builder setRedPack(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo value) {
         if (redPackBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          redPack_ = value;
+          ensureRedPackIsMutable();
+          redPack_.set(index, value);
+          onChanged();
         } else {
-          redPackBuilder_.setMessage(value);
+          redPackBuilder_.setMessage(index, value);
         }
-        bitField0_ |= 0x00000001;
-        onChanged();
         return this;
       }
       /**
-       * <code>.WebRedPackInfo redPack = 1;</code>
+       * <code>repeated .WebRedPackInfo redPack = 1;</code>
        */
       public Builder setRedPack(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo.Builder builderForValue) {
+        if (redPackBuilder_ == null) {
+          ensureRedPackIsMutable();
+          redPack_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          redPackBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WebRedPackInfo redPack = 1;</code>
+       */
+      public Builder addRedPack(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo value) {
+        if (redPackBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureRedPackIsMutable();
+          redPack_.add(value);
+          onChanged();
+        } else {
+          redPackBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WebRedPackInfo redPack = 1;</code>
+       */
+      public Builder addRedPack(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo value) {
+        if (redPackBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureRedPackIsMutable();
+          redPack_.add(index, value);
+          onChanged();
+        } else {
+          redPackBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WebRedPackInfo redPack = 1;</code>
+       */
+      public Builder addRedPack(
           tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo.Builder builderForValue) {
         if (redPackBuilder_ == null) {
-          redPack_ = builderForValue.build();
+          ensureRedPackIsMutable();
+          redPack_.add(builderForValue.build());
+          onChanged();
         } else {
-          redPackBuilder_.setMessage(builderForValue.build());
+          redPackBuilder_.addMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000001;
-        onChanged();
         return this;
       }
       /**
-       * <code>.WebRedPackInfo redPack = 1;</code>
+       * <code>repeated .WebRedPackInfo redPack = 1;</code>
        */
-      public Builder mergeRedPack(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo value) {
+      public Builder addRedPack(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo.Builder builderForValue) {
         if (redPackBuilder_ == null) {
-          if (((bitField0_ & 0x00000001) != 0) &&
-            redPack_ != null &&
-            redPack_ != tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo.getDefaultInstance()) {
-            getRedPackBuilder().mergeFrom(value);
-          } else {
-            redPack_ = value;
-          }
+          ensureRedPackIsMutable();
+          redPack_.add(index, builderForValue.build());
+          onChanged();
         } else {
-          redPackBuilder_.mergeFrom(value);
+          redPackBuilder_.addMessage(index, builderForValue.build());
         }
-        bitField0_ |= 0x00000001;
-        onChanged();
         return this;
       }
       /**
-       * <code>.WebRedPackInfo redPack = 1;</code>
+       * <code>repeated .WebRedPackInfo redPack = 1;</code>
+       */
+      public Builder addAllRedPack(
+          java.lang.Iterable<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo> values) {
+        if (redPackBuilder_ == null) {
+          ensureRedPackIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, redPack_);
+          onChanged();
+        } else {
+          redPackBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WebRedPackInfo redPack = 1;</code>
        */
       public Builder clearRedPack() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        redPack_ = null;
-        if (redPackBuilder_ != null) {
-          redPackBuilder_.dispose();
-          redPackBuilder_ = null;
+        if (redPackBuilder_ == null) {
+          redPack_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          redPackBuilder_.clear();
         }
-        onChanged();
         return this;
       }
       /**
-       * <code>.WebRedPackInfo redPack = 1;</code>
+       * <code>repeated .WebRedPackInfo redPack = 1;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo.Builder getRedPackBuilder() {
-        bitField0_ |= 0x00000001;
-        onChanged();
-        return getRedPackFieldBuilder().getBuilder();
+      public Builder removeRedPack(int index) {
+        if (redPackBuilder_ == null) {
+          ensureRedPackIsMutable();
+          redPack_.remove(index);
+          onChanged();
+        } else {
+          redPackBuilder_.remove(index);
+        }
+        return this;
       }
       /**
-       * <code>.WebRedPackInfo redPack = 1;</code>
+       * <code>repeated .WebRedPackInfo redPack = 1;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfoOrBuilder getRedPackOrBuilder() {
-        if (redPackBuilder_ != null) {
-          return redPackBuilder_.getMessageOrBuilder();
-        } else {
-          return redPack_ == null ?
-              tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo.getDefaultInstance() : redPack_;
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo.Builder getRedPackBuilder(
+          int index) {
+        return getRedPackFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .WebRedPackInfo redPack = 1;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfoOrBuilder getRedPackOrBuilder(
+          int index) {
+        if (redPackBuilder_ == null) {
+          return redPack_.get(index);  } else {
+          return redPackBuilder_.getMessageOrBuilder(index);
         }
       }
       /**
-       * <code>.WebRedPackInfo redPack = 1;</code>
+       * <code>repeated .WebRedPackInfo redPack = 1;</code>
        */
-      private com.google.protobuf.SingleFieldBuilderV3<
+      public java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfoOrBuilder> 
+           getRedPackOrBuilderList() {
+        if (redPackBuilder_ != null) {
+          return redPackBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(redPack_);
+        }
+      }
+      /**
+       * <code>repeated .WebRedPackInfo redPack = 1;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo.Builder addRedPackBuilder() {
+        return getRedPackFieldBuilder().addBuilder(
+            tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .WebRedPackInfo redPack = 1;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo.Builder addRedPackBuilder(
+          int index) {
+        return getRedPackFieldBuilder().addBuilder(
+            index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .WebRedPackInfo redPack = 1;</code>
+       */
+      public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo.Builder> 
+           getRedPackBuilderList() {
+        return getRedPackFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
           tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfoOrBuilder> 
           getRedPackFieldBuilder() {
         if (redPackBuilder_ == null) {
-          redPackBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+          redPackBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfo.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebRedPackInfoOuterClass.WebRedPackInfoOrBuilder>(
-                  getRedPack(),
+                  redPack_,
+                  ((bitField0_ & 0x00000001) != 0),
                   getParentForChildren(),
                   isClean());
           redPack_ = null;
@@ -654,7 +836,7 @@ public final class SCWebCurrentRedPackFeedOuterClass {
     java.lang.String[] descriptorData = {
       "\n\035SCWebCurrentRedPackFeed.proto\032\024WebRedP" +
       "ackInfo.proto\";\n\027SCWebCurrentRedPackFeed" +
-      "\022 \n\007redPack\030\001 \001(\0132\017.WebRedPackInfoB6\n4te" +
+      "\022 \n\007redPack\030\001 \003(\0132\017.WebRedPackInfoB6\n4te" +
       "ch.ordinaryroad.live.chat.client.kuaisho" +
       "u.protobufb\006proto3"
     };

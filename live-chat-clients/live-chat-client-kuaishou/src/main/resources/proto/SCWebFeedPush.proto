@@ -13,13 +13,13 @@ message SCWebFeedPush {
   string displayLikeCount = 2;
   uint64 pendingLikeCount = 3;
   uint64 pushInterval = 4;
-  WebCommentFeed commentFeeds = 5;
+  repeated WebCommentFeed commentFeeds = 5;
   string commentCursor = 6;
-  WebComboCommentFeed comboCommentFeed = 7;
-  WebLikeFeed likeFeeds = 8;
-  WebGiftFeed giftFeeds = 9;
+  repeated WebComboCommentFeed comboCommentFeed = 7;
+  repeated WebLikeFeed likeFeeds = 8;
+  repeated WebGiftFeed giftFeeds = 9;
   string giftCursor = 10;
-  WebSystemNoticeFeed systemNoticeFeeds = 11;
-  WebShareFeed shareFeeds = 12;
+  repeated WebSystemNoticeFeed systemNoticeFeeds = 11;
+  repeated WebShareFeed shareFeeds = 12;
 
 }

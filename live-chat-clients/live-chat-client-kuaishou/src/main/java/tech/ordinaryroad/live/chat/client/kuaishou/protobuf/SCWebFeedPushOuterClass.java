@@ -79,19 +79,28 @@ public final class SCWebFeedPushOuterClass {
     long getPushInterval();
 
     /**
-     * <code>.WebCommentFeed commentFeeds = 5;</code>
-     * @return Whether the commentFeeds field is set.
+     * <code>repeated .WebCommentFeed commentFeeds = 5;</code>
      */
-    boolean hasCommentFeeds();
+    java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed> 
+        getCommentFeedsList();
     /**
-     * <code>.WebCommentFeed commentFeeds = 5;</code>
-     * @return The commentFeeds.
+     * <code>repeated .WebCommentFeed commentFeeds = 5;</code>
      */
-    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed getCommentFeeds();
+    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed getCommentFeeds(int index);
     /**
-     * <code>.WebCommentFeed commentFeeds = 5;</code>
+     * <code>repeated .WebCommentFeed commentFeeds = 5;</code>
      */
-    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeedOrBuilder getCommentFeedsOrBuilder();
+    int getCommentFeedsCount();
+    /**
+     * <code>repeated .WebCommentFeed commentFeeds = 5;</code>
+     */
+    java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeedOrBuilder> 
+        getCommentFeedsOrBuilderList();
+    /**
+     * <code>repeated .WebCommentFeed commentFeeds = 5;</code>
+     */
+    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeedOrBuilder getCommentFeedsOrBuilder(
+        int index);
 
     /**
      * <code>string commentCursor = 6;</code>
@@ -106,49 +115,76 @@ public final class SCWebFeedPushOuterClass {
         getCommentCursorBytes();
 
     /**
-     * <code>.WebComboCommentFeed comboCommentFeed = 7;</code>
-     * @return Whether the comboCommentFeed field is set.
+     * <code>repeated .WebComboCommentFeed comboCommentFeed = 7;</code>
      */
-    boolean hasComboCommentFeed();
+    java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed> 
+        getComboCommentFeedList();
     /**
-     * <code>.WebComboCommentFeed comboCommentFeed = 7;</code>
-     * @return The comboCommentFeed.
+     * <code>repeated .WebComboCommentFeed comboCommentFeed = 7;</code>
      */
-    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed getComboCommentFeed();
+    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed getComboCommentFeed(int index);
     /**
-     * <code>.WebComboCommentFeed comboCommentFeed = 7;</code>
+     * <code>repeated .WebComboCommentFeed comboCommentFeed = 7;</code>
      */
-    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeedOrBuilder getComboCommentFeedOrBuilder();
+    int getComboCommentFeedCount();
+    /**
+     * <code>repeated .WebComboCommentFeed comboCommentFeed = 7;</code>
+     */
+    java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeedOrBuilder> 
+        getComboCommentFeedOrBuilderList();
+    /**
+     * <code>repeated .WebComboCommentFeed comboCommentFeed = 7;</code>
+     */
+    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeedOrBuilder getComboCommentFeedOrBuilder(
+        int index);
 
     /**
-     * <code>.WebLikeFeed likeFeeds = 8;</code>
-     * @return Whether the likeFeeds field is set.
+     * <code>repeated .WebLikeFeed likeFeeds = 8;</code>
      */
-    boolean hasLikeFeeds();
+    java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed> 
+        getLikeFeedsList();
     /**
-     * <code>.WebLikeFeed likeFeeds = 8;</code>
-     * @return The likeFeeds.
+     * <code>repeated .WebLikeFeed likeFeeds = 8;</code>
      */
-    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed getLikeFeeds();
+    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed getLikeFeeds(int index);
     /**
-     * <code>.WebLikeFeed likeFeeds = 8;</code>
+     * <code>repeated .WebLikeFeed likeFeeds = 8;</code>
      */
-    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeedOrBuilder getLikeFeedsOrBuilder();
+    int getLikeFeedsCount();
+    /**
+     * <code>repeated .WebLikeFeed likeFeeds = 8;</code>
+     */
+    java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeedOrBuilder> 
+        getLikeFeedsOrBuilderList();
+    /**
+     * <code>repeated .WebLikeFeed likeFeeds = 8;</code>
+     */
+    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeedOrBuilder getLikeFeedsOrBuilder(
+        int index);
 
     /**
-     * <code>.WebGiftFeed giftFeeds = 9;</code>
-     * @return Whether the giftFeeds field is set.
+     * <code>repeated .WebGiftFeed giftFeeds = 9;</code>
      */
-    boolean hasGiftFeeds();
+    java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed> 
+        getGiftFeedsList();
     /**
-     * <code>.WebGiftFeed giftFeeds = 9;</code>
-     * @return The giftFeeds.
+     * <code>repeated .WebGiftFeed giftFeeds = 9;</code>
      */
-    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed getGiftFeeds();
+    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed getGiftFeeds(int index);
     /**
-     * <code>.WebGiftFeed giftFeeds = 9;</code>
+     * <code>repeated .WebGiftFeed giftFeeds = 9;</code>
      */
-    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeedOrBuilder getGiftFeedsOrBuilder();
+    int getGiftFeedsCount();
+    /**
+     * <code>repeated .WebGiftFeed giftFeeds = 9;</code>
+     */
+    java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeedOrBuilder> 
+        getGiftFeedsOrBuilderList();
+    /**
+     * <code>repeated .WebGiftFeed giftFeeds = 9;</code>
+     */
+    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeedOrBuilder getGiftFeedsOrBuilder(
+        int index);
 
     /**
      * <code>string giftCursor = 10;</code>
@@ -163,34 +199,52 @@ public final class SCWebFeedPushOuterClass {
         getGiftCursorBytes();
 
     /**
-     * <code>.WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
-     * @return Whether the systemNoticeFeeds field is set.
+     * <code>repeated .WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
      */
-    boolean hasSystemNoticeFeeds();
+    java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed> 
+        getSystemNoticeFeedsList();
     /**
-     * <code>.WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
-     * @return The systemNoticeFeeds.
+     * <code>repeated .WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
      */
-    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed getSystemNoticeFeeds();
+    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed getSystemNoticeFeeds(int index);
     /**
-     * <code>.WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
+     * <code>repeated .WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
      */
-    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeedOrBuilder getSystemNoticeFeedsOrBuilder();
+    int getSystemNoticeFeedsCount();
+    /**
+     * <code>repeated .WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
+     */
+    java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeedOrBuilder> 
+        getSystemNoticeFeedsOrBuilderList();
+    /**
+     * <code>repeated .WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
+     */
+    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeedOrBuilder getSystemNoticeFeedsOrBuilder(
+        int index);
 
     /**
-     * <code>.WebShareFeed shareFeeds = 12;</code>
-     * @return Whether the shareFeeds field is set.
+     * <code>repeated .WebShareFeed shareFeeds = 12;</code>
      */
-    boolean hasShareFeeds();
+    java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed> 
+        getShareFeedsList();
     /**
-     * <code>.WebShareFeed shareFeeds = 12;</code>
-     * @return The shareFeeds.
+     * <code>repeated .WebShareFeed shareFeeds = 12;</code>
      */
-    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed getShareFeeds();
+    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed getShareFeeds(int index);
     /**
-     * <code>.WebShareFeed shareFeeds = 12;</code>
+     * <code>repeated .WebShareFeed shareFeeds = 12;</code>
      */
-    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeedOrBuilder getShareFeedsOrBuilder();
+    int getShareFeedsCount();
+    /**
+     * <code>repeated .WebShareFeed shareFeeds = 12;</code>
+     */
+    java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeedOrBuilder> 
+        getShareFeedsOrBuilderList();
+    /**
+     * <code>repeated .WebShareFeed shareFeeds = 12;</code>
+     */
+    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeedOrBuilder getShareFeedsOrBuilder(
+        int index);
   }
   /**
    * Protobuf type {@code SCWebFeedPush}
@@ -207,8 +261,14 @@ public final class SCWebFeedPushOuterClass {
     private SCWebFeedPush() {
       displayWatchingCount_ = "";
       displayLikeCount_ = "";
+      commentFeeds_ = java.util.Collections.emptyList();
       commentCursor_ = "";
+      comboCommentFeed_ = java.util.Collections.emptyList();
+      likeFeeds_ = java.util.Collections.emptyList();
+      giftFeeds_ = java.util.Collections.emptyList();
       giftCursor_ = "";
+      systemNoticeFeeds_ = java.util.Collections.emptyList();
+      shareFeeds_ = java.util.Collections.emptyList();
     }
 
     @java.lang.Override
@@ -332,29 +392,44 @@ public final class SCWebFeedPushOuterClass {
     }
 
     public static final int COMMENTFEEDS_FIELD_NUMBER = 5;
-    private tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed commentFeeds_;
+    @SuppressWarnings("serial")
+    private java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed> commentFeeds_;
     /**
-     * <code>.WebCommentFeed commentFeeds = 5;</code>
-     * @return Whether the commentFeeds field is set.
+     * <code>repeated .WebCommentFeed commentFeeds = 5;</code>
      */
     @java.lang.Override
-    public boolean hasCommentFeeds() {
-      return commentFeeds_ != null;
+    public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed> getCommentFeedsList() {
+      return commentFeeds_;
     }
     /**
-     * <code>.WebCommentFeed commentFeeds = 5;</code>
-     * @return The commentFeeds.
+     * <code>repeated .WebCommentFeed commentFeeds = 5;</code>
      */
     @java.lang.Override
-    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed getCommentFeeds() {
-      return commentFeeds_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed.getDefaultInstance() : commentFeeds_;
+    public java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeedOrBuilder> 
+        getCommentFeedsOrBuilderList() {
+      return commentFeeds_;
     }
     /**
-     * <code>.WebCommentFeed commentFeeds = 5;</code>
+     * <code>repeated .WebCommentFeed commentFeeds = 5;</code>
      */
     @java.lang.Override
-    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeedOrBuilder getCommentFeedsOrBuilder() {
-      return commentFeeds_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed.getDefaultInstance() : commentFeeds_;
+    public int getCommentFeedsCount() {
+      return commentFeeds_.size();
+    }
+    /**
+     * <code>repeated .WebCommentFeed commentFeeds = 5;</code>
+     */
+    @java.lang.Override
+    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed getCommentFeeds(int index) {
+      return commentFeeds_.get(index);
+    }
+    /**
+     * <code>repeated .WebCommentFeed commentFeeds = 5;</code>
+     */
+    @java.lang.Override
+    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeedOrBuilder getCommentFeedsOrBuilder(
+        int index) {
+      return commentFeeds_.get(index);
     }
 
     public static final int COMMENTCURSOR_FIELD_NUMBER = 6;
@@ -397,81 +472,126 @@ public final class SCWebFeedPushOuterClass {
     }
 
     public static final int COMBOCOMMENTFEED_FIELD_NUMBER = 7;
-    private tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed comboCommentFeed_;
+    @SuppressWarnings("serial")
+    private java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed> comboCommentFeed_;
     /**
-     * <code>.WebComboCommentFeed comboCommentFeed = 7;</code>
-     * @return Whether the comboCommentFeed field is set.
+     * <code>repeated .WebComboCommentFeed comboCommentFeed = 7;</code>
      */
     @java.lang.Override
-    public boolean hasComboCommentFeed() {
-      return comboCommentFeed_ != null;
+    public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed> getComboCommentFeedList() {
+      return comboCommentFeed_;
     }
     /**
-     * <code>.WebComboCommentFeed comboCommentFeed = 7;</code>
-     * @return The comboCommentFeed.
+     * <code>repeated .WebComboCommentFeed comboCommentFeed = 7;</code>
      */
     @java.lang.Override
-    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed getComboCommentFeed() {
-      return comboCommentFeed_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed.getDefaultInstance() : comboCommentFeed_;
+    public java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeedOrBuilder> 
+        getComboCommentFeedOrBuilderList() {
+      return comboCommentFeed_;
     }
     /**
-     * <code>.WebComboCommentFeed comboCommentFeed = 7;</code>
+     * <code>repeated .WebComboCommentFeed comboCommentFeed = 7;</code>
      */
     @java.lang.Override
-    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeedOrBuilder getComboCommentFeedOrBuilder() {
-      return comboCommentFeed_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed.getDefaultInstance() : comboCommentFeed_;
+    public int getComboCommentFeedCount() {
+      return comboCommentFeed_.size();
+    }
+    /**
+     * <code>repeated .WebComboCommentFeed comboCommentFeed = 7;</code>
+     */
+    @java.lang.Override
+    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed getComboCommentFeed(int index) {
+      return comboCommentFeed_.get(index);
+    }
+    /**
+     * <code>repeated .WebComboCommentFeed comboCommentFeed = 7;</code>
+     */
+    @java.lang.Override
+    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeedOrBuilder getComboCommentFeedOrBuilder(
+        int index) {
+      return comboCommentFeed_.get(index);
     }
 
     public static final int LIKEFEEDS_FIELD_NUMBER = 8;
-    private tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed likeFeeds_;
+    @SuppressWarnings("serial")
+    private java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed> likeFeeds_;
     /**
-     * <code>.WebLikeFeed likeFeeds = 8;</code>
-     * @return Whether the likeFeeds field is set.
+     * <code>repeated .WebLikeFeed likeFeeds = 8;</code>
      */
     @java.lang.Override
-    public boolean hasLikeFeeds() {
-      return likeFeeds_ != null;
+    public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed> getLikeFeedsList() {
+      return likeFeeds_;
     }
     /**
-     * <code>.WebLikeFeed likeFeeds = 8;</code>
-     * @return The likeFeeds.
+     * <code>repeated .WebLikeFeed likeFeeds = 8;</code>
      */
     @java.lang.Override
-    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed getLikeFeeds() {
-      return likeFeeds_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed.getDefaultInstance() : likeFeeds_;
+    public java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeedOrBuilder> 
+        getLikeFeedsOrBuilderList() {
+      return likeFeeds_;
     }
     /**
-     * <code>.WebLikeFeed likeFeeds = 8;</code>
+     * <code>repeated .WebLikeFeed likeFeeds = 8;</code>
      */
     @java.lang.Override
-    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeedOrBuilder getLikeFeedsOrBuilder() {
-      return likeFeeds_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed.getDefaultInstance() : likeFeeds_;
+    public int getLikeFeedsCount() {
+      return likeFeeds_.size();
+    }
+    /**
+     * <code>repeated .WebLikeFeed likeFeeds = 8;</code>
+     */
+    @java.lang.Override
+    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed getLikeFeeds(int index) {
+      return likeFeeds_.get(index);
+    }
+    /**
+     * <code>repeated .WebLikeFeed likeFeeds = 8;</code>
+     */
+    @java.lang.Override
+    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeedOrBuilder getLikeFeedsOrBuilder(
+        int index) {
+      return likeFeeds_.get(index);
     }
 
     public static final int GIFTFEEDS_FIELD_NUMBER = 9;
-    private tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed giftFeeds_;
+    @SuppressWarnings("serial")
+    private java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed> giftFeeds_;
     /**
-     * <code>.WebGiftFeed giftFeeds = 9;</code>
-     * @return Whether the giftFeeds field is set.
+     * <code>repeated .WebGiftFeed giftFeeds = 9;</code>
      */
     @java.lang.Override
-    public boolean hasGiftFeeds() {
-      return giftFeeds_ != null;
+    public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed> getGiftFeedsList() {
+      return giftFeeds_;
     }
     /**
-     * <code>.WebGiftFeed giftFeeds = 9;</code>
-     * @return The giftFeeds.
+     * <code>repeated .WebGiftFeed giftFeeds = 9;</code>
      */
     @java.lang.Override
-    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed getGiftFeeds() {
-      return giftFeeds_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed.getDefaultInstance() : giftFeeds_;
+    public java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeedOrBuilder> 
+        getGiftFeedsOrBuilderList() {
+      return giftFeeds_;
     }
     /**
-     * <code>.WebGiftFeed giftFeeds = 9;</code>
+     * <code>repeated .WebGiftFeed giftFeeds = 9;</code>
      */
     @java.lang.Override
-    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeedOrBuilder getGiftFeedsOrBuilder() {
-      return giftFeeds_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed.getDefaultInstance() : giftFeeds_;
+    public int getGiftFeedsCount() {
+      return giftFeeds_.size();
+    }
+    /**
+     * <code>repeated .WebGiftFeed giftFeeds = 9;</code>
+     */
+    @java.lang.Override
+    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed getGiftFeeds(int index) {
+      return giftFeeds_.get(index);
+    }
+    /**
+     * <code>repeated .WebGiftFeed giftFeeds = 9;</code>
+     */
+    @java.lang.Override
+    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeedOrBuilder getGiftFeedsOrBuilder(
+        int index) {
+      return giftFeeds_.get(index);
     }
 
     public static final int GIFTCURSOR_FIELD_NUMBER = 10;
@@ -514,55 +634,85 @@ public final class SCWebFeedPushOuterClass {
     }
 
     public static final int SYSTEMNOTICEFEEDS_FIELD_NUMBER = 11;
-    private tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed systemNoticeFeeds_;
+    @SuppressWarnings("serial")
+    private java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed> systemNoticeFeeds_;
     /**
-     * <code>.WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
-     * @return Whether the systemNoticeFeeds field is set.
+     * <code>repeated .WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
      */
     @java.lang.Override
-    public boolean hasSystemNoticeFeeds() {
-      return systemNoticeFeeds_ != null;
+    public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed> getSystemNoticeFeedsList() {
+      return systemNoticeFeeds_;
     }
     /**
-     * <code>.WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
-     * @return The systemNoticeFeeds.
+     * <code>repeated .WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
      */
     @java.lang.Override
-    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed getSystemNoticeFeeds() {
-      return systemNoticeFeeds_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed.getDefaultInstance() : systemNoticeFeeds_;
+    public java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeedOrBuilder> 
+        getSystemNoticeFeedsOrBuilderList() {
+      return systemNoticeFeeds_;
     }
     /**
-     * <code>.WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
+     * <code>repeated .WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
      */
     @java.lang.Override
-    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeedOrBuilder getSystemNoticeFeedsOrBuilder() {
-      return systemNoticeFeeds_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed.getDefaultInstance() : systemNoticeFeeds_;
+    public int getSystemNoticeFeedsCount() {
+      return systemNoticeFeeds_.size();
+    }
+    /**
+     * <code>repeated .WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
+     */
+    @java.lang.Override
+    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed getSystemNoticeFeeds(int index) {
+      return systemNoticeFeeds_.get(index);
+    }
+    /**
+     * <code>repeated .WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
+     */
+    @java.lang.Override
+    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeedOrBuilder getSystemNoticeFeedsOrBuilder(
+        int index) {
+      return systemNoticeFeeds_.get(index);
     }
 
     public static final int SHAREFEEDS_FIELD_NUMBER = 12;
-    private tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed shareFeeds_;
+    @SuppressWarnings("serial")
+    private java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed> shareFeeds_;
     /**
-     * <code>.WebShareFeed shareFeeds = 12;</code>
-     * @return Whether the shareFeeds field is set.
+     * <code>repeated .WebShareFeed shareFeeds = 12;</code>
      */
     @java.lang.Override
-    public boolean hasShareFeeds() {
-      return shareFeeds_ != null;
+    public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed> getShareFeedsList() {
+      return shareFeeds_;
     }
     /**
-     * <code>.WebShareFeed shareFeeds = 12;</code>
-     * @return The shareFeeds.
+     * <code>repeated .WebShareFeed shareFeeds = 12;</code>
      */
     @java.lang.Override
-    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed getShareFeeds() {
-      return shareFeeds_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed.getDefaultInstance() : shareFeeds_;
+    public java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeedOrBuilder> 
+        getShareFeedsOrBuilderList() {
+      return shareFeeds_;
     }
     /**
-     * <code>.WebShareFeed shareFeeds = 12;</code>
+     * <code>repeated .WebShareFeed shareFeeds = 12;</code>
      */
     @java.lang.Override
-    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeedOrBuilder getShareFeedsOrBuilder() {
-      return shareFeeds_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed.getDefaultInstance() : shareFeeds_;
+    public int getShareFeedsCount() {
+      return shareFeeds_.size();
+    }
+    /**
+     * <code>repeated .WebShareFeed shareFeeds = 12;</code>
+     */
+    @java.lang.Override
+    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed getShareFeeds(int index) {
+      return shareFeeds_.get(index);
+    }
+    /**
+     * <code>repeated .WebShareFeed shareFeeds = 12;</code>
+     */
+    @java.lang.Override
+    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeedOrBuilder getShareFeedsOrBuilder(
+        int index) {
+      return shareFeeds_.get(index);
     }
 
     private byte memoizedIsInitialized = -1;
@@ -591,29 +741,29 @@ public final class SCWebFeedPushOuterClass {
       if (pushInterval_ != 0L) {
         output.writeUInt64(4, pushInterval_);
       }
-      if (commentFeeds_ != null) {
-        output.writeMessage(5, getCommentFeeds());
+      for (int i = 0; i < commentFeeds_.size(); i++) {
+        output.writeMessage(5, commentFeeds_.get(i));
       }
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(commentCursor_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 6, commentCursor_);
       }
-      if (comboCommentFeed_ != null) {
-        output.writeMessage(7, getComboCommentFeed());
+      for (int i = 0; i < comboCommentFeed_.size(); i++) {
+        output.writeMessage(7, comboCommentFeed_.get(i));
       }
-      if (likeFeeds_ != null) {
-        output.writeMessage(8, getLikeFeeds());
+      for (int i = 0; i < likeFeeds_.size(); i++) {
+        output.writeMessage(8, likeFeeds_.get(i));
       }
-      if (giftFeeds_ != null) {
-        output.writeMessage(9, getGiftFeeds());
+      for (int i = 0; i < giftFeeds_.size(); i++) {
+        output.writeMessage(9, giftFeeds_.get(i));
       }
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(giftCursor_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 10, giftCursor_);
       }
-      if (systemNoticeFeeds_ != null) {
-        output.writeMessage(11, getSystemNoticeFeeds());
+      for (int i = 0; i < systemNoticeFeeds_.size(); i++) {
+        output.writeMessage(11, systemNoticeFeeds_.get(i));
       }
-      if (shareFeeds_ != null) {
-        output.writeMessage(12, getShareFeeds());
+      for (int i = 0; i < shareFeeds_.size(); i++) {
+        output.writeMessage(12, shareFeeds_.get(i));
       }
       getUnknownFields().writeTo(output);
     }
@@ -638,35 +788,35 @@ public final class SCWebFeedPushOuterClass {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt64Size(4, pushInterval_);
       }
-      if (commentFeeds_ != null) {
+      for (int i = 0; i < commentFeeds_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(5, getCommentFeeds());
+          .computeMessageSize(5, commentFeeds_.get(i));
       }
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(commentCursor_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, commentCursor_);
       }
-      if (comboCommentFeed_ != null) {
+      for (int i = 0; i < comboCommentFeed_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(7, getComboCommentFeed());
+          .computeMessageSize(7, comboCommentFeed_.get(i));
       }
-      if (likeFeeds_ != null) {
+      for (int i = 0; i < likeFeeds_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(8, getLikeFeeds());
+          .computeMessageSize(8, likeFeeds_.get(i));
       }
-      if (giftFeeds_ != null) {
+      for (int i = 0; i < giftFeeds_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(9, getGiftFeeds());
+          .computeMessageSize(9, giftFeeds_.get(i));
       }
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(giftCursor_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, giftCursor_);
       }
-      if (systemNoticeFeeds_ != null) {
+      for (int i = 0; i < systemNoticeFeeds_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(11, getSystemNoticeFeeds());
+          .computeMessageSize(11, systemNoticeFeeds_.get(i));
       }
-      if (shareFeeds_ != null) {
+      for (int i = 0; i < shareFeeds_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(12, getShareFeeds());
+          .computeMessageSize(12, shareFeeds_.get(i));
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
@@ -691,40 +841,22 @@ public final class SCWebFeedPushOuterClass {
           != other.getPendingLikeCount()) return false;
       if (getPushInterval()
           != other.getPushInterval()) return false;
-      if (hasCommentFeeds() != other.hasCommentFeeds()) return false;
-      if (hasCommentFeeds()) {
-        if (!getCommentFeeds()
-            .equals(other.getCommentFeeds())) return false;
-      }
+      if (!getCommentFeedsList()
+          .equals(other.getCommentFeedsList())) return false;
       if (!getCommentCursor()
           .equals(other.getCommentCursor())) return false;
-      if (hasComboCommentFeed() != other.hasComboCommentFeed()) return false;
-      if (hasComboCommentFeed()) {
-        if (!getComboCommentFeed()
-            .equals(other.getComboCommentFeed())) return false;
-      }
-      if (hasLikeFeeds() != other.hasLikeFeeds()) return false;
-      if (hasLikeFeeds()) {
-        if (!getLikeFeeds()
-            .equals(other.getLikeFeeds())) return false;
-      }
-      if (hasGiftFeeds() != other.hasGiftFeeds()) return false;
-      if (hasGiftFeeds()) {
-        if (!getGiftFeeds()
-            .equals(other.getGiftFeeds())) return false;
-      }
+      if (!getComboCommentFeedList()
+          .equals(other.getComboCommentFeedList())) return false;
+      if (!getLikeFeedsList()
+          .equals(other.getLikeFeedsList())) return false;
+      if (!getGiftFeedsList()
+          .equals(other.getGiftFeedsList())) return false;
       if (!getGiftCursor()
           .equals(other.getGiftCursor())) return false;
-      if (hasSystemNoticeFeeds() != other.hasSystemNoticeFeeds()) return false;
-      if (hasSystemNoticeFeeds()) {
-        if (!getSystemNoticeFeeds()
-            .equals(other.getSystemNoticeFeeds())) return false;
-      }
-      if (hasShareFeeds() != other.hasShareFeeds()) return false;
-      if (hasShareFeeds()) {
-        if (!getShareFeeds()
-            .equals(other.getShareFeeds())) return false;
-      }
+      if (!getSystemNoticeFeedsList()
+          .equals(other.getSystemNoticeFeedsList())) return false;
+      if (!getShareFeedsList()
+          .equals(other.getShareFeedsList())) return false;
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
@@ -746,33 +878,33 @@ public final class SCWebFeedPushOuterClass {
       hash = (37 * hash) + PUSHINTERVAL_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getPushInterval());
-      if (hasCommentFeeds()) {
+      if (getCommentFeedsCount() > 0) {
         hash = (37 * hash) + COMMENTFEEDS_FIELD_NUMBER;
-        hash = (53 * hash) + getCommentFeeds().hashCode();
+        hash = (53 * hash) + getCommentFeedsList().hashCode();
       }
       hash = (37 * hash) + COMMENTCURSOR_FIELD_NUMBER;
       hash = (53 * hash) + getCommentCursor().hashCode();
-      if (hasComboCommentFeed()) {
+      if (getComboCommentFeedCount() > 0) {
         hash = (37 * hash) + COMBOCOMMENTFEED_FIELD_NUMBER;
-        hash = (53 * hash) + getComboCommentFeed().hashCode();
+        hash = (53 * hash) + getComboCommentFeedList().hashCode();
       }
-      if (hasLikeFeeds()) {
+      if (getLikeFeedsCount() > 0) {
         hash = (37 * hash) + LIKEFEEDS_FIELD_NUMBER;
-        hash = (53 * hash) + getLikeFeeds().hashCode();
+        hash = (53 * hash) + getLikeFeedsList().hashCode();
       }
-      if (hasGiftFeeds()) {
+      if (getGiftFeedsCount() > 0) {
         hash = (37 * hash) + GIFTFEEDS_FIELD_NUMBER;
-        hash = (53 * hash) + getGiftFeeds().hashCode();
+        hash = (53 * hash) + getGiftFeedsList().hashCode();
       }
       hash = (37 * hash) + GIFTCURSOR_FIELD_NUMBER;
       hash = (53 * hash) + getGiftCursor().hashCode();
-      if (hasSystemNoticeFeeds()) {
+      if (getSystemNoticeFeedsCount() > 0) {
         hash = (37 * hash) + SYSTEMNOTICEFEEDS_FIELD_NUMBER;
-        hash = (53 * hash) + getSystemNoticeFeeds().hashCode();
+        hash = (53 * hash) + getSystemNoticeFeedsList().hashCode();
       }
-      if (hasShareFeeds()) {
+      if (getShareFeedsCount() > 0) {
         hash = (37 * hash) + SHAREFEEDS_FIELD_NUMBER;
-        hash = (53 * hash) + getShareFeeds().hashCode();
+        hash = (53 * hash) + getShareFeedsList().hashCode();
       }
       hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
@@ -909,38 +1041,50 @@ public final class SCWebFeedPushOuterClass {
         displayLikeCount_ = "";
         pendingLikeCount_ = 0L;
         pushInterval_ = 0L;
-        commentFeeds_ = null;
-        if (commentFeedsBuilder_ != null) {
-          commentFeedsBuilder_.dispose();
-          commentFeedsBuilder_ = null;
+        if (commentFeedsBuilder_ == null) {
+          commentFeeds_ = java.util.Collections.emptyList();
+        } else {
+          commentFeeds_ = null;
+          commentFeedsBuilder_.clear();
         }
+        bitField0_ = (bitField0_ & ~0x00000010);
         commentCursor_ = "";
-        comboCommentFeed_ = null;
-        if (comboCommentFeedBuilder_ != null) {
-          comboCommentFeedBuilder_.dispose();
-          comboCommentFeedBuilder_ = null;
+        if (comboCommentFeedBuilder_ == null) {
+          comboCommentFeed_ = java.util.Collections.emptyList();
+        } else {
+          comboCommentFeed_ = null;
+          comboCommentFeedBuilder_.clear();
         }
-        likeFeeds_ = null;
-        if (likeFeedsBuilder_ != null) {
-          likeFeedsBuilder_.dispose();
-          likeFeedsBuilder_ = null;
+        bitField0_ = (bitField0_ & ~0x00000040);
+        if (likeFeedsBuilder_ == null) {
+          likeFeeds_ = java.util.Collections.emptyList();
+        } else {
+          likeFeeds_ = null;
+          likeFeedsBuilder_.clear();
         }
-        giftFeeds_ = null;
-        if (giftFeedsBuilder_ != null) {
-          giftFeedsBuilder_.dispose();
-          giftFeedsBuilder_ = null;
+        bitField0_ = (bitField0_ & ~0x00000080);
+        if (giftFeedsBuilder_ == null) {
+          giftFeeds_ = java.util.Collections.emptyList();
+        } else {
+          giftFeeds_ = null;
+          giftFeedsBuilder_.clear();
         }
+        bitField0_ = (bitField0_ & ~0x00000100);
         giftCursor_ = "";
-        systemNoticeFeeds_ = null;
-        if (systemNoticeFeedsBuilder_ != null) {
-          systemNoticeFeedsBuilder_.dispose();
-          systemNoticeFeedsBuilder_ = null;
+        if (systemNoticeFeedsBuilder_ == null) {
+          systemNoticeFeeds_ = java.util.Collections.emptyList();
+        } else {
+          systemNoticeFeeds_ = null;
+          systemNoticeFeedsBuilder_.clear();
         }
-        shareFeeds_ = null;
-        if (shareFeedsBuilder_ != null) {
-          shareFeedsBuilder_.dispose();
-          shareFeedsBuilder_ = null;
+        bitField0_ = (bitField0_ & ~0x00000400);
+        if (shareFeedsBuilder_ == null) {
+          shareFeeds_ = java.util.Collections.emptyList();
+        } else {
+          shareFeeds_ = null;
+          shareFeedsBuilder_.clear();
         }
+        bitField0_ = (bitField0_ & ~0x00000800);
         return this;
       }
 
@@ -967,9 +1111,67 @@ public final class SCWebFeedPushOuterClass {
       @java.lang.Override
       public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SCWebFeedPushOuterClass.SCWebFeedPush buildPartial() {
         tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SCWebFeedPushOuterClass.SCWebFeedPush result = new tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SCWebFeedPushOuterClass.SCWebFeedPush(this);
+        buildPartialRepeatedFields(result);
         if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
+      }
+
+      private void buildPartialRepeatedFields(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SCWebFeedPushOuterClass.SCWebFeedPush result) {
+        if (commentFeedsBuilder_ == null) {
+          if (((bitField0_ & 0x00000010) != 0)) {
+            commentFeeds_ = java.util.Collections.unmodifiableList(commentFeeds_);
+            bitField0_ = (bitField0_ & ~0x00000010);
+          }
+          result.commentFeeds_ = commentFeeds_;
+        } else {
+          result.commentFeeds_ = commentFeedsBuilder_.build();
+        }
+        if (comboCommentFeedBuilder_ == null) {
+          if (((bitField0_ & 0x00000040) != 0)) {
+            comboCommentFeed_ = java.util.Collections.unmodifiableList(comboCommentFeed_);
+            bitField0_ = (bitField0_ & ~0x00000040);
+          }
+          result.comboCommentFeed_ = comboCommentFeed_;
+        } else {
+          result.comboCommentFeed_ = comboCommentFeedBuilder_.build();
+        }
+        if (likeFeedsBuilder_ == null) {
+          if (((bitField0_ & 0x00000080) != 0)) {
+            likeFeeds_ = java.util.Collections.unmodifiableList(likeFeeds_);
+            bitField0_ = (bitField0_ & ~0x00000080);
+          }
+          result.likeFeeds_ = likeFeeds_;
+        } else {
+          result.likeFeeds_ = likeFeedsBuilder_.build();
+        }
+        if (giftFeedsBuilder_ == null) {
+          if (((bitField0_ & 0x00000100) != 0)) {
+            giftFeeds_ = java.util.Collections.unmodifiableList(giftFeeds_);
+            bitField0_ = (bitField0_ & ~0x00000100);
+          }
+          result.giftFeeds_ = giftFeeds_;
+        } else {
+          result.giftFeeds_ = giftFeedsBuilder_.build();
+        }
+        if (systemNoticeFeedsBuilder_ == null) {
+          if (((bitField0_ & 0x00000400) != 0)) {
+            systemNoticeFeeds_ = java.util.Collections.unmodifiableList(systemNoticeFeeds_);
+            bitField0_ = (bitField0_ & ~0x00000400);
+          }
+          result.systemNoticeFeeds_ = systemNoticeFeeds_;
+        } else {
+          result.systemNoticeFeeds_ = systemNoticeFeedsBuilder_.build();
+        }
+        if (shareFeedsBuilder_ == null) {
+          if (((bitField0_ & 0x00000800) != 0)) {
+            shareFeeds_ = java.util.Collections.unmodifiableList(shareFeeds_);
+            bitField0_ = (bitField0_ & ~0x00000800);
+          }
+          result.shareFeeds_ = shareFeeds_;
+        } else {
+          result.shareFeeds_ = shareFeedsBuilder_.build();
+        }
       }
 
       private void buildPartial0(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SCWebFeedPushOuterClass.SCWebFeedPush result) {
@@ -986,41 +1188,11 @@ public final class SCWebFeedPushOuterClass {
         if (((from_bitField0_ & 0x00000008) != 0)) {
           result.pushInterval_ = pushInterval_;
         }
-        if (((from_bitField0_ & 0x00000010) != 0)) {
-          result.commentFeeds_ = commentFeedsBuilder_ == null
-              ? commentFeeds_
-              : commentFeedsBuilder_.build();
-        }
         if (((from_bitField0_ & 0x00000020) != 0)) {
           result.commentCursor_ = commentCursor_;
         }
-        if (((from_bitField0_ & 0x00000040) != 0)) {
-          result.comboCommentFeed_ = comboCommentFeedBuilder_ == null
-              ? comboCommentFeed_
-              : comboCommentFeedBuilder_.build();
-        }
-        if (((from_bitField0_ & 0x00000080) != 0)) {
-          result.likeFeeds_ = likeFeedsBuilder_ == null
-              ? likeFeeds_
-              : likeFeedsBuilder_.build();
-        }
-        if (((from_bitField0_ & 0x00000100) != 0)) {
-          result.giftFeeds_ = giftFeedsBuilder_ == null
-              ? giftFeeds_
-              : giftFeedsBuilder_.build();
-        }
         if (((from_bitField0_ & 0x00000200) != 0)) {
           result.giftCursor_ = giftCursor_;
-        }
-        if (((from_bitField0_ & 0x00000400) != 0)) {
-          result.systemNoticeFeeds_ = systemNoticeFeedsBuilder_ == null
-              ? systemNoticeFeeds_
-              : systemNoticeFeedsBuilder_.build();
-        }
-        if (((from_bitField0_ & 0x00000800) != 0)) {
-          result.shareFeeds_ = shareFeedsBuilder_ == null
-              ? shareFeeds_
-              : shareFeedsBuilder_.build();
         }
       }
 
@@ -1084,33 +1256,171 @@ public final class SCWebFeedPushOuterClass {
         if (other.getPushInterval() != 0L) {
           setPushInterval(other.getPushInterval());
         }
-        if (other.hasCommentFeeds()) {
-          mergeCommentFeeds(other.getCommentFeeds());
+        if (commentFeedsBuilder_ == null) {
+          if (!other.commentFeeds_.isEmpty()) {
+            if (commentFeeds_.isEmpty()) {
+              commentFeeds_ = other.commentFeeds_;
+              bitField0_ = (bitField0_ & ~0x00000010);
+            } else {
+              ensureCommentFeedsIsMutable();
+              commentFeeds_.addAll(other.commentFeeds_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.commentFeeds_.isEmpty()) {
+            if (commentFeedsBuilder_.isEmpty()) {
+              commentFeedsBuilder_.dispose();
+              commentFeedsBuilder_ = null;
+              commentFeeds_ = other.commentFeeds_;
+              bitField0_ = (bitField0_ & ~0x00000010);
+              commentFeedsBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getCommentFeedsFieldBuilder() : null;
+            } else {
+              commentFeedsBuilder_.addAllMessages(other.commentFeeds_);
+            }
+          }
         }
         if (!other.getCommentCursor().isEmpty()) {
           commentCursor_ = other.commentCursor_;
           bitField0_ |= 0x00000020;
           onChanged();
         }
-        if (other.hasComboCommentFeed()) {
-          mergeComboCommentFeed(other.getComboCommentFeed());
+        if (comboCommentFeedBuilder_ == null) {
+          if (!other.comboCommentFeed_.isEmpty()) {
+            if (comboCommentFeed_.isEmpty()) {
+              comboCommentFeed_ = other.comboCommentFeed_;
+              bitField0_ = (bitField0_ & ~0x00000040);
+            } else {
+              ensureComboCommentFeedIsMutable();
+              comboCommentFeed_.addAll(other.comboCommentFeed_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.comboCommentFeed_.isEmpty()) {
+            if (comboCommentFeedBuilder_.isEmpty()) {
+              comboCommentFeedBuilder_.dispose();
+              comboCommentFeedBuilder_ = null;
+              comboCommentFeed_ = other.comboCommentFeed_;
+              bitField0_ = (bitField0_ & ~0x00000040);
+              comboCommentFeedBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getComboCommentFeedFieldBuilder() : null;
+            } else {
+              comboCommentFeedBuilder_.addAllMessages(other.comboCommentFeed_);
+            }
+          }
         }
-        if (other.hasLikeFeeds()) {
-          mergeLikeFeeds(other.getLikeFeeds());
+        if (likeFeedsBuilder_ == null) {
+          if (!other.likeFeeds_.isEmpty()) {
+            if (likeFeeds_.isEmpty()) {
+              likeFeeds_ = other.likeFeeds_;
+              bitField0_ = (bitField0_ & ~0x00000080);
+            } else {
+              ensureLikeFeedsIsMutable();
+              likeFeeds_.addAll(other.likeFeeds_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.likeFeeds_.isEmpty()) {
+            if (likeFeedsBuilder_.isEmpty()) {
+              likeFeedsBuilder_.dispose();
+              likeFeedsBuilder_ = null;
+              likeFeeds_ = other.likeFeeds_;
+              bitField0_ = (bitField0_ & ~0x00000080);
+              likeFeedsBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getLikeFeedsFieldBuilder() : null;
+            } else {
+              likeFeedsBuilder_.addAllMessages(other.likeFeeds_);
+            }
+          }
         }
-        if (other.hasGiftFeeds()) {
-          mergeGiftFeeds(other.getGiftFeeds());
+        if (giftFeedsBuilder_ == null) {
+          if (!other.giftFeeds_.isEmpty()) {
+            if (giftFeeds_.isEmpty()) {
+              giftFeeds_ = other.giftFeeds_;
+              bitField0_ = (bitField0_ & ~0x00000100);
+            } else {
+              ensureGiftFeedsIsMutable();
+              giftFeeds_.addAll(other.giftFeeds_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.giftFeeds_.isEmpty()) {
+            if (giftFeedsBuilder_.isEmpty()) {
+              giftFeedsBuilder_.dispose();
+              giftFeedsBuilder_ = null;
+              giftFeeds_ = other.giftFeeds_;
+              bitField0_ = (bitField0_ & ~0x00000100);
+              giftFeedsBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getGiftFeedsFieldBuilder() : null;
+            } else {
+              giftFeedsBuilder_.addAllMessages(other.giftFeeds_);
+            }
+          }
         }
         if (!other.getGiftCursor().isEmpty()) {
           giftCursor_ = other.giftCursor_;
           bitField0_ |= 0x00000200;
           onChanged();
         }
-        if (other.hasSystemNoticeFeeds()) {
-          mergeSystemNoticeFeeds(other.getSystemNoticeFeeds());
+        if (systemNoticeFeedsBuilder_ == null) {
+          if (!other.systemNoticeFeeds_.isEmpty()) {
+            if (systemNoticeFeeds_.isEmpty()) {
+              systemNoticeFeeds_ = other.systemNoticeFeeds_;
+              bitField0_ = (bitField0_ & ~0x00000400);
+            } else {
+              ensureSystemNoticeFeedsIsMutable();
+              systemNoticeFeeds_.addAll(other.systemNoticeFeeds_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.systemNoticeFeeds_.isEmpty()) {
+            if (systemNoticeFeedsBuilder_.isEmpty()) {
+              systemNoticeFeedsBuilder_.dispose();
+              systemNoticeFeedsBuilder_ = null;
+              systemNoticeFeeds_ = other.systemNoticeFeeds_;
+              bitField0_ = (bitField0_ & ~0x00000400);
+              systemNoticeFeedsBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getSystemNoticeFeedsFieldBuilder() : null;
+            } else {
+              systemNoticeFeedsBuilder_.addAllMessages(other.systemNoticeFeeds_);
+            }
+          }
         }
-        if (other.hasShareFeeds()) {
-          mergeShareFeeds(other.getShareFeeds());
+        if (shareFeedsBuilder_ == null) {
+          if (!other.shareFeeds_.isEmpty()) {
+            if (shareFeeds_.isEmpty()) {
+              shareFeeds_ = other.shareFeeds_;
+              bitField0_ = (bitField0_ & ~0x00000800);
+            } else {
+              ensureShareFeedsIsMutable();
+              shareFeeds_.addAll(other.shareFeeds_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.shareFeeds_.isEmpty()) {
+            if (shareFeedsBuilder_.isEmpty()) {
+              shareFeedsBuilder_.dispose();
+              shareFeedsBuilder_ = null;
+              shareFeeds_ = other.shareFeeds_;
+              bitField0_ = (bitField0_ & ~0x00000800);
+              shareFeedsBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getShareFeedsFieldBuilder() : null;
+            } else {
+              shareFeedsBuilder_.addAllMessages(other.shareFeeds_);
+            }
+          }
         }
         this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
@@ -1159,10 +1469,16 @@ public final class SCWebFeedPushOuterClass {
                 break;
               } // case 32
               case 42: {
-                input.readMessage(
-                    getCommentFeedsFieldBuilder().getBuilder(),
-                    extensionRegistry);
-                bitField0_ |= 0x00000010;
+                tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed m =
+                    input.readMessage(
+                        tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed.parser(),
+                        extensionRegistry);
+                if (commentFeedsBuilder_ == null) {
+                  ensureCommentFeedsIsMutable();
+                  commentFeeds_.add(m);
+                } else {
+                  commentFeedsBuilder_.addMessage(m);
+                }
                 break;
               } // case 42
               case 50: {
@@ -1171,24 +1487,42 @@ public final class SCWebFeedPushOuterClass {
                 break;
               } // case 50
               case 58: {
-                input.readMessage(
-                    getComboCommentFeedFieldBuilder().getBuilder(),
-                    extensionRegistry);
-                bitField0_ |= 0x00000040;
+                tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed m =
+                    input.readMessage(
+                        tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed.parser(),
+                        extensionRegistry);
+                if (comboCommentFeedBuilder_ == null) {
+                  ensureComboCommentFeedIsMutable();
+                  comboCommentFeed_.add(m);
+                } else {
+                  comboCommentFeedBuilder_.addMessage(m);
+                }
                 break;
               } // case 58
               case 66: {
-                input.readMessage(
-                    getLikeFeedsFieldBuilder().getBuilder(),
-                    extensionRegistry);
-                bitField0_ |= 0x00000080;
+                tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed m =
+                    input.readMessage(
+                        tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed.parser(),
+                        extensionRegistry);
+                if (likeFeedsBuilder_ == null) {
+                  ensureLikeFeedsIsMutable();
+                  likeFeeds_.add(m);
+                } else {
+                  likeFeedsBuilder_.addMessage(m);
+                }
                 break;
               } // case 66
               case 74: {
-                input.readMessage(
-                    getGiftFeedsFieldBuilder().getBuilder(),
-                    extensionRegistry);
-                bitField0_ |= 0x00000100;
+                tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed m =
+                    input.readMessage(
+                        tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed.parser(),
+                        extensionRegistry);
+                if (giftFeedsBuilder_ == null) {
+                  ensureGiftFeedsIsMutable();
+                  giftFeeds_.add(m);
+                } else {
+                  giftFeedsBuilder_.addMessage(m);
+                }
                 break;
               } // case 74
               case 82: {
@@ -1197,17 +1531,29 @@ public final class SCWebFeedPushOuterClass {
                 break;
               } // case 82
               case 90: {
-                input.readMessage(
-                    getSystemNoticeFeedsFieldBuilder().getBuilder(),
-                    extensionRegistry);
-                bitField0_ |= 0x00000400;
+                tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed m =
+                    input.readMessage(
+                        tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed.parser(),
+                        extensionRegistry);
+                if (systemNoticeFeedsBuilder_ == null) {
+                  ensureSystemNoticeFeedsIsMutable();
+                  systemNoticeFeeds_.add(m);
+                } else {
+                  systemNoticeFeedsBuilder_.addMessage(m);
+                }
                 break;
               } // case 90
               case 98: {
-                input.readMessage(
-                    getShareFeedsFieldBuilder().getBuilder(),
-                    extensionRegistry);
-                bitField0_ |= 0x00000800;
+                tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed m =
+                    input.readMessage(
+                        tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed.parser(),
+                        extensionRegistry);
+                if (shareFeedsBuilder_ == null) {
+                  ensureShareFeedsIsMutable();
+                  shareFeeds_.add(m);
+                } else {
+                  shareFeedsBuilder_.addMessage(m);
+                }
                 break;
               } // case 98
               default: {
@@ -1435,118 +1781,239 @@ public final class SCWebFeedPushOuterClass {
         return this;
       }
 
-      private tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed commentFeeds_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeedOrBuilder> commentFeedsBuilder_;
-      /**
-       * <code>.WebCommentFeed commentFeeds = 5;</code>
-       * @return Whether the commentFeeds field is set.
-       */
-      public boolean hasCommentFeeds() {
-        return ((bitField0_ & 0x00000010) != 0);
+      private java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed> commentFeeds_ =
+        java.util.Collections.emptyList();
+      private void ensureCommentFeedsIsMutable() {
+        if (!((bitField0_ & 0x00000010) != 0)) {
+          commentFeeds_ = new java.util.ArrayList<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed>(commentFeeds_);
+          bitField0_ |= 0x00000010;
+         }
       }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeedOrBuilder> commentFeedsBuilder_;
+
       /**
-       * <code>.WebCommentFeed commentFeeds = 5;</code>
-       * @return The commentFeeds.
+       * <code>repeated .WebCommentFeed commentFeeds = 5;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed getCommentFeeds() {
+      public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed> getCommentFeedsList() {
         if (commentFeedsBuilder_ == null) {
-          return commentFeeds_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed.getDefaultInstance() : commentFeeds_;
+          return java.util.Collections.unmodifiableList(commentFeeds_);
         } else {
-          return commentFeedsBuilder_.getMessage();
+          return commentFeedsBuilder_.getMessageList();
         }
       }
       /**
-       * <code>.WebCommentFeed commentFeeds = 5;</code>
+       * <code>repeated .WebCommentFeed commentFeeds = 5;</code>
        */
-      public Builder setCommentFeeds(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed value) {
+      public int getCommentFeedsCount() {
+        if (commentFeedsBuilder_ == null) {
+          return commentFeeds_.size();
+        } else {
+          return commentFeedsBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .WebCommentFeed commentFeeds = 5;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed getCommentFeeds(int index) {
+        if (commentFeedsBuilder_ == null) {
+          return commentFeeds_.get(index);
+        } else {
+          return commentFeedsBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .WebCommentFeed commentFeeds = 5;</code>
+       */
+      public Builder setCommentFeeds(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed value) {
         if (commentFeedsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          commentFeeds_ = value;
+          ensureCommentFeedsIsMutable();
+          commentFeeds_.set(index, value);
+          onChanged();
         } else {
-          commentFeedsBuilder_.setMessage(value);
+          commentFeedsBuilder_.setMessage(index, value);
         }
-        bitField0_ |= 0x00000010;
-        onChanged();
         return this;
       }
       /**
-       * <code>.WebCommentFeed commentFeeds = 5;</code>
+       * <code>repeated .WebCommentFeed commentFeeds = 5;</code>
        */
       public Builder setCommentFeeds(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed.Builder builderForValue) {
+        if (commentFeedsBuilder_ == null) {
+          ensureCommentFeedsIsMutable();
+          commentFeeds_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          commentFeedsBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WebCommentFeed commentFeeds = 5;</code>
+       */
+      public Builder addCommentFeeds(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed value) {
+        if (commentFeedsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureCommentFeedsIsMutable();
+          commentFeeds_.add(value);
+          onChanged();
+        } else {
+          commentFeedsBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WebCommentFeed commentFeeds = 5;</code>
+       */
+      public Builder addCommentFeeds(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed value) {
+        if (commentFeedsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureCommentFeedsIsMutable();
+          commentFeeds_.add(index, value);
+          onChanged();
+        } else {
+          commentFeedsBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WebCommentFeed commentFeeds = 5;</code>
+       */
+      public Builder addCommentFeeds(
           tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed.Builder builderForValue) {
         if (commentFeedsBuilder_ == null) {
-          commentFeeds_ = builderForValue.build();
+          ensureCommentFeedsIsMutable();
+          commentFeeds_.add(builderForValue.build());
+          onChanged();
         } else {
-          commentFeedsBuilder_.setMessage(builderForValue.build());
+          commentFeedsBuilder_.addMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000010;
-        onChanged();
         return this;
       }
       /**
-       * <code>.WebCommentFeed commentFeeds = 5;</code>
+       * <code>repeated .WebCommentFeed commentFeeds = 5;</code>
        */
-      public Builder mergeCommentFeeds(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed value) {
+      public Builder addCommentFeeds(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed.Builder builderForValue) {
         if (commentFeedsBuilder_ == null) {
-          if (((bitField0_ & 0x00000010) != 0) &&
-            commentFeeds_ != null &&
-            commentFeeds_ != tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed.getDefaultInstance()) {
-            getCommentFeedsBuilder().mergeFrom(value);
-          } else {
-            commentFeeds_ = value;
-          }
+          ensureCommentFeedsIsMutable();
+          commentFeeds_.add(index, builderForValue.build());
+          onChanged();
         } else {
-          commentFeedsBuilder_.mergeFrom(value);
+          commentFeedsBuilder_.addMessage(index, builderForValue.build());
         }
-        bitField0_ |= 0x00000010;
-        onChanged();
         return this;
       }
       /**
-       * <code>.WebCommentFeed commentFeeds = 5;</code>
+       * <code>repeated .WebCommentFeed commentFeeds = 5;</code>
+       */
+      public Builder addAllCommentFeeds(
+          java.lang.Iterable<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed> values) {
+        if (commentFeedsBuilder_ == null) {
+          ensureCommentFeedsIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, commentFeeds_);
+          onChanged();
+        } else {
+          commentFeedsBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WebCommentFeed commentFeeds = 5;</code>
        */
       public Builder clearCommentFeeds() {
-        bitField0_ = (bitField0_ & ~0x00000010);
-        commentFeeds_ = null;
-        if (commentFeedsBuilder_ != null) {
-          commentFeedsBuilder_.dispose();
-          commentFeedsBuilder_ = null;
+        if (commentFeedsBuilder_ == null) {
+          commentFeeds_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000010);
+          onChanged();
+        } else {
+          commentFeedsBuilder_.clear();
         }
-        onChanged();
         return this;
       }
       /**
-       * <code>.WebCommentFeed commentFeeds = 5;</code>
+       * <code>repeated .WebCommentFeed commentFeeds = 5;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed.Builder getCommentFeedsBuilder() {
-        bitField0_ |= 0x00000010;
-        onChanged();
-        return getCommentFeedsFieldBuilder().getBuilder();
+      public Builder removeCommentFeeds(int index) {
+        if (commentFeedsBuilder_ == null) {
+          ensureCommentFeedsIsMutable();
+          commentFeeds_.remove(index);
+          onChanged();
+        } else {
+          commentFeedsBuilder_.remove(index);
+        }
+        return this;
       }
       /**
-       * <code>.WebCommentFeed commentFeeds = 5;</code>
+       * <code>repeated .WebCommentFeed commentFeeds = 5;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeedOrBuilder getCommentFeedsOrBuilder() {
-        if (commentFeedsBuilder_ != null) {
-          return commentFeedsBuilder_.getMessageOrBuilder();
-        } else {
-          return commentFeeds_ == null ?
-              tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed.getDefaultInstance() : commentFeeds_;
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed.Builder getCommentFeedsBuilder(
+          int index) {
+        return getCommentFeedsFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .WebCommentFeed commentFeeds = 5;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeedOrBuilder getCommentFeedsOrBuilder(
+          int index) {
+        if (commentFeedsBuilder_ == null) {
+          return commentFeeds_.get(index);  } else {
+          return commentFeedsBuilder_.getMessageOrBuilder(index);
         }
       }
       /**
-       * <code>.WebCommentFeed commentFeeds = 5;</code>
+       * <code>repeated .WebCommentFeed commentFeeds = 5;</code>
        */
-      private com.google.protobuf.SingleFieldBuilderV3<
+      public java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeedOrBuilder> 
+           getCommentFeedsOrBuilderList() {
+        if (commentFeedsBuilder_ != null) {
+          return commentFeedsBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(commentFeeds_);
+        }
+      }
+      /**
+       * <code>repeated .WebCommentFeed commentFeeds = 5;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed.Builder addCommentFeedsBuilder() {
+        return getCommentFeedsFieldBuilder().addBuilder(
+            tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .WebCommentFeed commentFeeds = 5;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed.Builder addCommentFeedsBuilder(
+          int index) {
+        return getCommentFeedsFieldBuilder().addBuilder(
+            index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .WebCommentFeed commentFeeds = 5;</code>
+       */
+      public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed.Builder> 
+           getCommentFeedsBuilderList() {
+        return getCommentFeedsFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
           tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeedOrBuilder> 
           getCommentFeedsFieldBuilder() {
         if (commentFeedsBuilder_ == null) {
-          commentFeedsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+          commentFeedsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeed.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass.WebCommentFeedOrBuilder>(
-                  getCommentFeeds(),
+                  commentFeeds_,
+                  ((bitField0_ & 0x00000010) != 0),
                   getParentForChildren(),
                   isClean());
           commentFeeds_ = null;
@@ -1626,118 +2093,239 @@ public final class SCWebFeedPushOuterClass {
         return this;
       }
 
-      private tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed comboCommentFeed_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeedOrBuilder> comboCommentFeedBuilder_;
-      /**
-       * <code>.WebComboCommentFeed comboCommentFeed = 7;</code>
-       * @return Whether the comboCommentFeed field is set.
-       */
-      public boolean hasComboCommentFeed() {
-        return ((bitField0_ & 0x00000040) != 0);
+      private java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed> comboCommentFeed_ =
+        java.util.Collections.emptyList();
+      private void ensureComboCommentFeedIsMutable() {
+        if (!((bitField0_ & 0x00000040) != 0)) {
+          comboCommentFeed_ = new java.util.ArrayList<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed>(comboCommentFeed_);
+          bitField0_ |= 0x00000040;
+         }
       }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeedOrBuilder> comboCommentFeedBuilder_;
+
       /**
-       * <code>.WebComboCommentFeed comboCommentFeed = 7;</code>
-       * @return The comboCommentFeed.
+       * <code>repeated .WebComboCommentFeed comboCommentFeed = 7;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed getComboCommentFeed() {
+      public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed> getComboCommentFeedList() {
         if (comboCommentFeedBuilder_ == null) {
-          return comboCommentFeed_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed.getDefaultInstance() : comboCommentFeed_;
+          return java.util.Collections.unmodifiableList(comboCommentFeed_);
         } else {
-          return comboCommentFeedBuilder_.getMessage();
+          return comboCommentFeedBuilder_.getMessageList();
         }
       }
       /**
-       * <code>.WebComboCommentFeed comboCommentFeed = 7;</code>
+       * <code>repeated .WebComboCommentFeed comboCommentFeed = 7;</code>
        */
-      public Builder setComboCommentFeed(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed value) {
+      public int getComboCommentFeedCount() {
+        if (comboCommentFeedBuilder_ == null) {
+          return comboCommentFeed_.size();
+        } else {
+          return comboCommentFeedBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .WebComboCommentFeed comboCommentFeed = 7;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed getComboCommentFeed(int index) {
+        if (comboCommentFeedBuilder_ == null) {
+          return comboCommentFeed_.get(index);
+        } else {
+          return comboCommentFeedBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .WebComboCommentFeed comboCommentFeed = 7;</code>
+       */
+      public Builder setComboCommentFeed(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed value) {
         if (comboCommentFeedBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          comboCommentFeed_ = value;
+          ensureComboCommentFeedIsMutable();
+          comboCommentFeed_.set(index, value);
+          onChanged();
         } else {
-          comboCommentFeedBuilder_.setMessage(value);
+          comboCommentFeedBuilder_.setMessage(index, value);
         }
-        bitField0_ |= 0x00000040;
-        onChanged();
         return this;
       }
       /**
-       * <code>.WebComboCommentFeed comboCommentFeed = 7;</code>
+       * <code>repeated .WebComboCommentFeed comboCommentFeed = 7;</code>
        */
       public Builder setComboCommentFeed(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed.Builder builderForValue) {
+        if (comboCommentFeedBuilder_ == null) {
+          ensureComboCommentFeedIsMutable();
+          comboCommentFeed_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          comboCommentFeedBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WebComboCommentFeed comboCommentFeed = 7;</code>
+       */
+      public Builder addComboCommentFeed(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed value) {
+        if (comboCommentFeedBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureComboCommentFeedIsMutable();
+          comboCommentFeed_.add(value);
+          onChanged();
+        } else {
+          comboCommentFeedBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WebComboCommentFeed comboCommentFeed = 7;</code>
+       */
+      public Builder addComboCommentFeed(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed value) {
+        if (comboCommentFeedBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureComboCommentFeedIsMutable();
+          comboCommentFeed_.add(index, value);
+          onChanged();
+        } else {
+          comboCommentFeedBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WebComboCommentFeed comboCommentFeed = 7;</code>
+       */
+      public Builder addComboCommentFeed(
           tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed.Builder builderForValue) {
         if (comboCommentFeedBuilder_ == null) {
-          comboCommentFeed_ = builderForValue.build();
+          ensureComboCommentFeedIsMutable();
+          comboCommentFeed_.add(builderForValue.build());
+          onChanged();
         } else {
-          comboCommentFeedBuilder_.setMessage(builderForValue.build());
+          comboCommentFeedBuilder_.addMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000040;
-        onChanged();
         return this;
       }
       /**
-       * <code>.WebComboCommentFeed comboCommentFeed = 7;</code>
+       * <code>repeated .WebComboCommentFeed comboCommentFeed = 7;</code>
        */
-      public Builder mergeComboCommentFeed(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed value) {
+      public Builder addComboCommentFeed(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed.Builder builderForValue) {
         if (comboCommentFeedBuilder_ == null) {
-          if (((bitField0_ & 0x00000040) != 0) &&
-            comboCommentFeed_ != null &&
-            comboCommentFeed_ != tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed.getDefaultInstance()) {
-            getComboCommentFeedBuilder().mergeFrom(value);
-          } else {
-            comboCommentFeed_ = value;
-          }
+          ensureComboCommentFeedIsMutable();
+          comboCommentFeed_.add(index, builderForValue.build());
+          onChanged();
         } else {
-          comboCommentFeedBuilder_.mergeFrom(value);
+          comboCommentFeedBuilder_.addMessage(index, builderForValue.build());
         }
-        bitField0_ |= 0x00000040;
-        onChanged();
         return this;
       }
       /**
-       * <code>.WebComboCommentFeed comboCommentFeed = 7;</code>
+       * <code>repeated .WebComboCommentFeed comboCommentFeed = 7;</code>
+       */
+      public Builder addAllComboCommentFeed(
+          java.lang.Iterable<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed> values) {
+        if (comboCommentFeedBuilder_ == null) {
+          ensureComboCommentFeedIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, comboCommentFeed_);
+          onChanged();
+        } else {
+          comboCommentFeedBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WebComboCommentFeed comboCommentFeed = 7;</code>
        */
       public Builder clearComboCommentFeed() {
-        bitField0_ = (bitField0_ & ~0x00000040);
-        comboCommentFeed_ = null;
-        if (comboCommentFeedBuilder_ != null) {
-          comboCommentFeedBuilder_.dispose();
-          comboCommentFeedBuilder_ = null;
+        if (comboCommentFeedBuilder_ == null) {
+          comboCommentFeed_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000040);
+          onChanged();
+        } else {
+          comboCommentFeedBuilder_.clear();
         }
-        onChanged();
         return this;
       }
       /**
-       * <code>.WebComboCommentFeed comboCommentFeed = 7;</code>
+       * <code>repeated .WebComboCommentFeed comboCommentFeed = 7;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed.Builder getComboCommentFeedBuilder() {
-        bitField0_ |= 0x00000040;
-        onChanged();
-        return getComboCommentFeedFieldBuilder().getBuilder();
+      public Builder removeComboCommentFeed(int index) {
+        if (comboCommentFeedBuilder_ == null) {
+          ensureComboCommentFeedIsMutable();
+          comboCommentFeed_.remove(index);
+          onChanged();
+        } else {
+          comboCommentFeedBuilder_.remove(index);
+        }
+        return this;
       }
       /**
-       * <code>.WebComboCommentFeed comboCommentFeed = 7;</code>
+       * <code>repeated .WebComboCommentFeed comboCommentFeed = 7;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeedOrBuilder getComboCommentFeedOrBuilder() {
-        if (comboCommentFeedBuilder_ != null) {
-          return comboCommentFeedBuilder_.getMessageOrBuilder();
-        } else {
-          return comboCommentFeed_ == null ?
-              tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed.getDefaultInstance() : comboCommentFeed_;
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed.Builder getComboCommentFeedBuilder(
+          int index) {
+        return getComboCommentFeedFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .WebComboCommentFeed comboCommentFeed = 7;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeedOrBuilder getComboCommentFeedOrBuilder(
+          int index) {
+        if (comboCommentFeedBuilder_ == null) {
+          return comboCommentFeed_.get(index);  } else {
+          return comboCommentFeedBuilder_.getMessageOrBuilder(index);
         }
       }
       /**
-       * <code>.WebComboCommentFeed comboCommentFeed = 7;</code>
+       * <code>repeated .WebComboCommentFeed comboCommentFeed = 7;</code>
        */
-      private com.google.protobuf.SingleFieldBuilderV3<
+      public java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeedOrBuilder> 
+           getComboCommentFeedOrBuilderList() {
+        if (comboCommentFeedBuilder_ != null) {
+          return comboCommentFeedBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(comboCommentFeed_);
+        }
+      }
+      /**
+       * <code>repeated .WebComboCommentFeed comboCommentFeed = 7;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed.Builder addComboCommentFeedBuilder() {
+        return getComboCommentFeedFieldBuilder().addBuilder(
+            tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .WebComboCommentFeed comboCommentFeed = 7;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed.Builder addComboCommentFeedBuilder(
+          int index) {
+        return getComboCommentFeedFieldBuilder().addBuilder(
+            index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .WebComboCommentFeed comboCommentFeed = 7;</code>
+       */
+      public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed.Builder> 
+           getComboCommentFeedBuilderList() {
+        return getComboCommentFeedFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
           tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeedOrBuilder> 
           getComboCommentFeedFieldBuilder() {
         if (comboCommentFeedBuilder_ == null) {
-          comboCommentFeedBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+          comboCommentFeedBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeed.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebComboCommentFeedOuterClass.WebComboCommentFeedOrBuilder>(
-                  getComboCommentFeed(),
+                  comboCommentFeed_,
+                  ((bitField0_ & 0x00000040) != 0),
                   getParentForChildren(),
                   isClean());
           comboCommentFeed_ = null;
@@ -1745,118 +2333,239 @@ public final class SCWebFeedPushOuterClass {
         return comboCommentFeedBuilder_;
       }
 
-      private tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed likeFeeds_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeedOrBuilder> likeFeedsBuilder_;
-      /**
-       * <code>.WebLikeFeed likeFeeds = 8;</code>
-       * @return Whether the likeFeeds field is set.
-       */
-      public boolean hasLikeFeeds() {
-        return ((bitField0_ & 0x00000080) != 0);
+      private java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed> likeFeeds_ =
+        java.util.Collections.emptyList();
+      private void ensureLikeFeedsIsMutable() {
+        if (!((bitField0_ & 0x00000080) != 0)) {
+          likeFeeds_ = new java.util.ArrayList<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed>(likeFeeds_);
+          bitField0_ |= 0x00000080;
+         }
       }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeedOrBuilder> likeFeedsBuilder_;
+
       /**
-       * <code>.WebLikeFeed likeFeeds = 8;</code>
-       * @return The likeFeeds.
+       * <code>repeated .WebLikeFeed likeFeeds = 8;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed getLikeFeeds() {
+      public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed> getLikeFeedsList() {
         if (likeFeedsBuilder_ == null) {
-          return likeFeeds_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed.getDefaultInstance() : likeFeeds_;
+          return java.util.Collections.unmodifiableList(likeFeeds_);
         } else {
-          return likeFeedsBuilder_.getMessage();
+          return likeFeedsBuilder_.getMessageList();
         }
       }
       /**
-       * <code>.WebLikeFeed likeFeeds = 8;</code>
+       * <code>repeated .WebLikeFeed likeFeeds = 8;</code>
        */
-      public Builder setLikeFeeds(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed value) {
+      public int getLikeFeedsCount() {
+        if (likeFeedsBuilder_ == null) {
+          return likeFeeds_.size();
+        } else {
+          return likeFeedsBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .WebLikeFeed likeFeeds = 8;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed getLikeFeeds(int index) {
+        if (likeFeedsBuilder_ == null) {
+          return likeFeeds_.get(index);
+        } else {
+          return likeFeedsBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .WebLikeFeed likeFeeds = 8;</code>
+       */
+      public Builder setLikeFeeds(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed value) {
         if (likeFeedsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          likeFeeds_ = value;
+          ensureLikeFeedsIsMutable();
+          likeFeeds_.set(index, value);
+          onChanged();
         } else {
-          likeFeedsBuilder_.setMessage(value);
+          likeFeedsBuilder_.setMessage(index, value);
         }
-        bitField0_ |= 0x00000080;
-        onChanged();
         return this;
       }
       /**
-       * <code>.WebLikeFeed likeFeeds = 8;</code>
+       * <code>repeated .WebLikeFeed likeFeeds = 8;</code>
        */
       public Builder setLikeFeeds(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed.Builder builderForValue) {
+        if (likeFeedsBuilder_ == null) {
+          ensureLikeFeedsIsMutable();
+          likeFeeds_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          likeFeedsBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WebLikeFeed likeFeeds = 8;</code>
+       */
+      public Builder addLikeFeeds(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed value) {
+        if (likeFeedsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureLikeFeedsIsMutable();
+          likeFeeds_.add(value);
+          onChanged();
+        } else {
+          likeFeedsBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WebLikeFeed likeFeeds = 8;</code>
+       */
+      public Builder addLikeFeeds(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed value) {
+        if (likeFeedsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureLikeFeedsIsMutable();
+          likeFeeds_.add(index, value);
+          onChanged();
+        } else {
+          likeFeedsBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WebLikeFeed likeFeeds = 8;</code>
+       */
+      public Builder addLikeFeeds(
           tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed.Builder builderForValue) {
         if (likeFeedsBuilder_ == null) {
-          likeFeeds_ = builderForValue.build();
+          ensureLikeFeedsIsMutable();
+          likeFeeds_.add(builderForValue.build());
+          onChanged();
         } else {
-          likeFeedsBuilder_.setMessage(builderForValue.build());
+          likeFeedsBuilder_.addMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000080;
-        onChanged();
         return this;
       }
       /**
-       * <code>.WebLikeFeed likeFeeds = 8;</code>
+       * <code>repeated .WebLikeFeed likeFeeds = 8;</code>
        */
-      public Builder mergeLikeFeeds(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed value) {
+      public Builder addLikeFeeds(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed.Builder builderForValue) {
         if (likeFeedsBuilder_ == null) {
-          if (((bitField0_ & 0x00000080) != 0) &&
-            likeFeeds_ != null &&
-            likeFeeds_ != tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed.getDefaultInstance()) {
-            getLikeFeedsBuilder().mergeFrom(value);
-          } else {
-            likeFeeds_ = value;
-          }
+          ensureLikeFeedsIsMutable();
+          likeFeeds_.add(index, builderForValue.build());
+          onChanged();
         } else {
-          likeFeedsBuilder_.mergeFrom(value);
+          likeFeedsBuilder_.addMessage(index, builderForValue.build());
         }
-        bitField0_ |= 0x00000080;
-        onChanged();
         return this;
       }
       /**
-       * <code>.WebLikeFeed likeFeeds = 8;</code>
+       * <code>repeated .WebLikeFeed likeFeeds = 8;</code>
+       */
+      public Builder addAllLikeFeeds(
+          java.lang.Iterable<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed> values) {
+        if (likeFeedsBuilder_ == null) {
+          ensureLikeFeedsIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, likeFeeds_);
+          onChanged();
+        } else {
+          likeFeedsBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WebLikeFeed likeFeeds = 8;</code>
        */
       public Builder clearLikeFeeds() {
-        bitField0_ = (bitField0_ & ~0x00000080);
-        likeFeeds_ = null;
-        if (likeFeedsBuilder_ != null) {
-          likeFeedsBuilder_.dispose();
-          likeFeedsBuilder_ = null;
+        if (likeFeedsBuilder_ == null) {
+          likeFeeds_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000080);
+          onChanged();
+        } else {
+          likeFeedsBuilder_.clear();
         }
-        onChanged();
         return this;
       }
       /**
-       * <code>.WebLikeFeed likeFeeds = 8;</code>
+       * <code>repeated .WebLikeFeed likeFeeds = 8;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed.Builder getLikeFeedsBuilder() {
-        bitField0_ |= 0x00000080;
-        onChanged();
-        return getLikeFeedsFieldBuilder().getBuilder();
+      public Builder removeLikeFeeds(int index) {
+        if (likeFeedsBuilder_ == null) {
+          ensureLikeFeedsIsMutable();
+          likeFeeds_.remove(index);
+          onChanged();
+        } else {
+          likeFeedsBuilder_.remove(index);
+        }
+        return this;
       }
       /**
-       * <code>.WebLikeFeed likeFeeds = 8;</code>
+       * <code>repeated .WebLikeFeed likeFeeds = 8;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeedOrBuilder getLikeFeedsOrBuilder() {
-        if (likeFeedsBuilder_ != null) {
-          return likeFeedsBuilder_.getMessageOrBuilder();
-        } else {
-          return likeFeeds_ == null ?
-              tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed.getDefaultInstance() : likeFeeds_;
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed.Builder getLikeFeedsBuilder(
+          int index) {
+        return getLikeFeedsFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .WebLikeFeed likeFeeds = 8;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeedOrBuilder getLikeFeedsOrBuilder(
+          int index) {
+        if (likeFeedsBuilder_ == null) {
+          return likeFeeds_.get(index);  } else {
+          return likeFeedsBuilder_.getMessageOrBuilder(index);
         }
       }
       /**
-       * <code>.WebLikeFeed likeFeeds = 8;</code>
+       * <code>repeated .WebLikeFeed likeFeeds = 8;</code>
        */
-      private com.google.protobuf.SingleFieldBuilderV3<
+      public java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeedOrBuilder> 
+           getLikeFeedsOrBuilderList() {
+        if (likeFeedsBuilder_ != null) {
+          return likeFeedsBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(likeFeeds_);
+        }
+      }
+      /**
+       * <code>repeated .WebLikeFeed likeFeeds = 8;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed.Builder addLikeFeedsBuilder() {
+        return getLikeFeedsFieldBuilder().addBuilder(
+            tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .WebLikeFeed likeFeeds = 8;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed.Builder addLikeFeedsBuilder(
+          int index) {
+        return getLikeFeedsFieldBuilder().addBuilder(
+            index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .WebLikeFeed likeFeeds = 8;</code>
+       */
+      public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed.Builder> 
+           getLikeFeedsBuilderList() {
+        return getLikeFeedsFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
           tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeedOrBuilder> 
           getLikeFeedsFieldBuilder() {
         if (likeFeedsBuilder_ == null) {
-          likeFeedsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+          likeFeedsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeedOrBuilder>(
-                  getLikeFeeds(),
+                  likeFeeds_,
+                  ((bitField0_ & 0x00000080) != 0),
                   getParentForChildren(),
                   isClean());
           likeFeeds_ = null;
@@ -1864,118 +2573,239 @@ public final class SCWebFeedPushOuterClass {
         return likeFeedsBuilder_;
       }
 
-      private tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed giftFeeds_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeedOrBuilder> giftFeedsBuilder_;
-      /**
-       * <code>.WebGiftFeed giftFeeds = 9;</code>
-       * @return Whether the giftFeeds field is set.
-       */
-      public boolean hasGiftFeeds() {
-        return ((bitField0_ & 0x00000100) != 0);
+      private java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed> giftFeeds_ =
+        java.util.Collections.emptyList();
+      private void ensureGiftFeedsIsMutable() {
+        if (!((bitField0_ & 0x00000100) != 0)) {
+          giftFeeds_ = new java.util.ArrayList<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed>(giftFeeds_);
+          bitField0_ |= 0x00000100;
+         }
       }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeedOrBuilder> giftFeedsBuilder_;
+
       /**
-       * <code>.WebGiftFeed giftFeeds = 9;</code>
-       * @return The giftFeeds.
+       * <code>repeated .WebGiftFeed giftFeeds = 9;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed getGiftFeeds() {
+      public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed> getGiftFeedsList() {
         if (giftFeedsBuilder_ == null) {
-          return giftFeeds_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed.getDefaultInstance() : giftFeeds_;
+          return java.util.Collections.unmodifiableList(giftFeeds_);
         } else {
-          return giftFeedsBuilder_.getMessage();
+          return giftFeedsBuilder_.getMessageList();
         }
       }
       /**
-       * <code>.WebGiftFeed giftFeeds = 9;</code>
+       * <code>repeated .WebGiftFeed giftFeeds = 9;</code>
        */
-      public Builder setGiftFeeds(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed value) {
+      public int getGiftFeedsCount() {
+        if (giftFeedsBuilder_ == null) {
+          return giftFeeds_.size();
+        } else {
+          return giftFeedsBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .WebGiftFeed giftFeeds = 9;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed getGiftFeeds(int index) {
+        if (giftFeedsBuilder_ == null) {
+          return giftFeeds_.get(index);
+        } else {
+          return giftFeedsBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .WebGiftFeed giftFeeds = 9;</code>
+       */
+      public Builder setGiftFeeds(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed value) {
         if (giftFeedsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          giftFeeds_ = value;
+          ensureGiftFeedsIsMutable();
+          giftFeeds_.set(index, value);
+          onChanged();
         } else {
-          giftFeedsBuilder_.setMessage(value);
+          giftFeedsBuilder_.setMessage(index, value);
         }
-        bitField0_ |= 0x00000100;
-        onChanged();
         return this;
       }
       /**
-       * <code>.WebGiftFeed giftFeeds = 9;</code>
+       * <code>repeated .WebGiftFeed giftFeeds = 9;</code>
        */
       public Builder setGiftFeeds(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed.Builder builderForValue) {
+        if (giftFeedsBuilder_ == null) {
+          ensureGiftFeedsIsMutable();
+          giftFeeds_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          giftFeedsBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WebGiftFeed giftFeeds = 9;</code>
+       */
+      public Builder addGiftFeeds(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed value) {
+        if (giftFeedsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureGiftFeedsIsMutable();
+          giftFeeds_.add(value);
+          onChanged();
+        } else {
+          giftFeedsBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WebGiftFeed giftFeeds = 9;</code>
+       */
+      public Builder addGiftFeeds(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed value) {
+        if (giftFeedsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureGiftFeedsIsMutable();
+          giftFeeds_.add(index, value);
+          onChanged();
+        } else {
+          giftFeedsBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WebGiftFeed giftFeeds = 9;</code>
+       */
+      public Builder addGiftFeeds(
           tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed.Builder builderForValue) {
         if (giftFeedsBuilder_ == null) {
-          giftFeeds_ = builderForValue.build();
+          ensureGiftFeedsIsMutable();
+          giftFeeds_.add(builderForValue.build());
+          onChanged();
         } else {
-          giftFeedsBuilder_.setMessage(builderForValue.build());
+          giftFeedsBuilder_.addMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000100;
-        onChanged();
         return this;
       }
       /**
-       * <code>.WebGiftFeed giftFeeds = 9;</code>
+       * <code>repeated .WebGiftFeed giftFeeds = 9;</code>
        */
-      public Builder mergeGiftFeeds(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed value) {
+      public Builder addGiftFeeds(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed.Builder builderForValue) {
         if (giftFeedsBuilder_ == null) {
-          if (((bitField0_ & 0x00000100) != 0) &&
-            giftFeeds_ != null &&
-            giftFeeds_ != tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed.getDefaultInstance()) {
-            getGiftFeedsBuilder().mergeFrom(value);
-          } else {
-            giftFeeds_ = value;
-          }
+          ensureGiftFeedsIsMutable();
+          giftFeeds_.add(index, builderForValue.build());
+          onChanged();
         } else {
-          giftFeedsBuilder_.mergeFrom(value);
+          giftFeedsBuilder_.addMessage(index, builderForValue.build());
         }
-        bitField0_ |= 0x00000100;
-        onChanged();
         return this;
       }
       /**
-       * <code>.WebGiftFeed giftFeeds = 9;</code>
+       * <code>repeated .WebGiftFeed giftFeeds = 9;</code>
+       */
+      public Builder addAllGiftFeeds(
+          java.lang.Iterable<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed> values) {
+        if (giftFeedsBuilder_ == null) {
+          ensureGiftFeedsIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, giftFeeds_);
+          onChanged();
+        } else {
+          giftFeedsBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WebGiftFeed giftFeeds = 9;</code>
        */
       public Builder clearGiftFeeds() {
-        bitField0_ = (bitField0_ & ~0x00000100);
-        giftFeeds_ = null;
-        if (giftFeedsBuilder_ != null) {
-          giftFeedsBuilder_.dispose();
-          giftFeedsBuilder_ = null;
+        if (giftFeedsBuilder_ == null) {
+          giftFeeds_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000100);
+          onChanged();
+        } else {
+          giftFeedsBuilder_.clear();
         }
-        onChanged();
         return this;
       }
       /**
-       * <code>.WebGiftFeed giftFeeds = 9;</code>
+       * <code>repeated .WebGiftFeed giftFeeds = 9;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed.Builder getGiftFeedsBuilder() {
-        bitField0_ |= 0x00000100;
-        onChanged();
-        return getGiftFeedsFieldBuilder().getBuilder();
+      public Builder removeGiftFeeds(int index) {
+        if (giftFeedsBuilder_ == null) {
+          ensureGiftFeedsIsMutable();
+          giftFeeds_.remove(index);
+          onChanged();
+        } else {
+          giftFeedsBuilder_.remove(index);
+        }
+        return this;
       }
       /**
-       * <code>.WebGiftFeed giftFeeds = 9;</code>
+       * <code>repeated .WebGiftFeed giftFeeds = 9;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeedOrBuilder getGiftFeedsOrBuilder() {
-        if (giftFeedsBuilder_ != null) {
-          return giftFeedsBuilder_.getMessageOrBuilder();
-        } else {
-          return giftFeeds_ == null ?
-              tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed.getDefaultInstance() : giftFeeds_;
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed.Builder getGiftFeedsBuilder(
+          int index) {
+        return getGiftFeedsFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .WebGiftFeed giftFeeds = 9;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeedOrBuilder getGiftFeedsOrBuilder(
+          int index) {
+        if (giftFeedsBuilder_ == null) {
+          return giftFeeds_.get(index);  } else {
+          return giftFeedsBuilder_.getMessageOrBuilder(index);
         }
       }
       /**
-       * <code>.WebGiftFeed giftFeeds = 9;</code>
+       * <code>repeated .WebGiftFeed giftFeeds = 9;</code>
        */
-      private com.google.protobuf.SingleFieldBuilderV3<
+      public java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeedOrBuilder> 
+           getGiftFeedsOrBuilderList() {
+        if (giftFeedsBuilder_ != null) {
+          return giftFeedsBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(giftFeeds_);
+        }
+      }
+      /**
+       * <code>repeated .WebGiftFeed giftFeeds = 9;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed.Builder addGiftFeedsBuilder() {
+        return getGiftFeedsFieldBuilder().addBuilder(
+            tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .WebGiftFeed giftFeeds = 9;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed.Builder addGiftFeedsBuilder(
+          int index) {
+        return getGiftFeedsFieldBuilder().addBuilder(
+            index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .WebGiftFeed giftFeeds = 9;</code>
+       */
+      public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed.Builder> 
+           getGiftFeedsBuilderList() {
+        return getGiftFeedsFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
           tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeedOrBuilder> 
           getGiftFeedsFieldBuilder() {
         if (giftFeedsBuilder_ == null) {
-          giftFeedsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+          giftFeedsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeed.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass.WebGiftFeedOrBuilder>(
-                  getGiftFeeds(),
+                  giftFeeds_,
+                  ((bitField0_ & 0x00000100) != 0),
                   getParentForChildren(),
                   isClean());
           giftFeeds_ = null;
@@ -2055,118 +2885,239 @@ public final class SCWebFeedPushOuterClass {
         return this;
       }
 
-      private tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed systemNoticeFeeds_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeedOrBuilder> systemNoticeFeedsBuilder_;
-      /**
-       * <code>.WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
-       * @return Whether the systemNoticeFeeds field is set.
-       */
-      public boolean hasSystemNoticeFeeds() {
-        return ((bitField0_ & 0x00000400) != 0);
+      private java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed> systemNoticeFeeds_ =
+        java.util.Collections.emptyList();
+      private void ensureSystemNoticeFeedsIsMutable() {
+        if (!((bitField0_ & 0x00000400) != 0)) {
+          systemNoticeFeeds_ = new java.util.ArrayList<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed>(systemNoticeFeeds_);
+          bitField0_ |= 0x00000400;
+         }
       }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeedOrBuilder> systemNoticeFeedsBuilder_;
+
       /**
-       * <code>.WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
-       * @return The systemNoticeFeeds.
+       * <code>repeated .WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed getSystemNoticeFeeds() {
+      public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed> getSystemNoticeFeedsList() {
         if (systemNoticeFeedsBuilder_ == null) {
-          return systemNoticeFeeds_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed.getDefaultInstance() : systemNoticeFeeds_;
+          return java.util.Collections.unmodifiableList(systemNoticeFeeds_);
         } else {
-          return systemNoticeFeedsBuilder_.getMessage();
+          return systemNoticeFeedsBuilder_.getMessageList();
         }
       }
       /**
-       * <code>.WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
+       * <code>repeated .WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
        */
-      public Builder setSystemNoticeFeeds(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed value) {
+      public int getSystemNoticeFeedsCount() {
+        if (systemNoticeFeedsBuilder_ == null) {
+          return systemNoticeFeeds_.size();
+        } else {
+          return systemNoticeFeedsBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed getSystemNoticeFeeds(int index) {
+        if (systemNoticeFeedsBuilder_ == null) {
+          return systemNoticeFeeds_.get(index);
+        } else {
+          return systemNoticeFeedsBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
+       */
+      public Builder setSystemNoticeFeeds(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed value) {
         if (systemNoticeFeedsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          systemNoticeFeeds_ = value;
+          ensureSystemNoticeFeedsIsMutable();
+          systemNoticeFeeds_.set(index, value);
+          onChanged();
         } else {
-          systemNoticeFeedsBuilder_.setMessage(value);
+          systemNoticeFeedsBuilder_.setMessage(index, value);
         }
-        bitField0_ |= 0x00000400;
-        onChanged();
         return this;
       }
       /**
-       * <code>.WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
+       * <code>repeated .WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
        */
       public Builder setSystemNoticeFeeds(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed.Builder builderForValue) {
+        if (systemNoticeFeedsBuilder_ == null) {
+          ensureSystemNoticeFeedsIsMutable();
+          systemNoticeFeeds_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          systemNoticeFeedsBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
+       */
+      public Builder addSystemNoticeFeeds(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed value) {
+        if (systemNoticeFeedsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureSystemNoticeFeedsIsMutable();
+          systemNoticeFeeds_.add(value);
+          onChanged();
+        } else {
+          systemNoticeFeedsBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
+       */
+      public Builder addSystemNoticeFeeds(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed value) {
+        if (systemNoticeFeedsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureSystemNoticeFeedsIsMutable();
+          systemNoticeFeeds_.add(index, value);
+          onChanged();
+        } else {
+          systemNoticeFeedsBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
+       */
+      public Builder addSystemNoticeFeeds(
           tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed.Builder builderForValue) {
         if (systemNoticeFeedsBuilder_ == null) {
-          systemNoticeFeeds_ = builderForValue.build();
+          ensureSystemNoticeFeedsIsMutable();
+          systemNoticeFeeds_.add(builderForValue.build());
+          onChanged();
         } else {
-          systemNoticeFeedsBuilder_.setMessage(builderForValue.build());
+          systemNoticeFeedsBuilder_.addMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000400;
-        onChanged();
         return this;
       }
       /**
-       * <code>.WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
+       * <code>repeated .WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
        */
-      public Builder mergeSystemNoticeFeeds(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed value) {
+      public Builder addSystemNoticeFeeds(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed.Builder builderForValue) {
         if (systemNoticeFeedsBuilder_ == null) {
-          if (((bitField0_ & 0x00000400) != 0) &&
-            systemNoticeFeeds_ != null &&
-            systemNoticeFeeds_ != tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed.getDefaultInstance()) {
-            getSystemNoticeFeedsBuilder().mergeFrom(value);
-          } else {
-            systemNoticeFeeds_ = value;
-          }
+          ensureSystemNoticeFeedsIsMutable();
+          systemNoticeFeeds_.add(index, builderForValue.build());
+          onChanged();
         } else {
-          systemNoticeFeedsBuilder_.mergeFrom(value);
+          systemNoticeFeedsBuilder_.addMessage(index, builderForValue.build());
         }
-        bitField0_ |= 0x00000400;
-        onChanged();
         return this;
       }
       /**
-       * <code>.WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
+       * <code>repeated .WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
+       */
+      public Builder addAllSystemNoticeFeeds(
+          java.lang.Iterable<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed> values) {
+        if (systemNoticeFeedsBuilder_ == null) {
+          ensureSystemNoticeFeedsIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, systemNoticeFeeds_);
+          onChanged();
+        } else {
+          systemNoticeFeedsBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
        */
       public Builder clearSystemNoticeFeeds() {
-        bitField0_ = (bitField0_ & ~0x00000400);
-        systemNoticeFeeds_ = null;
-        if (systemNoticeFeedsBuilder_ != null) {
-          systemNoticeFeedsBuilder_.dispose();
-          systemNoticeFeedsBuilder_ = null;
+        if (systemNoticeFeedsBuilder_ == null) {
+          systemNoticeFeeds_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000400);
+          onChanged();
+        } else {
+          systemNoticeFeedsBuilder_.clear();
         }
-        onChanged();
         return this;
       }
       /**
-       * <code>.WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
+       * <code>repeated .WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed.Builder getSystemNoticeFeedsBuilder() {
-        bitField0_ |= 0x00000400;
-        onChanged();
-        return getSystemNoticeFeedsFieldBuilder().getBuilder();
+      public Builder removeSystemNoticeFeeds(int index) {
+        if (systemNoticeFeedsBuilder_ == null) {
+          ensureSystemNoticeFeedsIsMutable();
+          systemNoticeFeeds_.remove(index);
+          onChanged();
+        } else {
+          systemNoticeFeedsBuilder_.remove(index);
+        }
+        return this;
       }
       /**
-       * <code>.WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
+       * <code>repeated .WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeedOrBuilder getSystemNoticeFeedsOrBuilder() {
-        if (systemNoticeFeedsBuilder_ != null) {
-          return systemNoticeFeedsBuilder_.getMessageOrBuilder();
-        } else {
-          return systemNoticeFeeds_ == null ?
-              tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed.getDefaultInstance() : systemNoticeFeeds_;
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed.Builder getSystemNoticeFeedsBuilder(
+          int index) {
+        return getSystemNoticeFeedsFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeedOrBuilder getSystemNoticeFeedsOrBuilder(
+          int index) {
+        if (systemNoticeFeedsBuilder_ == null) {
+          return systemNoticeFeeds_.get(index);  } else {
+          return systemNoticeFeedsBuilder_.getMessageOrBuilder(index);
         }
       }
       /**
-       * <code>.WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
+       * <code>repeated .WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
        */
-      private com.google.protobuf.SingleFieldBuilderV3<
+      public java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeedOrBuilder> 
+           getSystemNoticeFeedsOrBuilderList() {
+        if (systemNoticeFeedsBuilder_ != null) {
+          return systemNoticeFeedsBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(systemNoticeFeeds_);
+        }
+      }
+      /**
+       * <code>repeated .WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed.Builder addSystemNoticeFeedsBuilder() {
+        return getSystemNoticeFeedsFieldBuilder().addBuilder(
+            tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed.Builder addSystemNoticeFeedsBuilder(
+          int index) {
+        return getSystemNoticeFeedsFieldBuilder().addBuilder(
+            index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .WebSystemNoticeFeed systemNoticeFeeds = 11;</code>
+       */
+      public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed.Builder> 
+           getSystemNoticeFeedsBuilderList() {
+        return getSystemNoticeFeedsFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
           tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeedOrBuilder> 
           getSystemNoticeFeedsFieldBuilder() {
         if (systemNoticeFeedsBuilder_ == null) {
-          systemNoticeFeedsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+          systemNoticeFeedsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeed.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebSystemNoticeFeedOuterClass.WebSystemNoticeFeedOrBuilder>(
-                  getSystemNoticeFeeds(),
+                  systemNoticeFeeds_,
+                  ((bitField0_ & 0x00000400) != 0),
                   getParentForChildren(),
                   isClean());
           systemNoticeFeeds_ = null;
@@ -2174,118 +3125,239 @@ public final class SCWebFeedPushOuterClass {
         return systemNoticeFeedsBuilder_;
       }
 
-      private tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed shareFeeds_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeedOrBuilder> shareFeedsBuilder_;
-      /**
-       * <code>.WebShareFeed shareFeeds = 12;</code>
-       * @return Whether the shareFeeds field is set.
-       */
-      public boolean hasShareFeeds() {
-        return ((bitField0_ & 0x00000800) != 0);
+      private java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed> shareFeeds_ =
+        java.util.Collections.emptyList();
+      private void ensureShareFeedsIsMutable() {
+        if (!((bitField0_ & 0x00000800) != 0)) {
+          shareFeeds_ = new java.util.ArrayList<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed>(shareFeeds_);
+          bitField0_ |= 0x00000800;
+         }
       }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeedOrBuilder> shareFeedsBuilder_;
+
       /**
-       * <code>.WebShareFeed shareFeeds = 12;</code>
-       * @return The shareFeeds.
+       * <code>repeated .WebShareFeed shareFeeds = 12;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed getShareFeeds() {
+      public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed> getShareFeedsList() {
         if (shareFeedsBuilder_ == null) {
-          return shareFeeds_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed.getDefaultInstance() : shareFeeds_;
+          return java.util.Collections.unmodifiableList(shareFeeds_);
         } else {
-          return shareFeedsBuilder_.getMessage();
+          return shareFeedsBuilder_.getMessageList();
         }
       }
       /**
-       * <code>.WebShareFeed shareFeeds = 12;</code>
+       * <code>repeated .WebShareFeed shareFeeds = 12;</code>
        */
-      public Builder setShareFeeds(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed value) {
+      public int getShareFeedsCount() {
+        if (shareFeedsBuilder_ == null) {
+          return shareFeeds_.size();
+        } else {
+          return shareFeedsBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .WebShareFeed shareFeeds = 12;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed getShareFeeds(int index) {
+        if (shareFeedsBuilder_ == null) {
+          return shareFeeds_.get(index);
+        } else {
+          return shareFeedsBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .WebShareFeed shareFeeds = 12;</code>
+       */
+      public Builder setShareFeeds(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed value) {
         if (shareFeedsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          shareFeeds_ = value;
+          ensureShareFeedsIsMutable();
+          shareFeeds_.set(index, value);
+          onChanged();
         } else {
-          shareFeedsBuilder_.setMessage(value);
+          shareFeedsBuilder_.setMessage(index, value);
         }
-        bitField0_ |= 0x00000800;
-        onChanged();
         return this;
       }
       /**
-       * <code>.WebShareFeed shareFeeds = 12;</code>
+       * <code>repeated .WebShareFeed shareFeeds = 12;</code>
        */
       public Builder setShareFeeds(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed.Builder builderForValue) {
+        if (shareFeedsBuilder_ == null) {
+          ensureShareFeedsIsMutable();
+          shareFeeds_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          shareFeedsBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WebShareFeed shareFeeds = 12;</code>
+       */
+      public Builder addShareFeeds(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed value) {
+        if (shareFeedsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureShareFeedsIsMutable();
+          shareFeeds_.add(value);
+          onChanged();
+        } else {
+          shareFeedsBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WebShareFeed shareFeeds = 12;</code>
+       */
+      public Builder addShareFeeds(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed value) {
+        if (shareFeedsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureShareFeedsIsMutable();
+          shareFeeds_.add(index, value);
+          onChanged();
+        } else {
+          shareFeedsBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WebShareFeed shareFeeds = 12;</code>
+       */
+      public Builder addShareFeeds(
           tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed.Builder builderForValue) {
         if (shareFeedsBuilder_ == null) {
-          shareFeeds_ = builderForValue.build();
+          ensureShareFeedsIsMutable();
+          shareFeeds_.add(builderForValue.build());
+          onChanged();
         } else {
-          shareFeedsBuilder_.setMessage(builderForValue.build());
+          shareFeedsBuilder_.addMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000800;
-        onChanged();
         return this;
       }
       /**
-       * <code>.WebShareFeed shareFeeds = 12;</code>
+       * <code>repeated .WebShareFeed shareFeeds = 12;</code>
        */
-      public Builder mergeShareFeeds(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed value) {
+      public Builder addShareFeeds(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed.Builder builderForValue) {
         if (shareFeedsBuilder_ == null) {
-          if (((bitField0_ & 0x00000800) != 0) &&
-            shareFeeds_ != null &&
-            shareFeeds_ != tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed.getDefaultInstance()) {
-            getShareFeedsBuilder().mergeFrom(value);
-          } else {
-            shareFeeds_ = value;
-          }
+          ensureShareFeedsIsMutable();
+          shareFeeds_.add(index, builderForValue.build());
+          onChanged();
         } else {
-          shareFeedsBuilder_.mergeFrom(value);
+          shareFeedsBuilder_.addMessage(index, builderForValue.build());
         }
-        bitField0_ |= 0x00000800;
-        onChanged();
         return this;
       }
       /**
-       * <code>.WebShareFeed shareFeeds = 12;</code>
+       * <code>repeated .WebShareFeed shareFeeds = 12;</code>
+       */
+      public Builder addAllShareFeeds(
+          java.lang.Iterable<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed> values) {
+        if (shareFeedsBuilder_ == null) {
+          ensureShareFeedsIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, shareFeeds_);
+          onChanged();
+        } else {
+          shareFeedsBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WebShareFeed shareFeeds = 12;</code>
        */
       public Builder clearShareFeeds() {
-        bitField0_ = (bitField0_ & ~0x00000800);
-        shareFeeds_ = null;
-        if (shareFeedsBuilder_ != null) {
-          shareFeedsBuilder_.dispose();
-          shareFeedsBuilder_ = null;
+        if (shareFeedsBuilder_ == null) {
+          shareFeeds_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000800);
+          onChanged();
+        } else {
+          shareFeedsBuilder_.clear();
         }
-        onChanged();
         return this;
       }
       /**
-       * <code>.WebShareFeed shareFeeds = 12;</code>
+       * <code>repeated .WebShareFeed shareFeeds = 12;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed.Builder getShareFeedsBuilder() {
-        bitField0_ |= 0x00000800;
-        onChanged();
-        return getShareFeedsFieldBuilder().getBuilder();
+      public Builder removeShareFeeds(int index) {
+        if (shareFeedsBuilder_ == null) {
+          ensureShareFeedsIsMutable();
+          shareFeeds_.remove(index);
+          onChanged();
+        } else {
+          shareFeedsBuilder_.remove(index);
+        }
+        return this;
       }
       /**
-       * <code>.WebShareFeed shareFeeds = 12;</code>
+       * <code>repeated .WebShareFeed shareFeeds = 12;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeedOrBuilder getShareFeedsOrBuilder() {
-        if (shareFeedsBuilder_ != null) {
-          return shareFeedsBuilder_.getMessageOrBuilder();
-        } else {
-          return shareFeeds_ == null ?
-              tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed.getDefaultInstance() : shareFeeds_;
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed.Builder getShareFeedsBuilder(
+          int index) {
+        return getShareFeedsFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .WebShareFeed shareFeeds = 12;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeedOrBuilder getShareFeedsOrBuilder(
+          int index) {
+        if (shareFeedsBuilder_ == null) {
+          return shareFeeds_.get(index);  } else {
+          return shareFeedsBuilder_.getMessageOrBuilder(index);
         }
       }
       /**
-       * <code>.WebShareFeed shareFeeds = 12;</code>
+       * <code>repeated .WebShareFeed shareFeeds = 12;</code>
        */
-      private com.google.protobuf.SingleFieldBuilderV3<
+      public java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeedOrBuilder> 
+           getShareFeedsOrBuilderList() {
+        if (shareFeedsBuilder_ != null) {
+          return shareFeedsBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(shareFeeds_);
+        }
+      }
+      /**
+       * <code>repeated .WebShareFeed shareFeeds = 12;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed.Builder addShareFeedsBuilder() {
+        return getShareFeedsFieldBuilder().addBuilder(
+            tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .WebShareFeed shareFeeds = 12;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed.Builder addShareFeedsBuilder(
+          int index) {
+        return getShareFeedsFieldBuilder().addBuilder(
+            index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .WebShareFeed shareFeeds = 12;</code>
+       */
+      public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed.Builder> 
+           getShareFeedsBuilderList() {
+        return getShareFeedsFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
           tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeedOrBuilder> 
           getShareFeedsFieldBuilder() {
         if (shareFeedsBuilder_ == null) {
-          shareFeedsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+          shareFeedsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeed.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebShareFeedOuterClass.WebShareFeedOrBuilder>(
-                  getShareFeeds(),
+                  shareFeeds_,
+                  ((bitField0_ & 0x00000800) != 0),
                   getParentForChildren(),
                   isClean());
           shareFeeds_ = null;
@@ -2377,13 +3449,13 @@ public final class SCWebFeedPushOuterClass {
       "SCWebFeedPush\022\034\n\024displayWatchingCount\030\001 " +
       "\001(\t\022\030\n\020displayLikeCount\030\002 \001(\t\022\030\n\020pending" +
       "LikeCount\030\003 \001(\004\022\024\n\014pushInterval\030\004 \001(\004\022%\n" +
-      "\014commentFeeds\030\005 \001(\0132\017.WebCommentFeed\022\025\n\r" +
+      "\014commentFeeds\030\005 \003(\0132\017.WebCommentFeed\022\025\n\r" +
       "commentCursor\030\006 \001(\t\022.\n\020comboCommentFeed\030" +
-      "\007 \001(\0132\024.WebComboCommentFeed\022\037\n\tlikeFeeds" +
-      "\030\010 \001(\0132\014.WebLikeFeed\022\037\n\tgiftFeeds\030\t \001(\0132" +
+      "\007 \003(\0132\024.WebComboCommentFeed\022\037\n\tlikeFeeds" +
+      "\030\010 \003(\0132\014.WebLikeFeed\022\037\n\tgiftFeeds\030\t \003(\0132" +
       "\014.WebGiftFeed\022\022\n\ngiftCursor\030\n \001(\t\022/\n\021sys" +
-      "temNoticeFeeds\030\013 \001(\0132\024.WebSystemNoticeFe" +
-      "ed\022!\n\nshareFeeds\030\014 \001(\0132\r.WebShareFeedB6\n" +
+      "temNoticeFeeds\030\013 \003(\0132\024.WebSystemNoticeFe" +
+      "ed\022!\n\nshareFeeds\030\014 \003(\0132\r.WebShareFeedB6\n" +
       "4tech.ordinaryroad.live.chat.client.kuai" +
       "shou.protobufb\006proto3"
     };

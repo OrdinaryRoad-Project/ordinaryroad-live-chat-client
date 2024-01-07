@@ -43,19 +43,28 @@ public final class AuditAudienceMaskOuterClass {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.LiveCdnNodeView iconCdnNodeView = 1;</code>
-     * @return Whether the iconCdnNodeView field is set.
+     * <code>repeated .LiveCdnNodeView iconCdnNodeView = 1;</code>
      */
-    boolean hasIconCdnNodeView();
+    java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView> 
+        getIconCdnNodeViewList();
     /**
-     * <code>.LiveCdnNodeView iconCdnNodeView = 1;</code>
-     * @return The iconCdnNodeView.
+     * <code>repeated .LiveCdnNodeView iconCdnNodeView = 1;</code>
      */
-    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView getIconCdnNodeView();
+    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView getIconCdnNodeView(int index);
     /**
-     * <code>.LiveCdnNodeView iconCdnNodeView = 1;</code>
+     * <code>repeated .LiveCdnNodeView iconCdnNodeView = 1;</code>
      */
-    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeViewOrBuilder getIconCdnNodeViewOrBuilder();
+    int getIconCdnNodeViewCount();
+    /**
+     * <code>repeated .LiveCdnNodeView iconCdnNodeView = 1;</code>
+     */
+    java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeViewOrBuilder> 
+        getIconCdnNodeViewOrBuilderList();
+    /**
+     * <code>repeated .LiveCdnNodeView iconCdnNodeView = 1;</code>
+     */
+    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeViewOrBuilder getIconCdnNodeViewOrBuilder(
+        int index);
 
     /**
      * <code>string title = 2;</code>
@@ -94,6 +103,7 @@ public final class AuditAudienceMaskOuterClass {
       super(builder);
     }
     private AuditAudienceMask() {
+      iconCdnNodeView_ = java.util.Collections.emptyList();
       title_ = "";
       detail_ = "";
     }
@@ -119,29 +129,44 @@ public final class AuditAudienceMaskOuterClass {
     }
 
     public static final int ICONCDNNODEVIEW_FIELD_NUMBER = 1;
-    private tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView iconCdnNodeView_;
+    @SuppressWarnings("serial")
+    private java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView> iconCdnNodeView_;
     /**
-     * <code>.LiveCdnNodeView iconCdnNodeView = 1;</code>
-     * @return Whether the iconCdnNodeView field is set.
+     * <code>repeated .LiveCdnNodeView iconCdnNodeView = 1;</code>
      */
     @java.lang.Override
-    public boolean hasIconCdnNodeView() {
-      return iconCdnNodeView_ != null;
+    public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView> getIconCdnNodeViewList() {
+      return iconCdnNodeView_;
     }
     /**
-     * <code>.LiveCdnNodeView iconCdnNodeView = 1;</code>
-     * @return The iconCdnNodeView.
+     * <code>repeated .LiveCdnNodeView iconCdnNodeView = 1;</code>
      */
     @java.lang.Override
-    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView getIconCdnNodeView() {
-      return iconCdnNodeView_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView.getDefaultInstance() : iconCdnNodeView_;
+    public java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeViewOrBuilder> 
+        getIconCdnNodeViewOrBuilderList() {
+      return iconCdnNodeView_;
     }
     /**
-     * <code>.LiveCdnNodeView iconCdnNodeView = 1;</code>
+     * <code>repeated .LiveCdnNodeView iconCdnNodeView = 1;</code>
      */
     @java.lang.Override
-    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeViewOrBuilder getIconCdnNodeViewOrBuilder() {
-      return iconCdnNodeView_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView.getDefaultInstance() : iconCdnNodeView_;
+    public int getIconCdnNodeViewCount() {
+      return iconCdnNodeView_.size();
+    }
+    /**
+     * <code>repeated .LiveCdnNodeView iconCdnNodeView = 1;</code>
+     */
+    @java.lang.Override
+    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView getIconCdnNodeView(int index) {
+      return iconCdnNodeView_.get(index);
+    }
+    /**
+     * <code>repeated .LiveCdnNodeView iconCdnNodeView = 1;</code>
+     */
+    @java.lang.Override
+    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeViewOrBuilder getIconCdnNodeViewOrBuilder(
+        int index) {
+      return iconCdnNodeView_.get(index);
     }
 
     public static final int TITLE_FIELD_NUMBER = 2;
@@ -236,8 +261,8 @@ public final class AuditAudienceMaskOuterClass {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (iconCdnNodeView_ != null) {
-        output.writeMessage(1, getIconCdnNodeView());
+      for (int i = 0; i < iconCdnNodeView_.size(); i++) {
+        output.writeMessage(1, iconCdnNodeView_.get(i));
       }
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(title_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, title_);
@@ -254,9 +279,9 @@ public final class AuditAudienceMaskOuterClass {
       if (size != -1) return size;
 
       size = 0;
-      if (iconCdnNodeView_ != null) {
+      for (int i = 0; i < iconCdnNodeView_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, getIconCdnNodeView());
+          .computeMessageSize(1, iconCdnNodeView_.get(i));
       }
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(title_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, title_);
@@ -279,11 +304,8 @@ public final class AuditAudienceMaskOuterClass {
       }
       tech.ordinaryroad.live.chat.client.kuaishou.protobuf.AuditAudienceMaskOuterClass.AuditAudienceMask other = (tech.ordinaryroad.live.chat.client.kuaishou.protobuf.AuditAudienceMaskOuterClass.AuditAudienceMask) obj;
 
-      if (hasIconCdnNodeView() != other.hasIconCdnNodeView()) return false;
-      if (hasIconCdnNodeView()) {
-        if (!getIconCdnNodeView()
-            .equals(other.getIconCdnNodeView())) return false;
-      }
+      if (!getIconCdnNodeViewList()
+          .equals(other.getIconCdnNodeViewList())) return false;
       if (!getTitle()
           .equals(other.getTitle())) return false;
       if (!getDetail()
@@ -299,9 +321,9 @@ public final class AuditAudienceMaskOuterClass {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      if (hasIconCdnNodeView()) {
+      if (getIconCdnNodeViewCount() > 0) {
         hash = (37 * hash) + ICONCDNNODEVIEW_FIELD_NUMBER;
-        hash = (53 * hash) + getIconCdnNodeView().hashCode();
+        hash = (53 * hash) + getIconCdnNodeViewList().hashCode();
       }
       hash = (37 * hash) + TITLE_FIELD_NUMBER;
       hash = (53 * hash) + getTitle().hashCode();
@@ -438,11 +460,13 @@ public final class AuditAudienceMaskOuterClass {
       public Builder clear() {
         super.clear();
         bitField0_ = 0;
-        iconCdnNodeView_ = null;
-        if (iconCdnNodeViewBuilder_ != null) {
-          iconCdnNodeViewBuilder_.dispose();
-          iconCdnNodeViewBuilder_ = null;
+        if (iconCdnNodeViewBuilder_ == null) {
+          iconCdnNodeView_ = java.util.Collections.emptyList();
+        } else {
+          iconCdnNodeView_ = null;
+          iconCdnNodeViewBuilder_.clear();
         }
+        bitField0_ = (bitField0_ & ~0x00000001);
         title_ = "";
         detail_ = "";
         return this;
@@ -471,18 +495,26 @@ public final class AuditAudienceMaskOuterClass {
       @java.lang.Override
       public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.AuditAudienceMaskOuterClass.AuditAudienceMask buildPartial() {
         tech.ordinaryroad.live.chat.client.kuaishou.protobuf.AuditAudienceMaskOuterClass.AuditAudienceMask result = new tech.ordinaryroad.live.chat.client.kuaishou.protobuf.AuditAudienceMaskOuterClass.AuditAudienceMask(this);
+        buildPartialRepeatedFields(result);
         if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
       }
 
+      private void buildPartialRepeatedFields(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.AuditAudienceMaskOuterClass.AuditAudienceMask result) {
+        if (iconCdnNodeViewBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) != 0)) {
+            iconCdnNodeView_ = java.util.Collections.unmodifiableList(iconCdnNodeView_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.iconCdnNodeView_ = iconCdnNodeView_;
+        } else {
+          result.iconCdnNodeView_ = iconCdnNodeViewBuilder_.build();
+        }
+      }
+
       private void buildPartial0(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.AuditAudienceMaskOuterClass.AuditAudienceMask result) {
         int from_bitField0_ = bitField0_;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          result.iconCdnNodeView_ = iconCdnNodeViewBuilder_ == null
-              ? iconCdnNodeView_
-              : iconCdnNodeViewBuilder_.build();
-        }
         if (((from_bitField0_ & 0x00000002) != 0)) {
           result.title_ = title_;
         }
@@ -535,8 +567,31 @@ public final class AuditAudienceMaskOuterClass {
 
       public Builder mergeFrom(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.AuditAudienceMaskOuterClass.AuditAudienceMask other) {
         if (other == tech.ordinaryroad.live.chat.client.kuaishou.protobuf.AuditAudienceMaskOuterClass.AuditAudienceMask.getDefaultInstance()) return this;
-        if (other.hasIconCdnNodeView()) {
-          mergeIconCdnNodeView(other.getIconCdnNodeView());
+        if (iconCdnNodeViewBuilder_ == null) {
+          if (!other.iconCdnNodeView_.isEmpty()) {
+            if (iconCdnNodeView_.isEmpty()) {
+              iconCdnNodeView_ = other.iconCdnNodeView_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureIconCdnNodeViewIsMutable();
+              iconCdnNodeView_.addAll(other.iconCdnNodeView_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.iconCdnNodeView_.isEmpty()) {
+            if (iconCdnNodeViewBuilder_.isEmpty()) {
+              iconCdnNodeViewBuilder_.dispose();
+              iconCdnNodeViewBuilder_ = null;
+              iconCdnNodeView_ = other.iconCdnNodeView_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              iconCdnNodeViewBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getIconCdnNodeViewFieldBuilder() : null;
+            } else {
+              iconCdnNodeViewBuilder_.addAllMessages(other.iconCdnNodeView_);
+            }
+          }
         }
         if (!other.getTitle().isEmpty()) {
           title_ = other.title_;
@@ -575,10 +630,16 @@ public final class AuditAudienceMaskOuterClass {
                 done = true;
                 break;
               case 10: {
-                input.readMessage(
-                    getIconCdnNodeViewFieldBuilder().getBuilder(),
-                    extensionRegistry);
-                bitField0_ |= 0x00000001;
+                tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView m =
+                    input.readMessage(
+                        tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView.parser(),
+                        extensionRegistry);
+                if (iconCdnNodeViewBuilder_ == null) {
+                  ensureIconCdnNodeViewIsMutable();
+                  iconCdnNodeView_.add(m);
+                } else {
+                  iconCdnNodeViewBuilder_.addMessage(m);
+                }
                 break;
               } // case 10
               case 18: {
@@ -608,118 +669,239 @@ public final class AuditAudienceMaskOuterClass {
       }
       private int bitField0_;
 
-      private tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView iconCdnNodeView_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeViewOrBuilder> iconCdnNodeViewBuilder_;
-      /**
-       * <code>.LiveCdnNodeView iconCdnNodeView = 1;</code>
-       * @return Whether the iconCdnNodeView field is set.
-       */
-      public boolean hasIconCdnNodeView() {
-        return ((bitField0_ & 0x00000001) != 0);
+      private java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView> iconCdnNodeView_ =
+        java.util.Collections.emptyList();
+      private void ensureIconCdnNodeViewIsMutable() {
+        if (!((bitField0_ & 0x00000001) != 0)) {
+          iconCdnNodeView_ = new java.util.ArrayList<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView>(iconCdnNodeView_);
+          bitField0_ |= 0x00000001;
+         }
       }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeViewOrBuilder> iconCdnNodeViewBuilder_;
+
       /**
-       * <code>.LiveCdnNodeView iconCdnNodeView = 1;</code>
-       * @return The iconCdnNodeView.
+       * <code>repeated .LiveCdnNodeView iconCdnNodeView = 1;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView getIconCdnNodeView() {
+      public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView> getIconCdnNodeViewList() {
         if (iconCdnNodeViewBuilder_ == null) {
-          return iconCdnNodeView_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView.getDefaultInstance() : iconCdnNodeView_;
+          return java.util.Collections.unmodifiableList(iconCdnNodeView_);
         } else {
-          return iconCdnNodeViewBuilder_.getMessage();
+          return iconCdnNodeViewBuilder_.getMessageList();
         }
       }
       /**
-       * <code>.LiveCdnNodeView iconCdnNodeView = 1;</code>
+       * <code>repeated .LiveCdnNodeView iconCdnNodeView = 1;</code>
        */
-      public Builder setIconCdnNodeView(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView value) {
+      public int getIconCdnNodeViewCount() {
+        if (iconCdnNodeViewBuilder_ == null) {
+          return iconCdnNodeView_.size();
+        } else {
+          return iconCdnNodeViewBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .LiveCdnNodeView iconCdnNodeView = 1;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView getIconCdnNodeView(int index) {
+        if (iconCdnNodeViewBuilder_ == null) {
+          return iconCdnNodeView_.get(index);
+        } else {
+          return iconCdnNodeViewBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .LiveCdnNodeView iconCdnNodeView = 1;</code>
+       */
+      public Builder setIconCdnNodeView(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView value) {
         if (iconCdnNodeViewBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          iconCdnNodeView_ = value;
+          ensureIconCdnNodeViewIsMutable();
+          iconCdnNodeView_.set(index, value);
+          onChanged();
         } else {
-          iconCdnNodeViewBuilder_.setMessage(value);
+          iconCdnNodeViewBuilder_.setMessage(index, value);
         }
-        bitField0_ |= 0x00000001;
-        onChanged();
         return this;
       }
       /**
-       * <code>.LiveCdnNodeView iconCdnNodeView = 1;</code>
+       * <code>repeated .LiveCdnNodeView iconCdnNodeView = 1;</code>
        */
       public Builder setIconCdnNodeView(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView.Builder builderForValue) {
+        if (iconCdnNodeViewBuilder_ == null) {
+          ensureIconCdnNodeViewIsMutable();
+          iconCdnNodeView_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          iconCdnNodeViewBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .LiveCdnNodeView iconCdnNodeView = 1;</code>
+       */
+      public Builder addIconCdnNodeView(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView value) {
+        if (iconCdnNodeViewBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureIconCdnNodeViewIsMutable();
+          iconCdnNodeView_.add(value);
+          onChanged();
+        } else {
+          iconCdnNodeViewBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .LiveCdnNodeView iconCdnNodeView = 1;</code>
+       */
+      public Builder addIconCdnNodeView(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView value) {
+        if (iconCdnNodeViewBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureIconCdnNodeViewIsMutable();
+          iconCdnNodeView_.add(index, value);
+          onChanged();
+        } else {
+          iconCdnNodeViewBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .LiveCdnNodeView iconCdnNodeView = 1;</code>
+       */
+      public Builder addIconCdnNodeView(
           tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView.Builder builderForValue) {
         if (iconCdnNodeViewBuilder_ == null) {
-          iconCdnNodeView_ = builderForValue.build();
+          ensureIconCdnNodeViewIsMutable();
+          iconCdnNodeView_.add(builderForValue.build());
+          onChanged();
         } else {
-          iconCdnNodeViewBuilder_.setMessage(builderForValue.build());
+          iconCdnNodeViewBuilder_.addMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000001;
-        onChanged();
         return this;
       }
       /**
-       * <code>.LiveCdnNodeView iconCdnNodeView = 1;</code>
+       * <code>repeated .LiveCdnNodeView iconCdnNodeView = 1;</code>
        */
-      public Builder mergeIconCdnNodeView(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView value) {
+      public Builder addIconCdnNodeView(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView.Builder builderForValue) {
         if (iconCdnNodeViewBuilder_ == null) {
-          if (((bitField0_ & 0x00000001) != 0) &&
-            iconCdnNodeView_ != null &&
-            iconCdnNodeView_ != tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView.getDefaultInstance()) {
-            getIconCdnNodeViewBuilder().mergeFrom(value);
-          } else {
-            iconCdnNodeView_ = value;
-          }
+          ensureIconCdnNodeViewIsMutable();
+          iconCdnNodeView_.add(index, builderForValue.build());
+          onChanged();
         } else {
-          iconCdnNodeViewBuilder_.mergeFrom(value);
+          iconCdnNodeViewBuilder_.addMessage(index, builderForValue.build());
         }
-        bitField0_ |= 0x00000001;
-        onChanged();
         return this;
       }
       /**
-       * <code>.LiveCdnNodeView iconCdnNodeView = 1;</code>
+       * <code>repeated .LiveCdnNodeView iconCdnNodeView = 1;</code>
+       */
+      public Builder addAllIconCdnNodeView(
+          java.lang.Iterable<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView> values) {
+        if (iconCdnNodeViewBuilder_ == null) {
+          ensureIconCdnNodeViewIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, iconCdnNodeView_);
+          onChanged();
+        } else {
+          iconCdnNodeViewBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .LiveCdnNodeView iconCdnNodeView = 1;</code>
        */
       public Builder clearIconCdnNodeView() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        iconCdnNodeView_ = null;
-        if (iconCdnNodeViewBuilder_ != null) {
-          iconCdnNodeViewBuilder_.dispose();
-          iconCdnNodeViewBuilder_ = null;
+        if (iconCdnNodeViewBuilder_ == null) {
+          iconCdnNodeView_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          iconCdnNodeViewBuilder_.clear();
         }
-        onChanged();
         return this;
       }
       /**
-       * <code>.LiveCdnNodeView iconCdnNodeView = 1;</code>
+       * <code>repeated .LiveCdnNodeView iconCdnNodeView = 1;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView.Builder getIconCdnNodeViewBuilder() {
-        bitField0_ |= 0x00000001;
-        onChanged();
-        return getIconCdnNodeViewFieldBuilder().getBuilder();
+      public Builder removeIconCdnNodeView(int index) {
+        if (iconCdnNodeViewBuilder_ == null) {
+          ensureIconCdnNodeViewIsMutable();
+          iconCdnNodeView_.remove(index);
+          onChanged();
+        } else {
+          iconCdnNodeViewBuilder_.remove(index);
+        }
+        return this;
       }
       /**
-       * <code>.LiveCdnNodeView iconCdnNodeView = 1;</code>
+       * <code>repeated .LiveCdnNodeView iconCdnNodeView = 1;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeViewOrBuilder getIconCdnNodeViewOrBuilder() {
-        if (iconCdnNodeViewBuilder_ != null) {
-          return iconCdnNodeViewBuilder_.getMessageOrBuilder();
-        } else {
-          return iconCdnNodeView_ == null ?
-              tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView.getDefaultInstance() : iconCdnNodeView_;
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView.Builder getIconCdnNodeViewBuilder(
+          int index) {
+        return getIconCdnNodeViewFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .LiveCdnNodeView iconCdnNodeView = 1;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeViewOrBuilder getIconCdnNodeViewOrBuilder(
+          int index) {
+        if (iconCdnNodeViewBuilder_ == null) {
+          return iconCdnNodeView_.get(index);  } else {
+          return iconCdnNodeViewBuilder_.getMessageOrBuilder(index);
         }
       }
       /**
-       * <code>.LiveCdnNodeView iconCdnNodeView = 1;</code>
+       * <code>repeated .LiveCdnNodeView iconCdnNodeView = 1;</code>
        */
-      private com.google.protobuf.SingleFieldBuilderV3<
+      public java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeViewOrBuilder> 
+           getIconCdnNodeViewOrBuilderList() {
+        if (iconCdnNodeViewBuilder_ != null) {
+          return iconCdnNodeViewBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(iconCdnNodeView_);
+        }
+      }
+      /**
+       * <code>repeated .LiveCdnNodeView iconCdnNodeView = 1;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView.Builder addIconCdnNodeViewBuilder() {
+        return getIconCdnNodeViewFieldBuilder().addBuilder(
+            tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .LiveCdnNodeView iconCdnNodeView = 1;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView.Builder addIconCdnNodeViewBuilder(
+          int index) {
+        return getIconCdnNodeViewFieldBuilder().addBuilder(
+            index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .LiveCdnNodeView iconCdnNodeView = 1;</code>
+       */
+      public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView.Builder> 
+           getIconCdnNodeViewBuilderList() {
+        return getIconCdnNodeViewFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
           tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeViewOrBuilder> 
           getIconCdnNodeViewFieldBuilder() {
         if (iconCdnNodeViewBuilder_ == null) {
-          iconCdnNodeViewBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+          iconCdnNodeViewBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeView.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveCdnNodeViewOuterClass.LiveCdnNodeViewOrBuilder>(
-                  getIconCdnNodeView(),
+                  iconCdnNodeView_,
+                  ((bitField0_ & 0x00000001) != 0),
                   getParentForChildren(),
                   isClean());
           iconCdnNodeView_ = null;
@@ -950,7 +1132,7 @@ public final class AuditAudienceMaskOuterClass {
     java.lang.String[] descriptorData = {
       "\n\027AuditAudienceMask.proto\032\025LiveCdnNodeVi" +
       "ew.proto\"]\n\021AuditAudienceMask\022)\n\017iconCdn" +
-      "NodeView\030\001 \001(\0132\020.LiveCdnNodeView\022\r\n\005titl" +
+      "NodeView\030\001 \003(\0132\020.LiveCdnNodeView\022\r\n\005titl" +
       "e\030\002 \001(\t\022\016\n\006detail\030\003 \001(\tB6\n4tech.ordinary" +
       "road.live.chat.client.kuaishou.protobufb" +
       "\006proto3"

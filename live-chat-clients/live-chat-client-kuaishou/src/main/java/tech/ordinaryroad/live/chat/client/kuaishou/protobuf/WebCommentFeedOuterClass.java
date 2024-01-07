@@ -218,7 +218,7 @@ public final class WebCommentFeedOuterClass {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         id_ = s;
@@ -234,7 +234,7 @@ public final class WebCommentFeedOuterClass {
         getIdBytes() {
       java.lang.Object ref = id_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         id_ = b;
@@ -283,7 +283,7 @@ public final class WebCommentFeedOuterClass {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         content_ = s;
@@ -299,7 +299,7 @@ public final class WebCommentFeedOuterClass {
         getContentBytes() {
       java.lang.Object ref = content_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         content_ = b;
@@ -322,7 +322,7 @@ public final class WebCommentFeedOuterClass {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         deviceHash_ = s;
@@ -338,7 +338,7 @@ public final class WebCommentFeedOuterClass {
         getDeviceHashBytes() {
       java.lang.Object ref = deviceHash_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         deviceHash_ = b;
@@ -372,7 +372,7 @@ public final class WebCommentFeedOuterClass {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         color_ = s;
@@ -388,7 +388,7 @@ public final class WebCommentFeedOuterClass {
         getColorBytes() {
       java.lang.Object ref = color_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         color_ = b;
@@ -983,7 +983,7 @@ public final class WebCommentFeedOuterClass {
           getIdBytes() {
         java.lang.Object ref = id_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           id_ = b;
@@ -1136,7 +1136,7 @@ public final class WebCommentFeedOuterClass {
        * <code>.SimpleUserInfo user = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SimpleUserInfoOuterClass.SimpleUserInfo, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SimpleUserInfoOuterClass.SimpleUserInfo.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SimpleUserInfoOuterClass.SimpleUserInfoOrBuilder> 
+          tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SimpleUserInfoOuterClass.SimpleUserInfo, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SimpleUserInfoOuterClass.SimpleUserInfo.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SimpleUserInfoOuterClass.SimpleUserInfoOrBuilder>
           getUserFieldBuilder() {
         if (userBuilder_ == null) {
           userBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
@@ -1174,7 +1174,7 @@ public final class WebCommentFeedOuterClass {
           getContentBytes() {
         java.lang.Object ref = content_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           content_ = b;
@@ -1246,7 +1246,7 @@ public final class WebCommentFeedOuterClass {
           getDeviceHashBytes() {
         java.lang.Object ref = deviceHash_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           deviceHash_ = b;
@@ -1350,7 +1350,7 @@ public final class WebCommentFeedOuterClass {
           getColorBytes() {
         java.lang.Object ref = color_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           color_ = b;
@@ -1556,7 +1556,7 @@ public final class WebCommentFeedOuterClass {
        * <code>.LiveAudienceState senderState = 8;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveAudienceStateOuterClass.LiveAudienceState, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveAudienceStateOuterClass.LiveAudienceState.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveAudienceStateOuterClass.LiveAudienceStateOrBuilder> 
+          tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveAudienceStateOuterClass.LiveAudienceState, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveAudienceStateOuterClass.LiveAudienceState.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveAudienceStateOuterClass.LiveAudienceStateOrBuilder>
           getSenderStateFieldBuilder() {
         if (senderStateBuilder_ == null) {
           senderStateBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
@@ -1634,7 +1634,7 @@ public final class WebCommentFeedOuterClass {
 
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_WebCommentFeed_descriptor;
-  private static final 
+  private static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_WebCommentFeed_fieldAccessorTable;
 

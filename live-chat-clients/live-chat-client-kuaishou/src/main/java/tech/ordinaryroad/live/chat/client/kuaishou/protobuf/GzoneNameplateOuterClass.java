@@ -61,19 +61,28 @@ public final class GzoneNameplateOuterClass {
         getNameBytes();
 
     /**
-     * <code>.PicUrl urls = 3;</code>
-     * @return Whether the urls field is set.
+     * <code>repeated .PicUrl urls = 3;</code>
      */
-    boolean hasUrls();
+    java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl> 
+        getUrlsList();
     /**
-     * <code>.PicUrl urls = 3;</code>
-     * @return The urls.
+     * <code>repeated .PicUrl urls = 3;</code>
      */
-    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl getUrls();
+    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl getUrls(int index);
     /**
-     * <code>.PicUrl urls = 3;</code>
+     * <code>repeated .PicUrl urls = 3;</code>
      */
-    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder getUrlsOrBuilder();
+    int getUrlsCount();
+    /**
+     * <code>repeated .PicUrl urls = 3;</code>
+     */
+    java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder> 
+        getUrlsOrBuilderList();
+    /**
+     * <code>repeated .PicUrl urls = 3;</code>
+     */
+    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder getUrlsOrBuilder(
+        int index);
   }
   /**
    * Protobuf type {@code GzoneNameplate}
@@ -89,6 +98,7 @@ public final class GzoneNameplateOuterClass {
     }
     private GzoneNameplate() {
       name_ = "";
+      urls_ = java.util.Collections.emptyList();
     }
 
     @java.lang.Override
@@ -162,29 +172,44 @@ public final class GzoneNameplateOuterClass {
     }
 
     public static final int URLS_FIELD_NUMBER = 3;
-    private tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl urls_;
+    @SuppressWarnings("serial")
+    private java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl> urls_;
     /**
-     * <code>.PicUrl urls = 3;</code>
-     * @return Whether the urls field is set.
+     * <code>repeated .PicUrl urls = 3;</code>
      */
     @java.lang.Override
-    public boolean hasUrls() {
-      return urls_ != null;
+    public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl> getUrlsList() {
+      return urls_;
     }
     /**
-     * <code>.PicUrl urls = 3;</code>
-     * @return The urls.
+     * <code>repeated .PicUrl urls = 3;</code>
      */
     @java.lang.Override
-    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl getUrls() {
-      return urls_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.getDefaultInstance() : urls_;
+    public java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder> 
+        getUrlsOrBuilderList() {
+      return urls_;
     }
     /**
-     * <code>.PicUrl urls = 3;</code>
+     * <code>repeated .PicUrl urls = 3;</code>
      */
     @java.lang.Override
-    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder getUrlsOrBuilder() {
-      return urls_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.getDefaultInstance() : urls_;
+    public int getUrlsCount() {
+      return urls_.size();
+    }
+    /**
+     * <code>repeated .PicUrl urls = 3;</code>
+     */
+    @java.lang.Override
+    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl getUrls(int index) {
+      return urls_.get(index);
+    }
+    /**
+     * <code>repeated .PicUrl urls = 3;</code>
+     */
+    @java.lang.Override
+    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder getUrlsOrBuilder(
+        int index) {
+      return urls_.get(index);
     }
 
     private byte memoizedIsInitialized = -1;
@@ -207,8 +232,8 @@ public final class GzoneNameplateOuterClass {
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(name_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, name_);
       }
-      if (urls_ != null) {
-        output.writeMessage(3, getUrls());
+      for (int i = 0; i < urls_.size(); i++) {
+        output.writeMessage(3, urls_.get(i));
       }
       getUnknownFields().writeTo(output);
     }
@@ -226,9 +251,9 @@ public final class GzoneNameplateOuterClass {
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(name_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, name_);
       }
-      if (urls_ != null) {
+      for (int i = 0; i < urls_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, getUrls());
+          .computeMessageSize(3, urls_.get(i));
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
@@ -249,11 +274,8 @@ public final class GzoneNameplateOuterClass {
           != other.getId()) return false;
       if (!getName()
           .equals(other.getName())) return false;
-      if (hasUrls() != other.hasUrls()) return false;
-      if (hasUrls()) {
-        if (!getUrls()
-            .equals(other.getUrls())) return false;
-      }
+      if (!getUrlsList()
+          .equals(other.getUrlsList())) return false;
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
@@ -270,9 +292,9 @@ public final class GzoneNameplateOuterClass {
           getId());
       hash = (37 * hash) + NAME_FIELD_NUMBER;
       hash = (53 * hash) + getName().hashCode();
-      if (hasUrls()) {
+      if (getUrlsCount() > 0) {
         hash = (37 * hash) + URLS_FIELD_NUMBER;
-        hash = (53 * hash) + getUrls().hashCode();
+        hash = (53 * hash) + getUrlsList().hashCode();
       }
       hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
@@ -407,11 +429,13 @@ public final class GzoneNameplateOuterClass {
         bitField0_ = 0;
         id_ = 0L;
         name_ = "";
-        urls_ = null;
-        if (urlsBuilder_ != null) {
-          urlsBuilder_.dispose();
-          urlsBuilder_ = null;
+        if (urlsBuilder_ == null) {
+          urls_ = java.util.Collections.emptyList();
+        } else {
+          urls_ = null;
+          urlsBuilder_.clear();
         }
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -438,9 +462,22 @@ public final class GzoneNameplateOuterClass {
       @java.lang.Override
       public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.GzoneNameplateOuterClass.GzoneNameplate buildPartial() {
         tech.ordinaryroad.live.chat.client.kuaishou.protobuf.GzoneNameplateOuterClass.GzoneNameplate result = new tech.ordinaryroad.live.chat.client.kuaishou.protobuf.GzoneNameplateOuterClass.GzoneNameplate(this);
+        buildPartialRepeatedFields(result);
         if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
+      }
+
+      private void buildPartialRepeatedFields(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.GzoneNameplateOuterClass.GzoneNameplate result) {
+        if (urlsBuilder_ == null) {
+          if (((bitField0_ & 0x00000004) != 0)) {
+            urls_ = java.util.Collections.unmodifiableList(urls_);
+            bitField0_ = (bitField0_ & ~0x00000004);
+          }
+          result.urls_ = urls_;
+        } else {
+          result.urls_ = urlsBuilder_.build();
+        }
       }
 
       private void buildPartial0(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.GzoneNameplateOuterClass.GzoneNameplate result) {
@@ -450,11 +487,6 @@ public final class GzoneNameplateOuterClass {
         }
         if (((from_bitField0_ & 0x00000002) != 0)) {
           result.name_ = name_;
-        }
-        if (((from_bitField0_ & 0x00000004) != 0)) {
-          result.urls_ = urlsBuilder_ == null
-              ? urls_
-              : urlsBuilder_.build();
         }
       }
 
@@ -510,8 +542,31 @@ public final class GzoneNameplateOuterClass {
           bitField0_ |= 0x00000002;
           onChanged();
         }
-        if (other.hasUrls()) {
-          mergeUrls(other.getUrls());
+        if (urlsBuilder_ == null) {
+          if (!other.urls_.isEmpty()) {
+            if (urls_.isEmpty()) {
+              urls_ = other.urls_;
+              bitField0_ = (bitField0_ & ~0x00000004);
+            } else {
+              ensureUrlsIsMutable();
+              urls_.addAll(other.urls_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.urls_.isEmpty()) {
+            if (urlsBuilder_.isEmpty()) {
+              urlsBuilder_.dispose();
+              urlsBuilder_ = null;
+              urls_ = other.urls_;
+              bitField0_ = (bitField0_ & ~0x00000004);
+              urlsBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getUrlsFieldBuilder() : null;
+            } else {
+              urlsBuilder_.addAllMessages(other.urls_);
+            }
+          }
         }
         this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
@@ -550,10 +605,16 @@ public final class GzoneNameplateOuterClass {
                 break;
               } // case 18
               case 26: {
-                input.readMessage(
-                    getUrlsFieldBuilder().getBuilder(),
-                    extensionRegistry);
-                bitField0_ |= 0x00000004;
+                tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl m =
+                    input.readMessage(
+                        tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.parser(),
+                        extensionRegistry);
+                if (urlsBuilder_ == null) {
+                  ensureUrlsIsMutable();
+                  urls_.add(m);
+                } else {
+                  urlsBuilder_.addMessage(m);
+                }
                 break;
               } // case 26
               default: {
@@ -677,118 +738,239 @@ public final class GzoneNameplateOuterClass {
         return this;
       }
 
-      private tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl urls_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder> urlsBuilder_;
-      /**
-       * <code>.PicUrl urls = 3;</code>
-       * @return Whether the urls field is set.
-       */
-      public boolean hasUrls() {
-        return ((bitField0_ & 0x00000004) != 0);
+      private java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl> urls_ =
+        java.util.Collections.emptyList();
+      private void ensureUrlsIsMutable() {
+        if (!((bitField0_ & 0x00000004) != 0)) {
+          urls_ = new java.util.ArrayList<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl>(urls_);
+          bitField0_ |= 0x00000004;
+         }
       }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder> urlsBuilder_;
+
       /**
-       * <code>.PicUrl urls = 3;</code>
-       * @return The urls.
+       * <code>repeated .PicUrl urls = 3;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl getUrls() {
+      public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl> getUrlsList() {
         if (urlsBuilder_ == null) {
-          return urls_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.getDefaultInstance() : urls_;
+          return java.util.Collections.unmodifiableList(urls_);
         } else {
-          return urlsBuilder_.getMessage();
+          return urlsBuilder_.getMessageList();
         }
       }
       /**
-       * <code>.PicUrl urls = 3;</code>
+       * <code>repeated .PicUrl urls = 3;</code>
        */
-      public Builder setUrls(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl value) {
+      public int getUrlsCount() {
+        if (urlsBuilder_ == null) {
+          return urls_.size();
+        } else {
+          return urlsBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .PicUrl urls = 3;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl getUrls(int index) {
+        if (urlsBuilder_ == null) {
+          return urls_.get(index);
+        } else {
+          return urlsBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .PicUrl urls = 3;</code>
+       */
+      public Builder setUrls(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl value) {
         if (urlsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          urls_ = value;
+          ensureUrlsIsMutable();
+          urls_.set(index, value);
+          onChanged();
         } else {
-          urlsBuilder_.setMessage(value);
+          urlsBuilder_.setMessage(index, value);
         }
-        bitField0_ |= 0x00000004;
-        onChanged();
         return this;
       }
       /**
-       * <code>.PicUrl urls = 3;</code>
+       * <code>repeated .PicUrl urls = 3;</code>
        */
       public Builder setUrls(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.Builder builderForValue) {
+        if (urlsBuilder_ == null) {
+          ensureUrlsIsMutable();
+          urls_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          urlsBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .PicUrl urls = 3;</code>
+       */
+      public Builder addUrls(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl value) {
+        if (urlsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureUrlsIsMutable();
+          urls_.add(value);
+          onChanged();
+        } else {
+          urlsBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .PicUrl urls = 3;</code>
+       */
+      public Builder addUrls(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl value) {
+        if (urlsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureUrlsIsMutable();
+          urls_.add(index, value);
+          onChanged();
+        } else {
+          urlsBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .PicUrl urls = 3;</code>
+       */
+      public Builder addUrls(
           tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.Builder builderForValue) {
         if (urlsBuilder_ == null) {
-          urls_ = builderForValue.build();
+          ensureUrlsIsMutable();
+          urls_.add(builderForValue.build());
+          onChanged();
         } else {
-          urlsBuilder_.setMessage(builderForValue.build());
+          urlsBuilder_.addMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000004;
-        onChanged();
         return this;
       }
       /**
-       * <code>.PicUrl urls = 3;</code>
+       * <code>repeated .PicUrl urls = 3;</code>
        */
-      public Builder mergeUrls(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl value) {
+      public Builder addUrls(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.Builder builderForValue) {
         if (urlsBuilder_ == null) {
-          if (((bitField0_ & 0x00000004) != 0) &&
-            urls_ != null &&
-            urls_ != tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.getDefaultInstance()) {
-            getUrlsBuilder().mergeFrom(value);
-          } else {
-            urls_ = value;
-          }
+          ensureUrlsIsMutable();
+          urls_.add(index, builderForValue.build());
+          onChanged();
         } else {
-          urlsBuilder_.mergeFrom(value);
+          urlsBuilder_.addMessage(index, builderForValue.build());
         }
-        bitField0_ |= 0x00000004;
-        onChanged();
         return this;
       }
       /**
-       * <code>.PicUrl urls = 3;</code>
+       * <code>repeated .PicUrl urls = 3;</code>
+       */
+      public Builder addAllUrls(
+          java.lang.Iterable<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl> values) {
+        if (urlsBuilder_ == null) {
+          ensureUrlsIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, urls_);
+          onChanged();
+        } else {
+          urlsBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .PicUrl urls = 3;</code>
        */
       public Builder clearUrls() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        urls_ = null;
-        if (urlsBuilder_ != null) {
-          urlsBuilder_.dispose();
-          urlsBuilder_ = null;
+        if (urlsBuilder_ == null) {
+          urls_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000004);
+          onChanged();
+        } else {
+          urlsBuilder_.clear();
         }
-        onChanged();
         return this;
       }
       /**
-       * <code>.PicUrl urls = 3;</code>
+       * <code>repeated .PicUrl urls = 3;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.Builder getUrlsBuilder() {
-        bitField0_ |= 0x00000004;
-        onChanged();
-        return getUrlsFieldBuilder().getBuilder();
+      public Builder removeUrls(int index) {
+        if (urlsBuilder_ == null) {
+          ensureUrlsIsMutable();
+          urls_.remove(index);
+          onChanged();
+        } else {
+          urlsBuilder_.remove(index);
+        }
+        return this;
       }
       /**
-       * <code>.PicUrl urls = 3;</code>
+       * <code>repeated .PicUrl urls = 3;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder getUrlsOrBuilder() {
-        if (urlsBuilder_ != null) {
-          return urlsBuilder_.getMessageOrBuilder();
-        } else {
-          return urls_ == null ?
-              tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.getDefaultInstance() : urls_;
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.Builder getUrlsBuilder(
+          int index) {
+        return getUrlsFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .PicUrl urls = 3;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder getUrlsOrBuilder(
+          int index) {
+        if (urlsBuilder_ == null) {
+          return urls_.get(index);  } else {
+          return urlsBuilder_.getMessageOrBuilder(index);
         }
       }
       /**
-       * <code>.PicUrl urls = 3;</code>
+       * <code>repeated .PicUrl urls = 3;</code>
        */
-      private com.google.protobuf.SingleFieldBuilderV3<
+      public java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder> 
+           getUrlsOrBuilderList() {
+        if (urlsBuilder_ != null) {
+          return urlsBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(urls_);
+        }
+      }
+      /**
+       * <code>repeated .PicUrl urls = 3;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.Builder addUrlsBuilder() {
+        return getUrlsFieldBuilder().addBuilder(
+            tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .PicUrl urls = 3;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.Builder addUrlsBuilder(
+          int index) {
+        return getUrlsFieldBuilder().addBuilder(
+            index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .PicUrl urls = 3;</code>
+       */
+      public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.Builder> 
+           getUrlsBuilderList() {
+        return getUrlsFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
           tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder> 
           getUrlsFieldBuilder() {
         if (urlsBuilder_ == null) {
-          urlsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+          urlsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder>(
-                  getUrls(),
+                  urls_,
+                  ((bitField0_ & 0x00000004) != 0),
                   getParentForChildren(),
                   isClean());
           urls_ = null;
@@ -875,7 +1057,7 @@ public final class GzoneNameplateOuterClass {
     java.lang.String[] descriptorData = {
       "\n\024GzoneNameplate.proto\032\014PicUrl.proto\"A\n\016" +
       "GzoneNameplate\022\n\n\002id\030\001 \001(\003\022\014\n\004name\030\002 \001(\t" +
-      "\022\025\n\004urls\030\003 \001(\0132\007.PicUrlB6\n4tech.ordinary" +
+      "\022\025\n\004urls\030\003 \003(\0132\007.PicUrlB6\n4tech.ordinary" +
       "road.live.chat.client.kuaishou.protobufb" +
       "\006proto3"
     };

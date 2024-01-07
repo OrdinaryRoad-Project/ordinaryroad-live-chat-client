@@ -43,19 +43,28 @@ public final class SCWebLiveSpecialAccountConfigStateOuterClass {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.ConfigSwitchItem configSwitchItem = 1;</code>
-     * @return Whether the configSwitchItem field is set.
+     * <code>repeated .ConfigSwitchItem configSwitchItem = 1;</code>
      */
-    boolean hasConfigSwitchItem();
+    java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem> 
+        getConfigSwitchItemList();
     /**
-     * <code>.ConfigSwitchItem configSwitchItem = 1;</code>
-     * @return The configSwitchItem.
+     * <code>repeated .ConfigSwitchItem configSwitchItem = 1;</code>
      */
-    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem getConfigSwitchItem();
+    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem getConfigSwitchItem(int index);
     /**
-     * <code>.ConfigSwitchItem configSwitchItem = 1;</code>
+     * <code>repeated .ConfigSwitchItem configSwitchItem = 1;</code>
      */
-    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItemOrBuilder getConfigSwitchItemOrBuilder();
+    int getConfigSwitchItemCount();
+    /**
+     * <code>repeated .ConfigSwitchItem configSwitchItem = 1;</code>
+     */
+    java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItemOrBuilder> 
+        getConfigSwitchItemOrBuilderList();
+    /**
+     * <code>repeated .ConfigSwitchItem configSwitchItem = 1;</code>
+     */
+    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItemOrBuilder getConfigSwitchItemOrBuilder(
+        int index);
 
     /**
      * <code>uint64 timestamp = 2;</code>
@@ -76,6 +85,7 @@ public final class SCWebLiveSpecialAccountConfigStateOuterClass {
       super(builder);
     }
     private SCWebLiveSpecialAccountConfigState() {
+      configSwitchItem_ = java.util.Collections.emptyList();
     }
 
     @java.lang.Override
@@ -99,29 +109,44 @@ public final class SCWebLiveSpecialAccountConfigStateOuterClass {
     }
 
     public static final int CONFIGSWITCHITEM_FIELD_NUMBER = 1;
-    private tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem configSwitchItem_;
+    @SuppressWarnings("serial")
+    private java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem> configSwitchItem_;
     /**
-     * <code>.ConfigSwitchItem configSwitchItem = 1;</code>
-     * @return Whether the configSwitchItem field is set.
+     * <code>repeated .ConfigSwitchItem configSwitchItem = 1;</code>
      */
     @java.lang.Override
-    public boolean hasConfigSwitchItem() {
-      return configSwitchItem_ != null;
+    public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem> getConfigSwitchItemList() {
+      return configSwitchItem_;
     }
     /**
-     * <code>.ConfigSwitchItem configSwitchItem = 1;</code>
-     * @return The configSwitchItem.
+     * <code>repeated .ConfigSwitchItem configSwitchItem = 1;</code>
      */
     @java.lang.Override
-    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem getConfigSwitchItem() {
-      return configSwitchItem_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem.getDefaultInstance() : configSwitchItem_;
+    public java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItemOrBuilder> 
+        getConfigSwitchItemOrBuilderList() {
+      return configSwitchItem_;
     }
     /**
-     * <code>.ConfigSwitchItem configSwitchItem = 1;</code>
+     * <code>repeated .ConfigSwitchItem configSwitchItem = 1;</code>
      */
     @java.lang.Override
-    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItemOrBuilder getConfigSwitchItemOrBuilder() {
-      return configSwitchItem_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem.getDefaultInstance() : configSwitchItem_;
+    public int getConfigSwitchItemCount() {
+      return configSwitchItem_.size();
+    }
+    /**
+     * <code>repeated .ConfigSwitchItem configSwitchItem = 1;</code>
+     */
+    @java.lang.Override
+    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem getConfigSwitchItem(int index) {
+      return configSwitchItem_.get(index);
+    }
+    /**
+     * <code>repeated .ConfigSwitchItem configSwitchItem = 1;</code>
+     */
+    @java.lang.Override
+    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItemOrBuilder getConfigSwitchItemOrBuilder(
+        int index) {
+      return configSwitchItem_.get(index);
     }
 
     public static final int TIMESTAMP_FIELD_NUMBER = 2;
@@ -149,8 +174,8 @@ public final class SCWebLiveSpecialAccountConfigStateOuterClass {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (configSwitchItem_ != null) {
-        output.writeMessage(1, getConfigSwitchItem());
+      for (int i = 0; i < configSwitchItem_.size(); i++) {
+        output.writeMessage(1, configSwitchItem_.get(i));
       }
       if (timestamp_ != 0L) {
         output.writeUInt64(2, timestamp_);
@@ -164,9 +189,9 @@ public final class SCWebLiveSpecialAccountConfigStateOuterClass {
       if (size != -1) return size;
 
       size = 0;
-      if (configSwitchItem_ != null) {
+      for (int i = 0; i < configSwitchItem_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, getConfigSwitchItem());
+          .computeMessageSize(1, configSwitchItem_.get(i));
       }
       if (timestamp_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
@@ -187,11 +212,8 @@ public final class SCWebLiveSpecialAccountConfigStateOuterClass {
       }
       tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SCWebLiveSpecialAccountConfigStateOuterClass.SCWebLiveSpecialAccountConfigState other = (tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SCWebLiveSpecialAccountConfigStateOuterClass.SCWebLiveSpecialAccountConfigState) obj;
 
-      if (hasConfigSwitchItem() != other.hasConfigSwitchItem()) return false;
-      if (hasConfigSwitchItem()) {
-        if (!getConfigSwitchItem()
-            .equals(other.getConfigSwitchItem())) return false;
-      }
+      if (!getConfigSwitchItemList()
+          .equals(other.getConfigSwitchItemList())) return false;
       if (getTimestamp()
           != other.getTimestamp()) return false;
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
@@ -205,9 +227,9 @@ public final class SCWebLiveSpecialAccountConfigStateOuterClass {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      if (hasConfigSwitchItem()) {
+      if (getConfigSwitchItemCount() > 0) {
         hash = (37 * hash) + CONFIGSWITCHITEM_FIELD_NUMBER;
-        hash = (53 * hash) + getConfigSwitchItem().hashCode();
+        hash = (53 * hash) + getConfigSwitchItemList().hashCode();
       }
       hash = (37 * hash) + TIMESTAMP_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
@@ -343,11 +365,13 @@ public final class SCWebLiveSpecialAccountConfigStateOuterClass {
       public Builder clear() {
         super.clear();
         bitField0_ = 0;
-        configSwitchItem_ = null;
-        if (configSwitchItemBuilder_ != null) {
-          configSwitchItemBuilder_.dispose();
-          configSwitchItemBuilder_ = null;
+        if (configSwitchItemBuilder_ == null) {
+          configSwitchItem_ = java.util.Collections.emptyList();
+        } else {
+          configSwitchItem_ = null;
+          configSwitchItemBuilder_.clear();
         }
+        bitField0_ = (bitField0_ & ~0x00000001);
         timestamp_ = 0L;
         return this;
       }
@@ -375,18 +399,26 @@ public final class SCWebLiveSpecialAccountConfigStateOuterClass {
       @java.lang.Override
       public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SCWebLiveSpecialAccountConfigStateOuterClass.SCWebLiveSpecialAccountConfigState buildPartial() {
         tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SCWebLiveSpecialAccountConfigStateOuterClass.SCWebLiveSpecialAccountConfigState result = new tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SCWebLiveSpecialAccountConfigStateOuterClass.SCWebLiveSpecialAccountConfigState(this);
+        buildPartialRepeatedFields(result);
         if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
       }
 
+      private void buildPartialRepeatedFields(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SCWebLiveSpecialAccountConfigStateOuterClass.SCWebLiveSpecialAccountConfigState result) {
+        if (configSwitchItemBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) != 0)) {
+            configSwitchItem_ = java.util.Collections.unmodifiableList(configSwitchItem_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.configSwitchItem_ = configSwitchItem_;
+        } else {
+          result.configSwitchItem_ = configSwitchItemBuilder_.build();
+        }
+      }
+
       private void buildPartial0(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SCWebLiveSpecialAccountConfigStateOuterClass.SCWebLiveSpecialAccountConfigState result) {
         int from_bitField0_ = bitField0_;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          result.configSwitchItem_ = configSwitchItemBuilder_ == null
-              ? configSwitchItem_
-              : configSwitchItemBuilder_.build();
-        }
         if (((from_bitField0_ & 0x00000002) != 0)) {
           result.timestamp_ = timestamp_;
         }
@@ -436,8 +468,31 @@ public final class SCWebLiveSpecialAccountConfigStateOuterClass {
 
       public Builder mergeFrom(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SCWebLiveSpecialAccountConfigStateOuterClass.SCWebLiveSpecialAccountConfigState other) {
         if (other == tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SCWebLiveSpecialAccountConfigStateOuterClass.SCWebLiveSpecialAccountConfigState.getDefaultInstance()) return this;
-        if (other.hasConfigSwitchItem()) {
-          mergeConfigSwitchItem(other.getConfigSwitchItem());
+        if (configSwitchItemBuilder_ == null) {
+          if (!other.configSwitchItem_.isEmpty()) {
+            if (configSwitchItem_.isEmpty()) {
+              configSwitchItem_ = other.configSwitchItem_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureConfigSwitchItemIsMutable();
+              configSwitchItem_.addAll(other.configSwitchItem_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.configSwitchItem_.isEmpty()) {
+            if (configSwitchItemBuilder_.isEmpty()) {
+              configSwitchItemBuilder_.dispose();
+              configSwitchItemBuilder_ = null;
+              configSwitchItem_ = other.configSwitchItem_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              configSwitchItemBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getConfigSwitchItemFieldBuilder() : null;
+            } else {
+              configSwitchItemBuilder_.addAllMessages(other.configSwitchItem_);
+            }
+          }
         }
         if (other.getTimestamp() != 0L) {
           setTimestamp(other.getTimestamp());
@@ -469,10 +524,16 @@ public final class SCWebLiveSpecialAccountConfigStateOuterClass {
                 done = true;
                 break;
               case 10: {
-                input.readMessage(
-                    getConfigSwitchItemFieldBuilder().getBuilder(),
-                    extensionRegistry);
-                bitField0_ |= 0x00000001;
+                tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem m =
+                    input.readMessage(
+                        tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem.parser(),
+                        extensionRegistry);
+                if (configSwitchItemBuilder_ == null) {
+                  ensureConfigSwitchItemIsMutable();
+                  configSwitchItem_.add(m);
+                } else {
+                  configSwitchItemBuilder_.addMessage(m);
+                }
                 break;
               } // case 10
               case 16: {
@@ -497,118 +558,239 @@ public final class SCWebLiveSpecialAccountConfigStateOuterClass {
       }
       private int bitField0_;
 
-      private tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem configSwitchItem_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItemOrBuilder> configSwitchItemBuilder_;
-      /**
-       * <code>.ConfigSwitchItem configSwitchItem = 1;</code>
-       * @return Whether the configSwitchItem field is set.
-       */
-      public boolean hasConfigSwitchItem() {
-        return ((bitField0_ & 0x00000001) != 0);
+      private java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem> configSwitchItem_ =
+        java.util.Collections.emptyList();
+      private void ensureConfigSwitchItemIsMutable() {
+        if (!((bitField0_ & 0x00000001) != 0)) {
+          configSwitchItem_ = new java.util.ArrayList<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem>(configSwitchItem_);
+          bitField0_ |= 0x00000001;
+         }
       }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItemOrBuilder> configSwitchItemBuilder_;
+
       /**
-       * <code>.ConfigSwitchItem configSwitchItem = 1;</code>
-       * @return The configSwitchItem.
+       * <code>repeated .ConfigSwitchItem configSwitchItem = 1;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem getConfigSwitchItem() {
+      public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem> getConfigSwitchItemList() {
         if (configSwitchItemBuilder_ == null) {
-          return configSwitchItem_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem.getDefaultInstance() : configSwitchItem_;
+          return java.util.Collections.unmodifiableList(configSwitchItem_);
         } else {
-          return configSwitchItemBuilder_.getMessage();
+          return configSwitchItemBuilder_.getMessageList();
         }
       }
       /**
-       * <code>.ConfigSwitchItem configSwitchItem = 1;</code>
+       * <code>repeated .ConfigSwitchItem configSwitchItem = 1;</code>
        */
-      public Builder setConfigSwitchItem(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem value) {
+      public int getConfigSwitchItemCount() {
+        if (configSwitchItemBuilder_ == null) {
+          return configSwitchItem_.size();
+        } else {
+          return configSwitchItemBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .ConfigSwitchItem configSwitchItem = 1;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem getConfigSwitchItem(int index) {
+        if (configSwitchItemBuilder_ == null) {
+          return configSwitchItem_.get(index);
+        } else {
+          return configSwitchItemBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .ConfigSwitchItem configSwitchItem = 1;</code>
+       */
+      public Builder setConfigSwitchItem(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem value) {
         if (configSwitchItemBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          configSwitchItem_ = value;
+          ensureConfigSwitchItemIsMutable();
+          configSwitchItem_.set(index, value);
+          onChanged();
         } else {
-          configSwitchItemBuilder_.setMessage(value);
+          configSwitchItemBuilder_.setMessage(index, value);
         }
-        bitField0_ |= 0x00000001;
-        onChanged();
         return this;
       }
       /**
-       * <code>.ConfigSwitchItem configSwitchItem = 1;</code>
+       * <code>repeated .ConfigSwitchItem configSwitchItem = 1;</code>
        */
       public Builder setConfigSwitchItem(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem.Builder builderForValue) {
+        if (configSwitchItemBuilder_ == null) {
+          ensureConfigSwitchItemIsMutable();
+          configSwitchItem_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          configSwitchItemBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .ConfigSwitchItem configSwitchItem = 1;</code>
+       */
+      public Builder addConfigSwitchItem(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem value) {
+        if (configSwitchItemBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureConfigSwitchItemIsMutable();
+          configSwitchItem_.add(value);
+          onChanged();
+        } else {
+          configSwitchItemBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .ConfigSwitchItem configSwitchItem = 1;</code>
+       */
+      public Builder addConfigSwitchItem(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem value) {
+        if (configSwitchItemBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureConfigSwitchItemIsMutable();
+          configSwitchItem_.add(index, value);
+          onChanged();
+        } else {
+          configSwitchItemBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .ConfigSwitchItem configSwitchItem = 1;</code>
+       */
+      public Builder addConfigSwitchItem(
           tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem.Builder builderForValue) {
         if (configSwitchItemBuilder_ == null) {
-          configSwitchItem_ = builderForValue.build();
+          ensureConfigSwitchItemIsMutable();
+          configSwitchItem_.add(builderForValue.build());
+          onChanged();
         } else {
-          configSwitchItemBuilder_.setMessage(builderForValue.build());
+          configSwitchItemBuilder_.addMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000001;
-        onChanged();
         return this;
       }
       /**
-       * <code>.ConfigSwitchItem configSwitchItem = 1;</code>
+       * <code>repeated .ConfigSwitchItem configSwitchItem = 1;</code>
        */
-      public Builder mergeConfigSwitchItem(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem value) {
+      public Builder addConfigSwitchItem(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem.Builder builderForValue) {
         if (configSwitchItemBuilder_ == null) {
-          if (((bitField0_ & 0x00000001) != 0) &&
-            configSwitchItem_ != null &&
-            configSwitchItem_ != tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem.getDefaultInstance()) {
-            getConfigSwitchItemBuilder().mergeFrom(value);
-          } else {
-            configSwitchItem_ = value;
-          }
+          ensureConfigSwitchItemIsMutable();
+          configSwitchItem_.add(index, builderForValue.build());
+          onChanged();
         } else {
-          configSwitchItemBuilder_.mergeFrom(value);
+          configSwitchItemBuilder_.addMessage(index, builderForValue.build());
         }
-        bitField0_ |= 0x00000001;
-        onChanged();
         return this;
       }
       /**
-       * <code>.ConfigSwitchItem configSwitchItem = 1;</code>
+       * <code>repeated .ConfigSwitchItem configSwitchItem = 1;</code>
+       */
+      public Builder addAllConfigSwitchItem(
+          java.lang.Iterable<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem> values) {
+        if (configSwitchItemBuilder_ == null) {
+          ensureConfigSwitchItemIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, configSwitchItem_);
+          onChanged();
+        } else {
+          configSwitchItemBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .ConfigSwitchItem configSwitchItem = 1;</code>
        */
       public Builder clearConfigSwitchItem() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        configSwitchItem_ = null;
-        if (configSwitchItemBuilder_ != null) {
-          configSwitchItemBuilder_.dispose();
-          configSwitchItemBuilder_ = null;
+        if (configSwitchItemBuilder_ == null) {
+          configSwitchItem_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          configSwitchItemBuilder_.clear();
         }
-        onChanged();
         return this;
       }
       /**
-       * <code>.ConfigSwitchItem configSwitchItem = 1;</code>
+       * <code>repeated .ConfigSwitchItem configSwitchItem = 1;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem.Builder getConfigSwitchItemBuilder() {
-        bitField0_ |= 0x00000001;
-        onChanged();
-        return getConfigSwitchItemFieldBuilder().getBuilder();
+      public Builder removeConfigSwitchItem(int index) {
+        if (configSwitchItemBuilder_ == null) {
+          ensureConfigSwitchItemIsMutable();
+          configSwitchItem_.remove(index);
+          onChanged();
+        } else {
+          configSwitchItemBuilder_.remove(index);
+        }
+        return this;
       }
       /**
-       * <code>.ConfigSwitchItem configSwitchItem = 1;</code>
+       * <code>repeated .ConfigSwitchItem configSwitchItem = 1;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItemOrBuilder getConfigSwitchItemOrBuilder() {
-        if (configSwitchItemBuilder_ != null) {
-          return configSwitchItemBuilder_.getMessageOrBuilder();
-        } else {
-          return configSwitchItem_ == null ?
-              tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem.getDefaultInstance() : configSwitchItem_;
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem.Builder getConfigSwitchItemBuilder(
+          int index) {
+        return getConfigSwitchItemFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .ConfigSwitchItem configSwitchItem = 1;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItemOrBuilder getConfigSwitchItemOrBuilder(
+          int index) {
+        if (configSwitchItemBuilder_ == null) {
+          return configSwitchItem_.get(index);  } else {
+          return configSwitchItemBuilder_.getMessageOrBuilder(index);
         }
       }
       /**
-       * <code>.ConfigSwitchItem configSwitchItem = 1;</code>
+       * <code>repeated .ConfigSwitchItem configSwitchItem = 1;</code>
        */
-      private com.google.protobuf.SingleFieldBuilderV3<
+      public java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItemOrBuilder> 
+           getConfigSwitchItemOrBuilderList() {
+        if (configSwitchItemBuilder_ != null) {
+          return configSwitchItemBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(configSwitchItem_);
+        }
+      }
+      /**
+       * <code>repeated .ConfigSwitchItem configSwitchItem = 1;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem.Builder addConfigSwitchItemBuilder() {
+        return getConfigSwitchItemFieldBuilder().addBuilder(
+            tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .ConfigSwitchItem configSwitchItem = 1;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem.Builder addConfigSwitchItemBuilder(
+          int index) {
+        return getConfigSwitchItemFieldBuilder().addBuilder(
+            index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .ConfigSwitchItem configSwitchItem = 1;</code>
+       */
+      public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem.Builder> 
+           getConfigSwitchItemBuilderList() {
+        return getConfigSwitchItemFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
           tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItemOrBuilder> 
           getConfigSwitchItemFieldBuilder() {
         if (configSwitchItemBuilder_ == null) {
-          configSwitchItemBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+          configSwitchItemBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItem.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.ConfigSwitchItemOuterClass.ConfigSwitchItemOrBuilder>(
-                  getConfigSwitchItem(),
+                  configSwitchItem_,
+                  ((bitField0_ & 0x00000001) != 0),
                   getParentForChildren(),
                   isClean());
           configSwitchItem_ = null;
@@ -728,7 +910,7 @@ public final class SCWebLiveSpecialAccountConfigStateOuterClass {
       "\n(SCWebLiveSpecialAccountConfigState.pro" +
       "to\032\026ConfigSwitchItem.proto\"d\n\"SCWebLiveS" +
       "pecialAccountConfigState\022+\n\020configSwitch" +
-      "Item\030\001 \001(\0132\021.ConfigSwitchItem\022\021\n\ttimesta" +
+      "Item\030\001 \003(\0132\021.ConfigSwitchItem\022\021\n\ttimesta" +
       "mp\030\002 \001(\004B6\n4tech.ordinaryroad.live.chat." +
       "client.kuaishou.protobufb\006proto3"
     };

@@ -43,19 +43,28 @@ public final class SCWebLiveWatchingUsersOuterClass {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.WebWatchingUserInfo watchingUser = 1;</code>
-     * @return Whether the watchingUser field is set.
+     * <code>repeated .WebWatchingUserInfo watchingUser = 1;</code>
      */
-    boolean hasWatchingUser();
+    java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo> 
+        getWatchingUserList();
     /**
-     * <code>.WebWatchingUserInfo watchingUser = 1;</code>
-     * @return The watchingUser.
+     * <code>repeated .WebWatchingUserInfo watchingUser = 1;</code>
      */
-    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo getWatchingUser();
+    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo getWatchingUser(int index);
     /**
-     * <code>.WebWatchingUserInfo watchingUser = 1;</code>
+     * <code>repeated .WebWatchingUserInfo watchingUser = 1;</code>
      */
-    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfoOrBuilder getWatchingUserOrBuilder();
+    int getWatchingUserCount();
+    /**
+     * <code>repeated .WebWatchingUserInfo watchingUser = 1;</code>
+     */
+    java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfoOrBuilder> 
+        getWatchingUserOrBuilderList();
+    /**
+     * <code>repeated .WebWatchingUserInfo watchingUser = 1;</code>
+     */
+    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfoOrBuilder getWatchingUserOrBuilder(
+        int index);
 
     /**
      * <code>string displayWatchingCount = 2;</code>
@@ -88,6 +97,7 @@ public final class SCWebLiveWatchingUsersOuterClass {
       super(builder);
     }
     private SCWebLiveWatchingUsers() {
+      watchingUser_ = java.util.Collections.emptyList();
       displayWatchingCount_ = "";
     }
 
@@ -112,29 +122,44 @@ public final class SCWebLiveWatchingUsersOuterClass {
     }
 
     public static final int WATCHINGUSER_FIELD_NUMBER = 1;
-    private tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo watchingUser_;
+    @SuppressWarnings("serial")
+    private java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo> watchingUser_;
     /**
-     * <code>.WebWatchingUserInfo watchingUser = 1;</code>
-     * @return Whether the watchingUser field is set.
+     * <code>repeated .WebWatchingUserInfo watchingUser = 1;</code>
      */
     @java.lang.Override
-    public boolean hasWatchingUser() {
-      return watchingUser_ != null;
+    public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo> getWatchingUserList() {
+      return watchingUser_;
     }
     /**
-     * <code>.WebWatchingUserInfo watchingUser = 1;</code>
-     * @return The watchingUser.
+     * <code>repeated .WebWatchingUserInfo watchingUser = 1;</code>
      */
     @java.lang.Override
-    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo getWatchingUser() {
-      return watchingUser_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo.getDefaultInstance() : watchingUser_;
+    public java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfoOrBuilder> 
+        getWatchingUserOrBuilderList() {
+      return watchingUser_;
     }
     /**
-     * <code>.WebWatchingUserInfo watchingUser = 1;</code>
+     * <code>repeated .WebWatchingUserInfo watchingUser = 1;</code>
      */
     @java.lang.Override
-    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfoOrBuilder getWatchingUserOrBuilder() {
-      return watchingUser_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo.getDefaultInstance() : watchingUser_;
+    public int getWatchingUserCount() {
+      return watchingUser_.size();
+    }
+    /**
+     * <code>repeated .WebWatchingUserInfo watchingUser = 1;</code>
+     */
+    @java.lang.Override
+    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo getWatchingUser(int index) {
+      return watchingUser_.get(index);
+    }
+    /**
+     * <code>repeated .WebWatchingUserInfo watchingUser = 1;</code>
+     */
+    @java.lang.Override
+    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfoOrBuilder getWatchingUserOrBuilder(
+        int index) {
+      return watchingUser_.get(index);
     }
 
     public static final int DISPLAYWATCHINGCOUNT_FIELD_NUMBER = 2;
@@ -201,8 +226,8 @@ public final class SCWebLiveWatchingUsersOuterClass {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (watchingUser_ != null) {
-        output.writeMessage(1, getWatchingUser());
+      for (int i = 0; i < watchingUser_.size(); i++) {
+        output.writeMessage(1, watchingUser_.get(i));
       }
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(displayWatchingCount_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, displayWatchingCount_);
@@ -219,9 +244,9 @@ public final class SCWebLiveWatchingUsersOuterClass {
       if (size != -1) return size;
 
       size = 0;
-      if (watchingUser_ != null) {
+      for (int i = 0; i < watchingUser_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, getWatchingUser());
+          .computeMessageSize(1, watchingUser_.get(i));
       }
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(displayWatchingCount_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, displayWatchingCount_);
@@ -245,11 +270,8 @@ public final class SCWebLiveWatchingUsersOuterClass {
       }
       tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SCWebLiveWatchingUsersOuterClass.SCWebLiveWatchingUsers other = (tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SCWebLiveWatchingUsersOuterClass.SCWebLiveWatchingUsers) obj;
 
-      if (hasWatchingUser() != other.hasWatchingUser()) return false;
-      if (hasWatchingUser()) {
-        if (!getWatchingUser()
-            .equals(other.getWatchingUser())) return false;
-      }
+      if (!getWatchingUserList()
+          .equals(other.getWatchingUserList())) return false;
       if (!getDisplayWatchingCount()
           .equals(other.getDisplayWatchingCount())) return false;
       if (getPendingDuration()
@@ -265,9 +287,9 @@ public final class SCWebLiveWatchingUsersOuterClass {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      if (hasWatchingUser()) {
+      if (getWatchingUserCount() > 0) {
         hash = (37 * hash) + WATCHINGUSER_FIELD_NUMBER;
-        hash = (53 * hash) + getWatchingUser().hashCode();
+        hash = (53 * hash) + getWatchingUserList().hashCode();
       }
       hash = (37 * hash) + DISPLAYWATCHINGCOUNT_FIELD_NUMBER;
       hash = (53 * hash) + getDisplayWatchingCount().hashCode();
@@ -405,11 +427,13 @@ public final class SCWebLiveWatchingUsersOuterClass {
       public Builder clear() {
         super.clear();
         bitField0_ = 0;
-        watchingUser_ = null;
-        if (watchingUserBuilder_ != null) {
-          watchingUserBuilder_.dispose();
-          watchingUserBuilder_ = null;
+        if (watchingUserBuilder_ == null) {
+          watchingUser_ = java.util.Collections.emptyList();
+        } else {
+          watchingUser_ = null;
+          watchingUserBuilder_.clear();
         }
+        bitField0_ = (bitField0_ & ~0x00000001);
         displayWatchingCount_ = "";
         pendingDuration_ = 0L;
         return this;
@@ -438,18 +462,26 @@ public final class SCWebLiveWatchingUsersOuterClass {
       @java.lang.Override
       public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SCWebLiveWatchingUsersOuterClass.SCWebLiveWatchingUsers buildPartial() {
         tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SCWebLiveWatchingUsersOuterClass.SCWebLiveWatchingUsers result = new tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SCWebLiveWatchingUsersOuterClass.SCWebLiveWatchingUsers(this);
+        buildPartialRepeatedFields(result);
         if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
       }
 
+      private void buildPartialRepeatedFields(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SCWebLiveWatchingUsersOuterClass.SCWebLiveWatchingUsers result) {
+        if (watchingUserBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) != 0)) {
+            watchingUser_ = java.util.Collections.unmodifiableList(watchingUser_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.watchingUser_ = watchingUser_;
+        } else {
+          result.watchingUser_ = watchingUserBuilder_.build();
+        }
+      }
+
       private void buildPartial0(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SCWebLiveWatchingUsersOuterClass.SCWebLiveWatchingUsers result) {
         int from_bitField0_ = bitField0_;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          result.watchingUser_ = watchingUserBuilder_ == null
-              ? watchingUser_
-              : watchingUserBuilder_.build();
-        }
         if (((from_bitField0_ & 0x00000002) != 0)) {
           result.displayWatchingCount_ = displayWatchingCount_;
         }
@@ -502,8 +534,31 @@ public final class SCWebLiveWatchingUsersOuterClass {
 
       public Builder mergeFrom(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SCWebLiveWatchingUsersOuterClass.SCWebLiveWatchingUsers other) {
         if (other == tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SCWebLiveWatchingUsersOuterClass.SCWebLiveWatchingUsers.getDefaultInstance()) return this;
-        if (other.hasWatchingUser()) {
-          mergeWatchingUser(other.getWatchingUser());
+        if (watchingUserBuilder_ == null) {
+          if (!other.watchingUser_.isEmpty()) {
+            if (watchingUser_.isEmpty()) {
+              watchingUser_ = other.watchingUser_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureWatchingUserIsMutable();
+              watchingUser_.addAll(other.watchingUser_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.watchingUser_.isEmpty()) {
+            if (watchingUserBuilder_.isEmpty()) {
+              watchingUserBuilder_.dispose();
+              watchingUserBuilder_ = null;
+              watchingUser_ = other.watchingUser_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              watchingUserBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getWatchingUserFieldBuilder() : null;
+            } else {
+              watchingUserBuilder_.addAllMessages(other.watchingUser_);
+            }
+          }
         }
         if (!other.getDisplayWatchingCount().isEmpty()) {
           displayWatchingCount_ = other.displayWatchingCount_;
@@ -540,10 +595,16 @@ public final class SCWebLiveWatchingUsersOuterClass {
                 done = true;
                 break;
               case 10: {
-                input.readMessage(
-                    getWatchingUserFieldBuilder().getBuilder(),
-                    extensionRegistry);
-                bitField0_ |= 0x00000001;
+                tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo m =
+                    input.readMessage(
+                        tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo.parser(),
+                        extensionRegistry);
+                if (watchingUserBuilder_ == null) {
+                  ensureWatchingUserIsMutable();
+                  watchingUser_.add(m);
+                } else {
+                  watchingUserBuilder_.addMessage(m);
+                }
                 break;
               } // case 10
               case 18: {
@@ -573,118 +634,239 @@ public final class SCWebLiveWatchingUsersOuterClass {
       }
       private int bitField0_;
 
-      private tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo watchingUser_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfoOrBuilder> watchingUserBuilder_;
-      /**
-       * <code>.WebWatchingUserInfo watchingUser = 1;</code>
-       * @return Whether the watchingUser field is set.
-       */
-      public boolean hasWatchingUser() {
-        return ((bitField0_ & 0x00000001) != 0);
+      private java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo> watchingUser_ =
+        java.util.Collections.emptyList();
+      private void ensureWatchingUserIsMutable() {
+        if (!((bitField0_ & 0x00000001) != 0)) {
+          watchingUser_ = new java.util.ArrayList<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo>(watchingUser_);
+          bitField0_ |= 0x00000001;
+         }
       }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfoOrBuilder> watchingUserBuilder_;
+
       /**
-       * <code>.WebWatchingUserInfo watchingUser = 1;</code>
-       * @return The watchingUser.
+       * <code>repeated .WebWatchingUserInfo watchingUser = 1;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo getWatchingUser() {
+      public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo> getWatchingUserList() {
         if (watchingUserBuilder_ == null) {
-          return watchingUser_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo.getDefaultInstance() : watchingUser_;
+          return java.util.Collections.unmodifiableList(watchingUser_);
         } else {
-          return watchingUserBuilder_.getMessage();
+          return watchingUserBuilder_.getMessageList();
         }
       }
       /**
-       * <code>.WebWatchingUserInfo watchingUser = 1;</code>
+       * <code>repeated .WebWatchingUserInfo watchingUser = 1;</code>
        */
-      public Builder setWatchingUser(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo value) {
+      public int getWatchingUserCount() {
+        if (watchingUserBuilder_ == null) {
+          return watchingUser_.size();
+        } else {
+          return watchingUserBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .WebWatchingUserInfo watchingUser = 1;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo getWatchingUser(int index) {
+        if (watchingUserBuilder_ == null) {
+          return watchingUser_.get(index);
+        } else {
+          return watchingUserBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .WebWatchingUserInfo watchingUser = 1;</code>
+       */
+      public Builder setWatchingUser(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo value) {
         if (watchingUserBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          watchingUser_ = value;
+          ensureWatchingUserIsMutable();
+          watchingUser_.set(index, value);
+          onChanged();
         } else {
-          watchingUserBuilder_.setMessage(value);
+          watchingUserBuilder_.setMessage(index, value);
         }
-        bitField0_ |= 0x00000001;
-        onChanged();
         return this;
       }
       /**
-       * <code>.WebWatchingUserInfo watchingUser = 1;</code>
+       * <code>repeated .WebWatchingUserInfo watchingUser = 1;</code>
        */
       public Builder setWatchingUser(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo.Builder builderForValue) {
+        if (watchingUserBuilder_ == null) {
+          ensureWatchingUserIsMutable();
+          watchingUser_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          watchingUserBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WebWatchingUserInfo watchingUser = 1;</code>
+       */
+      public Builder addWatchingUser(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo value) {
+        if (watchingUserBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureWatchingUserIsMutable();
+          watchingUser_.add(value);
+          onChanged();
+        } else {
+          watchingUserBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WebWatchingUserInfo watchingUser = 1;</code>
+       */
+      public Builder addWatchingUser(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo value) {
+        if (watchingUserBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureWatchingUserIsMutable();
+          watchingUser_.add(index, value);
+          onChanged();
+        } else {
+          watchingUserBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WebWatchingUserInfo watchingUser = 1;</code>
+       */
+      public Builder addWatchingUser(
           tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo.Builder builderForValue) {
         if (watchingUserBuilder_ == null) {
-          watchingUser_ = builderForValue.build();
+          ensureWatchingUserIsMutable();
+          watchingUser_.add(builderForValue.build());
+          onChanged();
         } else {
-          watchingUserBuilder_.setMessage(builderForValue.build());
+          watchingUserBuilder_.addMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000001;
-        onChanged();
         return this;
       }
       /**
-       * <code>.WebWatchingUserInfo watchingUser = 1;</code>
+       * <code>repeated .WebWatchingUserInfo watchingUser = 1;</code>
        */
-      public Builder mergeWatchingUser(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo value) {
+      public Builder addWatchingUser(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo.Builder builderForValue) {
         if (watchingUserBuilder_ == null) {
-          if (((bitField0_ & 0x00000001) != 0) &&
-            watchingUser_ != null &&
-            watchingUser_ != tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo.getDefaultInstance()) {
-            getWatchingUserBuilder().mergeFrom(value);
-          } else {
-            watchingUser_ = value;
-          }
+          ensureWatchingUserIsMutable();
+          watchingUser_.add(index, builderForValue.build());
+          onChanged();
         } else {
-          watchingUserBuilder_.mergeFrom(value);
+          watchingUserBuilder_.addMessage(index, builderForValue.build());
         }
-        bitField0_ |= 0x00000001;
-        onChanged();
         return this;
       }
       /**
-       * <code>.WebWatchingUserInfo watchingUser = 1;</code>
+       * <code>repeated .WebWatchingUserInfo watchingUser = 1;</code>
+       */
+      public Builder addAllWatchingUser(
+          java.lang.Iterable<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo> values) {
+        if (watchingUserBuilder_ == null) {
+          ensureWatchingUserIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, watchingUser_);
+          onChanged();
+        } else {
+          watchingUserBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WebWatchingUserInfo watchingUser = 1;</code>
        */
       public Builder clearWatchingUser() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        watchingUser_ = null;
-        if (watchingUserBuilder_ != null) {
-          watchingUserBuilder_.dispose();
-          watchingUserBuilder_ = null;
+        if (watchingUserBuilder_ == null) {
+          watchingUser_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          watchingUserBuilder_.clear();
         }
-        onChanged();
         return this;
       }
       /**
-       * <code>.WebWatchingUserInfo watchingUser = 1;</code>
+       * <code>repeated .WebWatchingUserInfo watchingUser = 1;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo.Builder getWatchingUserBuilder() {
-        bitField0_ |= 0x00000001;
-        onChanged();
-        return getWatchingUserFieldBuilder().getBuilder();
+      public Builder removeWatchingUser(int index) {
+        if (watchingUserBuilder_ == null) {
+          ensureWatchingUserIsMutable();
+          watchingUser_.remove(index);
+          onChanged();
+        } else {
+          watchingUserBuilder_.remove(index);
+        }
+        return this;
       }
       /**
-       * <code>.WebWatchingUserInfo watchingUser = 1;</code>
+       * <code>repeated .WebWatchingUserInfo watchingUser = 1;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfoOrBuilder getWatchingUserOrBuilder() {
-        if (watchingUserBuilder_ != null) {
-          return watchingUserBuilder_.getMessageOrBuilder();
-        } else {
-          return watchingUser_ == null ?
-              tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo.getDefaultInstance() : watchingUser_;
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo.Builder getWatchingUserBuilder(
+          int index) {
+        return getWatchingUserFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .WebWatchingUserInfo watchingUser = 1;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfoOrBuilder getWatchingUserOrBuilder(
+          int index) {
+        if (watchingUserBuilder_ == null) {
+          return watchingUser_.get(index);  } else {
+          return watchingUserBuilder_.getMessageOrBuilder(index);
         }
       }
       /**
-       * <code>.WebWatchingUserInfo watchingUser = 1;</code>
+       * <code>repeated .WebWatchingUserInfo watchingUser = 1;</code>
        */
-      private com.google.protobuf.SingleFieldBuilderV3<
+      public java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfoOrBuilder> 
+           getWatchingUserOrBuilderList() {
+        if (watchingUserBuilder_ != null) {
+          return watchingUserBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(watchingUser_);
+        }
+      }
+      /**
+       * <code>repeated .WebWatchingUserInfo watchingUser = 1;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo.Builder addWatchingUserBuilder() {
+        return getWatchingUserFieldBuilder().addBuilder(
+            tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .WebWatchingUserInfo watchingUser = 1;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo.Builder addWatchingUserBuilder(
+          int index) {
+        return getWatchingUserFieldBuilder().addBuilder(
+            index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .WebWatchingUserInfo watchingUser = 1;</code>
+       */
+      public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo.Builder> 
+           getWatchingUserBuilderList() {
+        return getWatchingUserFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
           tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfoOrBuilder> 
           getWatchingUserFieldBuilder() {
         if (watchingUserBuilder_ == null) {
-          watchingUserBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+          watchingUserBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfo.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebWatchingUserInfoOuterClass.WebWatchingUserInfoOrBuilder>(
-                  getWatchingUser(),
+                  watchingUser_,
+                  ((bitField0_ & 0x00000001) != 0),
                   getParentForChildren(),
                   isClean());
           watchingUser_ = null;
@@ -875,7 +1057,7 @@ public final class SCWebLiveWatchingUsersOuterClass {
     java.lang.String[] descriptorData = {
       "\n\034SCWebLiveWatchingUsers.proto\032\031WebWatch" +
       "ingUserInfo.proto\"{\n\026SCWebLiveWatchingUs" +
-      "ers\022*\n\014watchingUser\030\001 \001(\0132\024.WebWatchingU" +
+      "ers\022*\n\014watchingUser\030\001 \003(\0132\024.WebWatchingU" +
       "serInfo\022\034\n\024displayWatchingCount\030\002 \001(\t\022\027\n" +
       "\017pendingDuration\030\003 \001(\004B6\n4tech.ordinaryr" +
       "oad.live.chat.client.kuaishou.protobufb\006" +

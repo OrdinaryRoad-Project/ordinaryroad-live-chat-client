@@ -85,19 +85,28 @@ public final class UserInfoOuterClass {
         getUserTextBytes();
 
     /**
-     * <code>.PicUrl headUrls = 5;</code>
-     * @return Whether the headUrls field is set.
+     * <code>repeated .PicUrl headUrls = 5;</code>
      */
-    boolean hasHeadUrls();
+    java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl> 
+        getHeadUrlsList();
     /**
-     * <code>.PicUrl headUrls = 5;</code>
-     * @return The headUrls.
+     * <code>repeated .PicUrl headUrls = 5;</code>
      */
-    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl getHeadUrls();
+    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl getHeadUrls(int index);
     /**
-     * <code>.PicUrl headUrls = 5;</code>
+     * <code>repeated .PicUrl headUrls = 5;</code>
      */
-    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder getHeadUrlsOrBuilder();
+    int getHeadUrlsCount();
+    /**
+     * <code>repeated .PicUrl headUrls = 5;</code>
+     */
+    java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder> 
+        getHeadUrlsOrBuilderList();
+    /**
+     * <code>repeated .PicUrl headUrls = 5;</code>
+     */
+    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder getHeadUrlsOrBuilder(
+        int index);
 
     /**
      * <code>bool verified = 6;</code>
@@ -118,19 +127,28 @@ public final class UserInfoOuterClass {
         getSUserIdBytes();
 
     /**
-     * <code>.PicUrl httpsHeadUrls = 8;</code>
-     * @return Whether the httpsHeadUrls field is set.
+     * <code>repeated .PicUrl httpsHeadUrls = 8;</code>
      */
-    boolean hasHttpsHeadUrls();
+    java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl> 
+        getHttpsHeadUrlsList();
     /**
-     * <code>.PicUrl httpsHeadUrls = 8;</code>
-     * @return The httpsHeadUrls.
+     * <code>repeated .PicUrl httpsHeadUrls = 8;</code>
      */
-    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl getHttpsHeadUrls();
+    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl getHttpsHeadUrls(int index);
     /**
-     * <code>.PicUrl httpsHeadUrls = 8;</code>
+     * <code>repeated .PicUrl httpsHeadUrls = 8;</code>
      */
-    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder getHttpsHeadUrlsOrBuilder();
+    int getHttpsHeadUrlsCount();
+    /**
+     * <code>repeated .PicUrl httpsHeadUrls = 8;</code>
+     */
+    java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder> 
+        getHttpsHeadUrlsOrBuilderList();
+    /**
+     * <code>repeated .PicUrl httpsHeadUrls = 8;</code>
+     */
+    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder getHttpsHeadUrlsOrBuilder(
+        int index);
 
     /**
      * <code>string kwaiId = 9;</code>
@@ -160,7 +178,9 @@ public final class UserInfoOuterClass {
       userName_ = "";
       userGender_ = "";
       userText_ = "";
+      headUrls_ = java.util.Collections.emptyList();
       sUserId_ = "";
+      httpsHeadUrls_ = java.util.Collections.emptyList();
       kwaiId_ = "";
     }
 
@@ -313,29 +333,44 @@ public final class UserInfoOuterClass {
     }
 
     public static final int HEADURLS_FIELD_NUMBER = 5;
-    private tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl headUrls_;
+    @SuppressWarnings("serial")
+    private java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl> headUrls_;
     /**
-     * <code>.PicUrl headUrls = 5;</code>
-     * @return Whether the headUrls field is set.
+     * <code>repeated .PicUrl headUrls = 5;</code>
      */
     @java.lang.Override
-    public boolean hasHeadUrls() {
-      return headUrls_ != null;
+    public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl> getHeadUrlsList() {
+      return headUrls_;
     }
     /**
-     * <code>.PicUrl headUrls = 5;</code>
-     * @return The headUrls.
+     * <code>repeated .PicUrl headUrls = 5;</code>
      */
     @java.lang.Override
-    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl getHeadUrls() {
-      return headUrls_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.getDefaultInstance() : headUrls_;
+    public java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder> 
+        getHeadUrlsOrBuilderList() {
+      return headUrls_;
     }
     /**
-     * <code>.PicUrl headUrls = 5;</code>
+     * <code>repeated .PicUrl headUrls = 5;</code>
      */
     @java.lang.Override
-    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder getHeadUrlsOrBuilder() {
-      return headUrls_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.getDefaultInstance() : headUrls_;
+    public int getHeadUrlsCount() {
+      return headUrls_.size();
+    }
+    /**
+     * <code>repeated .PicUrl headUrls = 5;</code>
+     */
+    @java.lang.Override
+    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl getHeadUrls(int index) {
+      return headUrls_.get(index);
+    }
+    /**
+     * <code>repeated .PicUrl headUrls = 5;</code>
+     */
+    @java.lang.Override
+    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder getHeadUrlsOrBuilder(
+        int index) {
+      return headUrls_.get(index);
     }
 
     public static final int VERIFIED_FIELD_NUMBER = 6;
@@ -389,29 +424,44 @@ public final class UserInfoOuterClass {
     }
 
     public static final int HTTPSHEADURLS_FIELD_NUMBER = 8;
-    private tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl httpsHeadUrls_;
+    @SuppressWarnings("serial")
+    private java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl> httpsHeadUrls_;
     /**
-     * <code>.PicUrl httpsHeadUrls = 8;</code>
-     * @return Whether the httpsHeadUrls field is set.
+     * <code>repeated .PicUrl httpsHeadUrls = 8;</code>
      */
     @java.lang.Override
-    public boolean hasHttpsHeadUrls() {
-      return httpsHeadUrls_ != null;
+    public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl> getHttpsHeadUrlsList() {
+      return httpsHeadUrls_;
     }
     /**
-     * <code>.PicUrl httpsHeadUrls = 8;</code>
-     * @return The httpsHeadUrls.
+     * <code>repeated .PicUrl httpsHeadUrls = 8;</code>
      */
     @java.lang.Override
-    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl getHttpsHeadUrls() {
-      return httpsHeadUrls_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.getDefaultInstance() : httpsHeadUrls_;
+    public java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder> 
+        getHttpsHeadUrlsOrBuilderList() {
+      return httpsHeadUrls_;
     }
     /**
-     * <code>.PicUrl httpsHeadUrls = 8;</code>
+     * <code>repeated .PicUrl httpsHeadUrls = 8;</code>
      */
     @java.lang.Override
-    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder getHttpsHeadUrlsOrBuilder() {
-      return httpsHeadUrls_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.getDefaultInstance() : httpsHeadUrls_;
+    public int getHttpsHeadUrlsCount() {
+      return httpsHeadUrls_.size();
+    }
+    /**
+     * <code>repeated .PicUrl httpsHeadUrls = 8;</code>
+     */
+    @java.lang.Override
+    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl getHttpsHeadUrls(int index) {
+      return httpsHeadUrls_.get(index);
+    }
+    /**
+     * <code>repeated .PicUrl httpsHeadUrls = 8;</code>
+     */
+    @java.lang.Override
+    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder getHttpsHeadUrlsOrBuilder(
+        int index) {
+      return httpsHeadUrls_.get(index);
     }
 
     public static final int KWAIID_FIELD_NUMBER = 9;
@@ -479,8 +529,8 @@ public final class UserInfoOuterClass {
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(userText_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 4, userText_);
       }
-      if (headUrls_ != null) {
-        output.writeMessage(5, getHeadUrls());
+      for (int i = 0; i < headUrls_.size(); i++) {
+        output.writeMessage(5, headUrls_.get(i));
       }
       if (verified_ != false) {
         output.writeBool(6, verified_);
@@ -488,8 +538,8 @@ public final class UserInfoOuterClass {
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(sUserId_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 7, sUserId_);
       }
-      if (httpsHeadUrls_ != null) {
-        output.writeMessage(8, getHttpsHeadUrls());
+      for (int i = 0; i < httpsHeadUrls_.size(); i++) {
+        output.writeMessage(8, httpsHeadUrls_.get(i));
       }
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(kwaiId_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 9, kwaiId_);
@@ -516,9 +566,9 @@ public final class UserInfoOuterClass {
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(userText_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, userText_);
       }
-      if (headUrls_ != null) {
+      for (int i = 0; i < headUrls_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(5, getHeadUrls());
+          .computeMessageSize(5, headUrls_.get(i));
       }
       if (verified_ != false) {
         size += com.google.protobuf.CodedOutputStream
@@ -527,9 +577,9 @@ public final class UserInfoOuterClass {
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(sUserId_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, sUserId_);
       }
-      if (httpsHeadUrls_ != null) {
+      for (int i = 0; i < httpsHeadUrls_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(8, getHttpsHeadUrls());
+          .computeMessageSize(8, httpsHeadUrls_.get(i));
       }
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(kwaiId_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, kwaiId_);
@@ -557,20 +607,14 @@ public final class UserInfoOuterClass {
           .equals(other.getUserGender())) return false;
       if (!getUserText()
           .equals(other.getUserText())) return false;
-      if (hasHeadUrls() != other.hasHeadUrls()) return false;
-      if (hasHeadUrls()) {
-        if (!getHeadUrls()
-            .equals(other.getHeadUrls())) return false;
-      }
+      if (!getHeadUrlsList()
+          .equals(other.getHeadUrlsList())) return false;
       if (getVerified()
           != other.getVerified()) return false;
       if (!getSUserId()
           .equals(other.getSUserId())) return false;
-      if (hasHttpsHeadUrls() != other.hasHttpsHeadUrls()) return false;
-      if (hasHttpsHeadUrls()) {
-        if (!getHttpsHeadUrls()
-            .equals(other.getHttpsHeadUrls())) return false;
-      }
+      if (!getHttpsHeadUrlsList()
+          .equals(other.getHttpsHeadUrlsList())) return false;
       if (!getKwaiId()
           .equals(other.getKwaiId())) return false;
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
@@ -593,18 +637,18 @@ public final class UserInfoOuterClass {
       hash = (53 * hash) + getUserGender().hashCode();
       hash = (37 * hash) + USERTEXT_FIELD_NUMBER;
       hash = (53 * hash) + getUserText().hashCode();
-      if (hasHeadUrls()) {
+      if (getHeadUrlsCount() > 0) {
         hash = (37 * hash) + HEADURLS_FIELD_NUMBER;
-        hash = (53 * hash) + getHeadUrls().hashCode();
+        hash = (53 * hash) + getHeadUrlsList().hashCode();
       }
       hash = (37 * hash) + VERIFIED_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getVerified());
       hash = (37 * hash) + SUSERID_FIELD_NUMBER;
       hash = (53 * hash) + getSUserId().hashCode();
-      if (hasHttpsHeadUrls()) {
+      if (getHttpsHeadUrlsCount() > 0) {
         hash = (37 * hash) + HTTPSHEADURLS_FIELD_NUMBER;
-        hash = (53 * hash) + getHttpsHeadUrls().hashCode();
+        hash = (53 * hash) + getHttpsHeadUrlsList().hashCode();
       }
       hash = (37 * hash) + KWAIID_FIELD_NUMBER;
       hash = (53 * hash) + getKwaiId().hashCode();
@@ -743,18 +787,22 @@ public final class UserInfoOuterClass {
         userName_ = "";
         userGender_ = "";
         userText_ = "";
-        headUrls_ = null;
-        if (headUrlsBuilder_ != null) {
-          headUrlsBuilder_.dispose();
-          headUrlsBuilder_ = null;
+        if (headUrlsBuilder_ == null) {
+          headUrls_ = java.util.Collections.emptyList();
+        } else {
+          headUrls_ = null;
+          headUrlsBuilder_.clear();
         }
+        bitField0_ = (bitField0_ & ~0x00000010);
         verified_ = false;
         sUserId_ = "";
-        httpsHeadUrls_ = null;
-        if (httpsHeadUrlsBuilder_ != null) {
-          httpsHeadUrlsBuilder_.dispose();
-          httpsHeadUrlsBuilder_ = null;
+        if (httpsHeadUrlsBuilder_ == null) {
+          httpsHeadUrls_ = java.util.Collections.emptyList();
+        } else {
+          httpsHeadUrls_ = null;
+          httpsHeadUrlsBuilder_.clear();
         }
+        bitField0_ = (bitField0_ & ~0x00000080);
         kwaiId_ = "";
         return this;
       }
@@ -782,9 +830,31 @@ public final class UserInfoOuterClass {
       @java.lang.Override
       public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.UserInfoOuterClass.UserInfo buildPartial() {
         tech.ordinaryroad.live.chat.client.kuaishou.protobuf.UserInfoOuterClass.UserInfo result = new tech.ordinaryroad.live.chat.client.kuaishou.protobuf.UserInfoOuterClass.UserInfo(this);
+        buildPartialRepeatedFields(result);
         if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
+      }
+
+      private void buildPartialRepeatedFields(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.UserInfoOuterClass.UserInfo result) {
+        if (headUrlsBuilder_ == null) {
+          if (((bitField0_ & 0x00000010) != 0)) {
+            headUrls_ = java.util.Collections.unmodifiableList(headUrls_);
+            bitField0_ = (bitField0_ & ~0x00000010);
+          }
+          result.headUrls_ = headUrls_;
+        } else {
+          result.headUrls_ = headUrlsBuilder_.build();
+        }
+        if (httpsHeadUrlsBuilder_ == null) {
+          if (((bitField0_ & 0x00000080) != 0)) {
+            httpsHeadUrls_ = java.util.Collections.unmodifiableList(httpsHeadUrls_);
+            bitField0_ = (bitField0_ & ~0x00000080);
+          }
+          result.httpsHeadUrls_ = httpsHeadUrls_;
+        } else {
+          result.httpsHeadUrls_ = httpsHeadUrlsBuilder_.build();
+        }
       }
 
       private void buildPartial0(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.UserInfoOuterClass.UserInfo result) {
@@ -801,21 +871,11 @@ public final class UserInfoOuterClass {
         if (((from_bitField0_ & 0x00000008) != 0)) {
           result.userText_ = userText_;
         }
-        if (((from_bitField0_ & 0x00000010) != 0)) {
-          result.headUrls_ = headUrlsBuilder_ == null
-              ? headUrls_
-              : headUrlsBuilder_.build();
-        }
         if (((from_bitField0_ & 0x00000020) != 0)) {
           result.verified_ = verified_;
         }
         if (((from_bitField0_ & 0x00000040) != 0)) {
           result.sUserId_ = sUserId_;
-        }
-        if (((from_bitField0_ & 0x00000080) != 0)) {
-          result.httpsHeadUrls_ = httpsHeadUrlsBuilder_ == null
-              ? httpsHeadUrls_
-              : httpsHeadUrlsBuilder_.build();
         }
         if (((from_bitField0_ & 0x00000100) != 0)) {
           result.kwaiId_ = kwaiId_;
@@ -884,8 +944,31 @@ public final class UserInfoOuterClass {
           bitField0_ |= 0x00000008;
           onChanged();
         }
-        if (other.hasHeadUrls()) {
-          mergeHeadUrls(other.getHeadUrls());
+        if (headUrlsBuilder_ == null) {
+          if (!other.headUrls_.isEmpty()) {
+            if (headUrls_.isEmpty()) {
+              headUrls_ = other.headUrls_;
+              bitField0_ = (bitField0_ & ~0x00000010);
+            } else {
+              ensureHeadUrlsIsMutable();
+              headUrls_.addAll(other.headUrls_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.headUrls_.isEmpty()) {
+            if (headUrlsBuilder_.isEmpty()) {
+              headUrlsBuilder_.dispose();
+              headUrlsBuilder_ = null;
+              headUrls_ = other.headUrls_;
+              bitField0_ = (bitField0_ & ~0x00000010);
+              headUrlsBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getHeadUrlsFieldBuilder() : null;
+            } else {
+              headUrlsBuilder_.addAllMessages(other.headUrls_);
+            }
+          }
         }
         if (other.getVerified() != false) {
           setVerified(other.getVerified());
@@ -895,8 +978,31 @@ public final class UserInfoOuterClass {
           bitField0_ |= 0x00000040;
           onChanged();
         }
-        if (other.hasHttpsHeadUrls()) {
-          mergeHttpsHeadUrls(other.getHttpsHeadUrls());
+        if (httpsHeadUrlsBuilder_ == null) {
+          if (!other.httpsHeadUrls_.isEmpty()) {
+            if (httpsHeadUrls_.isEmpty()) {
+              httpsHeadUrls_ = other.httpsHeadUrls_;
+              bitField0_ = (bitField0_ & ~0x00000080);
+            } else {
+              ensureHttpsHeadUrlsIsMutable();
+              httpsHeadUrls_.addAll(other.httpsHeadUrls_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.httpsHeadUrls_.isEmpty()) {
+            if (httpsHeadUrlsBuilder_.isEmpty()) {
+              httpsHeadUrlsBuilder_.dispose();
+              httpsHeadUrlsBuilder_ = null;
+              httpsHeadUrls_ = other.httpsHeadUrls_;
+              bitField0_ = (bitField0_ & ~0x00000080);
+              httpsHeadUrlsBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getHttpsHeadUrlsFieldBuilder() : null;
+            } else {
+              httpsHeadUrlsBuilder_.addAllMessages(other.httpsHeadUrls_);
+            }
+          }
         }
         if (!other.getKwaiId().isEmpty()) {
           kwaiId_ = other.kwaiId_;
@@ -950,10 +1056,16 @@ public final class UserInfoOuterClass {
                 break;
               } // case 34
               case 42: {
-                input.readMessage(
-                    getHeadUrlsFieldBuilder().getBuilder(),
-                    extensionRegistry);
-                bitField0_ |= 0x00000010;
+                tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl m =
+                    input.readMessage(
+                        tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.parser(),
+                        extensionRegistry);
+                if (headUrlsBuilder_ == null) {
+                  ensureHeadUrlsIsMutable();
+                  headUrls_.add(m);
+                } else {
+                  headUrlsBuilder_.addMessage(m);
+                }
                 break;
               } // case 42
               case 48: {
@@ -967,10 +1079,16 @@ public final class UserInfoOuterClass {
                 break;
               } // case 58
               case 66: {
-                input.readMessage(
-                    getHttpsHeadUrlsFieldBuilder().getBuilder(),
-                    extensionRegistry);
-                bitField0_ |= 0x00000080;
+                tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl m =
+                    input.readMessage(
+                        tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.parser(),
+                        extensionRegistry);
+                if (httpsHeadUrlsBuilder_ == null) {
+                  ensureHttpsHeadUrlsIsMutable();
+                  httpsHeadUrls_.add(m);
+                } else {
+                  httpsHeadUrlsBuilder_.addMessage(m);
+                }
                 break;
               } // case 66
               case 74: {
@@ -1243,118 +1361,239 @@ public final class UserInfoOuterClass {
         return this;
       }
 
-      private tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl headUrls_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder> headUrlsBuilder_;
-      /**
-       * <code>.PicUrl headUrls = 5;</code>
-       * @return Whether the headUrls field is set.
-       */
-      public boolean hasHeadUrls() {
-        return ((bitField0_ & 0x00000010) != 0);
+      private java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl> headUrls_ =
+        java.util.Collections.emptyList();
+      private void ensureHeadUrlsIsMutable() {
+        if (!((bitField0_ & 0x00000010) != 0)) {
+          headUrls_ = new java.util.ArrayList<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl>(headUrls_);
+          bitField0_ |= 0x00000010;
+         }
       }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder> headUrlsBuilder_;
+
       /**
-       * <code>.PicUrl headUrls = 5;</code>
-       * @return The headUrls.
+       * <code>repeated .PicUrl headUrls = 5;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl getHeadUrls() {
+      public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl> getHeadUrlsList() {
         if (headUrlsBuilder_ == null) {
-          return headUrls_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.getDefaultInstance() : headUrls_;
+          return java.util.Collections.unmodifiableList(headUrls_);
         } else {
-          return headUrlsBuilder_.getMessage();
+          return headUrlsBuilder_.getMessageList();
         }
       }
       /**
-       * <code>.PicUrl headUrls = 5;</code>
+       * <code>repeated .PicUrl headUrls = 5;</code>
        */
-      public Builder setHeadUrls(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl value) {
+      public int getHeadUrlsCount() {
+        if (headUrlsBuilder_ == null) {
+          return headUrls_.size();
+        } else {
+          return headUrlsBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .PicUrl headUrls = 5;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl getHeadUrls(int index) {
+        if (headUrlsBuilder_ == null) {
+          return headUrls_.get(index);
+        } else {
+          return headUrlsBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .PicUrl headUrls = 5;</code>
+       */
+      public Builder setHeadUrls(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl value) {
         if (headUrlsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          headUrls_ = value;
+          ensureHeadUrlsIsMutable();
+          headUrls_.set(index, value);
+          onChanged();
         } else {
-          headUrlsBuilder_.setMessage(value);
+          headUrlsBuilder_.setMessage(index, value);
         }
-        bitField0_ |= 0x00000010;
-        onChanged();
         return this;
       }
       /**
-       * <code>.PicUrl headUrls = 5;</code>
+       * <code>repeated .PicUrl headUrls = 5;</code>
        */
       public Builder setHeadUrls(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.Builder builderForValue) {
+        if (headUrlsBuilder_ == null) {
+          ensureHeadUrlsIsMutable();
+          headUrls_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          headUrlsBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .PicUrl headUrls = 5;</code>
+       */
+      public Builder addHeadUrls(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl value) {
+        if (headUrlsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureHeadUrlsIsMutable();
+          headUrls_.add(value);
+          onChanged();
+        } else {
+          headUrlsBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .PicUrl headUrls = 5;</code>
+       */
+      public Builder addHeadUrls(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl value) {
+        if (headUrlsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureHeadUrlsIsMutable();
+          headUrls_.add(index, value);
+          onChanged();
+        } else {
+          headUrlsBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .PicUrl headUrls = 5;</code>
+       */
+      public Builder addHeadUrls(
           tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.Builder builderForValue) {
         if (headUrlsBuilder_ == null) {
-          headUrls_ = builderForValue.build();
+          ensureHeadUrlsIsMutable();
+          headUrls_.add(builderForValue.build());
+          onChanged();
         } else {
-          headUrlsBuilder_.setMessage(builderForValue.build());
+          headUrlsBuilder_.addMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000010;
-        onChanged();
         return this;
       }
       /**
-       * <code>.PicUrl headUrls = 5;</code>
+       * <code>repeated .PicUrl headUrls = 5;</code>
        */
-      public Builder mergeHeadUrls(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl value) {
+      public Builder addHeadUrls(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.Builder builderForValue) {
         if (headUrlsBuilder_ == null) {
-          if (((bitField0_ & 0x00000010) != 0) &&
-            headUrls_ != null &&
-            headUrls_ != tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.getDefaultInstance()) {
-            getHeadUrlsBuilder().mergeFrom(value);
-          } else {
-            headUrls_ = value;
-          }
+          ensureHeadUrlsIsMutable();
+          headUrls_.add(index, builderForValue.build());
+          onChanged();
         } else {
-          headUrlsBuilder_.mergeFrom(value);
+          headUrlsBuilder_.addMessage(index, builderForValue.build());
         }
-        bitField0_ |= 0x00000010;
-        onChanged();
         return this;
       }
       /**
-       * <code>.PicUrl headUrls = 5;</code>
+       * <code>repeated .PicUrl headUrls = 5;</code>
+       */
+      public Builder addAllHeadUrls(
+          java.lang.Iterable<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl> values) {
+        if (headUrlsBuilder_ == null) {
+          ensureHeadUrlsIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, headUrls_);
+          onChanged();
+        } else {
+          headUrlsBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .PicUrl headUrls = 5;</code>
        */
       public Builder clearHeadUrls() {
-        bitField0_ = (bitField0_ & ~0x00000010);
-        headUrls_ = null;
-        if (headUrlsBuilder_ != null) {
-          headUrlsBuilder_.dispose();
-          headUrlsBuilder_ = null;
+        if (headUrlsBuilder_ == null) {
+          headUrls_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000010);
+          onChanged();
+        } else {
+          headUrlsBuilder_.clear();
         }
-        onChanged();
         return this;
       }
       /**
-       * <code>.PicUrl headUrls = 5;</code>
+       * <code>repeated .PicUrl headUrls = 5;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.Builder getHeadUrlsBuilder() {
-        bitField0_ |= 0x00000010;
-        onChanged();
-        return getHeadUrlsFieldBuilder().getBuilder();
+      public Builder removeHeadUrls(int index) {
+        if (headUrlsBuilder_ == null) {
+          ensureHeadUrlsIsMutable();
+          headUrls_.remove(index);
+          onChanged();
+        } else {
+          headUrlsBuilder_.remove(index);
+        }
+        return this;
       }
       /**
-       * <code>.PicUrl headUrls = 5;</code>
+       * <code>repeated .PicUrl headUrls = 5;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder getHeadUrlsOrBuilder() {
-        if (headUrlsBuilder_ != null) {
-          return headUrlsBuilder_.getMessageOrBuilder();
-        } else {
-          return headUrls_ == null ?
-              tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.getDefaultInstance() : headUrls_;
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.Builder getHeadUrlsBuilder(
+          int index) {
+        return getHeadUrlsFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .PicUrl headUrls = 5;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder getHeadUrlsOrBuilder(
+          int index) {
+        if (headUrlsBuilder_ == null) {
+          return headUrls_.get(index);  } else {
+          return headUrlsBuilder_.getMessageOrBuilder(index);
         }
       }
       /**
-       * <code>.PicUrl headUrls = 5;</code>
+       * <code>repeated .PicUrl headUrls = 5;</code>
        */
-      private com.google.protobuf.SingleFieldBuilderV3<
+      public java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder> 
+           getHeadUrlsOrBuilderList() {
+        if (headUrlsBuilder_ != null) {
+          return headUrlsBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(headUrls_);
+        }
+      }
+      /**
+       * <code>repeated .PicUrl headUrls = 5;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.Builder addHeadUrlsBuilder() {
+        return getHeadUrlsFieldBuilder().addBuilder(
+            tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .PicUrl headUrls = 5;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.Builder addHeadUrlsBuilder(
+          int index) {
+        return getHeadUrlsFieldBuilder().addBuilder(
+            index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .PicUrl headUrls = 5;</code>
+       */
+      public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.Builder> 
+           getHeadUrlsBuilderList() {
+        return getHeadUrlsFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
           tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder> 
           getHeadUrlsFieldBuilder() {
         if (headUrlsBuilder_ == null) {
-          headUrlsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+          headUrlsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder>(
-                  getHeadUrls(),
+                  headUrls_,
+                  ((bitField0_ & 0x00000010) != 0),
                   getParentForChildren(),
                   isClean());
           headUrls_ = null;
@@ -1466,118 +1705,239 @@ public final class UserInfoOuterClass {
         return this;
       }
 
-      private tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl httpsHeadUrls_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder> httpsHeadUrlsBuilder_;
-      /**
-       * <code>.PicUrl httpsHeadUrls = 8;</code>
-       * @return Whether the httpsHeadUrls field is set.
-       */
-      public boolean hasHttpsHeadUrls() {
-        return ((bitField0_ & 0x00000080) != 0);
+      private java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl> httpsHeadUrls_ =
+        java.util.Collections.emptyList();
+      private void ensureHttpsHeadUrlsIsMutable() {
+        if (!((bitField0_ & 0x00000080) != 0)) {
+          httpsHeadUrls_ = new java.util.ArrayList<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl>(httpsHeadUrls_);
+          bitField0_ |= 0x00000080;
+         }
       }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder> httpsHeadUrlsBuilder_;
+
       /**
-       * <code>.PicUrl httpsHeadUrls = 8;</code>
-       * @return The httpsHeadUrls.
+       * <code>repeated .PicUrl httpsHeadUrls = 8;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl getHttpsHeadUrls() {
+      public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl> getHttpsHeadUrlsList() {
         if (httpsHeadUrlsBuilder_ == null) {
-          return httpsHeadUrls_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.getDefaultInstance() : httpsHeadUrls_;
+          return java.util.Collections.unmodifiableList(httpsHeadUrls_);
         } else {
-          return httpsHeadUrlsBuilder_.getMessage();
+          return httpsHeadUrlsBuilder_.getMessageList();
         }
       }
       /**
-       * <code>.PicUrl httpsHeadUrls = 8;</code>
+       * <code>repeated .PicUrl httpsHeadUrls = 8;</code>
        */
-      public Builder setHttpsHeadUrls(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl value) {
+      public int getHttpsHeadUrlsCount() {
+        if (httpsHeadUrlsBuilder_ == null) {
+          return httpsHeadUrls_.size();
+        } else {
+          return httpsHeadUrlsBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .PicUrl httpsHeadUrls = 8;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl getHttpsHeadUrls(int index) {
+        if (httpsHeadUrlsBuilder_ == null) {
+          return httpsHeadUrls_.get(index);
+        } else {
+          return httpsHeadUrlsBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .PicUrl httpsHeadUrls = 8;</code>
+       */
+      public Builder setHttpsHeadUrls(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl value) {
         if (httpsHeadUrlsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          httpsHeadUrls_ = value;
+          ensureHttpsHeadUrlsIsMutable();
+          httpsHeadUrls_.set(index, value);
+          onChanged();
         } else {
-          httpsHeadUrlsBuilder_.setMessage(value);
+          httpsHeadUrlsBuilder_.setMessage(index, value);
         }
-        bitField0_ |= 0x00000080;
-        onChanged();
         return this;
       }
       /**
-       * <code>.PicUrl httpsHeadUrls = 8;</code>
+       * <code>repeated .PicUrl httpsHeadUrls = 8;</code>
        */
       public Builder setHttpsHeadUrls(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.Builder builderForValue) {
+        if (httpsHeadUrlsBuilder_ == null) {
+          ensureHttpsHeadUrlsIsMutable();
+          httpsHeadUrls_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          httpsHeadUrlsBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .PicUrl httpsHeadUrls = 8;</code>
+       */
+      public Builder addHttpsHeadUrls(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl value) {
+        if (httpsHeadUrlsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureHttpsHeadUrlsIsMutable();
+          httpsHeadUrls_.add(value);
+          onChanged();
+        } else {
+          httpsHeadUrlsBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .PicUrl httpsHeadUrls = 8;</code>
+       */
+      public Builder addHttpsHeadUrls(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl value) {
+        if (httpsHeadUrlsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureHttpsHeadUrlsIsMutable();
+          httpsHeadUrls_.add(index, value);
+          onChanged();
+        } else {
+          httpsHeadUrlsBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .PicUrl httpsHeadUrls = 8;</code>
+       */
+      public Builder addHttpsHeadUrls(
           tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.Builder builderForValue) {
         if (httpsHeadUrlsBuilder_ == null) {
-          httpsHeadUrls_ = builderForValue.build();
+          ensureHttpsHeadUrlsIsMutable();
+          httpsHeadUrls_.add(builderForValue.build());
+          onChanged();
         } else {
-          httpsHeadUrlsBuilder_.setMessage(builderForValue.build());
+          httpsHeadUrlsBuilder_.addMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000080;
-        onChanged();
         return this;
       }
       /**
-       * <code>.PicUrl httpsHeadUrls = 8;</code>
+       * <code>repeated .PicUrl httpsHeadUrls = 8;</code>
        */
-      public Builder mergeHttpsHeadUrls(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl value) {
+      public Builder addHttpsHeadUrls(
+          int index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.Builder builderForValue) {
         if (httpsHeadUrlsBuilder_ == null) {
-          if (((bitField0_ & 0x00000080) != 0) &&
-            httpsHeadUrls_ != null &&
-            httpsHeadUrls_ != tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.getDefaultInstance()) {
-            getHttpsHeadUrlsBuilder().mergeFrom(value);
-          } else {
-            httpsHeadUrls_ = value;
-          }
+          ensureHttpsHeadUrlsIsMutable();
+          httpsHeadUrls_.add(index, builderForValue.build());
+          onChanged();
         } else {
-          httpsHeadUrlsBuilder_.mergeFrom(value);
+          httpsHeadUrlsBuilder_.addMessage(index, builderForValue.build());
         }
-        bitField0_ |= 0x00000080;
-        onChanged();
         return this;
       }
       /**
-       * <code>.PicUrl httpsHeadUrls = 8;</code>
+       * <code>repeated .PicUrl httpsHeadUrls = 8;</code>
+       */
+      public Builder addAllHttpsHeadUrls(
+          java.lang.Iterable<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl> values) {
+        if (httpsHeadUrlsBuilder_ == null) {
+          ensureHttpsHeadUrlsIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, httpsHeadUrls_);
+          onChanged();
+        } else {
+          httpsHeadUrlsBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .PicUrl httpsHeadUrls = 8;</code>
        */
       public Builder clearHttpsHeadUrls() {
-        bitField0_ = (bitField0_ & ~0x00000080);
-        httpsHeadUrls_ = null;
-        if (httpsHeadUrlsBuilder_ != null) {
-          httpsHeadUrlsBuilder_.dispose();
-          httpsHeadUrlsBuilder_ = null;
+        if (httpsHeadUrlsBuilder_ == null) {
+          httpsHeadUrls_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000080);
+          onChanged();
+        } else {
+          httpsHeadUrlsBuilder_.clear();
         }
-        onChanged();
         return this;
       }
       /**
-       * <code>.PicUrl httpsHeadUrls = 8;</code>
+       * <code>repeated .PicUrl httpsHeadUrls = 8;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.Builder getHttpsHeadUrlsBuilder() {
-        bitField0_ |= 0x00000080;
-        onChanged();
-        return getHttpsHeadUrlsFieldBuilder().getBuilder();
+      public Builder removeHttpsHeadUrls(int index) {
+        if (httpsHeadUrlsBuilder_ == null) {
+          ensureHttpsHeadUrlsIsMutable();
+          httpsHeadUrls_.remove(index);
+          onChanged();
+        } else {
+          httpsHeadUrlsBuilder_.remove(index);
+        }
+        return this;
       }
       /**
-       * <code>.PicUrl httpsHeadUrls = 8;</code>
+       * <code>repeated .PicUrl httpsHeadUrls = 8;</code>
        */
-      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder getHttpsHeadUrlsOrBuilder() {
-        if (httpsHeadUrlsBuilder_ != null) {
-          return httpsHeadUrlsBuilder_.getMessageOrBuilder();
-        } else {
-          return httpsHeadUrls_ == null ?
-              tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.getDefaultInstance() : httpsHeadUrls_;
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.Builder getHttpsHeadUrlsBuilder(
+          int index) {
+        return getHttpsHeadUrlsFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .PicUrl httpsHeadUrls = 8;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder getHttpsHeadUrlsOrBuilder(
+          int index) {
+        if (httpsHeadUrlsBuilder_ == null) {
+          return httpsHeadUrls_.get(index);  } else {
+          return httpsHeadUrlsBuilder_.getMessageOrBuilder(index);
         }
       }
       /**
-       * <code>.PicUrl httpsHeadUrls = 8;</code>
+       * <code>repeated .PicUrl httpsHeadUrls = 8;</code>
        */
-      private com.google.protobuf.SingleFieldBuilderV3<
+      public java.util.List<? extends tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder> 
+           getHttpsHeadUrlsOrBuilderList() {
+        if (httpsHeadUrlsBuilder_ != null) {
+          return httpsHeadUrlsBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(httpsHeadUrls_);
+        }
+      }
+      /**
+       * <code>repeated .PicUrl httpsHeadUrls = 8;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.Builder addHttpsHeadUrlsBuilder() {
+        return getHttpsHeadUrlsFieldBuilder().addBuilder(
+            tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .PicUrl httpsHeadUrls = 8;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.Builder addHttpsHeadUrlsBuilder(
+          int index) {
+        return getHttpsHeadUrlsFieldBuilder().addBuilder(
+            index, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .PicUrl httpsHeadUrls = 8;</code>
+       */
+      public java.util.List<tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.Builder> 
+           getHttpsHeadUrlsBuilderList() {
+        return getHttpsHeadUrlsFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
           tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder> 
           getHttpsHeadUrlsFieldBuilder() {
         if (httpsHeadUrlsBuilder_ == null) {
-          httpsHeadUrlsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+          httpsHeadUrlsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrl.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PicUrlOuterClass.PicUrlOrBuilder>(
-                  getHttpsHeadUrls(),
+                  httpsHeadUrls_,
+                  ((bitField0_ & 0x00000080) != 0),
                   getParentForChildren(),
                   isClean());
           httpsHeadUrls_ = null;
@@ -1737,8 +2097,8 @@ public final class UserInfoOuterClass {
       "\n\016UserInfo.proto\032\014PicUrl.proto\"\300\001\n\010UserI" +
       "nfo\022\016\n\006userId\030\001 \001(\004\022\020\n\010userName\030\002 \001(\t\022\022\n" +
       "\nuserGender\030\003 \001(\t\022\020\n\010userText\030\004 \001(\t\022\031\n\010h" +
-      "eadUrls\030\005 \001(\0132\007.PicUrl\022\020\n\010verified\030\006 \001(\010" +
-      "\022\017\n\007sUserId\030\007 \001(\t\022\036\n\rhttpsHeadUrls\030\010 \001(\013" +
+      "eadUrls\030\005 \003(\0132\007.PicUrl\022\020\n\010verified\030\006 \001(\010" +
+      "\022\017\n\007sUserId\030\007 \001(\t\022\036\n\rhttpsHeadUrls\030\010 \003(\013" +
       "2\007.PicUrl\022\016\n\006kwaiId\030\t \001(\tB6\n4tech.ordina" +
       "ryroad.live.chat.client.kuaishou.protobu" +
       "fb\006proto3"
