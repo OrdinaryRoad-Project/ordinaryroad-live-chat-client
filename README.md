@@ -20,18 +20,21 @@
     - [x] 支持 cookie
     - [x] 支持 短房间id
     - [x] 支持 弹幕发送
-
 - [x] 虎牙
     - [x] DouyuLiveChatClient
     - [x] 支持 cookie（发送弹幕时需要）
     - [x] 支持 短房间id（支持字符串房间号，例如`bagea`）
     - [x] 支持 弹幕发送
 - [ ] 抖音
-  - [x] DouyinLiveChatClient
-  - [ ] 支持 cookie
-  - [x] 支持 短房间id（支持字符串房间号）
-  - [ ] 支持 弹幕发送
-- [ ] 快手
+    - [x] DouyinLiveChatClient
+    - [ ] 支持 cookie
+    - [x] 支持 短房间id（支持字符串房间号）
+    - [ ] 支持 弹幕发送
+- [x] 快手
+    - [x] KuaishouLiveChatClient
+    - [x] 支持 cookie
+    - [x] 支持 短房间id（支持字符串房间号）
+    - [x] 支持 弹幕发送
 
 ---
 
@@ -103,6 +106,7 @@ Live room WebSocket chat client
 - 斗鱼：[DouyuCmdEnum](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/blob/main/live-chat-clients/live-chat-client-douyu/src/main/java/tech/ordinaryroad/live/chat/client/douyu/constant/DouyuCmdEnum.java)
 - 虎牙：[HuyaCmdEnum](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/blob/main/live-chat-clients/live-chat-client-huya/src/main/java/tech/ordinaryroad/live/chat/client/huya/constant/HuyaCmdEnum.java)
 - 抖音：[DouyinCmdEnum](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/blob/main/live-chat-clients/live-chat-client-douyin/src/main/java/tech/ordinaryroad/live/chat/client/douyin/constant/DouyinCmdEnum.java)
+- 快手：[PayloadTypeOuterClass](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/blob/main/live-chat-clients/live-chat-client-kuaishou/src/main/java/tech/ordinaryroad/live/chat/client/kuaishou/protobuf/PayloadTypeOuterClass.java)
 
 可以重写`onCmdMsg(收到的所有CMD消息)`或`onOtherCmdMsg(框架未处理的CMD消息)`回调方法，判断CMD来监听框架已经定义的CMD类型
 
@@ -203,7 +207,7 @@ public class ClientModeExample {
                 - onUnknownCmd：该消息类型未知（没有对应的枚举类）时调用
             - IDanmuMsgListener（所有平台）
                 - onDanmuMsg：收到弹幕消息
-            - IGiftMsgListener（所有平台）
+            - IGiftMsgListener（所有平台，快手礼物消息不全，缺少礼物单价、礼物个数、接收方信息、发送方粉丝牌信息）
                 - onGiftMsg：收到礼物消息
             - ISuperChatMsgListener（B站）
                 - onSuperChatMsg：收到醒目留言
@@ -227,6 +231,7 @@ public class ClientModeExample {
     - client-douyu
     - client-huya
     - client-douyin
+    - client-kuaishou
 
 ## 交流讨论
 
