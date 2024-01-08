@@ -77,7 +77,7 @@ public class KuaishouApis {
         if (!websocketinfo.has("token")) {
             throwExceptionWithTip("主播未开播，token获取失败 " + websocketinfo);
         }
-        ArrayNode websocketUrls = websocketinfo.withArrayProperty("websocketUrls");
+        ArrayNode websocketUrls = websocketinfo.withArray("websocketUrls");
         ArrayList<String> websocketUrlList = CollUtil.newArrayList();
         for (JsonNode websocketUrl : websocketUrls) {
             websocketUrlList.add(websocketUrl.asText());
