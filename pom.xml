@@ -75,7 +75,7 @@
         <logback-classic.version>1.4.12</logback-classic.version>
         <lombok.version>1.18.30</lombok.version>
         <junit-jupiter.version>5.10.1</junit-jupiter.version>
-        <protobuf-java-util.version>3.25.0</protobuf-java-util.version>
+        <protobuf-java-util.version>3.25.1</protobuf-java-util.version>
         <tars-core.version>1.7.3</tars-core.version>
     </properties>
 
