@@ -1,9 +1,11 @@
 package tech.ordinaryroad.live.chat.client.kuaishou.client;
 
+import cn.hutool.core.thread.ThreadUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
+import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
 import tech.ordinaryroad.live.chat.client.kuaishou.config.KuaishouLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.kuaishou.listener.IKuaishouMsgListener;
 import tech.ordinaryroad.live.chat.client.kuaishou.netty.handler.KuaishouBinaryFrameHandler;
@@ -11,6 +13,8 @@ import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PayloadTypeOuterClas
 import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass;
 import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -92,6 +96,26 @@ class KuaishouLiveChatClientTest {
                 log.info("{} 收到礼物 [{}] {}({}) {} {}({})x{}({}) mergeKey:{},comboCount:{}, batchSize:{}", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid(), "赠送", msg.getGiftName(), msg.getGiftId(), msg.getGiftCount(), msg.getGiftPrice(),msg.getMergeKey(),msg.getComboCount(),msg.getBatchSize());
             }
         });
+
+        client.addStatusChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                ClientStatusEnums newValue = (ClientStatusEnums) evt.getNewValue();
+                if (newValue== ClientStatusEnums.CONNECTED) {
+                    // 连接成功5秒后发送弹幕
+                    ThreadUtil.execAsync(()->{
+                        ThreadUtil.sleep(10000);
+                        client.sendDanmu("666666", new Runnable() {
+                            @Override
+                            public void run() {
+                                log.warn("弹幕发送成功");
+                            }
+                        });
+                    });
+                }
+            }
+        });
+
         client.connect();
 
         // 防止测试时直接退出

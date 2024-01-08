@@ -25,4 +25,16 @@ class KuaishouApisTest {
         assertEquals("荧光棒", giftInfoById.getGiftName());
 
     }
+
+    @Test
+    void sendComment() {
+        System.out.println(KuaishouApis.sendComment(System.getenv("cookie"),
+                "3x6pb6bcmjrarvs",
+                KuaishouApis.SendCommentRequest
+                        .builder()
+                        .liveStreamId("XKLoBv2mAEo")
+                        .content("666666a")
+                        .build()
+        ));
+    }
 }

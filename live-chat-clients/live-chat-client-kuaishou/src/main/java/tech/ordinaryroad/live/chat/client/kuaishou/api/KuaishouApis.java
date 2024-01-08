@@ -28,6 +28,7 @@ import cn.hutool.cache.impl.TimedCache;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.util.URLUtil;
 import cn.hutool.http.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -72,7 +73,7 @@ public class KuaishouApis {
 
         String body = response.body();
         String liveStreamId = ReUtil.getGroup1(PATTERN_LIVE_STREAM_ID, body);
-        JsonNode websocketinfo = websocketinfo(liveStreamId, cookie);
+        JsonNode websocketinfo = websocketinfo(roomId, liveStreamId, cookie);
         if (!websocketinfo.has("token")) {
             throw new BaseException("主播未开播，token获取失败 " + websocketinfo);
         }
@@ -92,12 +93,14 @@ public class KuaishouApis {
         return roomInit(roomId, null);
     }
 
-    public static JsonNode websocketinfo(String liveStreamId, String cookie) {
+    public static JsonNode websocketinfo(Object roomId, String liveStreamId, String cookie) {
         if (StrUtil.isBlank(liveStreamId)) {
             throw new BaseException("主播未开播，liveStreamId为空");
         }
         @Cleanup
-        HttpResponse response = createGetRequest("https://live.kuaishou.com/live_api/liveroom/websocketinfo?liveStreamId=" + liveStreamId, cookie).execute();
+        HttpResponse response = createGetRequest("https://live.kuaishou.com/live_api/liveroom/websocketinfo?liveStreamId=" + liveStreamId, cookie)
+                .header(Header.REFERER, "https://live.kuaishou.com/u/" + roomId)
+                .execute();
         return responseInterceptor(response.body());
     }
 
@@ -128,10 +131,29 @@ public class KuaishouApis {
         return RESULT_CACHE.get(KEY_RESULT_CACHE_GIFT_ITEMS).get(id);
     }
 
-    public static HttpRequest createGetRequest(String url, String cookie) {
-        return HttpUtil.createGet(url)
+    @SneakyThrows
+    public static JsonNode sendComment(String cookie, Object roomId, SendCommentRequest request) {
+        @Cleanup
+        HttpResponse response = createPostRequest("https://live.kuaishou.com/live_api/liveroom/sendComment", cookie)
+                .body(OBJECT_MAPPER.writeValueAsString(request), ContentType.JSON.getValue())
+                .header(Header.REFERER, "https://live.kuaishou.com/u/" + roomId)
+                .execute();
+        return responseInterceptor(response.body());
+    }
+
+    public static HttpRequest createRequest(Method method, String url, String cookie) {
+        return HttpUtil.createRequest(method, url)
                 .cookie(cookie)
+                .header(Header.HOST, URLUtil.url(url).getHost())
                 .header(Header.USER_AGENT, USER_AGENT);
+    }
+
+    public static HttpRequest createGetRequest(String url, String cookie) {
+        return createRequest(Method.GET, url, cookie);
+    }
+
+    public static HttpRequest createPostRequest(String url, String cookie) {
+        return createRequest(Method.POST, url, cookie);
     }
 
     private static JsonNode responseInterceptor(String responseString) {
@@ -154,6 +176,16 @@ public class KuaishouApis {
         } catch (JsonProcessingException e) {
             throw new BaseException(e);
         }
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class SendCommentRequest {
+        private String liveStreamId;
+        private String content;
+        private String color;
     }
 
     @Data

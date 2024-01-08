@@ -117,7 +117,52 @@ public class KuaishouLiveChatClient extends BaseNettyClient<
         return new KuaishouBinaryFrameHandler(super.msgListeners, KuaishouLiveChatClient.this);
     }
 
+    @Override
     public void sendDanmu(Object danmu, Runnable success, Consumer<Throwable> failed) {
-        super.sendDanmu(danmu, success, failed);
+        if (!checkCanSendDanmu()) {
+            return;
+        }
+        if (danmu instanceof String msg) {
+            try {
+                if (log.isDebugEnabled()) {
+                    log.debug("{} kuaishou发送弹幕 {}", getConfig().getRoomId(), danmu);
+                }
+
+                boolean sendSuccess = false;
+                try {
+                    KuaishouApis.sendComment(getConfig().getCookie(),
+                            getConfig().getRoomId(),
+                            KuaishouApis.SendCommentRequest.builder()
+                                    .liveStreamId(roomInitResult.getLiveStreamId())
+                                    .content(msg)
+                                    .build()
+                    );
+                    sendSuccess = true;
+                } catch (Exception e) {
+                    log.error("kuaishou弹幕发送失败", e);
+                    if (failed != null) {
+                        failed.accept(e);
+                    }
+                }
+                if (!sendSuccess) {
+                    return;
+                }
+
+                if (log.isDebugEnabled()) {
+                    log.debug("kuaishou弹幕发送成功 {}", danmu);
+                }
+                if (success != null) {
+                    success.run();
+                }
+                finishSendDanmu();
+            } catch (Exception e) {
+                log.error("kuaishou弹幕发送失败", e);
+                if (failed != null) {
+                    failed.accept(e);
+                }
+            }
+        } else {
+            super.sendDanmu(danmu, success, failed);
+        }
     }
 }
