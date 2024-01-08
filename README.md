@@ -29,7 +29,7 @@
     - [x] DouyinLiveChatClient
     - [ ] 支持 cookie
     - [x] 支持 短房间id（支持字符串房间号）
-    - [ ] 支持 弹幕发送
+    - [ ] 支持 弹幕发送（暂未搞懂签名算法）
 - [x] 快手
     - [x] KuaishouLiveChatClient
     - [x] 支持 cookie
@@ -91,6 +91,30 @@ Live room WebSocket chat client
 <dependency>
     <groupId>tech.ordinaryroad</groupId>
     <artifactId>live-chat-client-huya</artifactId>
+    <!-- 参考github release版本，不需要前缀`v` -->
+    <version>${ordinaryroad-live-chat-client.version}</version>
+</dependency>
+```
+
+### 抖音
+
+```xml
+
+<dependency>
+    <groupId>tech.ordinaryroad</groupId>
+    <artifactId>live-chat-client-douyin</artifactId>
+    <!-- 参考github release版本，不需要前缀`v` -->
+    <version>${ordinaryroad-live-chat-client.version}</version>
+</dependency>
+```
+
+### 快手
+
+```xml
+
+<dependency>
+    <groupId>tech.ordinaryroad</groupId>
+    <artifactId>live-chat-client-kuaishou</artifactId>
     <!-- 参考github release版本，不需要前缀`v` -->
     <version>${ordinaryroad-live-chat-client.version}</version>
 </dependency>
