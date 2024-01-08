@@ -16,7 +16,7 @@ option objc_class_prefix = "GPB";
 
 message douyin_webcast_gift_message_msg {
   Common common = 1;
-  uint64 gift_id = 2;
+  uint64 long_gift_id = 2;
   uint64 fan_ticket_count = 3;
   uint64 group_count = 4;
   uint64 repeat_count = 5;

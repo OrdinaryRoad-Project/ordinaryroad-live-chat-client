@@ -49,8 +49,8 @@ public final class douyin_webcast_gift_message_msg extends
   }
 
   @Override
-  public long getUid() {
-    return getUser().getId();
+  public String getUid() {
+    return Long.toString(getUser().getId());
   }
 
   @Override
@@ -74,6 +74,11 @@ public final class douyin_webcast_gift_message_msg extends
   }
 
   @Override
+  public String getGiftId() {
+    return Long.toString(getLongGiftId());
+  }
+
+  @Override
   public int getGiftCount() {
     return (int) getTotalCount();
   }
@@ -84,8 +89,8 @@ public final class douyin_webcast_gift_message_msg extends
   }
 
   @Override
-  public long getReceiveUid() {
-    return getToUser().getId();
+  public String getReceiveUid() {
+    return Long.toString(getToUser().getId());
   }
 
   @Override
@@ -153,15 +158,15 @@ public final class douyin_webcast_gift_message_msg extends
     return common_ == null ? tech.ordinaryroad.live.chat.client.douyin.protobuf.dto.CommonOuterClass.Common.getDefaultInstance() : common_;
   }
 
-  public static final int GIFT_ID_FIELD_NUMBER = 2;
-  private long giftId_ = 0L;
+  public static final int LONG_GIFT_ID_FIELD_NUMBER = 2;
+  private long longGiftId_ = 0L;
   /**
-   * <code>uint64 gift_id = 2;</code>
-   * @return The giftId.
+   * <code>uint64 long_gift_id = 2;</code>
+   * @return The longGiftId.
    */
   @java.lang.Override
-  public long getGiftId() {
-    return giftId_;
+  public long getLongGiftId() {
+    return longGiftId_;
   }
 
   public static final int FAN_TICKET_COUNT_FIELD_NUMBER = 3;
@@ -771,8 +776,8 @@ public final class douyin_webcast_gift_message_msg extends
     if (common_ != null) {
       output.writeMessage(1, getCommon());
     }
-    if (giftId_ != 0L) {
-      output.writeUInt64(2, giftId_);
+    if (longGiftId_ != 0L) {
+      output.writeUInt64(2, longGiftId_);
     }
     if (fanTicketCount_ != 0L) {
       output.writeUInt64(3, fanTicketCount_);
@@ -882,9 +887,9 @@ public final class douyin_webcast_gift_message_msg extends
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(1, getCommon());
     }
-    if (giftId_ != 0L) {
+    if (longGiftId_ != 0L) {
       size += com.google.protobuf.CodedOutputStream
-        .computeUInt64Size(2, giftId_);
+        .computeUInt64Size(2, longGiftId_);
     }
     if (fanTicketCount_ != 0L) {
       size += com.google.protobuf.CodedOutputStream
@@ -1038,8 +1043,8 @@ public final class douyin_webcast_gift_message_msg extends
       if (!getCommon()
           .equals(other.getCommon())) return false;
     }
-    if (getGiftId()
-        != other.getGiftId()) return false;
+    if (getLongGiftId()
+        != other.getLongGiftId()) return false;
     if (getFanTicketCount()
         != other.getFanTicketCount()) return false;
     if (getGroupCount()
@@ -1134,9 +1139,9 @@ public final class douyin_webcast_gift_message_msg extends
       hash = (37 * hash) + COMMON_FIELD_NUMBER;
       hash = (53 * hash) + getCommon().hashCode();
     }
-    hash = (37 * hash) + GIFT_ID_FIELD_NUMBER;
+    hash = (37 * hash) + LONG_GIFT_ID_FIELD_NUMBER;
     hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-        getGiftId());
+        getLongGiftId());
     hash = (37 * hash) + FAN_TICKET_COUNT_FIELD_NUMBER;
     hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
         getFanTicketCount());
@@ -1363,7 +1368,7 @@ public final class douyin_webcast_gift_message_msg extends
         commonBuilder_.dispose();
         commonBuilder_ = null;
       }
-      giftId_ = 0L;
+      longGiftId_ = 0L;
       fanTicketCount_ = 0L;
       groupCount_ = 0L;
       repeatCount_ = 0L;
@@ -1474,7 +1479,7 @@ public final class douyin_webcast_gift_message_msg extends
             : commonBuilder_.build();
       }
       if (((from_bitField0_ & 0x00000002) != 0)) {
-        result.giftId_ = giftId_;
+        result.longGiftId_ = longGiftId_;
       }
       if (((from_bitField0_ & 0x00000004) != 0)) {
         result.fanTicketCount_ = fanTicketCount_;
@@ -1620,8 +1625,8 @@ public final class douyin_webcast_gift_message_msg extends
       if (other.hasCommon()) {
         mergeCommon(other.getCommon());
       }
-      if (other.getGiftId() != 0L) {
-        setGiftId(other.getGiftId());
+      if (other.getLongGiftId() != 0L) {
+        setLongGiftId(other.getLongGiftId());
       }
       if (other.getFanTicketCount() != 0L) {
         setFanTicketCount(other.getFanTicketCount());
@@ -1766,7 +1771,7 @@ public final class douyin_webcast_gift_message_msg extends
               break;
             } // case 10
             case 16: {
-              giftId_ = input.readUInt64();
+              longGiftId_ = input.readUInt64();
               bitField0_ |= 0x00000002;
               break;
             } // case 16
@@ -2087,34 +2092,34 @@ public final class douyin_webcast_gift_message_msg extends
       return commonBuilder_;
     }
 
-    private long giftId_ ;
+    private long longGiftId_ ;
     /**
-     * <code>uint64 gift_id = 2;</code>
-     * @return The giftId.
+     * <code>uint64 long_gift_id = 2;</code>
+     * @return The longGiftId.
      */
     @java.lang.Override
-    public long getGiftId() {
-      return giftId_;
+    public long getLongGiftId() {
+      return longGiftId_;
     }
     /**
-     * <code>uint64 gift_id = 2;</code>
-     * @param value The giftId to set.
+     * <code>uint64 long_gift_id = 2;</code>
+     * @param value The longGiftId to set.
      * @return This builder for chaining.
      */
-    public Builder setGiftId(long value) {
+    public Builder setLongGiftId(long value) {
 
-      giftId_ = value;
+      longGiftId_ = value;
       bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
     /**
-     * <code>uint64 gift_id = 2;</code>
+     * <code>uint64 long_gift_id = 2;</code>
      * @return This builder for chaining.
      */
-    public Builder clearGiftId() {
+    public Builder clearLongGiftId() {
       bitField0_ = (bitField0_ & ~0x00000002);
-      giftId_ = 0L;
+      longGiftId_ = 0L;
       onChanged();
       return this;
     }

@@ -146,7 +146,7 @@ public abstract class BaseNettyClient
             this.bootstrap.group(this.workerGroup)
                     // 创建Channel
                     .channel(NioSocketChannel.class)
-                    .remoteAddress(this.websocketUri.getHost(), this.websocketUri.getPort())
+                    .remoteAddress(this.websocketUri.getHost(), getInetPort())
                     .option(ChannelOption.TCP_NODELAY, true)
                     .option(ChannelOption.SO_KEEPALIVE, true)
                     // Channel配置
@@ -157,7 +157,7 @@ public abstract class BaseNettyClient
                             ChannelPipeline pipeline = ch.pipeline();
 
                             // 放到第一位 addFirst 支持wss链接服务端
-                            pipeline.addFirst(sslCtx.newHandler(ch.alloc(), BaseNettyClient.this.websocketUri.getHost(), BaseNettyClient.this.websocketUri.getPort()));
+                            pipeline.addFirst(sslCtx.newHandler(ch.alloc(), BaseNettyClient.this.websocketUri.getHost(), getInetPort()));
 
                             // 添加一个http的编解码器
                             pipeline.addLast(new HttpClientCodec());
@@ -178,6 +178,11 @@ public abstract class BaseNettyClient
         } catch (SSLException e) {
             throw new BaseException(e);
         }
+    }
+
+    private int getInetPort() {
+        int port = this.websocketUri.getPort();
+        return port == -1 ? "wss".equalsIgnoreCase(websocketUri.getScheme()) ? 443 : 80 : port;
     }
 
     @Override
@@ -303,6 +308,7 @@ public abstract class BaseNettyClient
 
     /**
      * 发送弹幕前判断是否可以发送
+     *
      * @param checkConnected 是否检查Client连接状态
      */
     protected boolean checkCanSendDanmu(boolean checkConnected) {

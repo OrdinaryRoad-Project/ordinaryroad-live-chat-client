@@ -104,7 +104,7 @@ public class DgbMsg extends BaseDouyuCmdMsg implements IGiftMsg {
     /**
      * 用户id
      */
-    private long uid;
+    private String uid;
     /**
      * 收礼物用户id
      */
@@ -196,8 +196,8 @@ public class DgbMsg extends BaseDouyuCmdMsg implements IGiftMsg {
     }
 
     @Override
-    public long getGiftId() {
-        return this.gfid;
+    public String getGiftId() {
+        return Long.toString(this.gfid);
     }
 
     @Override
@@ -222,8 +222,8 @@ public class DgbMsg extends BaseDouyuCmdMsg implements IGiftMsg {
     }
 
     @Override
-    public long getReceiveUid() {
-        return this.receive_uid;
+    public String getReceiveUid() {
+        return Long.toString(this.receive_uid);
     }
 
     @Override

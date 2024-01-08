@@ -77,12 +77,12 @@ public class SendGiftMsg extends BaseBilibiliMsg implements IGiftMsg {
     }
 
     @Override
-    public long getUid() {
+    public String getUid() {
         if (this.data == null) {
-            return 0;
+            return null;
         }
 
-        return this.data.getUid();
+        return Long.toString(this.data.getUid());
     }
 
     @Override
@@ -118,12 +118,12 @@ public class SendGiftMsg extends BaseBilibiliMsg implements IGiftMsg {
     }
 
     @Override
-    public long getGiftId() {
+    public String getGiftId() {
         if (this.data == null) {
-            return 0;
+            return null;
         }
 
-        return data.getGiftId();
+        return Long.toString(data.getGiftId());
     }
 
     @Override
@@ -145,12 +145,12 @@ public class SendGiftMsg extends BaseBilibiliMsg implements IGiftMsg {
     }
 
     @Override
-    public long getReceiveUid() {
+    public String getReceiveUid() {
         if (this.data == null || this.data.getReceive_user_info() == null) {
-            return 0;
+            return null;
         }
 
-        return data.getReceive_user_info().getUid();
+        return Long.toString(data.getReceive_user_info().getUid());
     }
 
     @Override

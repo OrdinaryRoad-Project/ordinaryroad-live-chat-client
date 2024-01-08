@@ -117,9 +117,9 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
                     BilibiliApis.sendMsg(msg, getConfig().getRoomId(), getConfig().getCookie());
                     sendSuccess = true;
                 } catch (Exception e) {
-                    log.error("bilibili弹幕发送失败", e.getCause());
+                    log.error("bilibili弹幕发送失败", e);
                     if (failed != null) {
-                        failed.accept(e.getCause());
+                        failed.accept(e);
                     }
                 }
                 if (!sendSuccess) {
@@ -134,9 +134,9 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
                 }
                 finishSendDanmu();
             } catch (Exception e) {
-                log.error("bilibili弹幕发送失败", e.getCause());
+                log.error("bilibili弹幕发送失败", e);
                 if (failed != null) {
-                    failed.accept(e.getCause());
+                    failed.accept(e);
                 }
             }
         } else {

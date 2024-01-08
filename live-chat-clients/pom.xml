@@ -40,5 +40,6 @@
         <module>live-chat-client-douyu</module>
         <module>live-chat-client-huya</module>
         <module>live-chat-client-douyin</module>
+        <module>live-chat-client-kuaishou</module>
     </modules>
 </project>

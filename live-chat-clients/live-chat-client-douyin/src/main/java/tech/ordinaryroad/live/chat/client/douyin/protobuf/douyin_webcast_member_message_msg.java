@@ -49,8 +49,8 @@ public final class douyin_webcast_member_message_msg extends
   }
 
   @Override
-  public long getUid() {
-    return getUser().getId();
+  public String getUid() {
+    return Long.toString(getUser().getId());
   }
 
   @Override

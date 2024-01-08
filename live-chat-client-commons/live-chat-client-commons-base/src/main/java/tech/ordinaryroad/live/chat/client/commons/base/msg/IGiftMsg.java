@@ -47,7 +47,7 @@ public interface IGiftMsg extends IMsg {
     /**
      * 发送方id
      */
-    long getUid();
+    String getUid();
 
     /**
      * 发送方用户名
@@ -76,7 +76,7 @@ public interface IGiftMsg extends IMsg {
     /**
      * 礼物id
      */
-    long getGiftId();
+    String getGiftId();
 
     /**
      * 礼物数量
@@ -91,7 +91,7 @@ public interface IGiftMsg extends IMsg {
     /**
      * 接收方id
      */
-    long getReceiveUid();
+    String getReceiveUid();
 
     /**
      * 接收方用户名
