@@ -11,12 +11,22 @@ import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PayloadTypeOuterClas
 import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass;
 import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author mjz
  * @date 2024/1/5
  */
 @Slf4j
 class KuaishouLiveChatClientTest {
+
+    Map<String, List<WebGiftFeedOuterClass.WebGiftFeed>> map = new HashMap<>();
 
     static Object lock = new Object();
     KuaishouLiveChatClient client;
@@ -37,8 +47,15 @@ class KuaishouLiveChatClientTest {
                 .roomId("3xiqpb2riusznvq")
                 .roomId("QQ2027379716")
                 .roomId("xiannvwan1008")
-                // 五台山老罗
+                // 月神
+                .roomId("YUE99999")
+                // 祁天道
+                .roomId("t8888888")
+                .roomId("by529529")
+                // 大师1
                 .roomId("3xkz5pb2kx3q4u6")
+                // 大师2
+                .roomId("3x6pb6bcmjrarvs")
                 .build();
 
         client = new KuaishouLiveChatClient(config, new IKuaishouMsgListener() {
@@ -64,12 +81,15 @@ class KuaishouLiveChatClientTest {
 
             @Override
             public void onDanmuMsg(KuaishouBinaryFrameHandler binaryFrameHandler, WebCommentFeedOuterClass.WebCommentFeed msg) {
-                log.info("{} 收到弹幕 {} {}({})：{}", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid(), msg.getContent());
+                log.info("{} 收到弹幕 [{}] {}({})：{}", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid(), msg.getContent());
             }
 
             @Override
             public void onGiftMsg(KuaishouBinaryFrameHandler binaryFrameHandler, WebGiftFeedOuterClass.WebGiftFeed msg) {
-                log.info("{} 收到礼物 {}({}) {} {}({})x{}({})", binaryFrameHandler.getRoomId(), msg.getUsername(), msg.getUid(), "赠送", msg.getGiftName(), msg.getGiftId(), msg.getGiftCount(), msg.getGiftPrice());
+                String mergeKey = msg.getMergeKey();
+                map.computeIfAbsent(mergeKey, s -> new ArrayList<>()).add(msg);
+
+                log.info("{} 收到礼物 [{}] {}({}) {} {}({})x{}({}) mergeKey:{},comboCount:{}, batchSize:{}", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid(), "赠送", msg.getGiftName(), msg.getGiftId(), msg.getGiftCount(), msg.getGiftPrice(),msg.getMergeKey(),msg.getComboCount(),msg.getBatchSize());
             }
         });
         client.connect();

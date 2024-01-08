@@ -234,7 +234,8 @@ public final class WebGiftFeedOuterClass {
 
     @Override
     public int getGiftCount() {
-      return getBatchSize();
+      // TODO 礼物个数？网页上只显示赠送了什么东西，不显示个数，只会显示连击
+      return 0;
     }
 
     @Override
