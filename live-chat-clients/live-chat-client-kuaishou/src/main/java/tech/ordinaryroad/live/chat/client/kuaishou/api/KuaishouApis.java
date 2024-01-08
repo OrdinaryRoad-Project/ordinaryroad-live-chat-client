@@ -75,7 +75,7 @@ public class KuaishouApis {
         String liveStreamId = ReUtil.getGroup1(PATTERN_LIVE_STREAM_ID, body);
         JsonNode websocketinfo = websocketinfo(roomId, liveStreamId, cookie);
         if (!websocketinfo.has("token")) {
-            throw new BaseException("主播未开播，token获取失败 " + websocketinfo);
+            throwExceptionWithTip("主播未开播，token获取失败 " + websocketinfo);
         }
         ArrayNode websocketUrls = websocketinfo.withArrayProperty("websocketUrls");
         ArrayList<String> websocketUrlList = CollUtil.newArrayList();
@@ -95,7 +95,7 @@ public class KuaishouApis {
 
     public static JsonNode websocketinfo(Object roomId, String liveStreamId, String cookie) {
         if (StrUtil.isBlank(liveStreamId)) {
-            throw new BaseException("主播未开播，liveStreamId为空");
+            throwExceptionWithTip("主播未开播，liveStreamId为空");
         }
         @Cleanup
         HttpResponse response = createGetRequest("https://live.kuaishou.com/live_api/liveroom/websocketinfo?liveStreamId=" + liveStreamId, cookie)
@@ -169,13 +169,17 @@ public class KuaishouApis {
                         case 400002 -> message = "需要进行验证";
                         default -> message = "";
                     }
-                    throw new BaseException("接口访问失败：" + message + "，返回结果：" + jsonNode);
+                    throwExceptionWithTip("接口访问失败：" + message + "，返回结果：" + jsonNode);
                 }
             }
             return data;
         } catch (JsonProcessingException e) {
             throw new BaseException(e);
         }
+    }
+
+    private static void throwExceptionWithTip(String message) {
+        throw new BaseException("『可能已触发滑块验证，建议配置Cookie后重试』" + message);
     }
 
     @Data
