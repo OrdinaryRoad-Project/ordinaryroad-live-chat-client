@@ -11,9 +11,6 @@ import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinDanmuMsg;
 import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinEnterRoomMsg;
 import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinGiftMsg;
 import tech.ordinaryroad.live.chat.client.douyin.netty.handler.DouyinBinaryFrameHandler;
-import tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_chat_message_msg;
-import tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_gift_message_msg;
-import tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_member_message_msg;
 
 /**
  * @author mjz

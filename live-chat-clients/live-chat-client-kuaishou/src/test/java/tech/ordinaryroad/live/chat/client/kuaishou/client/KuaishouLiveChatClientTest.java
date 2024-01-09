@@ -12,7 +12,6 @@ import tech.ordinaryroad.live.chat.client.kuaishou.msg.KuaishouDanmuMsg;
 import tech.ordinaryroad.live.chat.client.kuaishou.msg.KuaishouGiftMsg;
 import tech.ordinaryroad.live.chat.client.kuaishou.netty.handler.KuaishouBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PayloadTypeOuterClass;
-import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass;
 import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass;
 
 import java.beans.PropertyChangeEvent;
