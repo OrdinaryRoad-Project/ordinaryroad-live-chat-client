@@ -35,6 +35,8 @@ import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.kuaishou.client.KuaishouLiveChatClient;
 import tech.ordinaryroad.live.chat.client.kuaishou.listener.IKuaishouMsgListener;
+import tech.ordinaryroad.live.chat.client.kuaishou.msg.KuaishouDanmuMsg;
+import tech.ordinaryroad.live.chat.client.kuaishou.msg.KuaishouGiftMsg;
 import tech.ordinaryroad.live.chat.client.kuaishou.msg.base.IKuaishouMsg;
 import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.*;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientBinaryFrameHandler;
@@ -72,12 +74,12 @@ public class KuaishouBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
                 SCWebFeedPushOuterClass.SCWebFeedPush scWebFeedPush = SCWebFeedPushOuterClass.SCWebFeedPush.parseFrom(payloadByteString);
                 if (scWebFeedPush.getCommentFeedsCount() > 0) {
                     for (WebCommentFeedOuterClass.WebCommentFeed webCommentFeed : scWebFeedPush.getCommentFeedsList()) {
-                        iteratorMsgListeners(msgListener -> msgListener.onDanmuMsg(KuaishouBinaryFrameHandler.this, webCommentFeed));
+                        iteratorMsgListeners(msgListener -> msgListener.onDanmuMsg(KuaishouBinaryFrameHandler.this, new KuaishouDanmuMsg(webCommentFeed)));
                     }
                 }
                 if (scWebFeedPush.getGiftFeedsCount() > 0) {
                     for (WebGiftFeedOuterClass.WebGiftFeed webGiftFeed : scWebFeedPush.getGiftFeedsList()) {
-                        iteratorMsgListeners(msgListener -> msgListener.onGiftMsg(KuaishouBinaryFrameHandler.this, webGiftFeed));
+                        iteratorMsgListeners(msgListener -> msgListener.onGiftMsg(KuaishouBinaryFrameHandler.this, new KuaishouGiftMsg(webGiftFeed)));
                     }
                 }
             }

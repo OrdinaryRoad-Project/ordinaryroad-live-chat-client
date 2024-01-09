@@ -8,6 +8,8 @@ import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
 import tech.ordinaryroad.live.chat.client.kuaishou.config.KuaishouLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.kuaishou.listener.IKuaishouMsgListener;
+import tech.ordinaryroad.live.chat.client.kuaishou.msg.KuaishouDanmuMsg;
+import tech.ordinaryroad.live.chat.client.kuaishou.msg.KuaishouGiftMsg;
 import tech.ordinaryroad.live.chat.client.kuaishou.netty.handler.KuaishouBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PayloadTypeOuterClass;
 import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass;
@@ -51,8 +53,6 @@ class KuaishouLiveChatClientTest {
                 .roomId("3xiqpb2riusznvq")
                 .roomId("QQ2027379716")
                 .roomId("xiannvwan1008")
-                // 月神
-                .roomId("YUE99999")
                 // 祁天道
                 .roomId("t8888888")
                 .roomId("by529529")
@@ -60,6 +60,10 @@ class KuaishouLiveChatClientTest {
                 .roomId("3xkz5pb2kx3q4u6")
                 // 大师2
                 .roomId("3x6pb6bcmjrarvs")
+                .roomId("3xbyfeffjhky7b2")
+                // 月神
+                .roomId("YUE99999")
+                .roomId("mengyu980726")
                 .build();
 
         client = new KuaishouLiveChatClient(config, new IKuaishouMsgListener() {
@@ -84,16 +88,16 @@ class KuaishouLiveChatClientTest {
             }
 
             @Override
-            public void onDanmuMsg(KuaishouBinaryFrameHandler binaryFrameHandler, WebCommentFeedOuterClass.WebCommentFeed msg) {
+            public void onDanmuMsg(KuaishouBinaryFrameHandler binaryFrameHandler, KuaishouDanmuMsg msg) {
                 log.info("{} 收到弹幕 [{}] {}({})：{}", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid(), msg.getContent());
             }
 
             @Override
-            public void onGiftMsg(KuaishouBinaryFrameHandler binaryFrameHandler, WebGiftFeedOuterClass.WebGiftFeed msg) {
-                String mergeKey = msg.getMergeKey();
-                map.computeIfAbsent(mergeKey, s -> new ArrayList<>()).add(msg);
+            public void onGiftMsg(KuaishouBinaryFrameHandler binaryFrameHandler, KuaishouGiftMsg msg) {
+                String mergeKey = msg.getMsg().getMergeKey();
+                map.computeIfAbsent(mergeKey, s -> new ArrayList<>()).add(msg.getMsg());
 
-                log.info("{} 收到礼物 [{}] {}({}) {} {}({})x{}({}) mergeKey:{},comboCount:{}, batchSize:{}", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid(), "赠送", msg.getGiftName(), msg.getGiftId(), msg.getGiftCount(), msg.getGiftPrice(),msg.getMergeKey(),msg.getComboCount(),msg.getBatchSize());
+                log.info("{} 收到礼物 [{}] {}({}) {} {}({})x{}({}) mergeKey:{},comboCount:{}, batchSize:{}", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid(), "赠送", msg.getGiftName(), msg.getGiftId(), msg.getGiftCount(), msg.getGiftPrice(), msg.getMsg().getMergeKey(), msg.getMsg().getComboCount(), msg.getMsg().getBatchSize());
             }
         });
 
@@ -101,9 +105,9 @@ class KuaishouLiveChatClientTest {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 ClientStatusEnums newValue = (ClientStatusEnums) evt.getNewValue();
-                if (newValue== ClientStatusEnums.CONNECTED) {
+                if (newValue == ClientStatusEnums.CONNECTED) {
                     // 连接成功5秒后发送弹幕
-                    ThreadUtil.execAsync(()->{
+                    ThreadUtil.execAsync(() -> {
                         ThreadUtil.sleep(10000);
                         client.sendDanmu("666666", new Runnable() {
                             @Override

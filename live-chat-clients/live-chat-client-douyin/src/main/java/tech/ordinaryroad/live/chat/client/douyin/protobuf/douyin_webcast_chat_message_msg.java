@@ -27,42 +27,13 @@
 
 package tech.ordinaryroad.live.chat.client.douyin.protobuf;
 
-import cn.hutool.core.collection.CollUtil;
-import tech.ordinaryroad.live.chat.client.commons.base.msg.IDanmuMsg;
-
 /**
  * Protobuf type {@code tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_chat_message_msg}
  */
 public final class douyin_webcast_chat_message_msg extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_chat_message_msg)
-    douyin_webcast_chat_message_msgOrBuilder, IDanmuMsg {
-
-  @Override
-  public String getBadgeName() {
-    return getUser().getFansClub().getData().getClubName();
-  }
-
-  @Override
-  public byte getBadgeLevel() {
-    return (byte) getUser().getFansClub().getData().getLevel();
-  }
-
-  @Override
-  public String getUid() {
-    return Long.toString(getUser().getId());
-  }
-
-  @Override
-  public String getUsername() {
-    return getUser().getNickname();
-  }
-
-  @Override
-  public String getUserAvatar() {
-    return CollUtil.getFirst(getUser().getAvatarThumb().getUrlListListList());
-  }
-
+    douyin_webcast_chat_message_msgOrBuilder {
   private static final long serialVersionUID = 0L;
   // Use douyin_webcast_chat_message_msg.newBuilder() to construct.
   private douyin_webcast_chat_message_msg(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {

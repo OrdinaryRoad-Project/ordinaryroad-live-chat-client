@@ -27,9 +27,6 @@
 
 package tech.ordinaryroad.live.chat.client.kuaishou.protobuf;
 
-import tech.ordinaryroad.live.chat.client.commons.base.msg.IGiftMsg;
-import tech.ordinaryroad.live.chat.client.kuaishou.api.KuaishouApis;
-
 public final class WebGiftFeedOuterClass {
   private WebGiftFeedOuterClass() {}
   public static void registerAllExtensions(
@@ -190,69 +187,7 @@ public final class WebGiftFeedOuterClass {
   public static final class WebGiftFeed extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:WebGiftFeed)
-      WebGiftFeedOrBuilder, IGiftMsg {
-
-    @Override
-    public String getBadgeName() {
-      return IGiftMsg.super.getBadgeName();
-    }
-
-    @Override
-    public byte getBadgeLevel() {
-      return IGiftMsg.super.getBadgeLevel();
-    }
-
-    @Override
-    public String getUid() {
-      return getUser().getPrincipalId();
-    }
-
-    @Override
-    public String getUsername() {
-      return getUser().getUserName();
-    }
-
-    @Override
-    public String getUserAvatar() {
-      return getUser().getHeadUrl();
-    }
-
-    @Override
-    public String getGiftName() {
-      return KuaishouApis.getGiftInfoById(this.getGiftId()).getGiftName();
-    }
-
-    @Override
-    public String getGiftImg() {
-      return KuaishouApis.getGiftInfoById(this.getGiftId()).getGiftUrl();
-    }
-
-    @Override
-    public String getGiftId() {
-      return Integer.toString(getIntGiftId());
-    }
-
-    @Override
-    public int getGiftCount() {
-      // TODO 礼物个数？网页上只显示赠送了什么东西，不显示个数，只会显示连击
-      return 0;
-    }
-
-    @Override
-    public int getGiftPrice() {
-      return 0;
-    }
-
-    @Override
-    public String getReceiveUid() {
-      return null;
-    }
-
-    @Override
-    public String getReceiveUsername() {
-      return null;
-    }
-
+      WebGiftFeedOrBuilder {
     private static final long serialVersionUID = 0L;
     // Use WebGiftFeed.newBuilder() to construct.
     private WebGiftFeed(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {

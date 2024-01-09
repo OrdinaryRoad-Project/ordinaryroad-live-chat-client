@@ -29,17 +29,17 @@ import tech.ordinaryroad.live.chat.client.commons.base.listener.IDanmuMsgListene
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IEnterRoomMsgListener;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IGiftMsgListener;
 import tech.ordinaryroad.live.chat.client.douyin.constant.DouyinCmdEnum;
+import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinDanmuMsg;
+import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinEnterRoomMsg;
+import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinGiftMsg;
 import tech.ordinaryroad.live.chat.client.douyin.netty.handler.DouyinBinaryFrameHandler;
-import tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_chat_message_msg;
-import tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_gift_message_msg;
-import tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_member_message_msg;
 
 /**
  * @author mjz
  * @date 2024/1/2
  */
 public interface IDouyinMsgListener extends IBaseMsgListener<DouyinBinaryFrameHandler, DouyinCmdEnum>,
-        IDanmuMsgListener<DouyinBinaryFrameHandler, douyin_webcast_chat_message_msg>,
-        IGiftMsgListener<DouyinBinaryFrameHandler, douyin_webcast_gift_message_msg>,
-        IEnterRoomMsgListener<DouyinBinaryFrameHandler, douyin_webcast_member_message_msg> {
+        IDanmuMsgListener<DouyinBinaryFrameHandler, DouyinDanmuMsg>,
+        IGiftMsgListener<DouyinBinaryFrameHandler, DouyinGiftMsg>,
+        IEnterRoomMsgListener<DouyinBinaryFrameHandler, DouyinEnterRoomMsg> {
 }

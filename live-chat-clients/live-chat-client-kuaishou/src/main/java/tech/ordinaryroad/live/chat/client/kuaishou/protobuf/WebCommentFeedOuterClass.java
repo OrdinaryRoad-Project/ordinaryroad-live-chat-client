@@ -27,12 +27,6 @@
 
 package tech.ordinaryroad.live.chat.client.kuaishou.protobuf;
 
-import com.google.protobuf.ByteString;
-import com.google.protobuf.UnknownFieldSet;
-import tech.ordinaryroad.live.chat.client.commons.base.msg.IDanmuMsg;
-
-import java.util.List;
-
 public final class WebCommentFeedOuterClass {
   private WebCommentFeedOuterClass() {}
   public static void registerAllExtensions(
@@ -149,53 +143,7 @@ public final class WebCommentFeedOuterClass {
   public static final class WebCommentFeed extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:WebCommentFeed)
-      WebCommentFeedOrBuilder, IDanmuMsg {
-
-    @Override
-    public String getBadgeName() {
-          String badgeName = null;
-          try {
-              UnknownFieldSet.Field field21 = getSenderState().getUnknownFields().asMap().get(21);
-              List<ByteString> lengthDelimitedList = field21.getLengthDelimitedList();
-              if (!lengthDelimitedList.isEmpty()) {
-                  UnknownFieldSet.Field field21_1 = UnknownFieldSet.parseFrom(
-                          lengthDelimitedList.size() > 1 ? lengthDelimitedList.get(1) : lengthDelimitedList.get(0)
-                  ).getField(1);
-                  List<ByteString> lengthDelimitedList1 = field21_1.getLengthDelimitedList();
-                  if (!lengthDelimitedList1.isEmpty()) {
-                      UnknownFieldSet.Field field21_1_4 = UnknownFieldSet.parseFrom((lengthDelimitedList1.get(0))).getField(4);
-                      List<ByteString> lengthDelimitedList2 = field21_1_4.getLengthDelimitedList();
-                      if (!lengthDelimitedList2.isEmpty()) {
-                          badgeName = lengthDelimitedList2.get(0).toStringUtf8();
-                      }
-                  }
-              }
-          } catch (Exception e) {
-              // ignore
-          }
-          return badgeName;
-    }
-
-    @Override
-    public byte getBadgeLevel() {
-      return (byte) getSenderState().getLiveFansGroupState().getIntimacyLevel();
-    }
-
-    @Override
-    public String getUid() {
-      return getUser().getPrincipalId();
-    }
-
-    @Override
-    public String getUsername() {
-      return getUser().getUserName();
-    }
-
-    @Override
-    public String getUserAvatar() {
-      return getUser().getHeadUrl();
-    }
-
+      WebCommentFeedOrBuilder {
     private static final long serialVersionUID = 0L;
     // Use WebCommentFeed.newBuilder() to construct.
     private WebCommentFeed(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {

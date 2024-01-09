@@ -38,6 +38,9 @@ import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.douyin.client.DouyinLiveChatClient;
 import tech.ordinaryroad.live.chat.client.douyin.constant.DouyinCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyin.listener.IDouyinMsgListener;
+import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinDanmuMsg;
+import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinEnterRoomMsg;
+import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinGiftMsg;
 import tech.ordinaryroad.live.chat.client.douyin.msg.base.IDouyinMsg;
 import tech.ordinaryroad.live.chat.client.douyin.protobuf.*;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientBinaryFrameHandler;
@@ -87,7 +90,7 @@ public class DouyinBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<
             case WebcastChatMessage -> {
                 try {
                     douyin_webcast_chat_message_msg douyinWebcastChatMessageMsg = douyin_webcast_chat_message_msg.parseFrom(payload);
-                    iteratorMsgListeners(msgListener -> msgListener.onDanmuMsg(DouyinBinaryFrameHandler.this, douyinWebcastChatMessageMsg));
+                    iteratorMsgListeners(msgListener -> msgListener.onDanmuMsg(DouyinBinaryFrameHandler.this, new DouyinDanmuMsg(douyinWebcastChatMessageMsg)));
                 } catch (IOException e) {
                     throw new BaseException(e);
                 }
@@ -95,7 +98,7 @@ public class DouyinBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<
             case WebcastGiftMessage -> {
                 try {
                     douyin_webcast_gift_message_msg douyinWebcastGiftMessageMsg = douyin_webcast_gift_message_msg.parseFrom(payload);
-                    iteratorMsgListeners(msgListener -> msgListener.onGiftMsg(DouyinBinaryFrameHandler.this, douyinWebcastGiftMessageMsg));
+                    iteratorMsgListeners(msgListener -> msgListener.onGiftMsg(DouyinBinaryFrameHandler.this, new DouyinGiftMsg(douyinWebcastGiftMessageMsg)));
                 } catch (InvalidProtocolBufferException e) {
                     throw new BaseException(e);
                 }
@@ -103,7 +106,7 @@ public class DouyinBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<
             case WebcastMemberMessage -> {
                 try {
                     douyin_webcast_member_message_msg douyinWebcastMemberMessageMsg = douyin_webcast_member_message_msg.parseFrom(payload);
-                    iteratorMsgListeners(msgListener -> msgListener.onEnterRoomMsg(DouyinBinaryFrameHandler.this, douyinWebcastMemberMessageMsg));
+                    iteratorMsgListeners(msgListener -> msgListener.onEnterRoomMsg(DouyinBinaryFrameHandler.this, new DouyinEnterRoomMsg(douyinWebcastMemberMessageMsg)));
                 } catch (InvalidProtocolBufferException e) {
                     throw new BaseException(e);
                 }
