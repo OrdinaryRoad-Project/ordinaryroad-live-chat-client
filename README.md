@@ -227,7 +227,7 @@ public class ClientModeExample {
                 - BaseCmdMsg：继承自BaseMsg，实现ICmdMsg接口
         - 消息监听器
             - IBaseMsgListener（所有平台都支持，其他消息监听器存在平台差异）
-                - onMsg：所有消息（不管消息内容）都会调用
+                - onMsg：所有消息（不管消息内容）都会调用，不包括由该消息的某个字段派生出的消息，例如快手的弹幕礼物等消息是`SC_FEED_PUSH`中的字段，因此onMsg中不会出现处理后的弹幕、礼物消息，而是包含弹幕、礼物等的`SCWebFeedPush`CMD消息
                 - onCmdMsg：cmd消息（消息体中有表示消息类型的字段时），并且该类型需要处理（例如心跳回复包不需要处理）时调用
                 - onOtherCmdMsg：该消息类型不需要处理（例如PK、点赞数更新等类型）时调用
                 - onUnknownCmd：该消息类型未知（没有对应的枚举类）时调用
