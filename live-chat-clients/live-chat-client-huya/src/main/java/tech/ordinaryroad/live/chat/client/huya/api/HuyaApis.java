@@ -55,6 +55,7 @@ import static tech.ordinaryroad.live.chat.client.commons.base.msg.BaseMsg.OBJECT
 @Slf4j
 public class HuyaApis {
 
+    // TODO TimedCache
     public static final Map<Integer, PropsItem> GIFT_ITEMS = new HashMap<>();
 
     public static JsonNode roomInit(Object roomId) {

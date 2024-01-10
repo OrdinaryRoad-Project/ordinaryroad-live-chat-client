@@ -67,13 +67,19 @@ public class DouyuBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<B
         }
 
         switch (cmd) {
-            case chatmsg ->
-                    iteratorMsgListeners(msgListener -> msgListener.onDanmuMsg(DouyuBinaryFrameHandler.this, (ChatmsgMsg) cmdMsg));
-            case dgb ->
-                    iteratorMsgListeners(msgListener -> msgListener.onGiftMsg(DouyuBinaryFrameHandler.this, (DgbMsg) cmdMsg));
-            case uenter ->
-                    iteratorMsgListeners(msgListener -> msgListener.onEnterRoomMsg(DouyuBinaryFrameHandler.this, (UenterMsg) cmdMsg));
-            default -> {
+            case chatmsg: {
+                iteratorMsgListeners(msgListener -> msgListener.onDanmuMsg(DouyuBinaryFrameHandler.this, (ChatmsgMsg) cmdMsg));
+                break;
+            }
+            case dgb: {
+                iteratorMsgListeners(msgListener -> msgListener.onGiftMsg(DouyuBinaryFrameHandler.this, (DgbMsg) cmdMsg));
+                break;
+            }
+            case uenter: {
+                iteratorMsgListeners(msgListener -> msgListener.onEnterRoomMsg(DouyuBinaryFrameHandler.this, (UenterMsg) cmdMsg));
+                break;
+            }
+            default: {
                 if (!(cmdMsg instanceof DouyuCmdMsg)) {
                     if (log.isDebugEnabled()) {
                         log.debug("非DouyuCmdMsg {}", cmdMsg.getClass());

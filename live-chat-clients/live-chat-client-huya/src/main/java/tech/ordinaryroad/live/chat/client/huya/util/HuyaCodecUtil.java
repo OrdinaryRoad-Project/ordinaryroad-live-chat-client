@@ -77,31 +77,31 @@ public class HuyaCodecUtil {
         WebSocketCommand webSocketCommand = new WebSocketCommand(newUtf8TarsInputStream(bytes));
         HuyaOperationEnum operationEnum = webSocketCommand.getOperationEnum();
         if (operationEnum == null) {
-            throw new BaseException("未知operation: %d".formatted(webSocketCommand.getOperation()));
+            throw new BaseException(String.format("未知operation: %d", webSocketCommand.getOperation()));
         }
 
         switch (operationEnum) {
-            case EWSCmd_RegisterRsp -> {
-                return List.of(new RegisterRsp(newUtf8TarsInputStream(webSocketCommand.getVData())));
+            case EWSCmd_RegisterRsp: {
+                return Collections.singletonList(new RegisterRsp(newUtf8TarsInputStream(webSocketCommand.getVData())));
             }
-            case EWSCmdS2C_RegisterGroupRsp -> {
-                return List.of(new RegisterGroupRsp(newUtf8TarsInputStream(webSocketCommand.getVData())));
+            case EWSCmdS2C_RegisterGroupRsp: {
+                return Collections.singletonList(new RegisterGroupRsp(newUtf8TarsInputStream(webSocketCommand.getVData())));
             }
-            case EWSCmd_WupRsp -> {
-                return List.of(new WupRsp(webSocketCommand.getVData()));
+            case EWSCmd_WupRsp: {
+                return Collections.singletonList(new WupRsp(webSocketCommand.getVData()));
             }
-            case EWSCmdS2C_MsgPushReq -> {
-                return List.of(new PushMessage(newUtf8TarsInputStream(webSocketCommand.getVData())));
+            case EWSCmdS2C_MsgPushReq: {
+                return Collections.singletonList(new PushMessage(newUtf8TarsInputStream(webSocketCommand.getVData())));
             }
-            case EWSCmdS2C_VerifyCookieRsp -> {
-                return List.of(new VerifyCookieRsp(newUtf8TarsInputStream(webSocketCommand.getVData())));
+            case EWSCmdS2C_VerifyCookieRsp: {
+                return Collections.singletonList(new VerifyCookieRsp(newUtf8TarsInputStream(webSocketCommand.getVData())));
             }
-            case EWSCmdS2C_MsgPushReq_V2 -> {
+            case EWSCmdS2C_MsgPushReq_V2: {
                 PushMessage_V2 pushMessageV2 = new PushMessage_V2(newUtf8TarsInputStream(webSocketCommand.getVData()));
                 return pushMessageV2.getVMsgItem();
             }
-            default -> {
-                return List.of(webSocketCommand);
+            default: {
+                return Collections.singletonList(webSocketCommand);
             }
         }
     }
@@ -128,7 +128,7 @@ public class HuyaCodecUtil {
         }
 
         switch (huyaDecorationViewTypeEnum) {
-            case kDecorationViewTypeCustomized -> {
+            case kDecorationViewTypeCustomized: {
                 int iAppId = decorationInfo.getIAppId();
                 HuyaDecorationAppTypeEnum huyaDecorationAppTypeEnum = HuyaDecorationAppTypeEnum.getByCode(iAppId);
                 if (huyaDecorationAppTypeEnum == null) {
@@ -136,17 +136,17 @@ public class HuyaCodecUtil {
                 }
 
                 switch (huyaDecorationAppTypeEnum) {
-                    case kDecorationAppTypeFans -> {
+                    case kDecorationAppTypeFans: {
                         BadgeInfo badgeInfo = new BadgeInfo();
                         badgeInfo.readFrom(HuyaCodecUtil.newUtf8TarsInputStream(decorationInfo.getVData()));
                         return Optional.of(badgeInfo);
                     }
-                    default -> {
+                    default: {
                         return Optional.empty();
                     }
                 }
             }
-            default -> {
+            default: {
                 return Optional.empty();
             }
         }

@@ -122,7 +122,8 @@ public class KuaishouLiveChatClient extends BaseNettyClient<
         if (!checkCanSendDanmu()) {
             return;
         }
-        if (danmu instanceof String msg) {
+        if (danmu instanceof String) {
+            String msg = (String) danmu;
             try {
                 if (log.isDebugEnabled()) {
                     log.debug("{} kuaishou发送弹幕 {}", getConfig().getRoomId(), danmu);

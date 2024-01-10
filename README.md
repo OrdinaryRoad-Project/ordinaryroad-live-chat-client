@@ -60,7 +60,7 @@ Live room WebSocket chat client
 
 ## 1 安装
 
-> JDK ≥ 17
+> JDK ≥ 8
 
 ### B站
 

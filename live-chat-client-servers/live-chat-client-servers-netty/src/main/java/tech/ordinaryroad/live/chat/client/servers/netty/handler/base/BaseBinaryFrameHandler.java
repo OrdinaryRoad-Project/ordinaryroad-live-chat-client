@@ -38,7 +38,6 @@ import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Consumer;
 
 
@@ -91,7 +90,8 @@ public abstract class BaseBinaryFrameHandler<
         }
         for (Msg msg : msgList) {
             this.onMsg((T) BaseBinaryFrameHandler.this, msg);
-            if (msg instanceof ICmdMsg<?> cmdMsg) {
+            if (msg instanceof ICmdMsg<?>) {
+                ICmdMsg<?> cmdMsg = (ICmdMsg<?>) msg;
                 Enum<?> cmdEnum = cmdMsg.getCmdEnum();
                 if (cmdEnum == null) {
                     this.onUnknownCmd((T) BaseBinaryFrameHandler.this, cmdMsg.getCmd(), cmdMsg);
@@ -99,7 +99,8 @@ public abstract class BaseBinaryFrameHandler<
                     this.onCmdMsg((T) BaseBinaryFrameHandler.this, (CmdEnum) cmdEnum, (ICmdMsg<CmdEnum>) cmdMsg);
                 }
             }
-            if (msg instanceof BaseCmdMsg<?> cmdMsg) {
+            if (msg instanceof BaseCmdMsg<?>) {
+                BaseCmdMsg<?> cmdMsg = (BaseCmdMsg<?>) msg;
                 Enum<?> cmdEnum = cmdMsg.getCmdEnum();
                 if (cmdEnum == null) {
                     this.onUnknownCmd((T) BaseBinaryFrameHandler.this, cmdMsg.getCmd(), cmdMsg);
@@ -167,12 +168,15 @@ public abstract class BaseBinaryFrameHandler<
     }
 
     public String getRoomIdAsString() {
-        return Objects.requireNonNullElse(this.roomId, "").toString();
+        if (this.roomId == null) {
+            return "";
+        }
+        return this.roomId.toString();
     }
 
     public long getRoomIdAsLong() {
         String roomIdAsString = this.getRoomIdAsString();
-        if (roomIdAsString.isBlank()) {
+        if (roomIdAsString.trim().isEmpty()) {
             return 0L;
         }
         return Long.parseLong(roomIdAsString);

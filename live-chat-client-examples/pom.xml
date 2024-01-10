@@ -32,9 +32,7 @@
     <packaging>pom</packaging>
     <name>live-chat-client-examples</name>
     <description>live-chat-client-examples</description>
-    <properties>
-        <java.version>17</java.version>
-    </properties>
+
     <modules>
         <module>client-example</module>
         <module>handler-example</module>

@@ -64,15 +64,15 @@ class DouyuCodecUtilTest {
 
     @Test
     void toDouyuSttStringTest() {
-        String douyuSttString = DouyuCodecUtil.toDouyuSttString(new HashMap<>() {{
+        String douyuSttString = DouyuCodecUtil.toDouyuSttString(new HashMap<String, Object>() {{
             put("key1", "value1");
             put("key2", 2);
-            put("key3", new ArrayList<>() {{
-                add(new HashMap<>() {{
+            put("key3", new ArrayList<Map<String, Object>>() {{
+                add(new HashMap<String, Object>() {{
                     put("11", 11);
                     put("12", 12);
                 }});
-                add(new HashMap<>() {{
+                add(new HashMap<String, Object>() {{
                     put("21", 21);
                     put("22", 22);
                 }});

@@ -94,7 +94,8 @@ public abstract class BaseDouyuLiveChatClient extends BaseNettyClient<
         if (!checkCanSendDanmu()) {
             return;
         }
-        if (mode == DouyuClientModeEnum.WS && danmu instanceof String msg) {
+        if (mode == DouyuClientModeEnum.WS && danmu instanceof String) {
+            String msg = (String) danmu;
             if (log.isDebugEnabled()) {
                 log.debug("{} douyu发送弹幕 {}", getConfig().getRoomId(), danmu);
             }
