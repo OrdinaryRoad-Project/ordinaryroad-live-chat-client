@@ -28,7 +28,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>tech.ordinaryroad</groupId>
     <artifactId>live-chat-client-examples</artifactId>
-    <version>0.0.17-SNAPSHOT</version>
+    <version>0.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>live-chat-client-examples</name>
     <description>live-chat-client-examples</description>
