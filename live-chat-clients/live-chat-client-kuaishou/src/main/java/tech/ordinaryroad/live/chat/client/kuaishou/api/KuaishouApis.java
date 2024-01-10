@@ -165,9 +165,17 @@ public class KuaishouApis {
                 if (result != 1) {
                     String message = "";
                     switch (result) {
-                        case 2 -> message = "请求过快，请稍后重试";
-                        case 400002 -> message = "需要进行验证";
-                        default -> message = "";
+                        case 2: {
+                            message = "请求过快，请稍后重试";
+                            break;
+                        }
+                        case 400002: {
+                            message = "需要进行验证";
+                            break;
+                        }
+                        default: {
+                            message = "";
+                        }
                     }
                     throwExceptionWithTip("接口访问失败：" + message + "，返回结果：" + jsonNode);
                 }

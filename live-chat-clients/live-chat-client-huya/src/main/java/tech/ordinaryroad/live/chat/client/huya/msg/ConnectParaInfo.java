@@ -55,7 +55,7 @@ public class ConnectParaInfo extends TarsStructBase {
     private String sToken = "";
     private String sCookie = "";
     private String sTraceId = "";
-    private Map<String, String> mCustomHeaders = new HashMap<>() {{
+    private Map<String, String> mCustomHeaders = new HashMap<String, String>() {{
         put("", "");
     }};
 
@@ -93,10 +93,10 @@ public class ConnectParaInfo extends TarsStructBase {
         ConnectParaInfo wsConnectParaInfo = new ConnectParaInfo();
 //        wsConnectParaInfo.sGuid = UUID.fastUUID().toString(true);
 
-        wsConnectParaInfo.sUA = "webh5&%s&websocket".formatted(ver);
+        wsConnectParaInfo.sUA = String.format("webh5&%s&websocket", ver);
         wsConnectParaInfo.sAppSrc = appSrc;
         wsConnectParaInfo.sExp = sExp;
-        wsConnectParaInfo.mCustomHeaders = new HashMap<>() {{
+        wsConnectParaInfo.mCustomHeaders = new HashMap<String, String>() {{
             put("HUYA_NET", "0");
             put("HUYA_VSDKUA", wsConnectParaInfo.sUA);
         }};

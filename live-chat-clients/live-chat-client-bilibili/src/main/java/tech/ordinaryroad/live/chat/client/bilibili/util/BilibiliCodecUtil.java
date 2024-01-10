@@ -120,11 +120,11 @@ public class BilibiliCodecUtil {
 
         OperationEnum operationEnum = OperationEnum.getByCode(operationCode);
         if (operationEnum == null) {
-            throw new BaseException("未知operation: %d".formatted(operationCode));
+            throw new BaseException(String.format("未知operation: %d", operationCode));
         }
         if (protoverCode == ProtoverEnum.NORMAL_ZLIB.getCode()) {
             switch (operationEnum) {
-                case SEND_SMS_REPLY -> {
+                case SEND_SMS_REPLY: {
                     // Decompress the bytes
                     Inflater inflater = new Inflater();
                     inflater.reset();
@@ -143,40 +143,40 @@ public class BilibiliCodecUtil {
 
                     return doDecode(Unpooled.wrappedBuffer(byteArrayOutputStream.toByteArray()), pendingByteBuf);
                 }
-                case HEARTBEAT_REPLY -> {
-                    BigInteger bigInteger = new BigInteger(inputBytes, 0, 4);
-                    return parse(operationEnum, "{\"popularity\":%d}".formatted(bigInteger));
+                case HEARTBEAT_REPLY: {
+                    BigInteger bigInteger = new BigInteger(inputBytes);
+                    return parse(operationEnum, String.format("{\"popularity\":%d}", bigInteger));
                 }
-                default -> {
+                default: {
                     String s = new String(inputBytes, StandardCharsets.UTF_8);
                     return parse(operationEnum, s);
                 }
             }
         } else if (protoverCode == ProtoverEnum.NORMAL_NO_COMPRESSION.getCode()) {
             switch (operationEnum) {
-                case HEARTBEAT_REPLY -> {
-                    BigInteger bigInteger = new BigInteger(inputBytes, 0, 4);
-                    return parse(operationEnum, "{\"popularity\":%d}".formatted(bigInteger));
+                case HEARTBEAT_REPLY: {
+                    BigInteger bigInteger = new BigInteger(inputBytes);
+                    return parse(operationEnum, String.format("{\"popularity\":%d}", bigInteger));
                 }
-                default -> {
+                default: {
                     String s = new String(inputBytes, StandardCharsets.UTF_8);
                     return parse(operationEnum, s);
                 }
             }
         } else if (protoverCode == ProtoverEnum.HEARTBEAT_AUTH_NO_COMPRESSION.getCode()) {
             switch (operationEnum) {
-                case HEARTBEAT_REPLY -> {
-                    BigInteger bigInteger = new BigInteger(inputBytes, 0, 4);
-                    return parse(operationEnum, "{\"popularity\":%d}".formatted(bigInteger));
+                case HEARTBEAT_REPLY: {
+                    BigInteger bigInteger = new BigInteger(inputBytes);
+                    return parse(operationEnum, String.format("{\"popularity\":%d}", bigInteger));
                 }
-                default -> {
+                default: {
                     String s = new String(inputBytes, StandardCharsets.UTF_8);
                     return parse(operationEnum, s);
                 }
             }
         } else if (protoverCode == ProtoverEnum.NORMAL_BROTLI.getCode()) {
             switch (operationEnum) {
-                case SEND_SMS_REPLY -> {
+                case SEND_SMS_REPLY: {
                     // Load the native library
                     Brotli4jLoader.ensureAvailability();
 
@@ -207,11 +207,11 @@ public class BilibiliCodecUtil {
                     }
                     return doDecode(wrappedBuffer, pendingByteBuf);
                 }
-                case HEARTBEAT_REPLY -> {
-                    BigInteger bigInteger = new BigInteger(inputBytes, 0, 4);
-                    return parse(operationEnum, "{\"popularity\":%d}".formatted(bigInteger));
+                case HEARTBEAT_REPLY: {
+                    BigInteger bigInteger = new BigInteger(inputBytes);
+                    return parse(operationEnum, String.format("{\"popularity\":%d}", bigInteger));
                 }
-                default -> {
+                default: {
                     String s = new String(inputBytes, StandardCharsets.UTF_8);
                     return parse(operationEnum, s);
                 }
@@ -226,28 +226,28 @@ public class BilibiliCodecUtil {
 
     public static Optional<IBilibiliMsg> parse(OperationEnum operation, String jsonString) {
         switch (operation) {
-            case SEND_SMS_REPLY -> {
+            case SEND_SMS_REPLY: {
                 try {
                     return Optional.ofNullable(BaseBilibiliMsg.OBJECT_MAPPER.readValue(jsonString, SendSmsReplyMsg.class));
                 } catch (JsonProcessingException e) {
                     throw new BaseException(e);
                 }
             }
-            case AUTH_REPLY -> {
+            case AUTH_REPLY: {
                 try {
                     return Optional.ofNullable(BaseBilibiliMsg.OBJECT_MAPPER.readValue(jsonString, AuthReplyMsg.class));
                 } catch (JsonProcessingException e) {
                     throw new BaseException(e);
                 }
             }
-            case HEARTBEAT_REPLY -> {
+            case HEARTBEAT_REPLY: {
                 try {
                     return Optional.ofNullable(BaseBilibiliMsg.OBJECT_MAPPER.readValue(jsonString, HeartbeatReplyMsg.class));
                 } catch (JsonProcessingException e) {
                     throw new BaseException(e);
                 }
             }
-            default -> {
+            default: {
                 if (log.isWarnEnabled()) {
                     log.warn("暂不支持 {}", operation);
                 }

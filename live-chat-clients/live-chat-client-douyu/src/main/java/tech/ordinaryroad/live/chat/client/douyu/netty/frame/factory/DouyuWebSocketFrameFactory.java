@@ -122,7 +122,7 @@ public class DouyuWebSocketFrameFactory {
                 }
             }
         } catch (Exception e) {
-            throw new BaseException("认证包创建失败，请检查房间号是否正确。roomId: %d, msg: %s".formatted(roomId, e.getMessage()));
+            throw new BaseException(String.format("认证包创建失败，请检查房间号是否正确。roomId: %d, msg: %s", roomId, e.getMessage()));
         }
     }
 

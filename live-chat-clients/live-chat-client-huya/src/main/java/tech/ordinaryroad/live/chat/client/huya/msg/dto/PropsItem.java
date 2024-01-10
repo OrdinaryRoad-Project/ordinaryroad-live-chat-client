@@ -60,16 +60,16 @@ public class PropsItem extends TarsStructBase {
     private int iPropsPopular = 0;
     private int iPropsExpendNum = -1;
     private int iPropsFansValue = -1;
-    private List<Integer> vPropsNum = new ArrayList<>() {{
+    private List<Integer> vPropsNum = new ArrayList<Integer>() {{
         add(-1);
     }};
     private int iPropsMaxNum = 0;
     private int iPropsBatterFlag = 0;
-    private List<Integer> vPropsChannel = new ArrayList<>() {{
+    private List<Integer> vPropsChannel = new ArrayList<Integer>() {{
         add(-1);
     }};
     private String sPropsToolTip = "";
-    private List<PropsIdentity> vPropsIdentity = new ArrayList<>() {{
+    private List<PropsIdentity> vPropsIdentity = new ArrayList<PropsIdentity>() {{
         add(new PropsIdentity());
     }};
     private int iPropsWeights = 0;
@@ -88,10 +88,10 @@ public class PropsItem extends TarsStructBase {
     private String sIphoneLogo = "";
     private String sPropsCommBannerResourceEx = "";
     private String sPropsOwnBannerResourceEx = "";
-    private List<Long> vPresenterUid = new ArrayList<>() {{
+    private List<Long> vPresenterUid = new ArrayList<Long>() {{
         add(-1L);
     }};
-    private List<PropView> vPropView = new ArrayList<>() {{
+    private List<PropView> vPropView = new ArrayList<PropView>() {{
         add(new PropView());
     }};
     private short iFaceUSwitch = 0;

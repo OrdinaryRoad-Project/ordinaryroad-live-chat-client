@@ -177,7 +177,8 @@ public class DouyuCodecUtil {
                         .append(END);
             }
         } else {
-            if (object instanceof Iterable<?> iterable) {
+            if (object instanceof Iterable<?>) {
+                Iterable<?> iterable = (Iterable<?>) object;
                 StringBuffer iterableStringBuffer = new StringBuffer();
                 for (Object o : iterable) {
                     String douyuSttString = toDouyuSttString(o, containProperties);
@@ -186,7 +187,8 @@ public class DouyuCodecUtil {
                             .append(END);
                 }
                 sb.append((iterableStringBuffer.toString()));
-            } else if (object instanceof Map<?, ?> map) {
+            } else if (object instanceof Map<?, ?>) {
+                Map<?, ?> map = (Map<?, ?>) object;
                 StringBuffer mapStringBuffer = new StringBuffer();
                 map.forEach((mapKey, mapValue) -> {
                     mapStringBuffer.append(escape(StrUtil.toStringOrNull(mapKey)))
@@ -234,7 +236,8 @@ public class DouyuCodecUtil {
         });
 
         // 礼物消息设置礼物信息字段
-        if (t instanceof DgbMsg msg) {
+        if (t instanceof DgbMsg) {
+            DgbMsg msg = (DgbMsg) t;
             String pid = msg.getPid();
             // 通用礼物
             if (StrUtil.isNotBlank(pid)) {

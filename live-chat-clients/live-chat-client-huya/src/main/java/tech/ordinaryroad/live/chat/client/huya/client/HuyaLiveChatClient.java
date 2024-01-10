@@ -108,7 +108,8 @@ public class HuyaLiveChatClient extends BaseNettyClient<
             return;
         }
 
-        if (danmu instanceof String msg) {
+        if (danmu instanceof String) {
+            String msg = (String) danmu;
             if (log.isDebugEnabled()) {
                 log.debug("{} huya发送弹幕 {}", getConfig().getRoomId(), danmu);
             }

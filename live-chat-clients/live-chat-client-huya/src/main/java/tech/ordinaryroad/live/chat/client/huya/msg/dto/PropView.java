@@ -47,7 +47,7 @@ public class PropView extends TarsStructBase {
 
     private int id = 0;
     private String name = "";
-    private Map<Long, Short> uids = new HashMap<>() {{
+    private Map<Long, Short> uids = new HashMap<Long, Short>() {{
         put(-1L, (short) -1);
     }};
     private String tips = "";

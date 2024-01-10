@@ -81,11 +81,12 @@ public class BilibiliWebSocketFrameFactory {
             authMsg.setUid(NumberUtil.parseLong(uid));
             return new AuthWebSocketFrame(BilibiliCodecUtil.encode(authMsg));
         } catch (Exception e) {
-            throw new BaseException("认证包创建失败，请检查房间号是否正确。roomId: %d, msg: %s".formatted(roomId, e.getMessage()));
+            throw new BaseException(String.format("认证包创建失败，请检查房间号是否正确。roomId: %d, msg: %s", roomId, e.getMessage()));
         }
     }
+
     public AuthWebSocketFrame createAuth(ProtoverEnum protover) {
-        return this.createAuth(protover,null);
+        return this.createAuth(protover, null);
     }
 
     public HeartbeatWebSocketFrame createHeartbeat(ProtoverEnum protover) {

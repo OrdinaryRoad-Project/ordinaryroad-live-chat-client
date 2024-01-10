@@ -124,7 +124,7 @@ public abstract class BaseNettyClient
             this.websocketUri = new URI(getWebSocketUriString());
             SslContext sslCtx = SslContextBuilder.forClient().build();
 
-            this.clientConnectionListener = new IBaseConnectionListener<>() {
+            this.clientConnectionListener = new IBaseConnectionListener<ConnectionHandler>() {
                 @Override
                 public void onConnected(ConnectionHandler connectionHandler) {
                     BaseNettyClient.this.onConnected(connectionHandler);

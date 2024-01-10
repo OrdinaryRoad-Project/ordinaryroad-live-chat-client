@@ -46,7 +46,7 @@ import java.util.List;
 @NoArgsConstructor
 public class GetPropsListRsp extends TarsStructBase {
 
-    private List<PropsItem> vPropsItemList = new ArrayList<>() {{
+    private List<PropsItem> vPropsItemList = new ArrayList<PropsItem>() {{
         add(new PropsItem());
     }};
     private String sMd5 = "";

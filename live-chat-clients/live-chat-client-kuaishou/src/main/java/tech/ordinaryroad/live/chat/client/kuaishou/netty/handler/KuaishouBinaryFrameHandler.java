@@ -70,7 +70,7 @@ public class KuaishouBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
         SocketMessageOuterClass.SocketMessage socketMessage = (SocketMessageOuterClass.SocketMessage) cmdMsg;
         ByteString payloadByteString = socketMessage.getPayload();
         switch (socketMessage.getPayloadType()) {
-            case SC_FEED_PUSH -> {
+            case SC_FEED_PUSH: {
                 SCWebFeedPushOuterClass.SCWebFeedPush scWebFeedPush = SCWebFeedPushOuterClass.SCWebFeedPush.parseFrom(payloadByteString);
                 if (scWebFeedPush.getCommentFeedsCount() > 0) {
                     for (WebCommentFeedOuterClass.WebCommentFeed webCommentFeed : scWebFeedPush.getCommentFeedsList()) {
@@ -82,9 +82,11 @@ public class KuaishouBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
                         iteratorMsgListeners(msgListener -> msgListener.onGiftMsg(KuaishouBinaryFrameHandler.this, new KuaishouGiftMsg(webGiftFeed)));
                     }
                 }
+                break;
             }
-            default ->
-                    iteratorMsgListeners(msgListener -> msgListener.onOtherCmdMsg(KuaishouBinaryFrameHandler.this, cmd, socketMessage));
+            default: {
+                iteratorMsgListeners(msgListener -> msgListener.onOtherCmdMsg(KuaishouBinaryFrameHandler.this, cmd, socketMessage));
+            }
         }
     }
 
@@ -96,9 +98,15 @@ public class KuaishouBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
             ByteString payloadByteString = socketMessage.getPayload();
             byte[] payload;
             switch (compressionType) {
-                case NONE -> payload = payloadByteString.toByteArray();
-                case GZIP -> payload = ZipUtil.unGzip(payloadByteString.newInput());
-                default -> {
+                case NONE: {
+                    payload = payloadByteString.toByteArray();
+                    break;
+                }
+                case GZIP: {
+                    payload = ZipUtil.unGzip(payloadByteString.newInput());
+                    break;
+                }
+                default: {
                     if (log.isWarnEnabled()) {
                         log.warn("暂不支持的压缩方式 " + compressionType);
                     }

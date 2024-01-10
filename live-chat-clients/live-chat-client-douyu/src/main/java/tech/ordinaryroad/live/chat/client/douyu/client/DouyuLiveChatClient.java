@@ -136,7 +136,8 @@ public class DouyuLiveChatClient extends DouyuWsLiveChatClient implements IDouyu
     @Override
     public void onMsg(DouyuBinaryFrameHandler binaryFrameHandler, IMsg msg) {
         super.onMsg(binaryFrameHandler, msg);
-        if (msg instanceof MsgrepeaterproxylistMsg msgrepeaterproxylistMsg) {
+        if (msg instanceof MsgrepeaterproxylistMsg) {
+            MsgrepeaterproxylistMsg msgrepeaterproxylistMsg = (MsgrepeaterproxylistMsg) msg;
             List<Map<String, String>> list = msgrepeaterproxylistMsg.getList();
             if (list.isEmpty()) {
                 log.error("弹幕服务器列表为空");
@@ -149,7 +150,7 @@ public class DouyuLiveChatClient extends DouyuWsLiveChatClient implements IDouyu
                 int randomIndex = RandomUtil.randomInt(0, list.size());
                 Map<String, String> randomMap = list.get(randomIndex);
                 DouyuLiveChatClientConfig danmuClientConfig = BeanUtil.toBean(getConfig(), DouyuLiveChatClientConfig.class, CopyOptions.create().ignoreNullValue());
-                danmuClientConfig.setWebsocketUri("wss://%s:%s/".formatted(randomMap.get("ip"), randomMap.get("port")));
+                danmuClientConfig.setWebsocketUri(String.format("wss://%s:%s/", randomMap.get("ip"), randomMap.get("port")));
                 destroyDanmuClient();
                 this.danmuClient = new DouyuDanmuLiveChatClient(danmuClientConfig, new IDouyuMsgListener() {
                     @Override
@@ -226,10 +227,15 @@ public class DouyuLiveChatClient extends DouyuWsLiveChatClient implements IDouyu
                 this.danmuClient.addStatusChangeListener(evt -> {
                     ClientStatusEnums newStatus = (ClientStatusEnums) evt.getNewValue();
                     switch (newStatus) {
-                        case CONNECTED, RECONNECTING, CONNECT_FAILED, DISCONNECTED, CONNECTING -> {
+                        case CONNECTED:
+                        case RECONNECTING:
+                        case CONNECT_FAILED:
+                        case DISCONNECTED:
+                        case CONNECTING: {
                             super.setStatus(newStatus);
+                            break;
                         }
-                        default -> {
+                        default: {
                             // ignore
                         }
                     }

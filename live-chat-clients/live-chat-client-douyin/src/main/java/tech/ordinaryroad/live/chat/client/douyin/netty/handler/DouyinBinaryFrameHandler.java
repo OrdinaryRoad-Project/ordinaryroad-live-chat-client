@@ -87,31 +87,34 @@ public class DouyinBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<
 
         ByteString payload = ((douyin_cmd_msg) cmdMsg).getPayload();
         switch (cmd) {
-            case WebcastChatMessage -> {
+            case WebcastChatMessage: {
                 try {
                     douyin_webcast_chat_message_msg douyinWebcastChatMessageMsg = douyin_webcast_chat_message_msg.parseFrom(payload);
                     iteratorMsgListeners(msgListener -> msgListener.onDanmuMsg(DouyinBinaryFrameHandler.this, new DouyinDanmuMsg(douyinWebcastChatMessageMsg)));
                 } catch (IOException e) {
                     throw new BaseException(e);
                 }
+                break;
             }
-            case WebcastGiftMessage -> {
+            case WebcastGiftMessage: {
                 try {
                     douyin_webcast_gift_message_msg douyinWebcastGiftMessageMsg = douyin_webcast_gift_message_msg.parseFrom(payload);
                     iteratorMsgListeners(msgListener -> msgListener.onGiftMsg(DouyinBinaryFrameHandler.this, new DouyinGiftMsg(douyinWebcastGiftMessageMsg)));
                 } catch (InvalidProtocolBufferException e) {
                     throw new BaseException(e);
                 }
+                break;
             }
-            case WebcastMemberMessage -> {
+            case WebcastMemberMessage: {
                 try {
                     douyin_webcast_member_message_msg douyinWebcastMemberMessageMsg = douyin_webcast_member_message_msg.parseFrom(payload);
                     iteratorMsgListeners(msgListener -> msgListener.onEnterRoomMsg(DouyinBinaryFrameHandler.this, new DouyinEnterRoomMsg(douyinWebcastMemberMessageMsg)));
                 } catch (InvalidProtocolBufferException e) {
                     throw new BaseException(e);
                 }
+                break;
             }
-            default -> {
+            default: {
                 iteratorMsgListeners(msgListener -> msgListener.onOtherCmdMsg(DouyinBinaryFrameHandler.this, cmd, cmdMsg));
             }
         }

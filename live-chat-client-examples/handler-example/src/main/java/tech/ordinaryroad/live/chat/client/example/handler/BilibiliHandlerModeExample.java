@@ -79,7 +79,7 @@ public class BilibiliHandlerModeExample {
         Bootstrap bootstrap = new Bootstrap();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         BilibiliConnectionHandler connectionHandler = null;
-        IBaseConnectionListener<BilibiliConnectionHandler> connectionListener = new IBaseConnectionListener<>() {
+        IBaseConnectionListener<BilibiliConnectionHandler> connectionListener = new IBaseConnectionListener<BilibiliConnectionHandler>() {
 
             @Override
             public void onConnected(BilibiliConnectionHandler connectionHandler) {

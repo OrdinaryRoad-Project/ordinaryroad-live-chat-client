@@ -69,15 +69,16 @@ public class BilibiliBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
 
         SendSmsReplyMsg sendSmsReplyMsg = (SendSmsReplyMsg) cmdMsg;
         switch (cmd) {
-            case DANMU_MSG -> {
+            case DANMU_MSG: {
                 DanmuMsgMsg danmuMsgMsg = new DanmuMsgMsg();
                 danmuMsgMsg.setProtover(sendSmsReplyMsg.getProtover());
                 danmuMsgMsg.setInfo(sendSmsReplyMsg.getInfo());
                 danmuMsgMsg.setDm_v2(StrUtil.toStringOrNull(sendSmsReplyMsg.getUnknownProperties().get("dm_v2")));
                 iteratorMsgListeners(msgListener -> msgListener.onDanmuMsg(BilibiliBinaryFrameHandler.this, danmuMsgMsg));
+                break;
             }
 
-            case SEND_GIFT -> {
+            case SEND_GIFT: {
                 SendGiftMsg sendGiftMsg = new SendGiftMsg();
                 sendGiftMsg.setRoomId(getRoomIdAsLong());
                 sendGiftMsg.setProtover(sendSmsReplyMsg.getProtover());
@@ -87,18 +88,20 @@ public class BilibiliBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
                     msgListener.onGiftMsg(BilibiliBinaryFrameHandler.this, sendGiftMsg);
                     msgListener.onSendGift(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg);
                 });
+                break;
             }
 
-            case SUPER_CHAT_MESSAGE -> {
+            case SUPER_CHAT_MESSAGE: {
                 SuperChatMessageMsg superChatMessageMsg = new SuperChatMessageMsg();
                 superChatMessageMsg.setProtover(sendSmsReplyMsg.getProtover());
                 superChatMessageMsg.setRoomid(sendSmsReplyMsg.getRoomid());
                 SuperChatMessageMsg.Data data = BaseBilibiliMsg.OBJECT_MAPPER.treeToValue(sendSmsReplyMsg.getData(), SuperChatMessageMsg.Data.class);
                 superChatMessageMsg.setData(data);
                 iteratorMsgListeners(msgListener -> msgListener.onSuperChatMsg(BilibiliBinaryFrameHandler.this, superChatMessageMsg));
+                break;
             }
 
-            case INTERACT_WORD -> {
+            case INTERACT_WORD: {
                 InteractWordMsg interactWordMsg = new InteractWordMsg();
                 interactWordMsg.setProtover(sendSmsReplyMsg.getProtover());
                 InteractWordMsg.Data data = BaseBilibiliMsg.OBJECT_MAPPER.treeToValue(sendSmsReplyMsg.getData(), InteractWordMsg.Data.class);
@@ -107,22 +110,32 @@ public class BilibiliBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
                     msgListener.onEnterRoomMsg(BilibiliBinaryFrameHandler.this, interactWordMsg);
                     msgListener.onEnterRoom(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg);
                 });
+                break;
             }
 
-            case ENTRY_EFFECT ->
-                    iteratorMsgListeners(msgListener -> msgListener.onEntryEffect(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg));
+            case ENTRY_EFFECT: {
+                iteratorMsgListeners(msgListener -> msgListener.onEntryEffect(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg));
+                break;
+            }
 
-            case WATCHED_CHANGE ->
-                    iteratorMsgListeners(msgListener -> msgListener.onWatchedChange(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg));
+            case WATCHED_CHANGE: {
+                iteratorMsgListeners(msgListener -> msgListener.onWatchedChange(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg));
+                break;
+            }
 
-            case LIKE_INFO_V3_CLICK ->
-                    iteratorMsgListeners(msgListener -> msgListener.onClickLike(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg));
+            case LIKE_INFO_V3_CLICK: {
+                iteratorMsgListeners(msgListener -> msgListener.onClickLike(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg));
+                break;
+            }
 
-            case LIKE_INFO_V3_UPDATE ->
-                    iteratorMsgListeners(msgListener -> msgListener.onClickUpdate(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg));
+            case LIKE_INFO_V3_UPDATE: {
+                iteratorMsgListeners(msgListener -> msgListener.onClickUpdate(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg));
+                break;
+            }
 
-            default ->
-                    iteratorMsgListeners(msgListener -> msgListener.onOtherCmdMsg(BilibiliBinaryFrameHandler.this, cmd, cmdMsg));
+            default: {
+                iteratorMsgListeners(msgListener -> msgListener.onOtherCmdMsg(BilibiliBinaryFrameHandler.this, cmd, cmdMsg));
+            }
         }
     }
 

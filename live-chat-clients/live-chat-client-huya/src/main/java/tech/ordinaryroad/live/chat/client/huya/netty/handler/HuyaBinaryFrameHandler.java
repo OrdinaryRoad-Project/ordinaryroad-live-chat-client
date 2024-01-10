@@ -119,19 +119,21 @@ public class HuyaBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<Hu
             }
 
             switch (wupFunctionEnum) {
-                case doLaunch -> {
+                case doLaunch: {
 //                    LiveLaunchRsp liveLaunchRsp = new LiveLaunchRsp();
 //                    liveLaunchRsp = wupRsp.getUniAttribute().getByClass("tRsp", liveLaunchRsp);
                     channelHandlerContext.writeAndFlush(HuyaWebSocketFrameFactory.getInstance(getRoomId()).createRegisterGroupReq());
+                    break;
                 }
-                case getPropsList -> {
+                case getPropsList: {
                     GetPropsListRsp getPropsListRsp = new GetPropsListRsp();
                     getPropsListRsp = wupRsp.getUniAttribute().getByClass("tRsp", getPropsListRsp);
                     for (PropsItem propsItem : getPropsListRsp.getVPropsItemList()) {
                         HuyaApis.GIFT_ITEMS.put(propsItem.getIPropsId(), propsItem);
                     }
+                    break;
                 }
-                default -> {
+                default: {
                     if (log.isDebugEnabled()) {
                         log.debug("暂不支持 function {}", wupFunctionEnum);
                     }
@@ -149,9 +151,11 @@ public class HuyaBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<Hu
         }
 
         byte[] dataBytes;
-        if (cmdMsg instanceof PushMessage pushMessage) {
+        if (cmdMsg instanceof PushMessage) {
+            PushMessage pushMessage = (PushMessage) cmdMsg;
             dataBytes = pushMessage.getDataBytes();
-        } else if (cmdMsg instanceof MsgItem msgItem) {
+        } else if (cmdMsg instanceof MsgItem) {
+            MsgItem msgItem = (MsgItem) cmdMsg;
             dataBytes = msgItem.getSMsg();
         } else {
             if (log.isDebugEnabled()) {
@@ -162,20 +166,23 @@ public class HuyaBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<Hu
         TarsInputStream tarsInputStream = HuyaCodecUtil.newUtf8TarsInputStream(dataBytes);
 
         switch (cmd) {
-            case MessageNotice -> {
+            case MessageNotice: {
                 MessageNoticeMsg messageNoticeMsg = new MessageNoticeMsg(tarsInputStream);
                 iteratorMsgListeners(msgListener -> msgListener.onDanmuMsg(HuyaBinaryFrameHandler.this, messageNoticeMsg));
+                break;
             }
-            case SendItemSubBroadcastPacket -> {
+            case SendItemSubBroadcastPacket: {
                 SendItemSubBroadcastPacketMsg sendItemSubBroadcastPacketMsg = new SendItemSubBroadcastPacketMsg(tarsInputStream);
                 sendItemSubBroadcastPacketMsg.setPropsItem(HuyaApis.GIFT_ITEMS.getOrDefault(sendItemSubBroadcastPacketMsg.getIItemType(), PropsItem.DEFAULT));
                 iteratorMsgListeners(msgListener -> msgListener.onGiftMsg(HuyaBinaryFrameHandler.this, sendItemSubBroadcastPacketMsg));
+                break;
             }
-            case VipEnterBanner -> {
+            case VipEnterBanner: {
                 VipEnterBannerMsg vipEnterBannerMsg = new VipEnterBannerMsg(tarsInputStream);
                 iteratorMsgListeners(msgListener -> msgListener.onEnterRoomMsg(HuyaBinaryFrameHandler.this, vipEnterBannerMsg));
+                break;
             }
-            default -> {
+            default: {
                 iteratorMsgListeners(msgListener -> msgListener.onOtherCmdMsg(HuyaBinaryFrameHandler.this, cmd, cmdMsg));
             }
         }

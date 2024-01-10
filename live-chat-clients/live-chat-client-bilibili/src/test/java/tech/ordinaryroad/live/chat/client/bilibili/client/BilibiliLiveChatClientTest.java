@@ -24,7 +24,6 @@
 
 package tech.ordinaryroad.live.chat.client.bilibili.client;
 
-import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -54,6 +53,7 @@ class BilibiliLiveChatClientTest {
                 // TODO 浏览器Cookie
                 .cookie(cookie)
                 .roomId(7777)
+                .roomId(697)
                 .build();
 
         client = new BilibiliLiveChatClient(config, new IBilibiliMsgListener() {
@@ -125,13 +125,15 @@ class BilibiliLiveChatClientTest {
             public void onOtherCmdMsg(BilibiliCmdEnum cmd, ICmdMsg<BilibiliCmdEnum> cmdMsg) {
 //                log.debug("收到其他CMD消息 {}", cmd);
                 switch (cmd) {
-                    case GUARD_BUY -> {
+                    case GUARD_BUY: {
                         // 有人上舰
                         SendSmsReplyMsg sendSmsReplyMsg = (SendSmsReplyMsg) cmdMsg;
+                        break;
                     }
-                    case SUPER_CHAT_MESSAGE_DELETE -> {
+                    case SUPER_CHAT_MESSAGE_DELETE: {
                         // 删除醒目留言
                         SendSmsReplyMsg sendSmsReplyMsg = (SendSmsReplyMsg) cmdMsg;
+                        break;
                     }
                 }
             }
