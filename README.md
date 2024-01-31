@@ -15,6 +15,7 @@
     - [x] 支持 cookie
     - [x] 支持 短房间id
     - [x] 支持 弹幕发送
+    - [x] 支持 为主播点赞
 - [x] 斗鱼
     - [x] DouyuLiveChatClient
     - [x] 支持 cookie
@@ -29,12 +30,14 @@
     - [x] DouyinLiveChatClient
     - [ ] 支持 cookie
     - [x] 支持 短房间id（支持字符串房间号）
-    - [ ] 支持 弹幕发送（暂未搞懂签名算法）
+    - [ ] 支持 弹幕发送（未搞懂签名算法）
+    - [ ] 支持 为主播点赞（未搞懂签名算法）
 - [x] 快手
     - [x] KuaishouLiveChatClient
     - [x] 支持 cookie
     - [x] 支持 短房间id（支持字符串房间号）
     - [x] 支持 弹幕发送
+    - [x] 支持 为主播点赞
 
 ---
 
@@ -239,6 +242,8 @@ public class ClientModeExample {
                 - onSuperChatMsg：收到醒目留言
             - IEnterRoomMsgListener（B站、斗鱼、抖音，虎牙只能接收到高级用户的入房回调）
                 - onEnterRoomMsg：进入房间消息回调
+            - ILikeMsgListener（B站、抖音、快手）
+                - onLikeMsg：为主播点赞消息回调
     - commons-client
         - 定义了Client的配置：连接地址、房间id、Cookie、心跳、自动重连等相关参数
         - 定义了Client的一些方法：初始化、销毁、连接、断开、添加消息回调、移除消息回调、发送弹幕等
