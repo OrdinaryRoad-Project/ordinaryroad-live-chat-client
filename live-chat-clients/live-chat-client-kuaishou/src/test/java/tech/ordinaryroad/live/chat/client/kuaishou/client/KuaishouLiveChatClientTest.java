@@ -21,8 +21,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author mjz
@@ -139,6 +137,7 @@ class KuaishouLiveChatClientTest {
                 .roomId("K6866676")
                 .roomId("xinsang_")
                 .roomId("lollaopu")
+                .roomId("YTC2844073618")
                 .build();
 
         client = new KuaishouLiveChatClient(config, new IKuaishouMsgListener() {
@@ -186,18 +185,9 @@ class KuaishouLiveChatClientTest {
                     ThreadUtil.sleep(10000);
                     client.sendDanmu("6666a", () -> {
                         log.warn("弹幕发送成功");
-
-                        AtomicInteger max = new AtomicInteger(10);
-                        ThreadUtil.createScheduledExecutor(2)
-                                .scheduleAtFixedRate(() -> {
-                                    if (max.get() <= 0) {
-                                        return;
-                                    }
-                                    client.clickLike(() -> {
-                                        log.warn("为直播间点赞成功");
-                                        max.getAndDecrement();
-                                    });
-                                }, 0, (long) (150 + 100 * Math.random()), TimeUnit.MILLISECONDS);
+                        client.clickLike(13, () -> {
+                            log.warn("为直播间点赞成功");
+                        });
                     });
                 });
             }
