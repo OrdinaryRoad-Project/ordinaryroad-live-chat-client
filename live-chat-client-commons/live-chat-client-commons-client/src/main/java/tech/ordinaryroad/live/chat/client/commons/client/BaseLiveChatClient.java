@@ -107,6 +107,21 @@ public abstract class BaseLiveChatClient<
         this.sendDanmu(danmu, null, failed);
     }
 
+    @Override
+    public void clickLike() {
+        this.clickLike(null, null);
+    }
+
+    @Override
+    public void clickLike(Runnable success) {
+        this.clickLike(success, null);
+    }
+
+    @Override
+    public void clickLike(Consumer<Throwable> failed) {
+        this.clickLike(null, failed);
+    }
+
     protected abstract void tryReconnect();
 
     protected abstract String getWebSocketUriString();
