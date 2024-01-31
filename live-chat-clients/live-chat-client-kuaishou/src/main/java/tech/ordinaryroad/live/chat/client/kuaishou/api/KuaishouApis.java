@@ -142,12 +142,12 @@ public class KuaishouApis {
     }
 
     @SneakyThrows
-    public static JsonNode clickLike(String cookie, Object roomId, String liveStreamId) {
+    public static JsonNode clickLike(String cookie, Object roomId, String liveStreamId, int count) {
         @Cleanup
         HttpResponse response = createPostRequest("https://live.kuaishou.com/live_api/liveroom/like", cookie)
                 .body(OBJECT_MAPPER.createObjectNode()
                         .put("liveStreamId", liveStreamId)
-                        .put("count", 1)
+                        .put("count", count)
                         .toString(), ContentType.JSON.getValue()
                 )
                 .header(Header.ORIGIN, "https://live.kuaishou.com")

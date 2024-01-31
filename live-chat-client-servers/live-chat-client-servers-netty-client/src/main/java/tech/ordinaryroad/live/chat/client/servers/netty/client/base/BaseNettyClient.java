@@ -307,7 +307,7 @@ public abstract class BaseNettyClient
     }
 
     @Override
-    public void clickLike(Runnable success, Consumer<Throwable> failed) {
+    public void clickLike(int count, Runnable success, Consumer<Throwable> failed) {
         throw new BaseException("暂未支持该功能");
     }
 

@@ -108,18 +108,18 @@ public abstract class BaseLiveChatClient<
     }
 
     @Override
-    public void clickLike() {
-        this.clickLike(null, null);
+    public void clickLike(int count) {
+        this.clickLike(count, null, null);
     }
 
     @Override
-    public void clickLike(Runnable success) {
-        this.clickLike(success, null);
+    public void clickLike(int count, Runnable success) {
+        this.clickLike(count, success, null);
     }
 
     @Override
-    public void clickLike(Consumer<Throwable> failed) {
-        this.clickLike(null, failed);
+    public void clickLike(int count, Consumer<Throwable> failed) {
+        this.clickLike(count, null, failed);
     }
 
     protected abstract void tryReconnect();

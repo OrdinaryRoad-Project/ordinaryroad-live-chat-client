@@ -109,27 +109,27 @@ public interface IBaseLiveChatClient<MsgListener extends IBaseMsgListener<?, ?>>
      *
      * @since 0.2.0
      */
-    void clickLike();
+    void clickLike(int count);
 
     /**
      * 为直播间点赞
      *
      * @since 0.2.0
      */
-    void clickLike(Runnable success, Consumer<Throwable> failed);
+    void clickLike(int count, Runnable success, Consumer<Throwable> failed);
 
     /**
      * 为直播间点赞
      *
      * @since 0.2.0
      */
-    void clickLike(Runnable success);
+    void clickLike(int count, Runnable success);
 
     /**
      * 为直播间点赞
      *
      * @since 0.2.0
      */
-    void clickLike(Consumer<Throwable> failed);
+    void clickLike(int count, Consumer<Throwable> failed);
 
 }

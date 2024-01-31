@@ -35,6 +35,7 @@ import io.netty.handler.codec.http.websocketx.WebSocketClientHandshakerFactory;
 import io.netty.handler.codec.http.websocketx.WebSocketVersion;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.kuaishou.api.KuaishouApis;
 import tech.ordinaryroad.live.chat.client.kuaishou.config.KuaishouLiveChatClientConfig;
@@ -169,10 +170,14 @@ public class KuaishouLiveChatClient extends BaseNettyClient<
     }
 
     @Override
-    public void clickLike(Runnable success, Consumer<Throwable> failed) {
+    public void clickLike(int count, Runnable success, Consumer<Throwable> failed) {
+        if (count <= 0) {
+            throw new BaseException("点赞次数必须大于0");
+        }
+
         boolean successfullyClicked = false;
         try {
-            JsonNode jsonNode = KuaishouApis.clickLike(getConfig().getCookie(), getConfig().getRoomId(), roomInitResult.getLiveStreamId());
+            JsonNode jsonNode = KuaishouApis.clickLike(getConfig().getCookie(), getConfig().getRoomId(), roomInitResult.getLiveStreamId(), count);
             if (jsonNode.asBoolean()) {
                 successfullyClicked = true;
             }

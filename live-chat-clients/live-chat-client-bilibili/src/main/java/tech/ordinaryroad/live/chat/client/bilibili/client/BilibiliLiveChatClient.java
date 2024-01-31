@@ -38,6 +38,7 @@ import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliMsgListener
 import tech.ordinaryroad.live.chat.client.bilibili.msg.base.IBilibiliMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliConnectionHandler;
+import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
 
@@ -150,6 +151,34 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
             }
         } else {
             super.sendDanmu(danmu, success, failed);
+        }
+    }
+
+    @Override
+    public void clickLike(int count, Runnable success, Consumer<Throwable> failed) {
+        if (count <= 0) {
+            throw new BaseException("点赞次数必须大于0");
+        }
+
+        boolean successfullyClicked = false;
+        try {
+            BilibiliApis.likeReportV3(roomInitResult.getUid(), roomInitResult.getRoom_id(), getConfig().getCookie());
+            successfullyClicked = true;
+        } catch (Exception e) {
+            log.error("Bilibili为直播间点赞失败", e);
+            if (failed != null) {
+                failed.accept(e);
+            }
+        }
+        if (!successfullyClicked) {
+            return;
+        }
+
+        if (log.isDebugEnabled()) {
+            log.debug("Bilibili为直播间点赞成功");
+        }
+        if (success != null) {
+            success.run();
         }
     }
 }

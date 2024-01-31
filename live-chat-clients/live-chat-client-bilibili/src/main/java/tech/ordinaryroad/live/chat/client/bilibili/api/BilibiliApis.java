@@ -165,6 +165,42 @@ public class BilibiliApis {
         sendMsg(request, cookie);
     }
 
+    /**
+     * 为主播点赞
+     *
+     * @param request {@link BilibiliLikeReportV3Request}
+     * @param cookie  Cookie
+     */
+    public static void likeReportV3(BilibiliLikeReportV3Request request, String cookie) {
+        if (StrUtil.isBlank(cookie)) {
+            throw new BaseException("为主播点赞接口cookie不能为空");
+        }
+        Map<String, Object> stringObjectMap = BeanUtil.beanToMap(request);
+        @Cleanup HttpResponse execute = HttpUtil.createPost("https://api.live.bilibili.com/xlive/app-ucenter/v1/like_info_v3/like/likeReportV3")
+                .cookie(cookie)
+                .form(stringObjectMap)
+                .execute();
+        responseInterceptor(execute.body());
+    }
+
+    /**
+     * 为主播点赞
+     *
+     * @param anchor_id  主播Uid {@link RoomInitResult#uid}
+     * @param realRoomId 真实房间Id {@link RoomInitResult#room_id}
+     * @param cookie     Cookie
+     */
+    public static void likeReportV3(long anchor_id, long realRoomId, String cookie) {
+        String uid = OrLiveChatCookieUtil.getCookieByName(cookie, KEY_UID, () -> {
+            throw new BaseException("cookie中缺少参数" + KEY_UID);
+        });
+        String biliJct = OrLiveChatCookieUtil.getCookieByName(cookie, KEY_COOKIE_CSRF, () -> {
+            throw new BaseException("cookie中缺少参数" + KEY_COOKIE_CSRF);
+        });
+        BilibiliLikeReportV3Request request = new BilibiliLikeReportV3Request(realRoomId, uid, anchor_id, biliJct, biliJct);
+        likeReportV3(request, cookie);
+    }
+
     public static HttpRequest createGetRequest(String url, String cookies) {
         return HttpUtil.createGet(url)
                 .cookie(cookies);
