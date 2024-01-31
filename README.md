@@ -22,7 +22,7 @@
     - [x] 支持 短房间id
     - [x] 支持 弹幕发送
 - [x] 虎牙
-    - [x] DouyuLiveChatClient
+    - [x] HuyaLiveChatClient
     - [x] 支持 cookie（发送弹幕时需要）
     - [x] 支持 短房间id（支持字符串房间号，例如`bagea`）
     - [x] 支持 弹幕发送
@@ -166,6 +166,8 @@ public void onOtherCmdMsg(BilibiliCmdEnum cmd, ICmdMsg<BilibiliCmdEnum> cmdMsg) 
 1. 创建配置
 2. 创建Client并传入配置、添加消息回调
 3. 开始监听直播间
+
+> 如果需要查看其他平台的效果，请将`Bilibili`改为其他平台对应的英文
 
 ```java
 public class ClientModeExample {
