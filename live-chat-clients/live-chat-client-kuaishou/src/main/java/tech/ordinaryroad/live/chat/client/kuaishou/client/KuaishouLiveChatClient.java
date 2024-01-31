@@ -27,6 +27,7 @@ package tech.ordinaryroad.live.chat.client.kuaishou.client;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.RandomUtil;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
@@ -164,6 +165,32 @@ public class KuaishouLiveChatClient extends BaseNettyClient<
             }
         } else {
             super.sendDanmu(danmu, success, failed);
+        }
+    }
+
+    @Override
+    public void clickLike(Runnable success, Consumer<Throwable> failed) {
+        boolean successfullyClicked = false;
+        try {
+            JsonNode jsonNode = KuaishouApis.clickLike(getConfig().getCookie(), getConfig().getRoomId(), roomInitResult.getLiveStreamId());
+            if (jsonNode.asBoolean()) {
+                successfullyClicked = true;
+            }
+        } catch (Exception e) {
+            log.error("kuaishou为直播间点赞失败", e);
+            if (failed != null) {
+                failed.accept(e);
+            }
+        }
+        if (!successfullyClicked) {
+            return;
+        }
+
+        if (log.isDebugEnabled()) {
+            log.debug("kuaishou为直播间点赞成功");
+        }
+        if (success != null) {
+            success.run();
         }
     }
 }

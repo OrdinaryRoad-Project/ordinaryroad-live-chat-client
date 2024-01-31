@@ -10,19 +10,19 @@ import tech.ordinaryroad.live.chat.client.kuaishou.config.KuaishouLiveChatClient
 import tech.ordinaryroad.live.chat.client.kuaishou.listener.IKuaishouMsgListener;
 import tech.ordinaryroad.live.chat.client.kuaishou.msg.KuaishouDanmuMsg;
 import tech.ordinaryroad.live.chat.client.kuaishou.msg.KuaishouGiftMsg;
+import tech.ordinaryroad.live.chat.client.kuaishou.msg.KuaishouLikeMsg;
 import tech.ordinaryroad.live.chat.client.kuaishou.netty.handler.KuaishouBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PayloadTypeOuterClass;
 import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author mjz
@@ -55,14 +55,14 @@ class KuaishouLiveChatClientTest {
                 // 祁天道
                 .roomId("t8888888")
                 .roomId("by529529")
-                // 大师1
-                .roomId("3xkz5pb2kx3q4u6")
                 // 大师2
                 .roomId("3x6pb6bcmjrarvs")
                 .roomId("3xbyfeffjhky7b2")
                 // 月神
                 .roomId("YUE99999")
                 .roomId("mengyu980726")
+                // 大师1
+                .roomId("3xkz5pb2kx3q4u6")
                 .build();
 
         client = new KuaishouLiveChatClient(config, new IKuaishouMsgListener() {
@@ -116,6 +116,90 @@ class KuaishouLiveChatClientTest {
                         });
                     });
                 }
+            }
+        });
+
+        client.connect();
+
+        // 防止测试时直接退出
+        while (true) {
+            synchronized (lock) {
+                lock.wait();
+            }
+        }
+    }
+
+    @Test
+    void clickLike() throws Exception {
+        String cookie = System.getenv("cookie");
+//        String cookie ="";
+        log.error("cookie: {}", cookie);
+        KuaishouLiveChatClientConfig config = KuaishouLiveChatClientConfig.builder()
+                .cookie(cookie)
+                .roomId("K6866676")
+                .roomId("xinsang_")
+                .roomId("lollaopu")
+                .build();
+
+        client = new KuaishouLiveChatClient(config, new IKuaishouMsgListener() {
+            @Override
+            public void onMsg(IMsg msg) {
+//                log.debug("收到{}消息 {}", msg.getClass(), msg);
+            }
+
+            @Override
+            public void onCmdMsg(PayloadTypeOuterClass.PayloadType cmd, ICmdMsg<PayloadTypeOuterClass.PayloadType> cmdMsg) {
+//                log.debug("收到CMD消息{} {}", cmd, cmdMsg);
+            }
+
+            @Override
+            public void onOtherCmdMsg(PayloadTypeOuterClass.PayloadType cmd, ICmdMsg<PayloadTypeOuterClass.PayloadType> cmdMsg) {
+//                log.debug("收到其他CMD消息 {}", cmd);
+            }
+
+            @Override
+            public void onUnknownCmd(String cmdString, IMsg msg) {
+//                log.debug("收到未知CMD消息 {}", cmdString);
+            }
+
+            @Override
+            public void onDanmuMsg(KuaishouBinaryFrameHandler binaryFrameHandler, KuaishouDanmuMsg msg) {
+                log.info("{} 收到弹幕 [{}] {}({})：{}", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid(), msg.getContent());
+            }
+
+            @Override
+            public void onGiftMsg(KuaishouBinaryFrameHandler binaryFrameHandler, KuaishouGiftMsg msg) {
+                log.info("{} 收到礼物 [{}] {}({}) {} {}({})x{}({})", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid(), "赠送", msg.getGiftName(), msg.getGiftId(), msg.getGiftCount(), msg.getGiftPrice());
+            }
+
+            @Override
+            public void onLikeMsg(KuaishouBinaryFrameHandler binaryFrameHandler, KuaishouLikeMsg msg) {
+                log.info("{} 收到点赞 [{}] {}({})", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid());
+            }
+        });
+
+        client.addStatusChangeListener(evt -> {
+            ClientStatusEnums newValue = (ClientStatusEnums) evt.getNewValue();
+            if (newValue == ClientStatusEnums.CONNECTED) {
+                // 连接成功10秒后发送弹幕
+                ThreadUtil.execAsync(() -> {
+                    ThreadUtil.sleep(10000);
+                    client.sendDanmu("6666a", () -> {
+                        log.warn("弹幕发送成功");
+
+                        AtomicInteger max = new AtomicInteger(10);
+                        ThreadUtil.createScheduledExecutor(2)
+                                .scheduleAtFixedRate(() -> {
+                                    if (max.get() <= 0) {
+                                        return;
+                                    }
+                                    client.clickLike(() -> {
+                                        log.warn("为直播间点赞成功");
+                                        max.getAndDecrement();
+                                    });
+                                }, 0, (long) (150 + 100 * Math.random()), TimeUnit.MILLISECONDS);
+                    });
+                });
             }
         });
 

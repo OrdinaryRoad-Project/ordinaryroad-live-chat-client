@@ -22,24 +22,40 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.kuaishou.listener;
+package tech.ordinaryroad.live.chat.client.kuaishou.msg;
 
-import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener;
-import tech.ordinaryroad.live.chat.client.commons.base.listener.IDanmuMsgListener;
-import tech.ordinaryroad.live.chat.client.commons.base.listener.IGiftMsgListener;
-import tech.ordinaryroad.live.chat.client.commons.base.listener.ILikeMsgListener;
-import tech.ordinaryroad.live.chat.client.kuaishou.msg.KuaishouDanmuMsg;
-import tech.ordinaryroad.live.chat.client.kuaishou.msg.KuaishouGiftMsg;
-import tech.ordinaryroad.live.chat.client.kuaishou.msg.KuaishouLikeMsg;
-import tech.ordinaryroad.live.chat.client.kuaishou.netty.handler.KuaishouBinaryFrameHandler;
-import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PayloadTypeOuterClass;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import tech.ordinaryroad.live.chat.client.commons.base.msg.ILikeMsg;
+import tech.ordinaryroad.live.chat.client.kuaishou.msg.base.IKuaishouMsg;
+import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass;
 
 /**
  * @author mjz
- * @date 2024/1/5
+ * @date 2024/1/9
  */
-public interface IKuaishouMsgListener extends IBaseMsgListener<KuaishouBinaryFrameHandler, PayloadTypeOuterClass.PayloadType>,
-        IDanmuMsgListener<KuaishouBinaryFrameHandler, KuaishouDanmuMsg>,
-        IGiftMsgListener<KuaishouBinaryFrameHandler, KuaishouGiftMsg>,
-        ILikeMsgListener<KuaishouBinaryFrameHandler, KuaishouLikeMsg> {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class KuaishouLikeMsg implements IKuaishouMsg, ILikeMsg {
+
+    private WebLikeFeedOuterClass.WebLikeFeed msg;
+
+    @Override
+    public String getUid() {
+        return msg.getUser().getPrincipalId();
+    }
+
+    @Override
+    public String getUsername() {
+        return msg.getUser().getUserName();
+    }
+
+    @Override
+    public String getUserAvatar() {
+        return msg.getUser().getHeadUrl();
+    }
 }
