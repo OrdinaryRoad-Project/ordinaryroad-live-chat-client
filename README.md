@@ -48,7 +48,7 @@ Live room WebSocket chat client
 - Feature 2: 支持自动重连
 - Feature 3: 支持同时监听多个直播间
 - Feature 4: 支持直播间短id
-- Feature 5: 支持弹幕发送
+- Feature 5: 支持弹幕发送、为主播点赞
 - Feature 6: 内置收到弹幕、收到礼物、收到醒目留言、用户入房回调
 
 [//]: # ([在线文档]&#40;https://ordinaryroad.tech/or_module/live-chat-client/&#41;)
