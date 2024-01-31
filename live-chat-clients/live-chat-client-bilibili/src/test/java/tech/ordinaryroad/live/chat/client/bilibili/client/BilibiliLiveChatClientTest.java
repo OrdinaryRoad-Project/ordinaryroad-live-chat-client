@@ -81,6 +81,12 @@ class BilibiliLiveChatClientTest {
             }
 
             @Override
+            public void onLikeMsg(BilibiliBinaryFrameHandler binaryFrameHandler, LikeInfoV3ClickMsg msg) {
+                IBilibiliMsgListener.super.onLikeMsg(binaryFrameHandler, msg);
+                log.info("{} 收到点赞 {} {}({})", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid());
+            }
+
+            @Override
             public void onEntryEffect(SendSmsReplyMsg msg) {
                 JsonNode data = msg.getData();
                 String copyWriting = data.get("copy_writing").asText();

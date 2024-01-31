@@ -37,7 +37,8 @@ public interface IBilibiliMsgListener extends IBaseMsgListener<BilibiliBinaryFra
         IDanmuMsgListener<BilibiliBinaryFrameHandler, DanmuMsgMsg>,
         IGiftMsgListener<BilibiliBinaryFrameHandler, SendGiftMsg>,
         ISuperChatMsgListener<BilibiliBinaryFrameHandler, SuperChatMessageMsg>,
-        IEnterRoomMsgListener<BilibiliBinaryFrameHandler, InteractWordMsg> {
+        IEnterRoomMsgListener<BilibiliBinaryFrameHandler, InteractWordMsg>,
+        ILikeMsgListener<BilibiliBinaryFrameHandler, LikeInfoV3ClickMsg> {
 
     /**
      * 收到礼物
@@ -108,11 +109,15 @@ public interface IBilibiliMsgListener extends IBaseMsgListener<BilibiliBinaryFra
      *
      * @param binaryFrameHandler BilibiliBinaryFrameHandler
      * @param msg                SendSmsReplyMsg
+     * @deprecated use {@link ILikeMsgListener#onLikeMsg}
      */
     default void onClickLike(BilibiliBinaryFrameHandler binaryFrameHandler, SendSmsReplyMsg msg) {
         this.onClickLike(msg);
     }
 
+    /**
+     * @deprecated use {@link ILikeMsgListener#onLikeMsg}
+     */
     default void onClickLike(SendSmsReplyMsg msg) {
         // ignore
     }

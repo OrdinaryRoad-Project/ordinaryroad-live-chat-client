@@ -261,6 +261,30 @@ public class InteractWordMsg extends BaseBilibiliMsg implements IEnterRoomMsg {
     }
 
     @lombok.Data
+    public static class Official_info {
+
+        private int role;
+        private String title;
+        private String desc;
+        private int type;
+
+        /**
+         * 未知属性都放在这
+         */
+        private final Map<String, JsonNode> unknownProperties = new HashMap<>();
+
+        @JsonAnyGetter
+        public Map<String, JsonNode> getUnknownProperties() {
+            return unknownProperties;
+        }
+
+        @JsonAnySetter
+        public void setOther(String key, JsonNode value) {
+            this.unknownProperties.put(key, value);
+        }
+    }
+
+    @lombok.Data
     public static class Base {
 
         private String face;
@@ -269,6 +293,63 @@ public class InteractWordMsg extends BaseBilibiliMsg implements IEnterRoomMsg {
         private int name_color;
         private Origin_info origin_info;
         private Risk_ctrl_info risk_ctrl_info;
+        private Official_info official_info;
+
+        /**
+         * 未知属性都放在这
+         */
+        private final Map<String, JsonNode> unknownProperties = new HashMap<>();
+
+        @JsonAnyGetter
+        public Map<String, JsonNode> getUnknownProperties() {
+            return unknownProperties;
+        }
+
+        @JsonAnySetter
+        public void setOther(String key, JsonNode value) {
+            this.unknownProperties.put(key, value);
+        }
+    }
+
+    @lombok.Data
+    public static class Medal {
+
+        private String name;
+        private int level;
+        private long color_start;
+        private long color_end;
+        private long color_border;
+        private long color;
+        private int id;
+        private int typ;
+        private int is_light;
+        private long ruid;
+        private int guard_level;
+        private int score;
+        private String guard_icon;
+        private String honor_icon;
+
+        /**
+         * 未知属性都放在这
+         */
+        private final Map<String, JsonNode> unknownProperties = new HashMap<>();
+
+        @JsonAnyGetter
+        public Map<String, JsonNode> getUnknownProperties() {
+            return unknownProperties;
+        }
+
+        @JsonAnySetter
+        public void setOther(String key, JsonNode value) {
+            this.unknownProperties.put(key, value);
+        }
+    }
+
+    @lombok.Data
+    public static class Guard {
+
+        private int level;
+        private String expired_str;
 
         /**
          * 未知属性都放在这
@@ -290,8 +371,12 @@ public class InteractWordMsg extends BaseBilibiliMsg implements IEnterRoomMsg {
     @lombok.Data
     public static class Uinfo {
 
-        private Base base;
         private long uid;
+        private Base base;
+        private Medal medal;
+        private String wealth;
+        private String title;
+        private Guard guard;
 
         /**
          * 未知属性都放在这
