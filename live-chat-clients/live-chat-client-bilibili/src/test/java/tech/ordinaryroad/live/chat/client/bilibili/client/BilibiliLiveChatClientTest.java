@@ -151,6 +151,18 @@ class BilibiliLiveChatClientTest {
         });
         client.connect();
 
+        client.addStatusChangeListener(evt -> {
+            ClientStatusEnums newValue = (ClientStatusEnums) evt.getNewValue();
+            if (newValue == ClientStatusEnums.CONNECTED) {
+                ThreadUtil.execAsync(() -> {
+                    ThreadUtil.sleep(5000);
+                    client.clickLike(5, () -> {
+                        log.warn("为主播点赞成功");
+                    });
+                });
+            }
+        });
+
         // 防止测试时直接退出
         while (true) {
             synchronized (lock) {
