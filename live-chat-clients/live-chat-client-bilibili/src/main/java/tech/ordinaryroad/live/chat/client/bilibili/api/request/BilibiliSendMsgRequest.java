@@ -57,7 +57,7 @@ public class BilibiliSendMsgRequest {
     /**
      * 房间真实ID
      */
-    private String roomid;
+    private long roomid;
     /**
      * Cookie中的bili_jct
      */
@@ -67,7 +67,7 @@ public class BilibiliSendMsgRequest {
      */
     private String csrf_token;
 
-    public BilibiliSendMsgRequest(String msg, String rnd, String roomid, String csrf, String csrf_token) {
+    public BilibiliSendMsgRequest(String msg, String rnd, long roomid, String csrf, String csrf_token) {
         this.msg = msg;
         this.rnd = rnd;
         this.roomid = roomid;

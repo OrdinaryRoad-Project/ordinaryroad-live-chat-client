@@ -33,9 +33,9 @@ import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Cleanup;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
+import tech.ordinaryroad.live.chat.client.bilibili.api.request.BilibiliLikeReportV3Request;
 import tech.ordinaryroad.live.chat.client.bilibili.api.request.BilibiliSendMsgRequest;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCookieUtil;
@@ -44,6 +44,8 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import static tech.ordinaryroad.live.chat.client.commons.base.msg.BaseMsg.OBJECT_MAPPER;
 
 /**
  * B站API简易版
@@ -55,13 +57,15 @@ import java.util.concurrent.TimeUnit;
 public class BilibiliApis {
 
     public static final TimedCache<Long, String> GIFT_IMG_CACHE = new TimedCache<>(TimeUnit.DAYS.toMillis(1));
-    public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     public static final String KEY_COOKIE_CSRF = "bili_jct";
+    public static final String KEY_UID = "DedeUserID";
 
-    public static JsonNode roomInit(long roomId, String cookie) {
+    @SneakyThrows
+    public static RoomInitResult roomInit(long roomId, String cookie) {
         @Cleanup
         HttpResponse response = createGetRequest("https://api.live.bilibili.com/room/v1/Room/room_init?id=" + roomId, cookie).execute();
-        return responseInterceptor(response.body());
+        JsonNode dataJsonNode = responseInterceptor(response.body());
+        return OBJECT_MAPPER.readValue(dataJsonNode.toString(), RoomInitResult.class);
     }
 
     public static JsonNode roomGiftConfig(long roomId, String cookie) {
@@ -128,6 +132,12 @@ public class BilibiliApis {
         }
     }
 
+    /**
+     * 发送弹幕
+     *
+     * @param request {@link BilibiliSendMsgRequest}
+     * @param cookie  Cookie
+     */
     public static void sendMsg(BilibiliSendMsgRequest request, String cookie) {
         if (StrUtil.isBlank(cookie)) {
             throw new BaseException("发送弹幕接口cookie不能为空");
@@ -140,9 +150,14 @@ public class BilibiliApis {
         responseInterceptor(execute.body());
     }
 
-    public static void sendMsg(String msg, long roomId, String cookie) {
-        JsonNode data = BilibiliApis.roomInit(roomId, cookie);
-        String realRoomId = data.get("room_id").asText();
+    /**
+     * 发送弹幕
+     *
+     * @param msg        内容
+     * @param realRoomId 真实房间id
+     * @param cookie     Cookie
+     */
+    public static void sendMsg(String msg, long realRoomId, String cookie) {
         String biliJct = OrLiveChatCookieUtil.getCookieByName(cookie, KEY_COOKIE_CSRF, () -> {
             throw new BaseException("cookie中缺少参数" + KEY_COOKIE_CSRF);
         });
@@ -168,6 +183,29 @@ public class BilibiliApis {
         } catch (JsonProcessingException e) {
             throw new BaseException(e);
         }
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class RoomInitResult {
+        private long room_id;
+        private int short_id;
+        private long uid;
+        private int need_p2p;
+        private boolean is_hidden;
+        private boolean is_locked;
+        private boolean is_portrait;
+        private int live_status;
+        private int hidden_till;
+        private int lock_till;
+        private boolean encrypted;
+        private boolean pwd_verified;
+        private long live_time;
+        private int room_shield;
+        private int is_sp;
+        private int special_type;
     }
 
 }

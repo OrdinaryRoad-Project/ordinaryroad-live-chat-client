@@ -60,6 +60,8 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
         BilibiliBinaryFrameHandler
         > {
 
+    private BilibiliApis.RoomInitResult roomInitResult = new BilibiliApis.RoomInitResult();
+
     public BilibiliLiveChatClient(BilibiliLiveChatClientConfig config, List<IBilibiliMsgListener> msgListeners, IBilibiliConnectionListener connectionListener, EventLoopGroup workerGroup) {
         super(config, workerGroup, connectionListener);
         addMsgListeners(msgListeners);
@@ -89,6 +91,12 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
     }
 
     @Override
+    public void init() {
+        roomInitResult = BilibiliApis.roomInit(getConfig().getRoomId(), getConfig().getCookie());
+        super.init();
+    }
+
+    @Override
     public BilibiliConnectionHandler initConnectionHandler(IBaseConnectionListener<BilibiliConnectionHandler> clientConnectionListener) {
         return new BilibiliConnectionHandler(
                 WebSocketClientHandshakerFactory.newHandshaker(getWebsocketUri(), WebSocketVersion.V13, null, true, new DefaultHttpHeaders(), getConfig().getMaxFramePayloadLength()),
@@ -115,7 +123,7 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
 
                 boolean sendSuccess = false;
                 try {
-                    BilibiliApis.sendMsg(msg, getConfig().getRoomId(), getConfig().getCookie());
+                    BilibiliApis.sendMsg(msg, roomInitResult.getRoom_id(), getConfig().getCookie());
                     sendSuccess = true;
                 } catch (Exception e) {
                     log.error("bilibili弹幕发送失败", e);
