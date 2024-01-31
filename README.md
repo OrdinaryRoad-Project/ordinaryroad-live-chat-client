@@ -242,7 +242,7 @@ public class ClientModeExample {
                 - onSuperChatMsg：收到醒目留言
             - IEnterRoomMsgListener（B站、斗鱼、抖音，虎牙只能接收到高级用户的入房回调）
                 - onEnterRoomMsg：进入房间消息回调
-            - ILikeMsgListener（B站、抖音、快手）
+            - ILikeMsgListener（B站、快手、抖音支持获取点赞的个数）
                 - onLikeMsg：为主播点赞消息回调
     - commons-client
         - 定义了Client的配置：连接地址、房间id、Cookie、心跳、自动重连等相关参数
