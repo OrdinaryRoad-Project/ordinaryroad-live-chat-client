@@ -22,23 +22,25 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.douyin.listener;
+package tech.ordinaryroad.live.chat.client.commons.base.listener;
 
-import tech.ordinaryroad.live.chat.client.commons.base.listener.*;
-import tech.ordinaryroad.live.chat.client.douyin.constant.DouyinCmdEnum;
-import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinDanmuMsg;
-import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinEnterRoomMsg;
-import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinGiftMsg;
-import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinLikeMsg;
-import tech.ordinaryroad.live.chat.client.douyin.netty.handler.DouyinBinaryFrameHandler;
 
 /**
+ * 点赞消息回调
+ *
  * @author mjz
- * @date 2024/1/2
+ * @since 0.2.0
  */
-public interface IDouyinMsgListener extends IBaseMsgListener<DouyinBinaryFrameHandler, DouyinCmdEnum>,
-        IDanmuMsgListener<DouyinBinaryFrameHandler, DouyinDanmuMsg>,
-        IGiftMsgListener<DouyinBinaryFrameHandler, DouyinGiftMsg>,
-        IEnterRoomMsgListener<DouyinBinaryFrameHandler, DouyinEnterRoomMsg>,
-        ILikeMsgListener<DouyinBinaryFrameHandler, DouyinLikeMsg> {
+public interface ILikeMsgListener<T, LikeMsg> {
+
+    /**
+     * 收到点赞
+     */
+    default void onLikeMsg(T t, LikeMsg msg) {
+        this.onLikeMsg(msg);
+    }
+
+    default void onLikeMsg(LikeMsg msg) {
+        // ignore
+    }
 }

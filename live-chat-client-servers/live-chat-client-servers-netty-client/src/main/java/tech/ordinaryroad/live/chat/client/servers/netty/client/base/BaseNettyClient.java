@@ -306,6 +306,11 @@ public abstract class BaseNettyClient
         throw new BaseException("暂未支持该功能");
     }
 
+    @Override
+    public void clickLike(int count, Runnable success, Consumer<Throwable> failed) {
+        throw new BaseException("暂未支持该功能");
+    }
+
     /**
      * 发送弹幕前判断是否可以发送
      *

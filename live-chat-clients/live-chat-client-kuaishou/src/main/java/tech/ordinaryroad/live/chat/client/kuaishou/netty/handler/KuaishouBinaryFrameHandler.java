@@ -37,6 +37,7 @@ import tech.ordinaryroad.live.chat.client.kuaishou.client.KuaishouLiveChatClient
 import tech.ordinaryroad.live.chat.client.kuaishou.listener.IKuaishouMsgListener;
 import tech.ordinaryroad.live.chat.client.kuaishou.msg.KuaishouDanmuMsg;
 import tech.ordinaryroad.live.chat.client.kuaishou.msg.KuaishouGiftMsg;
+import tech.ordinaryroad.live.chat.client.kuaishou.msg.KuaishouLikeMsg;
 import tech.ordinaryroad.live.chat.client.kuaishou.msg.base.IKuaishouMsg;
 import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.*;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientBinaryFrameHandler;
@@ -80,6 +81,11 @@ public class KuaishouBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
                 if (scWebFeedPush.getGiftFeedsCount() > 0) {
                     for (WebGiftFeedOuterClass.WebGiftFeed webGiftFeed : scWebFeedPush.getGiftFeedsList()) {
                         iteratorMsgListeners(msgListener -> msgListener.onGiftMsg(KuaishouBinaryFrameHandler.this, new KuaishouGiftMsg(webGiftFeed)));
+                    }
+                }
+                if (scWebFeedPush.getLikeFeedsCount() > 0) {
+                    for (WebLikeFeedOuterClass.WebLikeFeed webLikeFeed : scWebFeedPush.getLikeFeedsList()) {
+                        iteratorMsgListeners(msgListener -> msgListener.onLikeMsg(KuaishouBinaryFrameHandler.this, new KuaishouLikeMsg(webLikeFeed)));
                     }
                 }
                 break;

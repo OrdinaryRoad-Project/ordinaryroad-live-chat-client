@@ -22,23 +22,53 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.douyin.listener;
+package tech.ordinaryroad.live.chat.client.bilibili.api.request;
 
-import tech.ordinaryroad.live.chat.client.commons.base.listener.*;
-import tech.ordinaryroad.live.chat.client.douyin.constant.DouyinCmdEnum;
-import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinDanmuMsg;
-import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinEnterRoomMsg;
-import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinGiftMsg;
-import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinLikeMsg;
-import tech.ordinaryroad.live.chat.client.douyin.netty.handler.DouyinBinaryFrameHandler;
+import cn.hutool.core.util.StrUtil;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author mjz
- * @date 2024/1/2
+ * @date 2024/1/31
  */
-public interface IDouyinMsgListener extends IBaseMsgListener<DouyinBinaryFrameHandler, DouyinCmdEnum>,
-        IDanmuMsgListener<DouyinBinaryFrameHandler, DouyinDanmuMsg>,
-        IGiftMsgListener<DouyinBinaryFrameHandler, DouyinGiftMsg>,
-        IEnterRoomMsgListener<DouyinBinaryFrameHandler, DouyinEnterRoomMsg>,
-        ILikeMsgListener<DouyinBinaryFrameHandler, DouyinLikeMsg> {
+@Data
+@NoArgsConstructor
+public class BilibiliLikeReportV3Request {
+    /**
+     * 本次点赞次数
+     */
+    private int click_time = 1;
+    /**
+     * 房间真实ID
+     */
+    private long room_id;
+    /**
+     * Cookie中的DedeUserID
+     */
+    private String uid;
+    /**
+     * RoomInitResult中的uid
+     */
+    private long anchor_id;
+    /**
+     * Cookie中的bili_jct
+     */
+    private String csrf;
+    /**
+     * Cookie中的bili_jct
+     */
+    private String csrf_token;
+    /**
+     * 暂时留空
+     */
+    private String visit_id = StrUtil.EMPTY;
+
+    public BilibiliLikeReportV3Request(long room_id, String uid, long anchor_id, String csrf, String csrf_token) {
+        this.room_id = room_id;
+        this.uid = uid;
+        this.anchor_id = anchor_id;
+        this.csrf = csrf;
+        this.csrf_token = csrf_token;
+    }
 }

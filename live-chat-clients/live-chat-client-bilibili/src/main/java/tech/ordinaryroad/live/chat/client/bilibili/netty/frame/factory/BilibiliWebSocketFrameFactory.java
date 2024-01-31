@@ -74,9 +74,9 @@ public class BilibiliWebSocketFrameFactory {
             Map<String, String> cookieMap = OrLiveChatCookieUtil.parseCookieString(cookie);
             String buvid3 = OrLiveChatCookieUtil.getCookieByName(cookieMap, "buvid3", () -> UUID.randomUUID().toString());
             String uid = OrLiveChatCookieUtil.getCookieByName(cookieMap, "DedeUserID", () -> "0");
-            JsonNode data = BilibiliApis.roomInit(roomId, cookie);
+            BilibiliApis.RoomInitResult data = BilibiliApis.roomInit(roomId, cookie);
             JsonNode danmuInfo = BilibiliApis.getDanmuInfo(roomId, 0, cookie);
-            int realRoomId = data.get("room_id").asInt();
+            long realRoomId = data.getRoom_id();
             AuthMsg authMsg = new AuthMsg(realRoomId, protover.getCode(), buvid3, danmuInfo.get("token").asText());
             authMsg.setUid(NumberUtil.parseLong(uid));
             return new AuthWebSocketFrame(BilibiliCodecUtil.encode(authMsg));

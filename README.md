@@ -15,13 +15,14 @@
     - [x] 支持 cookie
     - [x] 支持 短房间id
     - [x] 支持 弹幕发送
+    - [x] 支持 为主播点赞
 - [x] 斗鱼
     - [x] DouyuLiveChatClient
     - [x] 支持 cookie
     - [x] 支持 短房间id
     - [x] 支持 弹幕发送
 - [x] 虎牙
-    - [x] DouyuLiveChatClient
+    - [x] HuyaLiveChatClient
     - [x] 支持 cookie（发送弹幕时需要）
     - [x] 支持 短房间id（支持字符串房间号，例如`bagea`）
     - [x] 支持 弹幕发送
@@ -29,12 +30,14 @@
     - [x] DouyinLiveChatClient
     - [ ] 支持 cookie
     - [x] 支持 短房间id（支持字符串房间号）
-    - [ ] 支持 弹幕发送（暂未搞懂签名算法）
+    - [ ] 支持 弹幕发送（未搞懂签名算法）
+    - [ ] 支持 为主播点赞（未搞懂签名算法）
 - [x] 快手
     - [x] KuaishouLiveChatClient
     - [x] 支持 cookie
     - [x] 支持 短房间id（支持字符串房间号）
     - [x] 支持 弹幕发送
+    - [x] 支持 为主播点赞
 
 ---
 
@@ -164,6 +167,8 @@ public void onOtherCmdMsg(BilibiliCmdEnum cmd, ICmdMsg<BilibiliCmdEnum> cmdMsg) 
 2. 创建Client并传入配置、添加消息回调
 3. 开始监听直播间
 
+> 如果需要查看其他平台的效果，请将`Bilibili`改为其他平台对应的英文
+
 ```java
 public class ClientModeExample {
     public static void main(String[] args) {
@@ -239,6 +244,8 @@ public class ClientModeExample {
                 - onSuperChatMsg：收到醒目留言
             - IEnterRoomMsgListener（B站、斗鱼、抖音，虎牙只能接收到高级用户的入房回调）
                 - onEnterRoomMsg：进入房间消息回调
+            - ILikeMsgListener（B站、快手、抖音支持获取点赞的个数）
+                - onLikeMsg：为主播点赞消息回调
     - commons-client
         - 定义了Client的配置：连接地址、房间id、Cookie、心跳、自动重连等相关参数
         - 定义了Client的一些方法：初始化、销毁、连接、断开、添加消息回调、移除消息回调、发送弹幕等
@@ -270,6 +277,7 @@ public class ClientModeExample {
 - [Kain-90/huya-danmu](https://githubfast.com/Kain-90/huya-danmu)
   （虎牙流程参考，最新lib库[vplayerUI.js](https://a.msstatic.com/huya/h5player/room/2309271152/vplayerUI.js)、[taf-signal.global.0.0.4.prod.js](https://hd2.huya.com/fedbasic/huyabaselibs/taf-signal/taf-signal.global.0.0.4.prod.js)）
 - [saermart/DouyinLiveWebFetcher](https://github.com/saermart/DouyinLiveWebFetcher)（抖音流程参考）
+- https://blog.ordinaryroad.tech/1/article/1743829866426630144 （快手直播间WebSocket的Protobuf协议分析）
 
 ## 免责声明
 

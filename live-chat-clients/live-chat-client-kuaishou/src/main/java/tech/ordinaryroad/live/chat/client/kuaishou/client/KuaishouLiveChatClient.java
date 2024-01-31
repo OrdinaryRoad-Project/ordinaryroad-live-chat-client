@@ -27,6 +27,7 @@ package tech.ordinaryroad.live.chat.client.kuaishou.client;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.RandomUtil;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
@@ -34,6 +35,7 @@ import io.netty.handler.codec.http.websocketx.WebSocketClientHandshakerFactory;
 import io.netty.handler.codec.http.websocketx.WebSocketVersion;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.kuaishou.api.KuaishouApis;
 import tech.ordinaryroad.live.chat.client.kuaishou.config.KuaishouLiveChatClientConfig;
@@ -164,6 +166,36 @@ public class KuaishouLiveChatClient extends BaseNettyClient<
             }
         } else {
             super.sendDanmu(danmu, success, failed);
+        }
+    }
+
+    @Override
+    public void clickLike(int count, Runnable success, Consumer<Throwable> failed) {
+        if (count <= 0) {
+            throw new BaseException("点赞次数必须大于0");
+        }
+
+        boolean successfullyClicked = false;
+        try {
+            JsonNode jsonNode = KuaishouApis.clickLike(getConfig().getCookie(), getConfig().getRoomId(), roomInitResult.getLiveStreamId(), count);
+            if (jsonNode.asBoolean()) {
+                successfullyClicked = true;
+            }
+        } catch (Exception e) {
+            log.error("kuaishou为直播间点赞失败", e);
+            if (failed != null) {
+                failed.accept(e);
+            }
+        }
+        if (!successfullyClicked) {
+            return;
+        }
+
+        if (log.isDebugEnabled()) {
+            log.debug("kuaishou为直播间点赞成功");
+        }
+        if (success != null) {
+            success.run();
         }
     }
 }

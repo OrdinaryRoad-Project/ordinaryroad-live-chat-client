@@ -81,6 +81,12 @@ class BilibiliLiveChatClientTest {
             }
 
             @Override
+            public void onLikeMsg(BilibiliBinaryFrameHandler binaryFrameHandler, LikeInfoV3ClickMsg msg) {
+                IBilibiliMsgListener.super.onLikeMsg(binaryFrameHandler, msg);
+                log.info("{} 收到点赞 {} {}({})", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid());
+            }
+
+            @Override
             public void onEntryEffect(SendSmsReplyMsg msg) {
                 JsonNode data = msg.getData();
                 String copyWriting = data.get("copy_writing").asText();
@@ -144,6 +150,18 @@ class BilibiliLiveChatClientTest {
             }
         });
         client.connect();
+
+        client.addStatusChangeListener(evt -> {
+            ClientStatusEnums newValue = (ClientStatusEnums) evt.getNewValue();
+            if (newValue == ClientStatusEnums.CONNECTED) {
+                ThreadUtil.execAsync(() -> {
+                    ThreadUtil.sleep(5000);
+                    client.clickLike(5, () -> {
+                        log.warn("为主播点赞成功");
+                    });
+                });
+            }
+        });
 
         // 防止测试时直接退出
         while (true) {

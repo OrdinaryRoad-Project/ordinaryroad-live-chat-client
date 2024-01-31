@@ -22,23 +22,40 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.douyin.listener;
+package tech.ordinaryroad.live.chat.client.kuaishou.msg;
 
-import tech.ordinaryroad.live.chat.client.commons.base.listener.*;
-import tech.ordinaryroad.live.chat.client.douyin.constant.DouyinCmdEnum;
-import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinDanmuMsg;
-import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinEnterRoomMsg;
-import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinGiftMsg;
-import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinLikeMsg;
-import tech.ordinaryroad.live.chat.client.douyin.netty.handler.DouyinBinaryFrameHandler;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import tech.ordinaryroad.live.chat.client.commons.base.msg.ILikeMsg;
+import tech.ordinaryroad.live.chat.client.kuaishou.msg.base.IKuaishouMsg;
+import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass;
 
 /**
  * @author mjz
- * @date 2024/1/2
+ * @date 2024/1/9
  */
-public interface IDouyinMsgListener extends IBaseMsgListener<DouyinBinaryFrameHandler, DouyinCmdEnum>,
-        IDanmuMsgListener<DouyinBinaryFrameHandler, DouyinDanmuMsg>,
-        IGiftMsgListener<DouyinBinaryFrameHandler, DouyinGiftMsg>,
-        IEnterRoomMsgListener<DouyinBinaryFrameHandler, DouyinEnterRoomMsg>,
-        ILikeMsgListener<DouyinBinaryFrameHandler, DouyinLikeMsg> {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class KuaishouLikeMsg implements IKuaishouMsg, ILikeMsg {
+
+    private WebLikeFeedOuterClass.WebLikeFeed msg;
+
+    @Override
+    public String getUid() {
+        return msg.getUser().getPrincipalId();
+    }
+
+    @Override
+    public String getUsername() {
+        return msg.getUser().getUserName();
+    }
+
+    @Override
+    public String getUserAvatar() {
+        return msg.getUser().getHeadUrl();
+    }
 }

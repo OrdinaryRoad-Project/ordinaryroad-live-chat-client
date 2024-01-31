@@ -104,4 +104,32 @@ public interface IBaseLiveChatClient<MsgListener extends IBaseMsgListener<?, ?>>
      */
     void sendDanmu(Object danmu, Consumer<Throwable> failed);
 
+    /**
+     * 为直播间点赞
+     *
+     * @since 0.2.0
+     */
+    void clickLike(int count);
+
+    /**
+     * 为直播间点赞
+     *
+     * @since 0.2.0
+     */
+    void clickLike(int count, Runnable success, Consumer<Throwable> failed);
+
+    /**
+     * 为直播间点赞
+     *
+     * @since 0.2.0
+     */
+    void clickLike(int count, Runnable success);
+
+    /**
+     * 为直播间点赞
+     *
+     * @since 0.2.0
+     */
+    void clickLike(int count, Consumer<Throwable> failed);
+
 }

@@ -141,6 +141,21 @@ public class KuaishouApis {
         return responseInterceptor(response.body());
     }
 
+    @SneakyThrows
+    public static JsonNode clickLike(String cookie, Object roomId, String liveStreamId, int count) {
+        @Cleanup
+        HttpResponse response = createPostRequest("https://live.kuaishou.com/live_api/liveroom/like", cookie)
+                .body(OBJECT_MAPPER.createObjectNode()
+                        .put("liveStreamId", liveStreamId)
+                        .put("count", count)
+                        .toString(), ContentType.JSON.getValue()
+                )
+                .header(Header.ORIGIN, "https://live.kuaishou.com")
+                .header(Header.REFERER, "https://live.kuaishou.com/u/" + roomId)
+                .execute();
+        return responseInterceptor(response.body());
+    }
+
     public static HttpRequest createRequest(Method method, String url, String cookie) {
         return HttpUtil.createRequest(method, url)
                 .cookie(cookie)
@@ -187,7 +202,7 @@ public class KuaishouApis {
     }
 
     private static void throwExceptionWithTip(String message) {
-        throw new BaseException("『可能已触发滑块验证，建议配置Cookie后重试』" + message);
+        throw new BaseException("『可能已触发滑块验证，建议配置Cookie或打开浏览器进行滑块验证后重试』" + message);
     }
 
     @Data

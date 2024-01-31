@@ -124,7 +124,14 @@ public class BilibiliBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
             }
 
             case LIKE_INFO_V3_CLICK: {
-                iteratorMsgListeners(msgListener -> msgListener.onClickLike(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg));
+                LikeInfoV3ClickMsg likeInfoV3ClickMsg = new LikeInfoV3ClickMsg();
+                likeInfoV3ClickMsg.setProtover(sendSmsReplyMsg.getProtover());
+                LikeInfoV3ClickMsg.Data data = BaseBilibiliMsg.OBJECT_MAPPER.treeToValue(sendSmsReplyMsg.getData(), LikeInfoV3ClickMsg.Data.class);
+                likeInfoV3ClickMsg.setData(data);
+                iteratorMsgListeners(msgListener -> {
+                    msgListener.onLikeMsg(BilibiliBinaryFrameHandler.this, likeInfoV3ClickMsg);
+                    msgListener.onClickLike(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg);
+                });
                 break;
             }
 

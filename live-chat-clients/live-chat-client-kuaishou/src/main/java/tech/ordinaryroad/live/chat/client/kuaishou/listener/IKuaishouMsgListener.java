@@ -27,8 +27,10 @@ package tech.ordinaryroad.live.chat.client.kuaishou.listener;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IDanmuMsgListener;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IGiftMsgListener;
+import tech.ordinaryroad.live.chat.client.commons.base.listener.ILikeMsgListener;
 import tech.ordinaryroad.live.chat.client.kuaishou.msg.KuaishouDanmuMsg;
 import tech.ordinaryroad.live.chat.client.kuaishou.msg.KuaishouGiftMsg;
+import tech.ordinaryroad.live.chat.client.kuaishou.msg.KuaishouLikeMsg;
 import tech.ordinaryroad.live.chat.client.kuaishou.netty.handler.KuaishouBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PayloadTypeOuterClass;
 
@@ -38,5 +40,6 @@ import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PayloadTypeOuterClas
  */
 public interface IKuaishouMsgListener extends IBaseMsgListener<KuaishouBinaryFrameHandler, PayloadTypeOuterClass.PayloadType>,
         IDanmuMsgListener<KuaishouBinaryFrameHandler, KuaishouDanmuMsg>,
-        IGiftMsgListener<KuaishouBinaryFrameHandler, KuaishouGiftMsg> {
+        IGiftMsgListener<KuaishouBinaryFrameHandler, KuaishouGiftMsg>,
+        ILikeMsgListener<KuaishouBinaryFrameHandler, KuaishouLikeMsg> {
 }

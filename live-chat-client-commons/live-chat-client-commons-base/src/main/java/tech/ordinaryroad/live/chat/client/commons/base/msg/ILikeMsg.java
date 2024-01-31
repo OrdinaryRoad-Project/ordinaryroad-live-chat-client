@@ -22,23 +22,50 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.douyin.listener;
-
-import tech.ordinaryroad.live.chat.client.commons.base.listener.*;
-import tech.ordinaryroad.live.chat.client.douyin.constant.DouyinCmdEnum;
-import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinDanmuMsg;
-import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinEnterRoomMsg;
-import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinGiftMsg;
-import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinLikeMsg;
-import tech.ordinaryroad.live.chat.client.douyin.netty.handler.DouyinBinaryFrameHandler;
+package tech.ordinaryroad.live.chat.client.commons.base.msg;
 
 /**
  * @author mjz
- * @date 2024/1/2
+ * @date 2024/1/31
+ * @since 0.2.0
  */
-public interface IDouyinMsgListener extends IBaseMsgListener<DouyinBinaryFrameHandler, DouyinCmdEnum>,
-        IDanmuMsgListener<DouyinBinaryFrameHandler, DouyinDanmuMsg>,
-        IGiftMsgListener<DouyinBinaryFrameHandler, DouyinGiftMsg>,
-        IEnterRoomMsgListener<DouyinBinaryFrameHandler, DouyinEnterRoomMsg>,
-        ILikeMsgListener<DouyinBinaryFrameHandler, DouyinLikeMsg> {
+public interface ILikeMsg extends IMsg {
+
+    /**
+     * 粉丝牌名称
+     */
+    default String getBadgeName(){
+        return "";
+    }
+
+    /**
+     * 粉丝牌等级
+     */
+    default byte getBadgeLevel(){
+        return 0;
+    }
+
+    /**
+     * 点赞者id
+     */
+    String getUid();
+
+    /**
+     * 点赞者用户名
+     */
+    String getUsername();
+
+    /**
+     * 点赞者头像地址
+     */
+    default String getUserAvatar() {
+        return null;
+    }
+
+    /**
+     * 点赞数
+     */
+    default int getClickCount() {
+        return 1;
+    }
 }
