@@ -194,6 +194,23 @@ public class ClientModeExample {
                 IBilibiliMsgListener.super.onGiftMsg(binaryFrameHandler, msg);
                 System.out.printf("%s 收到礼物 %s %s(%s) %s %s(%s)x%s(%s)\n", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid(), msg.getData().getAction(), msg.getGiftName(), msg.getGiftId(), msg.getGiftCount(), msg.getGiftPrice());
             }
+
+            @Override
+            public void onSuperChatMsg(BilibiliBinaryFrameHandler binaryFrameHandler, SuperChatMessageMsg msg) {
+                IBilibiliMsgListener.super.onSuperChatMsg(binaryFrameHandler, msg);
+                System.out.printf("%s 收到醒目留言 %s(%s)：%s\n", binaryFrameHandler.getRoomId(), msg.getUsername(), msg.getUid(), msg.getContent());
+            }
+
+            @Override
+            public void onEnterRoomMsg(InteractWordMsg msg) {
+                System.out.printf("%s %s(%s) 进入直播间\n", msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid());
+            }
+
+            @Override
+            public void onLikeMsg(BilibiliBinaryFrameHandler binaryFrameHandler, LikeInfoV3ClickMsg msg) {
+                IBilibiliMsgListener.super.onLikeMsg(binaryFrameHandler, msg);
+                System.out.printf("%s 收到点赞 %s %s(%s)\n", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid());
+            }
         });
         // 3. 开始监听直播间
         client.connect();
