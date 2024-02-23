@@ -10,35 +10,6 @@
 >
 > ToDo List: https://github.com/orgs/OrdinaryRoad-Project/projects/1
 
-- [x] B站
-    - [x] BilibiliLiveChatClient
-    - [x] 支持 cookie
-    - [x] 支持 短房间id
-    - [x] 支持 弹幕发送
-    - [x] 支持 为主播点赞
-- [x] 斗鱼
-    - [x] DouyuLiveChatClient
-    - [x] 支持 cookie
-    - [x] 支持 短房间id
-    - [x] 支持 弹幕发送
-- [x] 虎牙
-    - [x] HuyaLiveChatClient
-    - [x] 支持 cookie（发送弹幕时需要）
-    - [x] 支持 短房间id（支持字符串房间号，例如`bagea`）
-    - [x] 支持 弹幕发送
-- [ ] 抖音
-    - [x] DouyinLiveChatClient
-    - [ ] 支持 cookie
-    - [x] 支持 短房间id（支持字符串房间号）
-    - [ ] 支持 弹幕发送（未搞懂签名算法）
-    - [ ] 支持 为主播点赞（未搞懂签名算法）
-- [x] 快手
-    - [x] KuaishouLiveChatClient
-    - [x] 支持 cookie
-    - [x] 支持 短房间id（支持字符串房间号）
-    - [x] 支持 弹幕发送
-    - [x] 支持 为主播点赞
-
 ---
 
 Live room WebSocket chat client
@@ -47,9 +18,38 @@ Live room WebSocket chat client
 - Feature 1: 消息中的未知属性统一放到单独的MAP中
 - Feature 2: 支持自动重连
 - Feature 3: 支持同时监听多个直播间
-- Feature 4: 支持直播间短id
-- Feature 5: 支持弹幕发送、为主播点赞
-- Feature 6: 内置收到弹幕、收到礼物、收到醒目留言、用户入房、收到点赞回调
+- Feature 4: 支持短直播间id
+- Feature 5: 支持弹幕发送、为主播点赞*
+- Feature 6: 内置收到弹幕、收到礼物、收到醒目留言、用户入房、收到点赞回调*
+
+> *存在平台差异
+
+平台适配情况表
+
+| 平台          | LiveChatClient | Cookie | 短直播间id | 发送弹幕 | 为主播点赞 |
+|-------------|----------------|--------|--------|------|-------|
+| Bilibili B站 | ✅              | ✅      | ✅      | ✅    | ✅     | ✅ |
+| Douyu 斗鱼    | ✅              | ✅      | ✅      | ✅    | ❌     |
+| Huya 虎牙     | ✅              | ✅      | ✅      | ✅    | ❌     |
+| Douyin 抖音   | ✅              | ☑️️    | ✅      | ☑️   | ☑️️   |
+| Kuaishou 快手 | ✅              | ✅      | ✅      | ✅    | ✅     |
+
+平台直播间消息适配情况表
+
+| 平台          | 弹幕 | 礼物        | 醒目留言 | 进入房间    | 点赞      |
+|-------------|----|-----------|------|---------|---------|
+| Bilibili B站 | ✅  | ✅         | ✅    | ✅       | ✅       |
+| Douyu 斗鱼    | ✅  | ✅         | ☑️   | ✅       | ❌       |
+| Huya 虎牙     | ✅  | ✅         | ❌    | ✅（高级用户） | ❌       |
+| Douyin 抖音   | ✅  | ✅         | ❌    | ✅       | ✅（点赞个数） |
+| Kuaishou 快手 | ✅  | ✅（礼物信息不全） | ❌    | ❌       | ✅       |
+
+消息接口内置的方法见 [https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/tree/main/live-chat-client-commons/live-chat-client-commons-base/src/main/java/tech/ordinaryroad/live/chat/client/commons/base/msg](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/tree/main/live-chat-client-commons/live-chat-client-commons-base/src/main/java/tech/ordinaryroad/live/chat/client/commons/base/msg)
+
+运行效果图
+![运行效果](assets/运行效果.png)
+
+---
 
 [//]: # ([在线文档]&#40;https://ordinaryroad.tech/or_module/live-chat-client/&#41;)
 
@@ -218,53 +218,75 @@ public class ClientModeExample {
 
 ## 3 项目说明
 
-- commons（主要是抽象接口、抽象类的定义）
-    - commons-base
-        - 定义了一些基础的接口、抽象类：消息、消息监听器、连接连监听器
-        - 消息接口
-            - IMsg：所有msg都应该继承该类
-                - ICmdMsg：有些平台的一些消息正文中没有消息类型cmd字段，例如B站的心跳包，因此再细分为cmdMsg
-                - IDanmuMsg: 内置获取用户ID、用户名、用户头像、粉丝牌名称、粉丝牌等级、弹幕内容等方法
-                    - ISuperChatMsg：醒目留言，内置获取持续时间方法
-                - IGiftMsg：内置获取发送方ID、发送方用户名、发送方头像、接收方ID、接收方用户名、礼物名称、礼物图片、礼物ID、礼物个数、礼物单价等方法
-        - 消息抽象类
-            - BaseMsg：实现IMsg接口，提供存放未知属性的字段
-                - BaseCmdMsg：继承自BaseMsg，实现ICmdMsg接口
-        - 消息监听器
-            - IBaseMsgListener（所有平台都支持，其他消息监听器存在平台差异）
-                - onMsg：所有消息（不管消息内容）都会调用，不包括由该消息的某个字段派生出的消息，例如快手的弹幕礼物等消息是`SC_FEED_PUSH`中的字段，因此onMsg中不会出现处理后的弹幕、礼物消息，而是包含弹幕、礼物等的`SCWebFeedPush`CMD消息
-                - onCmdMsg：cmd消息（消息体中有表示消息类型的字段时），并且该类型需要处理（例如心跳回复包不需要处理）时调用
-                - onOtherCmdMsg：该消息类型不需要处理（例如PK、点赞数更新等类型）时调用
-                - onUnknownCmd：该消息类型未知（没有对应的枚举类）时调用
-            - IDanmuMsgListener（所有平台）
-                - onDanmuMsg：收到弹幕消息
-            - IGiftMsgListener（所有平台，快手礼物消息不全，缺少礼物单价、礼物个数、接收方信息、发送方粉丝牌信息）
-                - onGiftMsg：收到礼物消息
-            - ISuperChatMsgListener（B站）
-                - onSuperChatMsg：收到醒目留言
-            - IEnterRoomMsgListener（B站、斗鱼、抖音，虎牙只能接收到高级用户的入房回调）
-                - onEnterRoomMsg：进入房间消息回调
-            - ILikeMsgListener（B站、快手、抖音支持获取点赞的个数）
-                - onLikeMsg：收到点赞消息
-    - commons-client
-        - 定义了Client的配置：连接地址、房间id、Cookie、心跳、自动重连等相关参数
-        - 定义了Client的一些方法：初始化、销毁、连接、断开、添加消息回调、移除消息回调、发送弹幕等
-        - 定义了Client的生命周期
-    - commons-util
-        - 一些工具类：时间、反射、Cookie
-- servers（对使用的连接工具的抽象）
-    - servers-netty
-        - 定义了连接处理Handler
-        - 定义了数据处理Handler
-    - servers-netty-client（基于netty实现的Client）
-        - 扩展了Client、ClientConfig
-        - 扩展Handler增加了Client成员变量
-- clients（对servers-netty-client的具体实现）
-    - client-bilibili
-    - client-douyu
-    - client-huya
-    - client-douyin
-    - client-kuaishou
+### 3.1 commons模块
+
+主要是抽象接口、抽象类的定义
+
+#### 3.1.1 commons-base
+定义了一些基础的接口、抽象类：消息、消息监听器、连接连监听器
+
+- 消息接口
+    - IMsg：所有msg都应该继承该类
+        - ICmdMsg：有些平台的一些消息正文中没有消息类型cmd字段，例如B站的心跳包，因此再细分为cmdMsg
+        - IDanmuMsg: 内置获取用户ID、用户名、用户头像、粉丝牌名称、粉丝牌等级、弹幕内容等方法
+            - ISuperChatMsg：醒目留言，内置获取持续时间方法
+        - IGiftMsg: 内置获取发送方ID、发送方用户名、发送方头像、接收方ID、接收方用户名、礼物名称、礼物图片、礼物ID、礼物个数、礼物单价等方法
+        - IEnterRoomMsg: 内置获取用户ID、用户名、用户头像、粉丝牌名称、粉丝牌等级方法
+        - ILikeMsg: 内置获取用户ID、用户名、用户头像、粉丝牌名称、粉丝牌等级、点赞数方法
+- 消息抽象类
+    - BaseMsg：实现IMsg接口，提供存放未知属性的字段
+        - BaseCmdMsg：继承自BaseMsg，实现ICmdMsg接口
+- 消息监听器
+    - IBaseMsgListener（所有平台都支持，其他消息监听器存在平台差异）
+        - onMsg：所有消息（不管消息内容）都会调用，不包括由该消息的某个字段派生出的消息，例如快手的弹幕礼物等消息是`SC_FEED_PUSH`中的字段，因此onMsg中不会出现处理后的弹幕、礼物消息，而是包含弹幕、礼物等的`SCWebFeedPush`CMD消息
+        - onCmdMsg：cmd消息（消息体中有表示消息类型的字段时），并且该类型需要处理（例如心跳回复包不需要处理）时调用
+        - onOtherCmdMsg：该消息类型不需要处理（例如PK、点赞数更新等类型）时调用
+        - onUnknownCmd：该消息类型未知（没有对应的枚举类）时调用
+    - IDanmuMsgListener（所有平台）
+        - onDanmuMsg：收到弹幕消息
+    - IGiftMsgListener（所有平台，快手礼物消息不全，缺少礼物单价、礼物个数、接收方信息、发送方粉丝牌信息）
+        - onGiftMsg：收到礼物消息
+    - ISuperChatMsgListener（B站）
+        - onSuperChatMsg：收到醒目留言
+    - IEnterRoomMsgListener（B站、斗鱼、抖音，虎牙只能接收到高级用户的入房回调）
+        - onEnterRoomMsg：进入房间消息回调
+    - ILikeMsgListener（B站、快手、抖音支持获取点赞的个数）
+        - onLikeMsg：收到点赞消息
+
+#### 3.1.2 commons-client
+
+- 定义了Client的配置：连接地址、房间id、Cookie、心跳、自动重连等相关参数
+- 定义了Client的一些方法：初始化、销毁、连接、断开、添加消息回调、移除消息回调、发送弹幕等
+- 定义了Client的生命周期
+
+#### 3.1.3 commons-util
+- 一些工具类：时间、反射、Cookie
+
+### 3.2 servers模块
+
+对所使用的连接工具的抽象
+
+#### 3.2.1 servers-netty
+
+- 定义了连接处理Handler
+- 定义了数据处理Handler
+
+#### 3.2.2 servers-netty-client
+
+基于netty实现的Client
+
+- 扩展了Client、ClientConfig
+- 扩展Handler增加了Client成员变量
+
+### 3.3 clients模块
+
+对使用`Netty`作为连接工具的`servers-netty-client`的具体实现
+
+- client-bilibili
+- client-douyu
+- client-huya
+- client-douyin
+- client-kuaishou
 
 ## 交流讨论
 
