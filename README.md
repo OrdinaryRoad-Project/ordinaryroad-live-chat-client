@@ -276,7 +276,7 @@ public class ClientModeExample {
 #### 3.1.2 commons-client
 
 - 定义了Client的配置：连接地址、房间id、Cookie、心跳、自动重连等相关参数
-- 定义了Client的一些方法：初始化、销毁、连接、断开、添加消息回调、移除消息回调、发送弹幕等
+- 定义了Client的一些方法：初始化、销毁、连接、断开、添加消息回调、移除消息回调、发送弹幕、为主播点赞等
 - 定义了Client的生命周期
 
 #### 3.1.3 commons-util
@@ -293,7 +293,7 @@ public class ClientModeExample {
 
 #### 3.2.2 servers-netty-client
 
-基于netty实现的Client
+基于`Netty`实现的Client
 
 - 扩展了Client、ClientConfig
 - 扩展Handler增加了Client成员变量
