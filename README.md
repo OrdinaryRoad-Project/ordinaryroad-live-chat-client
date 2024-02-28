@@ -327,6 +327,16 @@ public class ClientModeExample {
 |-----|-----|-----|
 | ... | ... | ... |
 
+## Star History
+
+<a href="https://star-history.com/#OrdinaryRoad-Project/ordinaryroad-live-chat-client&Date">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=OrdinaryRoad-Project/ordinaryroad-live-chat-client&type=Date&theme=dark" />
+    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=OrdinaryRoad-Project/ordinaryroad-live-chat-client&type=Date" />
+    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=OrdinaryRoad-Project/ordinaryroad-live-chat-client&type=Date" />
+  </picture>
+</a>
+
 ## 感谢
 
 - [douyu-crawler-demo](https://github.com/cj1128/douyu-crawler-demo)（斗鱼登录状态的请求包构建）
