@@ -321,7 +321,7 @@ public class ClientModeExample {
 >
 > 扫码或者访问[https://dwz.tax/ucWb](https://dwz.tax/ucWb)进行捐赠
 >
-> <img src="assets/donate.png" width="200">
+> <img src="assets/donate.png" width="200px">
 
 | 金额  | 渠道  | 留言  |
 |-----|-----|-----|
