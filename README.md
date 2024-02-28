@@ -243,6 +243,7 @@ public class ClientModeExample {
 主要是抽象接口、抽象类的定义
 
 #### 3.1.1 commons-base
+
 定义了一些基础的接口、抽象类：消息、消息监听器、连接连监听器
 
 - 消息接口
@@ -280,6 +281,7 @@ public class ClientModeExample {
 - 定义了Client的生命周期
 
 #### 3.1.3 commons-util
+
 - 一些工具类：时间、反射、Cookie
 
 ### 3.2 servers模块
@@ -312,6 +314,17 @@ public class ClientModeExample {
 
 扫描二维码<img src="assets/QQ频道.jpg" width="200px">
 或点击链接加入QQ频道【OrdinaryRoad】：https://pd.qq.com/s/3id0n7fvs
+
+## 捐赠
+
+> 开源不易，您的认可与支持是我不断更新的最大动力！
+>
+> 扫码或者访问[https://dwz.tax/ucWb](https://dwz.tax/ucWb)进行捐赠
+> <img src="assets/donate.png" width="200">
+
+| 金额  | 渠道  | 留言  |
+|-----|-----|-----|
+| ... | ... | ... |
 
 ## 感谢
 
