@@ -160,6 +160,9 @@ public void onOtherCmdMsg(BilibiliCmdEnum cmd, ICmdMsg<BilibiliCmdEnum> cmdMsg) 
                 ...
                 break;
             }
+            default: {
+                // ignore
+            }
         }
 }
 ```
