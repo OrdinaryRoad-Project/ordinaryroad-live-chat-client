@@ -19,8 +19,8 @@ Live room WebSocket chat client
 - Feature 2: 支持自动重连
 - Feature 3: 支持同时监听多个直播间
 - Feature 4: 支持短直播间id
-- Feature 5: 支持弹幕发送、为主播点赞*
-- Feature 6: 内置收到弹幕、收到礼物、收到醒目留言、用户入房、收到点赞回调*
+- Feature 5*: 支持弹幕发送、为主播点赞
+- Feature 6*: 内置收到弹幕、收到礼物、收到醒目留言、用户入房、收到点赞回调
 
 > *存在平台差异
 > - ✅: 平台支持且已完成
@@ -148,15 +148,17 @@ Live room WebSocket chat client
 @Override
 public void onOtherCmdMsg(BilibiliCmdEnum cmd, ICmdMsg<BilibiliCmdEnum> cmdMsg) {
         switch (cmd) {
-            case GUARD_BUY -> {
+            case GUARD_BUY: {
                 // 有人上舰
                 SendSmsReplyMsg sendSmsReplyMsg = (SendSmsReplyMsg) cmdMsg;
                 ...
+                break;
             }
-            case SUPER_CHAT_MESSAGE_DELETE -> {
+            case SUPER_CHAT_MESSAGE_DELETE: {
                 // 删除醒目留言
                 SendSmsReplyMsg sendSmsReplyMsg = (SendSmsReplyMsg) cmdMsg;
                 ...
+                break;
             }
         }
 }
