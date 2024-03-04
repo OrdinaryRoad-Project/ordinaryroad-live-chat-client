@@ -36,6 +36,8 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import lombok.*;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCookieUtil;
+import tech.ordinaryroad.live.chat.client.kuaishou.msg.KuaishouGiftMsg;
+import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,9 +60,12 @@ public class KuaishouApis {
      */
     public static final TimedCache<String, Map<String, GiftInfo>> RESULT_CACHE = new TimedCache<>(TimeUnit.DAYS.toMillis(1));
     public static final String KEY_RESULT_CACHE_GIFT_ITEMS = "GIFT_ITEMS";
-
     public static final String PATTERN_LIVE_STREAM_ID = "\"liveStream\":\\{\"id\":\"([\\w\\d-_]+)\"";
     public static final String USER_AGENT = GlobalHeaders.INSTANCE.header(Header.USER_AGENT).replace("Hutool", "");
+    /**
+     * 礼物连击缓存
+     */
+    private static final TimedCache<String, WebGiftFeedOuterClass.WebGiftFeed> WEB_GIFT_FEED_CACHE = new TimedCache<>(300000);
 
     public static RoomInitResult roomInit(Object roomId, String cookie) {
         @Cleanup
@@ -203,6 +208,41 @@ public class KuaishouApis {
 
     private static void throwExceptionWithTip(String message) {
         throw new BaseException("『可能已触发滑块验证，建议配置Cookie或打开浏览器进行滑块验证后重试』" + message);
+    }
+
+    /**
+     * 计算快手直播间收到礼物的个数
+     *
+     * @param msg KuaishouGiftMsg
+     * @return 礼物个数
+     */
+    public static int calculateGiftCount(KuaishouGiftMsg msg) {
+        if (msg == null || msg.getMsg() == null) {
+            return 0;
+        }
+
+        int giftCount;
+
+        WebGiftFeedOuterClass.WebGiftFeed webGiftFeed = msg.getMsg();
+        String mergeKey = webGiftFeed.getMergeKey();
+        if (WEB_GIFT_FEED_CACHE.containsKey(mergeKey)) {
+            WebGiftFeedOuterClass.WebGiftFeed webGiftFeedByMergeKey = WEB_GIFT_FEED_CACHE.get(mergeKey);
+            int comboCountByMergeKey = webGiftFeedByMergeKey.getComboCount();
+            giftCount = webGiftFeed.getComboCount() - comboCountByMergeKey;
+
+            WEB_GIFT_FEED_CACHE.put(mergeKey, webGiftFeed);
+        } else {
+            int batchSize = webGiftFeed.getBatchSize();
+            int comboCount = webGiftFeed.getComboCount();
+            if (comboCount == 1) {
+                giftCount = batchSize;
+            } else {
+                giftCount = comboCount;
+            }
+
+            WEB_GIFT_FEED_CACHE.put(mergeKey, webGiftFeed);
+        }
+        return giftCount;
     }
 
     @Data
