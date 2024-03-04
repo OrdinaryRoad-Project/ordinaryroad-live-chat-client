@@ -87,8 +87,7 @@ public class KuaishouGiftMsg implements IKuaishouMsg, IGiftMsg {
 
     @Override
     public int getGiftCount() {
-        // TODO 礼物个数？网页上只显示赠送了什么东西，不显示个数，只会显示连击
-        return 0;
+        return KuaishouApis.calculateGiftCount(this);
     }
 
     @Override
