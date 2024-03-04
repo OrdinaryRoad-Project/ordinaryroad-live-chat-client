@@ -374,7 +374,7 @@ public class InteractWordMsg extends BaseBilibiliMsg implements IEnterRoomMsg {
         private long uid;
         private Base base;
         private Medal medal;
-        private String wealth;
+        private JsonNode wealth;
         private String title;
         private Guard guard;
 
