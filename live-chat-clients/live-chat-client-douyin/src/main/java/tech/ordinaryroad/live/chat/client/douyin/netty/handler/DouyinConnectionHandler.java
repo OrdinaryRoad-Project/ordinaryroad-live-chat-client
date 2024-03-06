@@ -31,7 +31,6 @@ import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.douyin.client.DouyinLiveChatClient;
-import tech.ordinaryroad.live.chat.client.douyin.config.DouyinLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientConnectionHandler;
 
 /**
@@ -91,20 +90,12 @@ public class DouyinConnectionHandler extends BaseNettyClientConnectionHandler<Do
 
     @Override
     protected long getHeartbeatPeriod() {
-        if (client == null) {
-            return DouyinLiveChatClientConfig.DEFAULT_HEARTBEAT_PERIOD;
-        } else {
-            return client.getConfig().getHeartbeatPeriod();
-        }
+        return 0;
     }
 
     @Override
     protected long getHeartbeatInitialDelay() {
-        if (client == null) {
-            return DouyinLiveChatClientConfig.DEFAULT_HEARTBEAT_INITIAL_DELAY;
-        } else {
-            return client.getConfig().getHeartbeatInitialDelay();
-        }
+        return 0;
     }
 
     public Object getRoomId() {
