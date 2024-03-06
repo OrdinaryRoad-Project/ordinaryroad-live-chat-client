@@ -15,8 +15,6 @@ import tech.ordinaryroad.live.chat.client.kuaishou.netty.handler.KuaishouBinaryF
 import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PayloadTypeOuterClass;
 import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -98,22 +96,18 @@ class KuaishouLiveChatClientTest {
             }
         });
 
-        client.addStatusChangeListener(new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                ClientStatusEnums newValue = (ClientStatusEnums) evt.getNewValue();
-                if (newValue == ClientStatusEnums.CONNECTED) {
-                    // 连接成功5秒后发送弹幕
-                    ThreadUtil.execAsync(() -> {
-                        ThreadUtil.sleep(10000);
-                        client.sendDanmu("666666", new Runnable() {
-                            @Override
-                            public void run() {
-                                log.warn("弹幕发送成功");
-                            }
-                        });
+        client.addStatusChangeListener((evt, oldStatus, newStatus) -> {
+            if (newStatus == ClientStatusEnums.CONNECTED) {
+                // 连接成功5秒后发送弹幕
+                ThreadUtil.execAsync(() -> {
+                    ThreadUtil.sleep(10000);
+                    client.sendDanmu("666666", new Runnable() {
+                        @Override
+                        public void run() {
+                            log.warn("弹幕发送成功");
+                        }
                     });
-                }
+                });
             }
         });
 
@@ -177,9 +171,8 @@ class KuaishouLiveChatClientTest {
             }
         });
 
-        client.addStatusChangeListener(evt -> {
-            ClientStatusEnums newValue = (ClientStatusEnums) evt.getNewValue();
-            if (newValue == ClientStatusEnums.CONNECTED) {
+        client.addStatusChangeListener((evt, oldStatus, newStatus) -> {
+            if (newStatus == ClientStatusEnums.CONNECTED) {
                 // 连接成功10秒后发送弹幕
                 ThreadUtil.execAsync(() -> {
                     ThreadUtil.sleep(10000);

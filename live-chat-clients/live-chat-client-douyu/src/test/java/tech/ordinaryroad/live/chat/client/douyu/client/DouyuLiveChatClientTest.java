@@ -42,8 +42,6 @@ import tech.ordinaryroad.live.chat.client.douyu.msg.UenterMsg;
 import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuConnectionHandler;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -303,14 +301,7 @@ class DouyuLiveChatClientTest implements IDouyuConnectionListener, IDouyuMsgList
                 .build();
 
         client = new DouyuLiveChatClient(config, this, this);
-        client.addStatusChangeListener(new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                Object oldStatus = evt.getOldValue();
-                Object newStatus = evt.getNewValue();
-                log.error("{} => {}", oldStatus, newStatus);
-            }
-        });
+        client.addStatusChangeListener((evt, oldStatus, newStatus) -> log.error("{} => {}", oldStatus, newStatus));
         client.connect();
 
         // 防止测试时直接退出

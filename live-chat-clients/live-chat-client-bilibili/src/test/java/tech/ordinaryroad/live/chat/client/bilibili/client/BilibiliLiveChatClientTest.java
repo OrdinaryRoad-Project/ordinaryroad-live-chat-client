@@ -24,6 +24,7 @@
 
 package tech.ordinaryroad.live.chat.client.bilibili.client;
 
+import cn.hutool.core.thread.ThreadUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -34,6 +35,7 @@ import tech.ordinaryroad.live.chat.client.bilibili.msg.*;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
+import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
 
 /**
  * @author mjz
@@ -151,9 +153,8 @@ class BilibiliLiveChatClientTest {
         });
         client.connect();
 
-        client.addStatusChangeListener(evt -> {
-            ClientStatusEnums newValue = (ClientStatusEnums) evt.getNewValue();
-            if (newValue == ClientStatusEnums.CONNECTED) {
+        client.addStatusChangeListener((evt, oldStatus, newStatus) -> {
+            if (newStatus == ClientStatusEnums.CONNECTED) {
                 ThreadUtil.execAsync(() -> {
                     ThreadUtil.sleep(5000);
                     client.clickLike(5, () -> {
