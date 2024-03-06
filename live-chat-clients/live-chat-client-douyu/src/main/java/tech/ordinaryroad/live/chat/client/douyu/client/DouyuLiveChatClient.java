@@ -224,8 +224,7 @@ public class DouyuLiveChatClient extends DouyuWsLiveChatClient implements IDouyu
                         }
                     }
                 });
-                this.danmuClient.addStatusChangeListener(evt -> {
-                    ClientStatusEnums newStatus = (ClientStatusEnums) evt.getNewValue();
+                this.danmuClient.addStatusChangeListener((evt, oldStatus, newStatus) -> {
                     switch (newStatus) {
                         case CONNECTED:
                         case RECONNECTING:

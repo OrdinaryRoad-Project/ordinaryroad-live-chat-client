@@ -38,9 +38,6 @@ import tech.ordinaryroad.live.chat.client.kuaishou.msg.KuaishouGiftMsg;
 import tech.ordinaryroad.live.chat.client.kuaishou.netty.handler.KuaishouBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PayloadTypeOuterClass;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
 public class ClientModeExample {
     static Logger log = LoggerFactory.getLogger(ClientModeExample.class);
 
@@ -89,13 +86,10 @@ public class ClientModeExample {
         client.connect();
 
         // 客户端连接状态回调
-        client.addStatusChangeListener(new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                if (evt.getNewValue().equals(ClientStatusEnums.CONNECTED)) {
-                    // TODO 要发送的弹幕内容，请注意控制发送频率；框架内置支持设置发送弹幕的最少时间间隔，小于时将忽略该次发送
-                    client.sendDanmu("666666" + RandomUtil.randomNumbers(1));
-                }
+        client.addStatusChangeListener((evt, oldStatus, newStatus) -> {
+            if (newStatus == ClientStatusEnums.CONNECTED) {
+                // TODO 要发送的弹幕内容，请注意控制发送频率；框架内置支持设置发送弹幕的最少时间间隔，小于时将忽略该次发送
+                client.sendDanmu("666666" + RandomUtil.randomNumbers(1));
             }
         });
     }

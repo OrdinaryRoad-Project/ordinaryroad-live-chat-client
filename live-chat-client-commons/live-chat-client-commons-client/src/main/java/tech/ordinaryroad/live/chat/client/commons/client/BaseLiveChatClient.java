@@ -28,6 +28,7 @@ import lombok.Getter;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener;
 import tech.ordinaryroad.live.chat.client.commons.client.config.BaseLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
+import tech.ordinaryroad.live.chat.client.commons.client.listener.IClientStatusChangeListener;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -144,10 +145,24 @@ public abstract class BaseLiveChatClient<
         }
     }
 
+    public void addStatusChangeListener(IClientStatusChangeListener listener) {
+        this.statusChangeSupport.addPropertyChangeListener(listener);
+    }
+
+    public void removeStatusChangeListener(IClientStatusChangeListener listener) {
+        this.statusChangeSupport.removePropertyChangeListener(listener);
+    }
+
+    /**
+     * @deprecated use {@link #addStatusChangeListener(IClientStatusChangeListener)}
+     */
     public void addStatusChangeListener(PropertyChangeListener listener) {
         this.statusChangeSupport.addPropertyChangeListener(listener);
     }
 
+    /**
+     * @deprecated use {@link #removeStatusChangeListener(IClientStatusChangeListener)}
+     */
     public void removeStatusChangeListener(PropertyChangeListener listener) {
         this.statusChangeSupport.removePropertyChangeListener(listener);
     }
