@@ -6,21 +6,18 @@ autolabeler:
   - label: 'chore'
     files:
       - '*.md'
-    branch:
-      - '/docs{0,1}\/.+/'
   - label: 'bug'
     branch:
-      - '/fix\/.+/'
-    title:
-      - '/fix/i'
+      - '/fix.+/'
+  - label: 'feature'
+    branch:
+      - '/feat.+/'
   - label: 'enhancement'
     branch:
-      - '/feature\/.+/'
-#    body:
-#      - '/JIRA-[0-9]{1,4}/'
+      - '/perf.+/'
   - label: 'cicd'
-    title:
-      - '/cicd/i'
+    branch:
+      - '/cicd.+/'
 # Emoji reference: https://gitmoji.carloscuesta.me/
 categories:
   - title: '🚀 Features'
@@ -29,19 +26,12 @@ categories:
       - 'enhancement'
   - title: '🐛 Bug Fixes'
     labels:
-      - 'fix'
-      - 'bugfix'
       - 'bug'
-  - title: '📝 Documentation updates'
-    labels:
-      - documentation
   - title: '🧰 Maintenance'
     labels:
+      - 'cicd'
       - 'chore'
       - 'dependencies'
-  - title: '🚦 Tests'
-    labels:
-      - 'test'
 exclude-labels:
   - reverted
   - no-changelog
