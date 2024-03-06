@@ -9,11 +9,9 @@ autolabeler:
   - label: 'bug'
     branch:
       - '/fix.+/'
-  - label: 'feature'
-    branch:
-      - '/feat.+/'
   - label: 'enhancement'
     branch:
+      - '/feat.+/'
       - '/perf.+/'
   - label: 'cicd'
     branch:
@@ -22,7 +20,6 @@ autolabeler:
 categories:
   - title: '🚀 Features'
     labels:
-      - 'feature'
       - 'enhancement'
   - title: '🐛 Bug Fixes'
     labels:
@@ -31,7 +28,6 @@ categories:
     labels:
       - 'cicd'
       - 'chore'
-      - 'dependencies'
 exclude-labels:
   - reverted
   - no-changelog
