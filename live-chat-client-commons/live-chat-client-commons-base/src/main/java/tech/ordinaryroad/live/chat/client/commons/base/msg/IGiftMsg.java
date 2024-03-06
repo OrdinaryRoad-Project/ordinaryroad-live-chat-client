@@ -80,6 +80,8 @@ public interface IGiftMsg extends IMsg {
 
     /**
      * 礼物数量
+     *
+     * @return 礼物数量，可能为0
      */
     int getGiftCount();
 
