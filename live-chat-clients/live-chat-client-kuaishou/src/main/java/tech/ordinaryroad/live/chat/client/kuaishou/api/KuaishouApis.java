@@ -66,7 +66,7 @@ public class KuaishouApis {
     /**
      * 礼物连击缓存
      */
-    private static final TimedCache<String, WebGiftFeedOuterClass.WebGiftFeed> WEB_GIFT_FEED_CACHE = new TimedCache<>(300000, new ConcurrentHashMap<>());
+    private static final TimedCache<String, WebGiftFeedOuterClass.WebGiftFeed> WEB_GIFT_FEED_CACHE = new TimedCache<>(300 * 1000L, new ConcurrentHashMap<>());
 
     public static RoomInitResult roomInit(Object roomId, String cookie) {
         @Cleanup
@@ -230,8 +230,6 @@ public class KuaishouApis {
             WebGiftFeedOuterClass.WebGiftFeed webGiftFeedByMergeKey = WEB_GIFT_FEED_CACHE.get(mergeKey);
             int comboCountByMergeKey = webGiftFeedByMergeKey.getComboCount();
             giftCount = webGiftFeed.getComboCount() - comboCountByMergeKey;
-
-            WEB_GIFT_FEED_CACHE.put(mergeKey, webGiftFeed);
         } else {
             int batchSize = webGiftFeed.getBatchSize();
             int comboCount = webGiftFeed.getComboCount();
@@ -240,9 +238,8 @@ public class KuaishouApis {
             } else {
                 giftCount = comboCount;
             }
-
-            WEB_GIFT_FEED_CACHE.put(mergeKey, webGiftFeed);
         }
+        WEB_GIFT_FEED_CACHE.put(mergeKey, webGiftFeed);
         return giftCount;
     }
 
