@@ -30,6 +30,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IGiftMsg;
+import tech.ordinaryroad.live.chat.client.douyin.api.DouyinApis;
 import tech.ordinaryroad.live.chat.client.douyin.msg.base.IDouyinMsg;
 import tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_gift_message_msg;
 
@@ -87,7 +88,7 @@ public class DouyinGiftMsg implements IDouyinMsg, IGiftMsg {
 
     @Override
     public int getGiftCount() {
-        return (int) msg.getTotalCount();
+        return DouyinApis.calculateGiftCount(this);
     }
 
     @Override

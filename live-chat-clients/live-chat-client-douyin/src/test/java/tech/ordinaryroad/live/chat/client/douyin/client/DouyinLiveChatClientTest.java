@@ -12,6 +12,7 @@ import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinEnterRoomMsg;
 import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinGiftMsg;
 import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinLikeMsg;
 import tech.ordinaryroad.live.chat.client.douyin.netty.handler.DouyinBinaryFrameHandler;
+import tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_gift_message_msg;
 
 /**
  * @author mjz
@@ -67,7 +68,20 @@ class DouyinLiveChatClientTest {
 
             @Override
             public void onGiftMsg(DouyinBinaryFrameHandler binaryFrameHandler, DouyinGiftMsg msg) {
-                log.info("{} 收到礼物 {} {}({}) {} {}({})x{}({})", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid(), "赠送", msg.getGiftName(), msg.getGiftId(), msg.getGiftCount(), msg.getGiftPrice());
+                douyin_webcast_gift_message_msg douyinWebcastGiftMessageMsg = msg.getMsg();
+
+                boolean combo = douyinWebcastGiftMessageMsg.getGift().getCombo();
+
+                long msgId = douyinWebcastGiftMessageMsg.getCommon().getMsgId();
+                long comboCount = douyinWebcastGiftMessageMsg.getComboCount();
+                long groupId = douyinWebcastGiftMessageMsg.getGroupId();
+                long groupCount = douyinWebcastGiftMessageMsg.getGroupCount();
+                long totalCount = douyinWebcastGiftMessageMsg.getTotalCount();
+                String traceId = douyinWebcastGiftMessageMsg.getTraceId();
+                long repeatCount = douyinWebcastGiftMessageMsg.getRepeatCount();
+                if (msg.getGiftCount() != 0) {
+                    log.info("{} 收到礼物 {} {}({}) {} {}({})x{}({}) msgId:{}, groupId:{}, groupCount:{}, comboCount:{}, totalCount:{}, repeatCount:{}, traceId:{}, combo:{}", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid(), "赠送", msg.getGiftName(), msg.getGiftId(), msg.getGiftCount(), msg.getGiftPrice(), msgId, groupId, groupCount, comboCount, totalCount, repeatCount, traceId, combo);
+                }
             }
 
             @Override
