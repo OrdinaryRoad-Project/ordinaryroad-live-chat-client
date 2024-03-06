@@ -24,6 +24,7 @@
 
 package tech.ordinaryroad.live.chat.client.douyin.api;
 
+import cn.hutool.cache.impl.TimedCache;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.ReUtil;
@@ -35,8 +36,11 @@ import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCookieUtil;
+import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinGiftMsg;
+import tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_gift_message_msg;
 
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author mjz
@@ -53,6 +57,10 @@ public class DouyinApis {
     public static final int AC_NONCE_LENGTH = 21;
     public static final String PATTERN_USER_UNIQUE_ID = "\\\\\"user_unique_id\\\\\":\\\\\"(\\d+)\\\\\"";
     public static final String PATTERN_ROOM_ID = "\\\\\"roomId\\\\\":\\\\\"(\\d+)\\\\\"";
+    /**
+     * 礼物连击缓存
+     */
+    private static final TimedCache<String, douyin_webcast_gift_message_msg> DOUYIN_GIFT_MSG_CACHE = new TimedCache<>(300 * 1000L, new ConcurrentHashMap<>());
 
     public static RoomInitResult roomInit(Object roomId, String cookie) {
         Map<String, String> cookieMap = OrLiveChatCookieUtil.parseCookieString(cookie);
@@ -79,7 +87,6 @@ public class DouyinApis {
             throw new BaseException("获取" + roomId + "真实房间ID失败");
         }
 
-
         return RoomInitResult.builder()
                 .ttwid(ttwid)
                 .msToken(msToken)
@@ -91,6 +98,35 @@ public class DouyinApis {
 
     public static RoomInitResult roomInit(Object roomId) {
         return roomInit(roomId, null);
+    }
+
+    /**
+     * 计算抖音直播间收到礼物的个数
+     *
+     * @param msg KuaishouGiftMsg
+     * @return 礼物个数
+     */
+    public static int calculateGiftCount(DouyinGiftMsg msg) {
+        if (msg == null || msg.getMsg() == null) {
+            return 0;
+        }
+
+        long giftCount;
+
+        douyin_webcast_gift_message_msg douyinWebcastGiftMessageMsg = msg.getMsg();
+        long groupId = douyinWebcastGiftMessageMsg.getGroupId();
+        long giftId = douyinWebcastGiftMessageMsg.getLongGiftId();
+        // groupId有时会重复
+        String key = groupId + "-" + giftId;
+        if (DOUYIN_GIFT_MSG_CACHE.containsKey(key)) {
+            douyin_webcast_gift_message_msg douyinWebcastGiftMessageMsgByGroupId = DOUYIN_GIFT_MSG_CACHE.get(key);
+            long repeatCountByGroupId = douyinWebcastGiftMessageMsgByGroupId.getRepeatCount();
+            giftCount = douyinWebcastGiftMessageMsg.getRepeatCount() - repeatCountByGroupId;
+        } else {
+            giftCount = douyinWebcastGiftMessageMsg.getRepeatCount();
+        }
+        DOUYIN_GIFT_MSG_CACHE.put(key, douyinWebcastGiftMessageMsg);
+        return (int) giftCount;
     }
 
     @Getter
