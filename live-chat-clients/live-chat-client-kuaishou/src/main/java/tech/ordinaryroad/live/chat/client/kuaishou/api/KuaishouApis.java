@@ -223,7 +223,6 @@ public class KuaishouApis {
         }
 
         int giftCount;
-
         WebGiftFeedOuterClass.WebGiftFeed webGiftFeed = msg.getMsg();
         String mergeKey = webGiftFeed.getMergeKey();
         if (WEB_GIFT_FEED_CACHE.containsKey(mergeKey)) {
@@ -240,6 +239,8 @@ public class KuaishouApis {
             }
         }
         WEB_GIFT_FEED_CACHE.put(mergeKey, webGiftFeed);
+
+        msg.setCalculatedGiftCount(giftCount);
         return giftCount;
     }
 

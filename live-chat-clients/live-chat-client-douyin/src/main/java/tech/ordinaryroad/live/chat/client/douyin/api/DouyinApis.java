@@ -112,7 +112,6 @@ public class DouyinApis {
         }
 
         long giftCount;
-
         douyin_webcast_gift_message_msg douyinWebcastGiftMessageMsg = msg.getMsg();
         long groupId = douyinWebcastGiftMessageMsg.getGroupId();
         long giftId = douyinWebcastGiftMessageMsg.getLongGiftId();
@@ -126,6 +125,8 @@ public class DouyinApis {
             giftCount = douyinWebcastGiftMessageMsg.getRepeatCount();
         }
         DOUYIN_GIFT_MSG_CACHE.put(key, douyinWebcastGiftMessageMsg);
+
+        msg.setCalculatedGiftCount((int) giftCount);
         return (int) giftCount;
     }
 

@@ -44,6 +44,14 @@ import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClas
 public class KuaishouGiftMsg implements IKuaishouMsg, IGiftMsg {
 
     private WebGiftFeedOuterClass.WebGiftFeed msg;
+    /**
+     * 计算后得到的礼物个数
+     */
+    private int calculatedGiftCount;
+
+    public KuaishouGiftMsg(WebGiftFeedOuterClass.WebGiftFeed msg) {
+        this.msg = msg;
+    }
 
     @Override
     public String getBadgeName() {
@@ -87,7 +95,7 @@ public class KuaishouGiftMsg implements IKuaishouMsg, IGiftMsg {
 
     @Override
     public int getGiftCount() {
-        return KuaishouApis.calculateGiftCount(this);
+        return this.calculatedGiftCount;
     }
 
     @Override

@@ -35,6 +35,7 @@ import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
+import tech.ordinaryroad.live.chat.client.douyin.api.DouyinApis;
 import tech.ordinaryroad.live.chat.client.douyin.client.DouyinLiveChatClient;
 import tech.ordinaryroad.live.chat.client.douyin.constant.DouyinCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyin.listener.IDouyinMsgListener;
@@ -101,7 +102,12 @@ public class DouyinBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<
             case WebcastGiftMessage: {
                 try {
                     douyin_webcast_gift_message_msg douyinWebcastGiftMessageMsg = douyin_webcast_gift_message_msg.parseFrom(payload);
-                    iteratorMsgListeners(msgListener -> msgListener.onGiftMsg(DouyinBinaryFrameHandler.this, new DouyinGiftMsg(douyinWebcastGiftMessageMsg)));
+                    iteratorMsgListeners(msgListener -> {
+                        DouyinGiftMsg msg = new DouyinGiftMsg(douyinWebcastGiftMessageMsg);
+                        // 计算礼物个数
+                        DouyinApis.calculateGiftCount(msg);
+                        msgListener.onGiftMsg(DouyinBinaryFrameHandler.this, msg);
+                    });
                 } catch (InvalidProtocolBufferException e) {
                     throw new BaseException(e);
                 }

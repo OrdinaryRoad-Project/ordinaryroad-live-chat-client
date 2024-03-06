@@ -33,6 +33,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
+import tech.ordinaryroad.live.chat.client.kuaishou.api.KuaishouApis;
 import tech.ordinaryroad.live.chat.client.kuaishou.client.KuaishouLiveChatClient;
 import tech.ordinaryroad.live.chat.client.kuaishou.listener.IKuaishouMsgListener;
 import tech.ordinaryroad.live.chat.client.kuaishou.msg.KuaishouDanmuMsg;
@@ -80,7 +81,12 @@ public class KuaishouBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
                 }
                 if (scWebFeedPush.getGiftFeedsCount() > 0) {
                     for (WebGiftFeedOuterClass.WebGiftFeed webGiftFeed : scWebFeedPush.getGiftFeedsList()) {
-                        iteratorMsgListeners(msgListener -> msgListener.onGiftMsg(KuaishouBinaryFrameHandler.this, new KuaishouGiftMsg(webGiftFeed)));
+                        iteratorMsgListeners(msgListener -> {
+                            KuaishouGiftMsg msg = new KuaishouGiftMsg(webGiftFeed);
+                            // 计算礼物个数
+                            KuaishouApis.calculateGiftCount(msg);
+                            msgListener.onGiftMsg(KuaishouBinaryFrameHandler.this, msg);
+                        });
                     }
                 }
                 if (scWebFeedPush.getLikeFeedsCount() > 0) {
