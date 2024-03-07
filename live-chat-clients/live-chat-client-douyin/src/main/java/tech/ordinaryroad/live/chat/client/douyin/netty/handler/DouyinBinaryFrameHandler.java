@@ -98,7 +98,6 @@ public class DouyinBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<
                 }
                 break;
             }
-            // FIXME 礼物连击
             case WebcastGiftMessage: {
                 try {
                     douyin_webcast_gift_message_msg douyinWebcastGiftMessageMsg = douyin_webcast_gift_message_msg.parseFrom(payload);
