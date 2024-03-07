@@ -142,7 +142,7 @@ Live room WebSocket chat client
 
 可以重写`onCmdMsg(收到的所有CMD消息)`或`onOtherCmdMsg(框架未处理的CMD消息)`回调方法，判断CMD来监听框架已经定义的CMD类型
 
-如果要监听的消息枚举类中未定义，可以考虑重写`onUnknownCmdMsg(未知CMD消息)`方法，并修改消息回调接口的函数签名
+如果要监听的消息枚举类中未定义，可以考虑重写`onUnknownCmdMsg(未知CMD消息)`方法
 
 ```java
 @Override
@@ -175,7 +175,7 @@ public void onOtherCmdMsg(BilibiliCmdEnum cmd, ICmdMsg<BilibiliCmdEnum> cmdMsg) 
 2. 创建Client并传入配置、添加消息回调
 3. 开始监听直播间
 
-> 如果需要查看其他平台的效果，请将`Bilibili`改为其他平台对应的英文
+> 如果需要查看其他平台的效果，请将`Bilibili`改为其他平台对应的英文，并修改消息回调接口的函数签名
 
 ```java
 public class ClientModeExample {
