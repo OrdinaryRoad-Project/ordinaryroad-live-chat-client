@@ -28,7 +28,7 @@
     <parent>
         <groupId>tech.ordinaryroad</groupId>
         <artifactId>live-chat-clients</artifactId>
-        <version>0.2.2</version>
+        <version>0.2.3</version>
     </parent>
     <packaging>jar</packaging>
 
