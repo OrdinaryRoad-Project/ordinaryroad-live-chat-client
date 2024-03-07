@@ -92,7 +92,7 @@ class KuaishouLiveChatClientTest {
                 String mergeKey = msg.getMsg().getMergeKey();
                 map.computeIfAbsent(mergeKey, s -> new ArrayList<>()).add(msg.getMsg());
 
-                if (msg.getGiftCount() != 0) {
+                if (msg.getGiftCount() > 0) {
                     log.info("{} 收到礼物 [{}] {}({}) {} {}({})x{}({}) mergeKey:{},comboCount:{}, batchSize:{}", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid(), "赠送", msg.getGiftName(), msg.getGiftId(), msg.getGiftCount(), msg.getGiftPrice(), msg.getMsg().getMergeKey(), msg.getMsg().getComboCount(), msg.getMsg().getBatchSize());
                 }
             }

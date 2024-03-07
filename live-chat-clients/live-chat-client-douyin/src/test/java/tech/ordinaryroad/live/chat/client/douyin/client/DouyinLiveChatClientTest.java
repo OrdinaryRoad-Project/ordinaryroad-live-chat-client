@@ -79,7 +79,7 @@ class DouyinLiveChatClientTest {
                 long totalCount = douyinWebcastGiftMessageMsg.getTotalCount();
                 String traceId = douyinWebcastGiftMessageMsg.getTraceId();
                 long repeatCount = douyinWebcastGiftMessageMsg.getRepeatCount();
-                if (msg.getGiftCount() != 0) {
+                if (msg.getGiftCount() > 0) {
                     log.info("{} 收到礼物 {} {}({}) {} {}({})x{}({}) msgId:{}, groupId:{}, groupCount:{}, comboCount:{}, totalCount:{}, repeatCount:{}, traceId:{}, combo:{}", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid(), "赠送", msg.getGiftName(), msg.getGiftId(), msg.getGiftCount(), msg.getGiftPrice(), msgId, groupId, groupCount, comboCount, totalCount, repeatCount, traceId, combo);
                 }
             }
