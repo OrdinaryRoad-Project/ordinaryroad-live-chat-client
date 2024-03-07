@@ -268,7 +268,7 @@ public class ClientModeExample {
     - IDanmuMsgListener（所有平台）
         - onDanmuMsg：收到弹幕消息
     - IGiftMsgListener（所有平台，快手礼物消息不全，缺少礼物单价、接收方信息、发送方粉丝牌信息）
-        - onGiftMsg：收到礼物消息
+        - onGiftMsg：收到礼物消息（抖音、快手平台需要判断礼物个数是否大于0）
     - ISuperChatMsgListener（B站）
         - onSuperChatMsg：收到醒目留言
     - IEnterRoomMsgListener（B站、斗鱼、抖音，虎牙只能接收到高级用户的入房回调）
