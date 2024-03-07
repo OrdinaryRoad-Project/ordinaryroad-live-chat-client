@@ -124,7 +124,10 @@ public class DouyinApis {
         } else {
             giftCount = douyinWebcastGiftMessageMsg.getRepeatCount();
         }
-        DOUYIN_GIFT_MSG_CACHE.put(key, douyinWebcastGiftMessageMsg);
+        // 存在顺序错误的情况，后收到的消息礼物个数反而减少了，跳过缓存该消息，但仍保存计算后的小于0的礼物个数
+        if (giftCount > 0) {
+            DOUYIN_GIFT_MSG_CACHE.put(key, douyinWebcastGiftMessageMsg);
+        }
 
         msg.setCalculatedGiftCount((int) giftCount);
         return (int) giftCount;
