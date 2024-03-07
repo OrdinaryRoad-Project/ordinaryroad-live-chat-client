@@ -116,7 +116,7 @@ public class DouyinApis {
         long groupId = douyinWebcastGiftMessageMsg.getGroupId();
         long giftId = douyinWebcastGiftMessageMsg.getLongGiftId();
         // groupId有时会重复
-        String key = groupId + "-" + giftId;
+        String key = groupId + "-" + msg.getUid() + "-" + giftId;
         if (DOUYIN_GIFT_MSG_CACHE.containsKey(key)) {
             douyin_webcast_gift_message_msg douyinWebcastGiftMessageMsgByGroupId = DOUYIN_GIFT_MSG_CACHE.get(key);
             long repeatCountByGroupId = douyinWebcastGiftMessageMsgByGroupId.getRepeatCount();
