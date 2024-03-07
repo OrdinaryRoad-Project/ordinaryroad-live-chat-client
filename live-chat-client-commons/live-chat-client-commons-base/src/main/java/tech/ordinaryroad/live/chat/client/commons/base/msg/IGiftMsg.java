@@ -81,7 +81,7 @@ public interface IGiftMsg extends IMsg {
     /**
      * 礼物数量
      *
-     * @return 礼物数量，可能为0
+     * @return 礼物数量，可能小于等于0
      */
     int getGiftCount();
 
