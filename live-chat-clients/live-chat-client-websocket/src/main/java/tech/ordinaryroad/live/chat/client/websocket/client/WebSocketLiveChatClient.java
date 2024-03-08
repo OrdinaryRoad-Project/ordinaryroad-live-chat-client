@@ -27,9 +27,11 @@ package tech.ordinaryroad.live.chat.client.websocket.client;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
+import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshakerFactory;
 import io.netty.handler.codec.http.websocketx.WebSocketVersion;
 import lombok.extern.slf4j.Slf4j;
+import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
 import tech.ordinaryroad.live.chat.client.websocket.config.WebSocketLiveChatClientConfig;
@@ -39,6 +41,8 @@ import tech.ordinaryroad.live.chat.client.websocket.listener.IWebSocketMsgListen
 import tech.ordinaryroad.live.chat.client.websocket.msg.base.IWebSocketMsg;
 import tech.ordinaryroad.live.chat.client.websocket.netty.handler.WebSocketBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.websocket.netty.handler.WebSocketConnectionHandler;
+
+import java.util.function.Consumer;
 
 /**
  * @author mjz
@@ -85,5 +89,13 @@ public class WebSocketLiveChatClient extends BaseNettyClient<
     @Override
     public WebSocketBinaryFrameHandler initBinaryFrameHandler() {
         return new WebSocketBinaryFrameHandler(super.msgListeners, WebSocketLiveChatClient.this);
+    }
+
+    @Override
+    public void send(Object msg, Runnable success, Consumer<Throwable> failed) {
+        if (!(msg instanceof BinaryWebSocketFrame)) {
+            throw new BaseException("WebSocketLiveChatClient.send 仅支持 BinaryWebSocketFrame类型的消息");
+        }
+        super.send(msg, success, failed);
     }
 }
