@@ -88,7 +88,6 @@ public class HuyaLiveChatClient extends BaseNettyClient<
         this(config, null);
     }
 
-
     @Override
     public HuyaConnectionHandler initConnectionHandler(IBaseConnectionListener<HuyaConnectionHandler> clientConnectionListener) {
         return new HuyaConnectionHandler(
