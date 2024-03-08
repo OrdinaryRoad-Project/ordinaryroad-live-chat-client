@@ -122,7 +122,11 @@ public abstract class BaseNettyClient
         }
         try {
             this.websocketUri = new URI(getWebSocketUriString());
-            SslContext sslCtx = SslContextBuilder.forClient().build();
+
+            SslContext sslCtx = null;
+            if ("wss".equalsIgnoreCase(this.websocketUri.getScheme())) {
+                sslCtx = SslContextBuilder.forClient().build();
+            }
 
             this.clientConnectionListener = new IBaseConnectionListener<ConnectionHandler>() {
                 @Override
@@ -143,6 +147,7 @@ public abstract class BaseNettyClient
             this.binaryFrameHandler = this.initBinaryFrameHandler();
             this.connectionHandler = this.initConnectionHandler(this.clientConnectionListener);
 
+            SslContext finalSslCtx = sslCtx;
             this.bootstrap.group(this.workerGroup)
                     // 创建Channel
                     .channel(NioSocketChannel.class)
@@ -156,8 +161,10 @@ public abstract class BaseNettyClient
                             // 责任链
                             ChannelPipeline pipeline = ch.pipeline();
 
-                            // 放到第一位 addFirst 支持wss链接服务端
-                            pipeline.addFirst(sslCtx.newHandler(ch.alloc(), BaseNettyClient.this.websocketUri.getHost(), getInetPort()));
+                            // 放到第一位，支持wss链接服务端
+                            if (finalSslCtx != null) {
+                                pipeline.addLast(finalSslCtx.newHandler(ch.alloc(), BaseNettyClient.this.websocketUri.getHost(), getInetPort()));
+                            }
 
                             // 添加一个http的编解码器
                             pipeline.addLast(new HttpClientCodec());
