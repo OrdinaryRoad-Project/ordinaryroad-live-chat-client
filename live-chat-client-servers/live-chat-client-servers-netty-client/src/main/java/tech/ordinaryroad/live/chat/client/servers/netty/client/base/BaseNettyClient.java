@@ -254,7 +254,12 @@ public abstract class BaseNettyClient
             return;
         }
         if (log.isWarnEnabled()) {
-            log.warn("{}s后将重新连接 {}", getConfig().getReconnectDelay(), getConfig().getRoomId());
+            Object roomId = getConfig().getRoomId();
+            if (roomId == null) {
+                log.warn("{}s后将重新连接 {}", getConfig().getReconnectDelay(), getConfig().getWebsocketUri());
+            } else {
+                log.warn("{}s后将重新连接 {}", getConfig().getReconnectDelay(), roomId);
+            }
         }
         workerGroup.schedule(() -> {
             this.setStatus(ClientStatusEnums.RECONNECTING);
