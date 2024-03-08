@@ -24,6 +24,8 @@
 
 package tech.ordinaryroad.live.chat.client.websocket.client;
 
+import cn.hutool.core.util.StrUtil;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
@@ -33,6 +35,7 @@ import io.netty.handler.codec.http.websocketx.WebSocketVersion;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
+import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
 import tech.ordinaryroad.live.chat.client.websocket.config.WebSocketLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.websocket.constant.WebSocketCmdEnum;
@@ -42,6 +45,7 @@ import tech.ordinaryroad.live.chat.client.websocket.msg.base.IWebSocketMsg;
 import tech.ordinaryroad.live.chat.client.websocket.netty.handler.WebSocketBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.websocket.netty.handler.WebSocketConnectionHandler;
 
+import java.nio.charset.StandardCharsets;
 import java.util.function.Consumer;
 
 /**
@@ -57,6 +61,8 @@ public class WebSocketLiveChatClient extends BaseNettyClient<
         WebSocketConnectionHandler,
         WebSocketBinaryFrameHandler
         > {
+
+    private WebSocketLiveChatClient forwardClient;
 
     public WebSocketLiveChatClient(WebSocketLiveChatClientConfig config, IWebSocketMsgListener msgListener, IWebSocketConnectionListener connectionListener, EventLoopGroup workerGroup) {
         super(config, workerGroup, connectionListener);
@@ -89,6 +95,25 @@ public class WebSocketLiveChatClient extends BaseNettyClient<
     @Override
     public WebSocketBinaryFrameHandler initBinaryFrameHandler() {
         return new WebSocketBinaryFrameHandler(super.msgListeners, WebSocketLiveChatClient.this);
+    }
+
+    @Override
+    public void init() {
+        if (StrUtil.isNotBlank(getConfig().getForwardWebsocketUri())) {
+            forwardClient = new WebSocketLiveChatClient(
+                    WebSocketLiveChatClientConfig.builder()
+                            .websocketUri(getConfig().getForwardWebsocketUri())
+                            .build()
+            );
+            forwardClient.connect();
+            addMsgListener(new IWebSocketMsgListener() {
+                @Override
+                public void onMsg(IMsg msg) {
+                    forwardClient.send(new BinaryWebSocketFrame(Unpooled.wrappedBuffer(msg.toString().getBytes(StandardCharsets.UTF_8))));
+                }
+            });
+        }
+        super.init();
     }
 
     @Override

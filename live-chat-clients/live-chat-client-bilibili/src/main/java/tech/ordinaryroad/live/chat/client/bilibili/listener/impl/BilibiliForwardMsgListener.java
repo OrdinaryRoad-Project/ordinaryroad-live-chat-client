@@ -22,16 +22,14 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.huya.listener.impl;
+package tech.ordinaryroad.live.chat.client.bilibili.listener.impl;
 
 import cn.hutool.core.util.StrUtil;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
+import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliMsgListener;
+import tech.ordinaryroad.live.chat.client.bilibili.msg.*;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
-import tech.ordinaryroad.live.chat.client.huya.listener.IHuyaMsgListener;
-import tech.ordinaryroad.live.chat.client.huya.msg.MessageNoticeMsg;
-import tech.ordinaryroad.live.chat.client.huya.msg.SendItemSubBroadcastPacketMsg;
-import tech.ordinaryroad.live.chat.client.huya.msg.VipEnterBannerMsg;
 import tech.ordinaryroad.live.chat.client.websocket.client.WebSocketLiveChatClient;
 import tech.ordinaryroad.live.chat.client.websocket.config.WebSocketLiveChatClientConfig;
 
@@ -41,11 +39,11 @@ import java.nio.charset.StandardCharsets;
  * @author mjz
  * @date 2024/3/8
  */
-public class HuyaForwardMsgListener implements IHuyaMsgListener {
+public class BilibiliForwardMsgListener implements IBilibiliMsgListener {
 
     private WebSocketLiveChatClient webSocketLiveChatClient;
 
-    public HuyaForwardMsgListener(String webSocketUri) {
+    public BilibiliForwardMsgListener(String webSocketUri) {
         if (StrUtil.isNotBlank(webSocketUri)) {
             webSocketLiveChatClient = new WebSocketLiveChatClient(
                     WebSocketLiveChatClientConfig.builder()
@@ -57,17 +55,42 @@ public class HuyaForwardMsgListener implements IHuyaMsgListener {
     }
 
     @Override
-    public void onDanmuMsg(MessageNoticeMsg msg) {
+    public void onDanmuMsg(DanmuMsgMsg msg) {
         forward(msg);
     }
 
     @Override
-    public void onGiftMsg(SendItemSubBroadcastPacketMsg msg) {
+    public void onGiftMsg(SendGiftMsg msg) {
         forward(msg);
     }
 
     @Override
-    public void onEnterRoomMsg(VipEnterBannerMsg msg) {
+    public void onSuperChatMsg(SuperChatMessageMsg msg) {
+        forward(msg);
+    }
+
+    @Override
+    public void onEnterRoomMsg(InteractWordMsg msg) {
+        forward(msg);
+    }
+
+    @Override
+    public void onLikeMsg(LikeInfoV3ClickMsg msg) {
+        forward(msg);
+    }
+
+    @Override
+    public void onEntryEffect(SendSmsReplyMsg msg) {
+        forward(msg);
+    }
+
+    @Override
+    public void onWatchedChange(SendSmsReplyMsg msg) {
+        forward(msg);
+    }
+
+    @Override
+    public void onClickUpdate(SendSmsReplyMsg msg) {
         forward(msg);
     }
 

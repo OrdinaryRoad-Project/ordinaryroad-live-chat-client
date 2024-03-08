@@ -22,16 +22,17 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.huya.listener.impl;
+package tech.ordinaryroad.live.chat.client.douyin.listener.impl;
 
 import cn.hutool.core.util.StrUtil;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
-import tech.ordinaryroad.live.chat.client.huya.listener.IHuyaMsgListener;
-import tech.ordinaryroad.live.chat.client.huya.msg.MessageNoticeMsg;
-import tech.ordinaryroad.live.chat.client.huya.msg.SendItemSubBroadcastPacketMsg;
-import tech.ordinaryroad.live.chat.client.huya.msg.VipEnterBannerMsg;
+import tech.ordinaryroad.live.chat.client.douyin.listener.IDouyinMsgListener;
+import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinDanmuMsg;
+import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinEnterRoomMsg;
+import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinGiftMsg;
+import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinLikeMsg;
 import tech.ordinaryroad.live.chat.client.websocket.client.WebSocketLiveChatClient;
 import tech.ordinaryroad.live.chat.client.websocket.config.WebSocketLiveChatClientConfig;
 
@@ -41,11 +42,11 @@ import java.nio.charset.StandardCharsets;
  * @author mjz
  * @date 2024/3/8
  */
-public class HuyaForwardMsgListener implements IHuyaMsgListener {
+public class DouyinForwardMsgListener implements IDouyinMsgListener {
 
     private WebSocketLiveChatClient webSocketLiveChatClient;
 
-    public HuyaForwardMsgListener(String webSocketUri) {
+    public DouyinForwardMsgListener(String webSocketUri) {
         if (StrUtil.isNotBlank(webSocketUri)) {
             webSocketLiveChatClient = new WebSocketLiveChatClient(
                     WebSocketLiveChatClientConfig.builder()
@@ -57,17 +58,22 @@ public class HuyaForwardMsgListener implements IHuyaMsgListener {
     }
 
     @Override
-    public void onDanmuMsg(MessageNoticeMsg msg) {
+    public void onDanmuMsg(DouyinDanmuMsg msg) {
         forward(msg);
     }
 
     @Override
-    public void onGiftMsg(SendItemSubBroadcastPacketMsg msg) {
+    public void onGiftMsg(DouyinGiftMsg msg) {
         forward(msg);
     }
 
     @Override
-    public void onEnterRoomMsg(VipEnterBannerMsg msg) {
+    public void onEnterRoomMsg(DouyinEnterRoomMsg msg) {
+        forward(msg);
+    }
+
+    @Override
+    public void onLikeMsg(DouyinLikeMsg msg) {
         forward(msg);
     }
 
