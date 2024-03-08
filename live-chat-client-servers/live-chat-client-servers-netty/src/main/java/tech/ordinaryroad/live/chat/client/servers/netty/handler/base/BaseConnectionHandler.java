@@ -31,8 +31,6 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketHandshakeException;
-import io.netty.handler.ssl.SslCloseCompletionEvent;
-import io.netty.handler.ssl.SslHandshakeCompletionEvent;
 import io.netty.util.concurrent.ScheduledFuture;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -68,7 +66,6 @@ public abstract class BaseConnectionHandler<ConnectionHandler extends BaseConnec
         this(handshaker, null);
     }
 
-
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) {
         this.handshakeFuture = ctx.newPromise();
@@ -76,10 +73,24 @@ public abstract class BaseConnectionHandler<ConnectionHandler extends BaseConnec
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
+        if (log.isDebugEnabled()) {
+            log.debug("channelActive");
+        }
         this.handshaker.handshake(ctx.channel());
     }
 
-    protected void channelRead0(ChannelHandlerContext ctx, FullHttpResponse msg) throws Exception {
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) {
+        if (log.isDebugEnabled()) {
+            log.debug("channelInactive");
+        }
+        heartbeatCancel();
+        if (this.listener != null) {
+            listener.onDisconnected((ConnectionHandler) BaseConnectionHandler.this);
+        }
+    }
+
+    protected void channelRead0(ChannelHandlerContext ctx, FullHttpResponse msg) {
         // 判断是否正确握手
         if (this.handshaker.isHandshakeComplete()) {
             handshakeSuccessfully(ctx, msg);
@@ -90,28 +101,6 @@ public abstract class BaseConnectionHandler<ConnectionHandler extends BaseConnec
                 handshakeFailed(msg, e);
             }
         }
-    }
-
-    @Override
-    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        if (log.isDebugEnabled()) {
-            log.debug("userEventTriggered {}", evt.getClass());
-        }
-        if (evt instanceof SslHandshakeCompletionEvent) {
-            heartbeatCancel();
-            heartbeatStart(ctx);
-            if (this.listener != null) {
-                listener.onConnected((ConnectionHandler) BaseConnectionHandler.this);
-            }
-        } else if (evt instanceof SslCloseCompletionEvent) {
-            heartbeatCancel();
-            if (this.listener != null) {
-                listener.onDisconnected((ConnectionHandler) BaseConnectionHandler.this);
-            }
-        } else {
-            log.error("待处理 {}", evt.getClass());
-        }
-        super.userEventTriggered(ctx, evt);
     }
 
     /**
@@ -153,11 +142,18 @@ public abstract class BaseConnectionHandler<ConnectionHandler extends BaseConnec
         }
         this.handshaker.finishHandshake(ctx.channel(), msg);
         this.handshakeFuture.setSuccess();
+
+        heartbeatCancel();
+        heartbeatStart(ctx);
+        if (this.listener != null) {
+            listener.onConnected((ConnectionHandler) BaseConnectionHandler.this);
+        }
     }
 
     private void handshakeFailed(FullHttpResponse msg, WebSocketHandshakeException e) {
         log.error("握手失败！status:" + msg.status(), e);
         this.handshakeFuture.setFailure(e);
+
         if (listener != null) {
             this.listener.onConnectFailed((ConnectionHandler) this);
         }
