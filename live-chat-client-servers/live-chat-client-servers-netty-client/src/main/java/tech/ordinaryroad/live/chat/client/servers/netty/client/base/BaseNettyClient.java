@@ -176,7 +176,9 @@ public abstract class BaseNettyClient
                             // 连接处理器
                             pipeline.addLast(BaseNettyClient.this.connectionHandler);
                             // 弹幕处理器
-                            pipeline.addLast(BaseNettyClient.this.binaryFrameHandler);
+                            if (BaseNettyClient.this.binaryFrameHandler != null) {
+                                pipeline.addLast(BaseNettyClient.this.binaryFrameHandler);
+                            }
                         }
                     });
             this.setStatus(ClientStatusEnums.INITIALIZED);
@@ -351,6 +353,8 @@ public abstract class BaseNettyClient
     }
 
     public void iteratorMsgListeners(Consumer<MsgListener> consumer) {
-        binaryFrameHandler.iteratorMsgListeners(consumer);
+        if (binaryFrameHandler != null) {
+            binaryFrameHandler.iteratorMsgListeners(consumer);
+        }
     }
 }
