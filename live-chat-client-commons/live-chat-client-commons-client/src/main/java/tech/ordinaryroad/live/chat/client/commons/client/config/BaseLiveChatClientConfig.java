@@ -55,6 +55,11 @@ public abstract class BaseLiveChatClientConfig {
     private String websocketUri;
 
     /**
+     * 消息转发地址，WebSocket Server地址
+     */
+    private String forwardWebsocketUri;
+
+    /**
      * 浏览器中的Cookie
      */
     private String cookie;
