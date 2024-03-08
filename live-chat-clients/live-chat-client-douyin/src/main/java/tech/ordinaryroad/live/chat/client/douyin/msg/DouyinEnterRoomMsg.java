@@ -69,4 +69,9 @@ public class DouyinEnterRoomMsg implements IDouyinMsg, IEnterRoomMsg {
     public String getUserAvatar() {
         return CollUtil.getFirst(msg.getUser().getAvatarThumb().getUrlListListList());
     }
+
+    @Override
+    public String toString() {
+        return msg.toString();
+    }
 }

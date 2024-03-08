@@ -112,4 +112,9 @@ public class DouyinGiftMsg implements IDouyinMsg, IGiftMsg {
     public String getReceiveUsername() {
         return msg.getToUser().getNickname();
     }
+
+    @Override
+    public String toString() {
+        return msg.toString();
+    }
 }

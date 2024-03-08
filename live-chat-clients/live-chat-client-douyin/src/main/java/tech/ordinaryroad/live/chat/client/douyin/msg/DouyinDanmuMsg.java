@@ -74,4 +74,9 @@ public class DouyinDanmuMsg implements IDouyinMsg, IDanmuMsg {
     public String getContent() {
         return msg.getContent();
     }
+
+    @Override
+    public String toString() {
+        return msg.toString();
+    }
 }

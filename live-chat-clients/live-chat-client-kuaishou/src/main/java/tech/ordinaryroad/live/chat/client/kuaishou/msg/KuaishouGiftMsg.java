@@ -112,4 +112,9 @@ public class KuaishouGiftMsg implements IKuaishouMsg, IGiftMsg {
     public String getReceiveUsername() {
         return null;
     }
+
+    @Override
+    public String toString() {
+        return msg.toString();
+    }
 }

@@ -97,4 +97,9 @@ public class KuaishouDanmuMsg implements IKuaishouMsg, IDanmuMsg {
     public String getContent() {
         return msg.getContent();
     }
+
+    @Override
+    public String toString() {
+        return msg.toString();
+    }
 }
