@@ -28,7 +28,7 @@
     <parent>
         <groupId>tech.ordinaryroad</groupId>
         <artifactId>live-chat-client</artifactId>
-        <version>0.3.0</version>
+        <version>0.3.0-SNAPSHOT</version>
     </parent>
     <packaging>pom</packaging>
 
@@ -36,6 +36,7 @@
     <name>live-chat-client</name>
 
     <modules>
+        <module>live-chat-client-websocket</module>
         <module>live-chat-client-bilibili</module>
         <module>live-chat-client-douyu</module>
         <module>live-chat-client-huya</module>

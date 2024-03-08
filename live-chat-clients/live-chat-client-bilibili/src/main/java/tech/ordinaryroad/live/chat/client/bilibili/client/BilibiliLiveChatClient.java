@@ -24,6 +24,7 @@
 
 package tech.ordinaryroad.live.chat.client.bilibili.client;
 
+import cn.hutool.core.util.StrUtil;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
@@ -35,6 +36,7 @@ import tech.ordinaryroad.live.chat.client.bilibili.config.BilibiliLiveChatClient
 import tech.ordinaryroad.live.chat.client.bilibili.constant.BilibiliCmdEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliConnectionListener;
 import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliMsgListener;
+import tech.ordinaryroad.live.chat.client.bilibili.listener.impl.BilibiliForwardMsgListener;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.base.IBilibiliMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliConnectionHandler;
@@ -94,6 +96,9 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
     @Override
     public void init() {
         roomInitResult = BilibiliApis.roomInit(getConfig().getRoomId(), getConfig().getCookie());
+        if (StrUtil.isNotBlank(getConfig().getForwardWebsocketUri())) {
+            addMsgListener(new BilibiliForwardMsgListener(getConfig().getForwardWebsocketUri()));
+        }
         super.init();
     }
 

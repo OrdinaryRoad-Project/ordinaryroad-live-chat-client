@@ -26,6 +26,7 @@ package tech.ordinaryroad.live.chat.client.douyin.client;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.GlobalHeaders;
 import cn.hutool.http.Header;
 import cn.hutool.http.HttpUtil;
@@ -41,6 +42,7 @@ import tech.ordinaryroad.live.chat.client.douyin.config.DouyinLiveChatClientConf
 import tech.ordinaryroad.live.chat.client.douyin.constant.DouyinCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyin.listener.IDouyinConnectionListener;
 import tech.ordinaryroad.live.chat.client.douyin.listener.IDouyinMsgListener;
+import tech.ordinaryroad.live.chat.client.douyin.listener.impl.DouyinForwardMsgListener;
 import tech.ordinaryroad.live.chat.client.douyin.msg.base.IDouyinMsg;
 import tech.ordinaryroad.live.chat.client.douyin.netty.handler.DouyinBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.douyin.netty.handler.DouyinConnectionHandler;
@@ -98,6 +100,9 @@ public class DouyinLiveChatClient extends BaseNettyClient<
     @Override
     public void init() {
         roomInitResult = DouyinApis.roomInit(getConfig().getRoomId(), getConfig().getCookie());
+        if (StrUtil.isNotBlank(getConfig().getForwardWebsocketUri())) {
+            addMsgListener(new DouyinForwardMsgListener(getConfig().getForwardWebsocketUri()));
+        }
         super.init();
     }
 

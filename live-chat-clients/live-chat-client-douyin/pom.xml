@@ -4,7 +4,7 @@
     <parent>
         <groupId>tech.ordinaryroad</groupId>
         <artifactId>live-chat-clients</artifactId>
-        <version>0.3.0</version>
+        <version>0.3.0-SNAPSHOT</version>
     </parent>
     <packaging>jar</packaging>
 
@@ -18,7 +18,7 @@
     <dependencies>
         <dependency>
             <groupId>tech.ordinaryroad</groupId>
-            <artifactId>live-chat-client-servers-netty-client</artifactId>
+            <artifactId>live-chat-client-websocket</artifactId>
         </dependency>
 
         <dependency>

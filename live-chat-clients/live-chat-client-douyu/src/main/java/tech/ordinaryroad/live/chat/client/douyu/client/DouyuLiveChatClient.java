@@ -28,6 +28,7 @@ import cn.hutool.cache.impl.TimedCache;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.StrUtil;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +43,7 @@ import tech.ordinaryroad.live.chat.client.douyu.config.DouyuLiveChatClientConfig
 import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuConnectionListener;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuMsgListener;
+import tech.ordinaryroad.live.chat.client.douyu.listener.impl.DouyuForwardMsgListener;
 import tech.ordinaryroad.live.chat.client.douyu.msg.ChatmsgMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.DgbMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.MsgrepeaterproxylistMsg;
@@ -107,6 +109,9 @@ public class DouyuLiveChatClient extends DouyuWsLiveChatClient implements IDouyu
 
     @Override
     public void init() {
+        if (StrUtil.isNotBlank(getConfig().getForwardWebsocketUri())) {
+            addMsgListener(new DouyuForwardMsgListener(getConfig().getForwardWebsocketUri()));
+        }
         super.init();
 
         // 初始化房间礼物列表

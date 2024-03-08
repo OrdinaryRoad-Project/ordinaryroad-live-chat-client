@@ -58,4 +58,9 @@ public class KuaishouLikeMsg implements IKuaishouMsg, ILikeMsg {
     public String getUserAvatar() {
         return msg.getUser().getHeadUrl();
     }
+
+    @Override
+    public String toString() {
+        return msg.toString();
+    }
 }

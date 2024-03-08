@@ -27,6 +27,7 @@ package tech.ordinaryroad.live.chat.client.kuaishou.client;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -41,6 +42,7 @@ import tech.ordinaryroad.live.chat.client.kuaishou.api.KuaishouApis;
 import tech.ordinaryroad.live.chat.client.kuaishou.config.KuaishouLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.kuaishou.listener.IKuaishouConnectionListener;
 import tech.ordinaryroad.live.chat.client.kuaishou.listener.IKuaishouMsgListener;
+import tech.ordinaryroad.live.chat.client.kuaishou.listener.impl.KuaishouForwardMsgListener;
 import tech.ordinaryroad.live.chat.client.kuaishou.msg.base.IKuaishouMsg;
 import tech.ordinaryroad.live.chat.client.kuaishou.netty.handler.KuaishouBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.kuaishou.netty.handler.KuaishouConnectionHandler;
@@ -97,6 +99,9 @@ public class KuaishouLiveChatClient extends BaseNettyClient<
     @Override
     public void init() {
         roomInitResult = KuaishouApis.roomInit(getConfig().getRoomId(), getConfig().getCookie());
+        if (StrUtil.isNotBlank(getConfig().getForwardWebsocketUri())) {
+            addMsgListener(new KuaishouForwardMsgListener(getConfig().getForwardWebsocketUri()));
+        }
         super.init();
     }
 

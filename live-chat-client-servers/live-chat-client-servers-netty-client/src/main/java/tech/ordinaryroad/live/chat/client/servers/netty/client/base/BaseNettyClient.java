@@ -182,9 +182,7 @@ public abstract class BaseNettyClient
                         }
                     });
             this.setStatus(ClientStatusEnums.INITIALIZED);
-        } catch (URISyntaxException e) {
-            throw new BaseException(e);
-        } catch (SSLException e) {
+        } catch (URISyntaxException | SSLException e) {
             throw new BaseException(e);
         }
     }
@@ -254,7 +252,12 @@ public abstract class BaseNettyClient
             return;
         }
         if (log.isWarnEnabled()) {
-            log.warn("{}s后将重新连接 {}", getConfig().getReconnectDelay(), getConfig().getRoomId());
+            Object roomId = getConfig().getRoomId();
+            if (roomId == null) {
+                log.warn("{}s后将重新连接 {}", getConfig().getReconnectDelay(), getConfig().getWebsocketUri());
+            } else {
+                log.warn("{}s后将重新连接 {}", getConfig().getReconnectDelay(), roomId);
+            }
         }
         workerGroup.schedule(() -> {
             this.setStatus(ClientStatusEnums.RECONNECTING);
@@ -264,6 +267,10 @@ public abstract class BaseNettyClient
 
     @Override
     public void send(Object msg, Runnable success, Consumer<Throwable> failed) {
+        if (getStatus() != ClientStatusEnums.CONNECTED) {
+            return;
+        }
+
         ChannelFuture future = this.channel.writeAndFlush(msg);
         if (success != null || failed != null) {
             future.addListener((ChannelFutureListener) channelFuture -> {

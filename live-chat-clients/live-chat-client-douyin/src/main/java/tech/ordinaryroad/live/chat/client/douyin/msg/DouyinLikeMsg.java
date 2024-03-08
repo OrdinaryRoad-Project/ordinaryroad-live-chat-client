@@ -74,4 +74,9 @@ public class DouyinLikeMsg implements IDouyinMsg, ILikeMsg {
     public int getClickCount() {
         return (int) msg.getCount();
     }
+
+    @Override
+    public String toString() {
+        return msg.toString();
+    }
 }
