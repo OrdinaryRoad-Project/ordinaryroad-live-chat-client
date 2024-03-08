@@ -22,12 +22,13 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.huya.listener;
+package tech.ordinaryroad.live.chat.client.huya.listener.impl;
 
 import cn.hutool.core.util.StrUtil;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
+import tech.ordinaryroad.live.chat.client.huya.listener.IHuyaMsgListener;
 import tech.ordinaryroad.live.chat.client.huya.msg.MessageNoticeMsg;
 import tech.ordinaryroad.live.chat.client.huya.msg.SendItemSubBroadcastPacketMsg;
 import tech.ordinaryroad.live.chat.client.huya.msg.VipEnterBannerMsg;
