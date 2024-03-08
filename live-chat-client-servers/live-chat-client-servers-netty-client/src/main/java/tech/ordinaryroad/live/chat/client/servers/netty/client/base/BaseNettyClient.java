@@ -269,6 +269,10 @@ public abstract class BaseNettyClient
 
     @Override
     public void send(Object msg, Runnable success, Consumer<Throwable> failed) {
+        if (getStatus() != ClientStatusEnums.CONNECTED) {
+            return;
+        }
+
         ChannelFuture future = this.channel.writeAndFlush(msg);
         if (success != null || failed != null) {
             future.addListener((ChannelFutureListener) channelFuture -> {
