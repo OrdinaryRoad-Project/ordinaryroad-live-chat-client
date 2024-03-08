@@ -182,9 +182,7 @@ public abstract class BaseNettyClient
                         }
                     });
             this.setStatus(ClientStatusEnums.INITIALIZED);
-        } catch (URISyntaxException e) {
-            throw new BaseException(e);
-        } catch (SSLException e) {
+        } catch (URISyntaxException | SSLException e) {
             throw new BaseException(e);
         }
     }
