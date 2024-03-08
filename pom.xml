@@ -114,6 +114,12 @@
 
             <dependency>
                 <groupId>tech.ordinaryroad</groupId>
+                <artifactId>live-chat-client-websocket</artifactId>
+                <version>0.3.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>tech.ordinaryroad</groupId>
                 <artifactId>live-chat-client-bilibili</artifactId>
                 <version>0.3.0</version>
             </dependency>
