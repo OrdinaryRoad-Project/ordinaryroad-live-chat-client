@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.websocket;
+package tech.ordinaryroad.live.chat.client.websocket.constant;
 
 /**
  * @author mjz
