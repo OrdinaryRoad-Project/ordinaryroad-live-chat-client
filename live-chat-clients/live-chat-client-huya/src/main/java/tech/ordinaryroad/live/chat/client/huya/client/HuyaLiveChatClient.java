@@ -24,6 +24,7 @@
 
 package tech.ordinaryroad.live.chat.client.huya.client;
 
+import cn.hutool.core.util.StrUtil;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
@@ -34,6 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.huya.config.HuyaLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.huya.constant.HuyaCmdEnum;
+import tech.ordinaryroad.live.chat.client.huya.listener.HuyaForwardMsgListener;
 import tech.ordinaryroad.live.chat.client.huya.listener.IHuyaConnectionListener;
 import tech.ordinaryroad.live.chat.client.huya.listener.IHuyaMsgListener;
 import tech.ordinaryroad.live.chat.client.huya.msg.base.IHuyaMsg;
@@ -86,6 +88,14 @@ public class HuyaLiveChatClient extends BaseNettyClient<
 
     public HuyaLiveChatClient(HuyaLiveChatClientConfig config) {
         this(config, null);
+    }
+
+    @Override
+    public void init() {
+        if (StrUtil.isNotBlank(getConfig().getForwardWebsocketUri())) {
+            addMsgListener(new HuyaForwardMsgListener(getConfig().getForwardWebsocketUri()));
+        }
+        super.init();
     }
 
     @Override
