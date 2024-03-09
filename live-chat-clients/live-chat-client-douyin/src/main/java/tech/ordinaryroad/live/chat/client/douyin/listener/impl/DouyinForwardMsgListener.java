@@ -27,6 +27,7 @@ package tech.ordinaryroad.live.chat.client.douyin.listener.impl;
 import cn.hutool.core.util.StrUtil;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
+import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 import tech.ordinaryroad.live.chat.client.douyin.listener.IDouyinMsgListener;
 import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinDanmuMsg;
@@ -44,17 +45,18 @@ import java.nio.charset.StandardCharsets;
  */
 public class DouyinForwardMsgListener implements IDouyinMsgListener {
 
-    private WebSocketLiveChatClient webSocketLiveChatClient;
+    private final WebSocketLiveChatClient webSocketLiveChatClient;
 
     public DouyinForwardMsgListener(String webSocketUri) {
-        if (StrUtil.isNotBlank(webSocketUri)) {
-            webSocketLiveChatClient = new WebSocketLiveChatClient(
-                    WebSocketLiveChatClientConfig.builder()
-                            .websocketUri(webSocketUri)
-                            .build()
-            );
-            webSocketLiveChatClient.connect();
+        if (StrUtil.isBlank(webSocketUri)) {
+            throw new BaseException("转发地址不能为空");
         }
+        webSocketLiveChatClient = new WebSocketLiveChatClient(
+                WebSocketLiveChatClientConfig.builder()
+                        .websocketUri(webSocketUri)
+                        .build()
+        );
+        webSocketLiveChatClient.connect();
     }
 
     @Override
