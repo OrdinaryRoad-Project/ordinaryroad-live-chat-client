@@ -37,6 +37,7 @@ import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
+import tech.ordinaryroad.live.chat.client.servers.netty.handler.base.IBaseConnectionHandler;
 import tech.ordinaryroad.live.chat.client.websocket.config.WebSocketLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.websocket.constant.WebSocketCmdEnum;
 import tech.ordinaryroad.live.chat.client.websocket.listener.IWebSocketConnectionListener;
@@ -63,32 +64,38 @@ public class WebSocketLiveChatClient extends BaseNettyClient<
         > {
 
     private WebSocketLiveChatClient forwardClient;
+    private final IBaseConnectionHandler connectionHandler;
 
-    public WebSocketLiveChatClient(WebSocketLiveChatClientConfig config, IWebSocketMsgListener msgListener, IWebSocketConnectionListener connectionListener, EventLoopGroup workerGroup) {
+    public WebSocketLiveChatClient(WebSocketLiveChatClientConfig config, IBaseConnectionHandler connectionHandler, IWebSocketMsgListener msgListener, IWebSocketConnectionListener connectionListener, EventLoopGroup workerGroup) {
         super(config, workerGroup, connectionListener);
         addMsgListener(msgListener);
+        this.connectionHandler = connectionHandler;
 
         // 初始化
         this.init();
     }
 
-    public WebSocketLiveChatClient(WebSocketLiveChatClientConfig config, IWebSocketMsgListener msgListener, IWebSocketConnectionListener connectionListener) {
-        this(config, msgListener, connectionListener, new NioEventLoopGroup());
+    public WebSocketLiveChatClient(WebSocketLiveChatClientConfig config, IBaseConnectionHandler connectionHandler, IWebSocketMsgListener msgListener, IWebSocketConnectionListener connectionListener) {
+        this(config, connectionHandler, msgListener, connectionListener, new NioEventLoopGroup());
     }
 
-    public WebSocketLiveChatClient(WebSocketLiveChatClientConfig config, IWebSocketMsgListener msgListener) {
-        this(config, msgListener, null, new NioEventLoopGroup());
+    public WebSocketLiveChatClient(WebSocketLiveChatClientConfig config, IBaseConnectionHandler connectionHandler, IWebSocketMsgListener msgListener) {
+        this(config, connectionHandler, msgListener, null, new NioEventLoopGroup());
+    }
+
+    public WebSocketLiveChatClient(WebSocketLiveChatClientConfig config, IBaseConnectionHandler connectionHandler) {
+        this(config, connectionHandler, null);
     }
 
     public WebSocketLiveChatClient(WebSocketLiveChatClientConfig config) {
-        this(config, null);
+        this(config, null, null);
     }
 
     @Override
     public WebSocketConnectionHandler initConnectionHandler(IBaseConnectionListener<WebSocketConnectionHandler> clientConnectionListener) {
         return new WebSocketConnectionHandler(
                 WebSocketClientHandshakerFactory.newHandshaker(getWebsocketUri(), WebSocketVersion.V13, null, true, new DefaultHttpHeaders(), getConfig().getMaxFramePayloadLength()),
-                WebSocketLiveChatClient.this, clientConnectionListener
+                connectionHandler, WebSocketLiveChatClient.this, clientConnectionListener
         );
     }
 
