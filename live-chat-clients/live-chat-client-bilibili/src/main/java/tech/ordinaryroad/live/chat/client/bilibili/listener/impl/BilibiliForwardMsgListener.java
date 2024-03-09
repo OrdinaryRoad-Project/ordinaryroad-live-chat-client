@@ -39,6 +39,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * @author mjz
  * @date 2024/3/8
+ * @since 0.3.0
  */
 public class BilibiliForwardMsgListener implements IBilibiliMsgListener {
 

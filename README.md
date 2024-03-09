@@ -15,12 +15,13 @@
 Live room WebSocket chat client
 
 - Feature 0: Netty
-- Feature 1: 消息中的未知属性统一放到单独的MAP中
+- Feature 1: 消息中的未知属性统一放到单独的MAP中（JSON格式消息）
 - Feature 2: 支持自动重连
 - Feature 3: 支持同时监听多个直播间
 - Feature 4: 支持短直播间id
 - Feature 5*: 支持弹幕发送、为主播点赞
 - Feature 6*: 内置收到弹幕、收到礼物、收到醒目留言、用户入房、收到点赞回调
+- Feature 7: 支持消息转发
 
 > *存在平台差异
 > - ✅: 平台支持且已完成
@@ -183,6 +184,8 @@ public class ClientModeExample {
         String cookie = System.getenv("cookie");
         // 1. 创建配置
         BilibiliLiveChatClientConfig config = BilibiliLiveChatClientConfig.builder()
+                // TODO 消息转发地址
+                .forwardWebsocketUri("")
                 // TODO 浏览器Cookie
                 .cookie(cookie)
                 // TODO 直播间id（支持短id）
