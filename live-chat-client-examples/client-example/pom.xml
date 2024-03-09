@@ -35,7 +35,7 @@
     <packaging>jar</packaging>
     <groupId>tech.ordinaryroad</groupId>
     <artifactId>live-chat-client-example-client</artifactId>
-    <version>0.3.0-SNAPSHOT</version>
+    <version>0.3.0</version>
     <name>live-chat-client-example-client</name>
     <description>live-chat-client-example-client</description>
 
@@ -48,14 +48,14 @@
             <groupId>tech.ordinaryroad</groupId>
             <artifactId>live-chat-client-bilibili</artifactId>
             <!-- 参考github release版本，不需要前缀`v` -->
-            <version>0.3.0-SNAPSHOT</version>
+            <version>0.3.0</version>
         </dependency>
 
         <dependency>
             <groupId>tech.ordinaryroad</groupId>
             <artifactId>live-chat-client-douyu</artifactId>
             <!-- 参考github release版本，不需要前缀`v` -->
-            <version>0.3.0-SNAPSHOT</version>
+            <version>0.3.0</version>
         </dependency>
 
         <dependency>
