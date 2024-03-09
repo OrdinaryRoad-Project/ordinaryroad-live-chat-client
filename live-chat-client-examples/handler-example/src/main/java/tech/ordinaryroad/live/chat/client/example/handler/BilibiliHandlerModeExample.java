@@ -35,7 +35,8 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.HttpClientCodec;
 import io.netty.handler.codec.http.HttpObjectAggregator;
-import io.netty.handler.codec.http.websocketx.WebSocketClientHandshakerFactory;
+import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolConfig;
+import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
 import io.netty.handler.codec.http.websocketx.WebSocketVersion;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
@@ -117,12 +118,15 @@ public class BilibiliHandlerModeExample {
             URI websocketURI = new URI("wss://broadcastlv.chat.bilibili.com:443/sub");
 
             connectionHandler = new BilibiliConnectionHandler(
-                    WebSocketClientHandshakerFactory.newHandshaker(
-                            websocketURI,
-                            WebSocketVersion.V13,
-                            null,
-                            true,
-                            new DefaultHttpHeaders()),
+                    () -> new WebSocketClientProtocolHandler(
+                            WebSocketClientProtocolConfig.newBuilder()
+                                    .webSocketUri(websocketURI)
+                                    .version(WebSocketVersion.V13)
+                                    .subprotocol(null)
+                                    .allowExtensions(true)
+                                    .customHeaders(new DefaultHttpHeaders())
+                                    .build()
+                    ),
                     roomId, protover, connectionListener, cookie
             );
             IBilibiliMsgListener msgListener = new IBilibiliMsgListener() {

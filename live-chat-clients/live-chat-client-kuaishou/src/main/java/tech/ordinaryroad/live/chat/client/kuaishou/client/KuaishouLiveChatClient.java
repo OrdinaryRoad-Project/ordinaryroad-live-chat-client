@@ -32,7 +32,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
-import io.netty.handler.codec.http.websocketx.WebSocketClientHandshakerFactory;
+import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolConfig;
+import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
 import io.netty.handler.codec.http.websocketx.WebSocketVersion;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -114,7 +115,16 @@ public class KuaishouLiveChatClient extends BaseNettyClient<
     @Override
     public KuaishouConnectionHandler initConnectionHandler(IBaseConnectionListener<KuaishouConnectionHandler> clientConnectionListener) {
         return new KuaishouConnectionHandler(
-                WebSocketClientHandshakerFactory.newHandshaker(getWebsocketUri(), WebSocketVersion.V13, null, true, new DefaultHttpHeaders(), getConfig().getMaxFramePayloadLength()),
+                () -> new WebSocketClientProtocolHandler(
+                        WebSocketClientProtocolConfig.newBuilder()
+                                .webSocketUri(getWebsocketUri())
+                                .version(WebSocketVersion.V13)
+                                .subprotocol(null)
+                                .allowExtensions(true)
+                                .customHeaders(new DefaultHttpHeaders())
+                                .maxFramePayloadLength(getConfig().getMaxFramePayloadLength())
+                                .build()
+                ),
                 KuaishouLiveChatClient.this, clientConnectionListener
         );
     }

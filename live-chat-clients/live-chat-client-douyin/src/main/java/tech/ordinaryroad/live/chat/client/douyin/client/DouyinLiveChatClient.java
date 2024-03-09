@@ -33,7 +33,8 @@ import cn.hutool.http.HttpUtil;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
-import io.netty.handler.codec.http.websocketx.WebSocketClientHandshakerFactory;
+import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolConfig;
+import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
 import io.netty.handler.codec.http.websocketx.WebSocketVersion;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
@@ -112,7 +113,16 @@ public class DouyinLiveChatClient extends BaseNettyClient<
         headers.add(Header.COOKIE.name(), DouyinApis.KEY_COOKIE_TTWID + "=" + roomInitResult.getTtwid());
         headers.add(Header.USER_AGENT.name(), GlobalHeaders.INSTANCE.header(Header.USER_AGENT));
         return new DouyinConnectionHandler(
-                WebSocketClientHandshakerFactory.newHandshaker(getWebsocketUri(), WebSocketVersion.V13, null, true, headers, getConfig().getMaxFramePayloadLength()),
+                () -> new WebSocketClientProtocolHandler(
+                        WebSocketClientProtocolConfig.newBuilder()
+                                .webSocketUri(getWebsocketUri())
+                                .version(WebSocketVersion.V13)
+                                .subprotocol(null)
+                                .allowExtensions(true)
+                                .customHeaders(headers)
+                                .maxFramePayloadLength(getConfig().getMaxFramePayloadLength())
+                                .build()
+                ),
                 DouyinLiveChatClient.this, clientConnectionListener
         );
     }

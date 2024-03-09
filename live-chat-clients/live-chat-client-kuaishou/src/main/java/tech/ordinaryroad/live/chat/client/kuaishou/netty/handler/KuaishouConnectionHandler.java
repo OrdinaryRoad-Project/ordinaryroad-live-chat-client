@@ -28,9 +28,8 @@ import cn.hutool.core.util.RandomUtil;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
-import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
+import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.kuaishou.api.KuaishouApis;
@@ -40,6 +39,8 @@ import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.CSWebEnterRoomOuterC
 import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PayloadTypeOuterClass;
 import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SocketMessageOuterClass;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientConnectionHandler;
+
+import java.util.function.Supplier;
 
 /**
  * @author mjz
@@ -59,39 +60,39 @@ public class KuaishouConnectionHandler extends BaseNettyClientConnectionHandler<
     private String cookie;
     private final KuaishouApis.RoomInitResult roomInitResult;
 
-    public KuaishouConnectionHandler(WebSocketClientHandshaker handshaker, KuaishouLiveChatClient client, IBaseConnectionListener<KuaishouConnectionHandler> listener) {
-        super(handshaker, client, listener);
+    public KuaishouConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, KuaishouLiveChatClient client, IBaseConnectionListener<KuaishouConnectionHandler> listener) {
+        super(webSocketProtocolHandler, client, listener);
         this.roomId = client.getConfig().getRoomId();
         this.cookie = client.getConfig().getCookie();
         this.roomInitResult = client.getRoomInitResult();
     }
 
-    public KuaishouConnectionHandler(WebSocketClientHandshaker handshaker, KuaishouLiveChatClient client) {
-        this(handshaker, client, null);
+    public KuaishouConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, KuaishouLiveChatClient client) {
+        this(webSocketProtocolHandler, client, null);
     }
 
-    public KuaishouConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, KuaishouApis.RoomInitResult roomInitResult, IBaseConnectionListener<KuaishouConnectionHandler> listener, String cookie) {
-        super(handshaker, listener);
+    public KuaishouConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, long roomId, KuaishouApis.RoomInitResult roomInitResult, IBaseConnectionListener<KuaishouConnectionHandler> listener, String cookie) {
+        super(webSocketProtocolHandler, listener);
         this.roomId = roomId;
         this.cookie = cookie;
         this.roomInitResult = roomInitResult;
     }
 
-    public KuaishouConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, KuaishouApis.RoomInitResult roomInitResult, IBaseConnectionListener<KuaishouConnectionHandler> listener) {
-        this(handshaker, roomId, roomInitResult, listener, null);
+    public KuaishouConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, long roomId, KuaishouApis.RoomInitResult roomInitResult, IBaseConnectionListener<KuaishouConnectionHandler> listener) {
+        this(webSocketProtocolHandler, roomId, roomInitResult, listener, null);
     }
 
-    public KuaishouConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, KuaishouApis.RoomInitResult roomInitResult, String cookie) {
-        this(handshaker, roomId, roomInitResult, null, cookie);
+    public KuaishouConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, long roomId, KuaishouApis.RoomInitResult roomInitResult, String cookie) {
+        this(webSocketProtocolHandler, roomId, roomInitResult, null, cookie);
     }
 
-    public KuaishouConnectionHandler(WebSocketClientHandshaker handshaker, KuaishouApis.RoomInitResult roomInitResult, long roomId) {
-        this(handshaker, roomId, roomInitResult, null, null);
+    public KuaishouConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, KuaishouApis.RoomInitResult roomInitResult, long roomId) {
+        this(webSocketProtocolHandler, roomId, roomInitResult, null, null);
     }
 
     @Override
-    public void sendHeartbeat(ChannelHandlerContext ctx) {
-        ctx.writeAndFlush(
+    public void sendHeartbeat(Channel channel) {
+        channel.writeAndFlush(
                 new BinaryWebSocketFrame(
                         Unpooled.wrappedBuffer(SocketMessageOuterClass.SocketMessage.newBuilder()
                                 .setPayloadType(PayloadTypeOuterClass.PayloadType.CS_HEARTBEAT)

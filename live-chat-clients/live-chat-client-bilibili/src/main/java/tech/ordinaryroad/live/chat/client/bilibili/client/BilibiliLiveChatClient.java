@@ -28,7 +28,8 @@ import cn.hutool.core.util.StrUtil;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
-import io.netty.handler.codec.http.websocketx.WebSocketClientHandshakerFactory;
+import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolConfig;
+import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
 import io.netty.handler.codec.http.websocketx.WebSocketVersion;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.bilibili.api.BilibiliApis;
@@ -105,7 +106,16 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
     @Override
     public BilibiliConnectionHandler initConnectionHandler(IBaseConnectionListener<BilibiliConnectionHandler> clientConnectionListener) {
         return new BilibiliConnectionHandler(
-                WebSocketClientHandshakerFactory.newHandshaker(getWebsocketUri(), WebSocketVersion.V13, null, true, new DefaultHttpHeaders(), getConfig().getMaxFramePayloadLength()),
+                () -> new WebSocketClientProtocolHandler(
+                        WebSocketClientProtocolConfig.newBuilder()
+                                .webSocketUri(getWebsocketUri())
+                                .version(WebSocketVersion.V13)
+                                .subprotocol(null)
+                                .allowExtensions(true)
+                                .customHeaders(new DefaultHttpHeaders())
+                                .maxFramePayloadLength(getConfig().getMaxFramePayloadLength())
+                                .build()
+                ),
                 BilibiliLiveChatClient.this, clientConnectionListener
         );
     }

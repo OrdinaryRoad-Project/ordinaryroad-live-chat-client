@@ -27,13 +27,14 @@ package tech.ordinaryroad.live.chat.client.huya.netty.handler;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
+import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.huya.client.HuyaLiveChatClient;
 import tech.ordinaryroad.live.chat.client.huya.netty.frame.factory.HuyaWebSocketFrameFactory;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientConnectionHandler;
+
+import java.util.function.Supplier;
 
 
 /**
@@ -59,42 +60,42 @@ public class HuyaConnectionHandler extends BaseNettyClientConnectionHandler<Huya
      */
     private String cookie;
 
-    public HuyaConnectionHandler(WebSocketClientHandshaker handshaker, HuyaLiveChatClient client, IBaseConnectionListener<HuyaConnectionHandler> listener) {
-        super(handshaker, client, listener);
+    public HuyaConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, HuyaLiveChatClient client, IBaseConnectionListener<HuyaConnectionHandler> listener) {
+        super(webSocketProtocolHandler, client, listener);
         this.roomId = client.getConfig().getRoomId();
         this.ver = client.getConfig().getVer();
         this.cookie = client.getConfig().getCookie();
     }
 
-    public HuyaConnectionHandler(WebSocketClientHandshaker handshaker, HuyaLiveChatClient client) {
-        this(handshaker, client, null);
+    public HuyaConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, HuyaLiveChatClient client) {
+        this(webSocketProtocolHandler, client, null);
     }
 
-    public HuyaConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, String ver, IBaseConnectionListener<HuyaConnectionHandler> listener, String cookie) {
-        super(handshaker, listener);
+    public HuyaConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, long roomId, String ver, IBaseConnectionListener<HuyaConnectionHandler> listener, String cookie) {
+        super(webSocketProtocolHandler, listener);
         this.roomId = roomId;
         this.ver = ver;
         this.cookie = cookie;
     }
 
-    public HuyaConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, String ver, IBaseConnectionListener<HuyaConnectionHandler> listener) {
-        this(handshaker, roomId, ver, listener, null);
+    public HuyaConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, long roomId, String ver, IBaseConnectionListener<HuyaConnectionHandler> listener) {
+        this(webSocketProtocolHandler, roomId, ver, listener, null);
     }
 
-    public HuyaConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, String ver, String cookie) {
-        this(handshaker, roomId, ver, null, cookie);
+    public HuyaConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, long roomId, String ver, String cookie) {
+        this(webSocketProtocolHandler, roomId, ver, null, cookie);
     }
 
-    public HuyaConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, String ver) {
-        this(handshaker, roomId, ver, null, null);
+    public HuyaConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, long roomId, String ver) {
+        this(webSocketProtocolHandler, roomId, ver, null, null);
     }
 
     @Override
-    public void sendHeartbeat(ChannelHandlerContext ctx) {
+    public void sendHeartbeat(Channel channel) {
         if (log.isDebugEnabled()) {
             log.debug("发送心跳包");
         }
-        ctx.writeAndFlush(
+        channel.writeAndFlush(
                 getWebSocketFrameFactory(getRoomId()).createHeartbeat(getVer(), getCookie())
         ).addListener((ChannelFutureListener) future -> {
             if (future.isSuccess()) {

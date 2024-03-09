@@ -27,14 +27,15 @@ package tech.ordinaryroad.live.chat.client.bilibili.netty.handler;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
+import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.bilibili.client.BilibiliLiveChatClient;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.ProtoverEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.frame.factory.BilibiliWebSocketFrameFactory;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientConnectionHandler;
+
+import java.util.function.Supplier;
 
 
 /**
@@ -60,42 +61,42 @@ public class BilibiliConnectionHandler extends BaseNettyClientConnectionHandler<
      */
     private String cookie;
 
-    public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, BilibiliLiveChatClient client, IBaseConnectionListener<BilibiliConnectionHandler> listener) {
-        super(handshaker, client, listener);
+    public BilibiliConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, BilibiliLiveChatClient client, IBaseConnectionListener<BilibiliConnectionHandler> listener) {
+        super(webSocketProtocolHandler, client, listener);
         this.roomId = client.getConfig().getRoomId();
         this.protover = client.getConfig().getProtover();
         this.cookie = client.getConfig().getCookie();
     }
 
-    public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, BilibiliLiveChatClient client) {
-        this(handshaker, client, null);
+    public BilibiliConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, BilibiliLiveChatClient client) {
+        this(webSocketProtocolHandler, client, null);
     }
 
-    public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, ProtoverEnum protover, IBaseConnectionListener<BilibiliConnectionHandler> listener, String cookie) {
-        super(handshaker, listener);
+    public BilibiliConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, long roomId, ProtoverEnum protover, IBaseConnectionListener<BilibiliConnectionHandler> listener, String cookie) {
+        super(webSocketProtocolHandler, listener);
         this.roomId = roomId;
         this.protover = protover;
         this.cookie = cookie;
     }
 
-    public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, ProtoverEnum protover, IBaseConnectionListener<BilibiliConnectionHandler> listener) {
-        this(handshaker, roomId, protover, listener, null);
+    public BilibiliConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, long roomId, ProtoverEnum protover, IBaseConnectionListener<BilibiliConnectionHandler> listener) {
+        this(webSocketProtocolHandler, roomId, protover, listener, null);
     }
 
-    public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, ProtoverEnum protover, String cookie) {
-        this(handshaker, roomId, protover, null, cookie);
+    public BilibiliConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, long roomId, ProtoverEnum protover, String cookie) {
+        this(webSocketProtocolHandler, roomId, protover, null, cookie);
     }
 
-    public BilibiliConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, ProtoverEnum protover) {
-        this(handshaker, roomId, protover, null, null);
+    public BilibiliConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, long roomId, ProtoverEnum protover) {
+        this(webSocketProtocolHandler, roomId, protover, null, null);
     }
 
     @Override
-    public void sendHeartbeat(ChannelHandlerContext ctx) {
+    public void sendHeartbeat(Channel channel) {
         if (log.isDebugEnabled()) {
             log.debug("发送心跳包");
         }
-        ctx.writeAndFlush(
+        channel.writeAndFlush(
                 getWebSocketFrameFactory(getRoomId()).createHeartbeat(getProtover())
         ).addListener((ChannelFutureListener) future -> {
             if (future.isSuccess()) {

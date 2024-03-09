@@ -25,11 +25,13 @@
 package tech.ordinaryroad.live.chat.client.douyin.netty.handler;
 
 import io.netty.channel.ChannelHandler;
-import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
+import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.douyin.client.DouyinLiveChatClient;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientConnectionHandler;
+
+import java.util.function.Supplier;
 
 /**
  * @author mjz
@@ -48,32 +50,32 @@ public class DouyinConnectionHandler extends BaseNettyClientConnectionHandler<Do
      */
     private String cookie;
 
-    public DouyinConnectionHandler(WebSocketClientHandshaker handshaker, DouyinLiveChatClient client, IBaseConnectionListener<DouyinConnectionHandler> listener) {
-        super(handshaker, client, listener);
+    public DouyinConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, DouyinLiveChatClient client, IBaseConnectionListener<DouyinConnectionHandler> listener) {
+        super(webSocketProtocolHandler, client, listener);
         this.roomId = client.getConfig().getRoomId();
         this.cookie = client.getConfig().getCookie();
     }
 
-    public DouyinConnectionHandler(WebSocketClientHandshaker handshaker, DouyinLiveChatClient client) {
-        this(handshaker, client, null);
+    public DouyinConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, DouyinLiveChatClient client) {
+        this(webSocketProtocolHandler, client, null);
     }
 
-    public DouyinConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, IBaseConnectionListener<DouyinConnectionHandler> listener, String cookie) {
-        super(handshaker, listener);
+    public DouyinConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, long roomId, IBaseConnectionListener<DouyinConnectionHandler> listener, String cookie) {
+        super(webSocketProtocolHandler, listener);
         this.roomId = roomId;
         this.cookie = cookie;
     }
 
-    public DouyinConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, IBaseConnectionListener<DouyinConnectionHandler> listener) {
-        this(handshaker, roomId, listener, null);
+    public DouyinConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, long roomId, IBaseConnectionListener<DouyinConnectionHandler> listener) {
+        this(webSocketProtocolHandler, roomId, listener, null);
     }
 
-    public DouyinConnectionHandler(WebSocketClientHandshaker handshaker, long roomId, String cookie) {
-        this(handshaker, roomId, null, cookie);
+    public DouyinConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, long roomId, String cookie) {
+        this(webSocketProtocolHandler, roomId, null, cookie);
     }
 
-    public DouyinConnectionHandler(WebSocketClientHandshaker handshaker, long roomId) {
-        this(handshaker, roomId, null, null);
+    public DouyinConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, long roomId) {
+        this(webSocketProtocolHandler, roomId, null, null);
     }
 
     @Override
