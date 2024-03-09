@@ -31,8 +31,8 @@ import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientConnectionHandler;
+import tech.ordinaryroad.live.chat.client.servers.netty.handler.base.IBaseConnectionHandler;
 import tech.ordinaryroad.live.chat.client.websocket.client.WebSocketLiveChatClient;
-import tech.ordinaryroad.live.chat.client.websocket.config.WebSocketLiveChatClientConfig;
 
 
 /**
@@ -45,12 +45,19 @@ import tech.ordinaryroad.live.chat.client.websocket.config.WebSocketLiveChatClie
 @ChannelHandler.Sharable
 public class WebSocketConnectionHandler extends BaseNettyClientConnectionHandler<WebSocketLiveChatClient, WebSocketConnectionHandler> {
 
-    public WebSocketConnectionHandler(WebSocketClientHandshaker handshaker, WebSocketLiveChatClient client, IBaseConnectionListener<WebSocketConnectionHandler> listener) {
+    private final IBaseConnectionHandler connectionHandler;
+
+    public WebSocketConnectionHandler(WebSocketClientHandshaker handshaker, IBaseConnectionHandler connectionHandler, WebSocketLiveChatClient client, IBaseConnectionListener<WebSocketConnectionHandler> listener) {
         super(handshaker, client, listener);
+        this.connectionHandler = connectionHandler;
     }
 
-    public WebSocketConnectionHandler(WebSocketClientHandshaker handshaker, WebSocketLiveChatClient client) {
-        this(handshaker, client, null);
+    public WebSocketConnectionHandler(WebSocketClientHandshaker handshaker, IBaseConnectionHandler connectionHandler, WebSocketLiveChatClient client) {
+        this(handshaker, connectionHandler, client, null);
+    }
+
+    public WebSocketConnectionHandler(WebSocketClientHandshaker handshaker, IBaseConnectionHandler connectionHandler) {
+        this(handshaker, connectionHandler, null);
     }
 
     public WebSocketConnectionHandler(WebSocketClientHandshaker handshaker) {
@@ -58,30 +65,18 @@ public class WebSocketConnectionHandler extends BaseNettyClientConnectionHandler
     }
 
     @Override
-    protected void sendHeartbeat(ChannelHandlerContext ctx) {
-        // TODO 配置
+    public void sendHeartbeat(ChannelHandlerContext ctx) {
+        if (connectionHandler == null) {
+            return;
+        }
+        connectionHandler.sendHeartbeat(ctx);
     }
 
     @Override
     public void sendAuthRequest(Channel channel) {
-        // TODO 配置
-    }
-
-    @Override
-    protected long getHeartbeatPeriod() {
-        if (client == null) {
-            return WebSocketLiveChatClientConfig.DEFAULT_HEARTBEAT_PERIOD;
-        } else {
-            return client.getConfig().getHeartbeatPeriod();
+        if (connectionHandler == null) {
+            return;
         }
-    }
-
-    @Override
-    protected long getHeartbeatInitialDelay() {
-        if (client == null) {
-            return WebSocketLiveChatClientConfig.DEFAULT_HEARTBEAT_INITIAL_DELAY;
-        } else {
-            return client.getConfig().getHeartbeatInitialDelay();
-        }
+        connectionHandler.sendAuthRequest(channel);
     }
 }

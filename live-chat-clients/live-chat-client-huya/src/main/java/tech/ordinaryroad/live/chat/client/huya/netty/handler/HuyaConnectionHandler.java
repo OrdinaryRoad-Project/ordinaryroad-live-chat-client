@@ -32,7 +32,6 @@ import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.huya.client.HuyaLiveChatClient;
-import tech.ordinaryroad.live.chat.client.huya.config.HuyaLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.huya.netty.frame.factory.HuyaWebSocketFrameFactory;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientConnectionHandler;
 
@@ -91,7 +90,7 @@ public class HuyaConnectionHandler extends BaseNettyClientConnectionHandler<Huya
     }
 
     @Override
-    protected void sendHeartbeat(ChannelHandlerContext ctx) {
+    public void sendHeartbeat(ChannelHandlerContext ctx) {
         if (log.isDebugEnabled()) {
             log.debug("发送心跳包");
         }
@@ -130,23 +129,5 @@ public class HuyaConnectionHandler extends BaseNettyClientConnectionHandler<Huya
 
     private String getCookie() {
         return client != null ? client.getConfig().getCookie() : cookie;
-    }
-
-    @Override
-    protected long getHeartbeatPeriod() {
-        if (client == null) {
-            return HuyaLiveChatClientConfig.DEFAULT_HEARTBEAT_PERIOD;
-        } else {
-            return client.getConfig().getHeartbeatPeriod();
-        }
-    }
-
-    @Override
-    protected long getHeartbeatInitialDelay() {
-        if (client == null) {
-            return HuyaLiveChatClientConfig.DEFAULT_HEARTBEAT_INITIAL_DELAY;
-        } else {
-            return client.getConfig().getHeartbeatInitialDelay();
-        }
     }
 }

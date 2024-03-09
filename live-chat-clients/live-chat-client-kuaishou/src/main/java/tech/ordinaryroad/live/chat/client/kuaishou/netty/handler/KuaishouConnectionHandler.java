@@ -35,7 +35,6 @@ import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.kuaishou.api.KuaishouApis;
 import tech.ordinaryroad.live.chat.client.kuaishou.client.KuaishouLiveChatClient;
-import tech.ordinaryroad.live.chat.client.kuaishou.config.KuaishouLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.CSHeartbeatOuterClass;
 import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.CSWebEnterRoomOuterClass;
 import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PayloadTypeOuterClass;
@@ -91,7 +90,7 @@ public class KuaishouConnectionHandler extends BaseNettyClientConnectionHandler<
     }
 
     @Override
-    protected void sendHeartbeat(ChannelHandlerContext ctx) {
+    public void sendHeartbeat(ChannelHandlerContext ctx) {
         ctx.writeAndFlush(
                 new BinaryWebSocketFrame(
                         Unpooled.wrappedBuffer(SocketMessageOuterClass.SocketMessage.newBuilder()
@@ -128,24 +127,6 @@ public class KuaishouConnectionHandler extends BaseNettyClientConnectionHandler<
                         )
                 )
         );
-    }
-
-    @Override
-    protected long getHeartbeatPeriod() {
-        if (client == null) {
-            return KuaishouLiveChatClientConfig.DEFAULT_HEARTBEAT_PERIOD;
-        } else {
-            return client.getConfig().getHeartbeatPeriod();
-        }
-    }
-
-    @Override
-    protected long getHeartbeatInitialDelay() {
-        if (client == null) {
-            return KuaishouLiveChatClientConfig.DEFAULT_HEARTBEAT_INITIAL_DELAY;
-        } else {
-            return client.getConfig().getHeartbeatInitialDelay();
-        }
     }
 
     public Object getRoomId() {

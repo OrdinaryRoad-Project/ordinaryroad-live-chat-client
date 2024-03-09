@@ -34,7 +34,6 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.douyu.client.base.BaseDouyuLiveChatClient;
-import tech.ordinaryroad.live.chat.client.douyu.config.DouyuLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuClientModeEnum;
 import tech.ordinaryroad.live.chat.client.douyu.netty.frame.factory.DouyuWebSocketFrameFactory;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientConnectionHandler;
@@ -104,7 +103,7 @@ public class DouyuConnectionHandler extends BaseNettyClientConnectionHandler<Bas
     }
 
     @Override
-    protected void sendHeartbeat(ChannelHandlerContext ctx) {
+    public void sendHeartbeat(ChannelHandlerContext ctx) {
         if (log.isDebugEnabled()) {
             log.debug("发送心跳包");
         }
@@ -151,23 +150,5 @@ public class DouyuConnectionHandler extends BaseNettyClientConnectionHandler<Bas
 
     private String getCookie() {
         return client != null ? client.getConfig().getCookie() : cookie;
-    }
-
-    @Override
-    protected long getHeartbeatPeriod() {
-        if (client == null) {
-            return DouyuLiveChatClientConfig.DEFAULT_HEARTBEAT_PERIOD;
-        } else {
-            return client.getConfig().getHeartbeatPeriod();
-        }
-    }
-
-    @Override
-    protected long getHeartbeatInitialDelay() {
-        if (client == null) {
-            return DouyuLiveChatClientConfig.DEFAULT_HEARTBEAT_INITIAL_DELAY;
-        } else {
-            return client.getConfig().getHeartbeatInitialDelay();
-        }
     }
 }

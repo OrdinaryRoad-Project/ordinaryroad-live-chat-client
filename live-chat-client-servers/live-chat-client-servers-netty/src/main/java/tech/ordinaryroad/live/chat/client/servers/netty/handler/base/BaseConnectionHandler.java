@@ -24,7 +24,6 @@
 
 package tech.ordinaryroad.live.chat.client.servers.netty.handler.base;
 
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -46,7 +45,9 @@ import java.util.concurrent.TimeUnit;
  * @date 2023/8/21
  */
 @Slf4j
-public abstract class BaseConnectionHandler<ConnectionHandler extends BaseConnectionHandler<?>> extends SimpleChannelInboundHandler<FullHttpResponse> {
+public abstract class BaseConnectionHandler<ConnectionHandler extends BaseConnectionHandler<?>>
+        extends SimpleChannelInboundHandler<FullHttpResponse>
+        implements IBaseConnectionHandler {
 
     private final WebSocketClientHandshaker handshaker;
     @Getter
@@ -128,13 +129,9 @@ public abstract class BaseConnectionHandler<ConnectionHandler extends BaseConnec
         }
     }
 
-    protected abstract void sendHeartbeat(ChannelHandlerContext ctx);
+    public abstract long getHeartbeatPeriod();
 
-    public abstract void sendAuthRequest(Channel channel);
-
-    protected abstract long getHeartbeatPeriod();
-
-    protected abstract long getHeartbeatInitialDelay();
+    public abstract long getHeartbeatInitialDelay();
 
     private void handshakeSuccessfully(ChannelHandlerContext ctx, FullHttpResponse msg) {
         if (log.isDebugEnabled()) {

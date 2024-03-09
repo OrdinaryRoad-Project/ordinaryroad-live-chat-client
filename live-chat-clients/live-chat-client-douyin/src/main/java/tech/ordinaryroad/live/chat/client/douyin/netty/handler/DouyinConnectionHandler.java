@@ -24,9 +24,7 @@
 
 package tech.ordinaryroad.live.chat.client.douyin.netty.handler;
 
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
@@ -79,22 +77,12 @@ public class DouyinConnectionHandler extends BaseNettyClientConnectionHandler<Do
     }
 
     @Override
-    protected void sendHeartbeat(ChannelHandlerContext ctx) {
-        // ignore
-    }
-
-    @Override
-    public void sendAuthRequest(Channel channel) {
-        // ignore
-    }
-
-    @Override
-    protected long getHeartbeatPeriod() {
+    public long getHeartbeatPeriod() {
         return 0;
     }
 
     @Override
-    protected long getHeartbeatInitialDelay() {
+    public long getHeartbeatInitialDelay() {
         return 0;
     }
 

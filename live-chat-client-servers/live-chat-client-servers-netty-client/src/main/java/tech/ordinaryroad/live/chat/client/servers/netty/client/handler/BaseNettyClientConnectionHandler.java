@@ -28,6 +28,7 @@ import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
 import lombok.Getter;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
+import tech.ordinaryroad.live.chat.client.servers.netty.client.config.BaseNettyClientConfig;
 import tech.ordinaryroad.live.chat.client.servers.netty.handler.base.BaseConnectionHandler;
 
 /**
@@ -61,5 +62,23 @@ public abstract class BaseNettyClientConnectionHandler<
     public BaseNettyClientConnectionHandler(WebSocketClientHandshaker handshaker, long roomId) {
         super(handshaker, null);
         this.client = null;
+    }
+
+    @Override
+    public long getHeartbeatPeriod() {
+        if (client == null) {
+            return BaseNettyClientConfig.DEFAULT_HEARTBEAT_PERIOD;
+        } else {
+            return client.getConfig().getHeartbeatPeriod();
+        }
+    }
+
+    @Override
+    public long getHeartbeatInitialDelay() {
+        if (client == null) {
+            return BaseNettyClientConfig.DEFAULT_HEARTBEAT_INITIAL_DELAY;
+        } else {
+            return client.getConfig().getHeartbeatInitialDelay();
+        }
     }
 }

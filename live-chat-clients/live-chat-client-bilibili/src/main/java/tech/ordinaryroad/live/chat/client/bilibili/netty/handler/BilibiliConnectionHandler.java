@@ -31,7 +31,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.bilibili.client.BilibiliLiveChatClient;
-import tech.ordinaryroad.live.chat.client.bilibili.config.BilibiliLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.ProtoverEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.frame.factory.BilibiliWebSocketFrameFactory;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
@@ -92,7 +91,7 @@ public class BilibiliConnectionHandler extends BaseNettyClientConnectionHandler<
     }
 
     @Override
-    protected void sendHeartbeat(ChannelHandlerContext ctx) {
+    public void sendHeartbeat(ChannelHandlerContext ctx) {
         if (log.isDebugEnabled()) {
             log.debug("发送心跳包");
         }
@@ -132,23 +131,5 @@ public class BilibiliConnectionHandler extends BaseNettyClientConnectionHandler<
 
     private String getCookie() {
         return client != null ? client.getConfig().getCookie() : cookie;
-    }
-
-    @Override
-    protected long getHeartbeatPeriod() {
-        if (client == null) {
-            return BilibiliLiveChatClientConfig.DEFAULT_HEARTBEAT_PERIOD;
-        } else {
-            return client.getConfig().getHeartbeatPeriod();
-        }
-    }
-
-    @Override
-    protected long getHeartbeatInitialDelay() {
-        if (client == null) {
-            return BilibiliLiveChatClientConfig.DEFAULT_HEARTBEAT_INITIAL_DELAY;
-        } else {
-            return client.getConfig().getHeartbeatInitialDelay();
-        }
     }
 }
