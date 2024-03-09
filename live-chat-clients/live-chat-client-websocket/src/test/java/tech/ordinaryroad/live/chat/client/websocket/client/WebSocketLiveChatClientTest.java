@@ -76,6 +76,7 @@ class WebSocketLiveChatClientTest {
     void example() throws InterruptedException {
         WebSocketLiveChatClientConfig config = WebSocketLiveChatClientConfig.builder()
 //                .websocketUri("wss://localhost:8443/websocket")
+//                .websocketUri("wss://broadcastlv.chat.bilibili.com:443/sub")
                 .websocketUri("ws://127.0.0.1:8080/websocket")
                 .forwardWebsocketUri("ws://127.0.0.1:8765")
                 .build();
