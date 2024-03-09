@@ -79,6 +79,7 @@ public abstract class BaseBinaryFrameHandler<
     protected abstract List<Msg> decode(ByteBuf byteBuf);
 
     @SuppressWarnings("unchecked")
+    @Override
     protected void channelRead0(ChannelHandlerContext ctx, BinaryWebSocketFrame message) {
         ByteBuf byteBuf = message.content();
         List<Msg> msgList = this.decode(byteBuf);
