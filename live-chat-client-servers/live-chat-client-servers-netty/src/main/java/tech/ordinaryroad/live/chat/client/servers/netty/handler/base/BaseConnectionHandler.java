@@ -95,14 +95,14 @@ public abstract class BaseConnectionHandler<ConnectionHandler extends BaseConnec
     /**
      * 开始发送心跳包
      */
-    private void heartbeatStart(Channel ctx) {
+    private void heartbeatStart(Channel channel) {
         if (getHeartbeatPeriod() > 0) {
-            scheduledFuture = ctx.eventLoop().scheduleAtFixedRate(() -> {
-                sendHeartbeat(ctx);
+            scheduledFuture = channel.eventLoop().scheduleAtFixedRate(() -> {
+                sendHeartbeat(channel);
             }, getHeartbeatInitialDelay(), getHeartbeatPeriod(), TimeUnit.SECONDS);
         } else {
-            scheduledFuture = ctx.eventLoop().schedule(() -> {
-                sendHeartbeat(ctx);
+            scheduledFuture = channel.eventLoop().schedule(() -> {
+                sendHeartbeat(channel);
             }, getHeartbeatInitialDelay(), TimeUnit.SECONDS);
         }
     }

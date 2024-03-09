@@ -35,7 +35,7 @@ public interface IBaseConnectionHandler {
     /**
      * 发送心跳包
      */
-    default void sendHeartbeat(Channel ctx) {
+    default void sendHeartbeat(Channel channel) {
         // ignore
     }
 
