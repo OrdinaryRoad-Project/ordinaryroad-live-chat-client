@@ -25,7 +25,6 @@
 package tech.ordinaryroad.live.chat.client.servers.netty.handler.base;
 
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelHandlerContext;
 
 /**
  * @author mjz
@@ -36,7 +35,7 @@ public interface IBaseConnectionHandler {
     /**
      * 发送心跳包
      */
-    default void sendHeartbeat(ChannelHandlerContext ctx) {
+    default void sendHeartbeat(Channel ctx) {
         // ignore
     }
 

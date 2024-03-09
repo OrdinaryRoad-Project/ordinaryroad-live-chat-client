@@ -24,12 +24,14 @@
 
 package tech.ordinaryroad.live.chat.client.servers.netty.client.handler;
 
-import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
+import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
 import lombok.Getter;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.config.BaseNettyClientConfig;
 import tech.ordinaryroad.live.chat.client.servers.netty.handler.base.BaseConnectionHandler;
+
+import java.util.function.Supplier;
 
 /**
  * BaseClientConnectionHandler
@@ -45,22 +47,22 @@ public abstract class BaseNettyClientConnectionHandler<
     @Getter
     protected final Client client;
 
-    public BaseNettyClientConnectionHandler(WebSocketClientHandshaker handshaker, Client client, IBaseConnectionListener<ConnectionHandler> listener) {
-        super(handshaker, listener);
+    public BaseNettyClientConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketClientProtocolHandler, Client client, IBaseConnectionListener<ConnectionHandler> listener) {
+        super(webSocketClientProtocolHandler, listener);
         this.client = client;
     }
 
-    public BaseNettyClientConnectionHandler(WebSocketClientHandshaker handshaker, Client client) {
-        this(handshaker, client, null);
+    public BaseNettyClientConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketClientProtocolHandler, Client client) {
+        this(webSocketClientProtocolHandler, client, null);
     }
 
-    public BaseNettyClientConnectionHandler(WebSocketClientHandshaker handshaker, IBaseConnectionListener<ConnectionHandler> listener) {
-        super(handshaker, listener);
+    public BaseNettyClientConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketClientProtocolHandler, IBaseConnectionListener<ConnectionHandler> listener) {
+        super(webSocketClientProtocolHandler, listener);
         this.client = null;
     }
 
-    public BaseNettyClientConnectionHandler(WebSocketClientHandshaker handshaker, long roomId) {
-        super(handshaker, null);
+    public BaseNettyClientConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketClientProtocolHandler, long roomId) {
+        super(webSocketClientProtocolHandler, null);
         this.client = null;
     }
 

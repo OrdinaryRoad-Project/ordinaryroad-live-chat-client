@@ -173,6 +173,9 @@ public abstract class BaseNettyClient
                             // 添加一个聚合器，这个聚合器主要是将HttpMessage聚合成FullHttpRequest/Response
                             pipeline.addLast(new HttpObjectAggregator(BaseNettyClient.this.getConfig().getAggregatorMaxContentLength()));
 
+                            // 添加一个WebSocket协议处理器
+                            pipeline.addLast(BaseNettyClient.this.connectionHandler.getWebSocketProtocolHandler().get());
+
                             // 连接处理器
                             pipeline.addLast(BaseNettyClient.this.connectionHandler);
                             // 弹幕处理器

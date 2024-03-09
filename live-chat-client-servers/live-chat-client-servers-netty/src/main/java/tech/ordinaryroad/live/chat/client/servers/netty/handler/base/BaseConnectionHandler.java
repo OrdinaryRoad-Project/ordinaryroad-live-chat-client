@@ -24,18 +24,19 @@
 
 package tech.ordinaryroad.live.chat.client.servers.netty.handler.base;
 
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelPromise;
-import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.handler.codec.http.FullHttpResponse;
-import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
-import io.netty.handler.codec.http.websocketx.WebSocketHandshakeException;
+import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
 import io.netty.util.concurrent.ScheduledFuture;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
 
 /**
@@ -46,10 +47,11 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 public abstract class BaseConnectionHandler<ConnectionHandler extends BaseConnectionHandler<?>>
-        extends SimpleChannelInboundHandler<FullHttpResponse>
+        extends ChannelInboundHandlerAdapter
         implements IBaseConnectionHandler {
 
-    private final WebSocketClientHandshaker handshaker;
+    @Getter
+    private final Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler;
     @Getter
     private ChannelPromise handshakeFuture;
     private final IBaseConnectionListener<ConnectionHandler> listener;
@@ -58,13 +60,13 @@ public abstract class BaseConnectionHandler<ConnectionHandler extends BaseConnec
      */
     private ScheduledFuture<?> scheduledFuture = null;
 
-    public BaseConnectionHandler(WebSocketClientHandshaker handshaker, IBaseConnectionListener<ConnectionHandler> listener) {
-        this.handshaker = handshaker;
+    public BaseConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, IBaseConnectionListener<ConnectionHandler> listener) {
+        this.webSocketProtocolHandler = webSocketProtocolHandler;
         this.listener = listener;
     }
 
-    public BaseConnectionHandler(WebSocketClientHandshaker handshaker) {
-        this(handshaker, null);
+    public BaseConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler) {
+        this(webSocketProtocolHandler, null);
     }
 
     @Override
@@ -77,7 +79,6 @@ public abstract class BaseConnectionHandler<ConnectionHandler extends BaseConnec
         if (log.isDebugEnabled()) {
             log.debug("channelActive");
         }
-        this.handshaker.handshake(ctx.channel());
     }
 
     @Override
@@ -91,29 +92,16 @@ public abstract class BaseConnectionHandler<ConnectionHandler extends BaseConnec
         }
     }
 
-    protected void channelRead0(ChannelHandlerContext ctx, FullHttpResponse msg) {
-        // 判断是否正确握手
-        if (this.handshaker.isHandshakeComplete()) {
-            handshakeSuccessfully(ctx, msg);
-        } else {
-            try {
-                handshakeSuccessfully(ctx, msg);
-            } catch (WebSocketHandshakeException e) {
-                handshakeFailed(msg, e);
-            }
-        }
-    }
-
     /**
      * 开始发送心跳包
      */
-    private void heartbeatStart(ChannelHandlerContext ctx) {
+    private void heartbeatStart(Channel ctx) {
         if (getHeartbeatPeriod() > 0) {
-            scheduledFuture = ctx.executor().scheduleAtFixedRate(() -> {
+            scheduledFuture = ctx.eventLoop().scheduleAtFixedRate(() -> {
                 sendHeartbeat(ctx);
             }, getHeartbeatInitialDelay(), getHeartbeatPeriod(), TimeUnit.SECONDS);
         } else {
-            scheduledFuture = ctx.executor().schedule(() -> {
+            scheduledFuture = ctx.eventLoop().schedule(() -> {
                 sendHeartbeat(ctx);
             }, getHeartbeatInitialDelay(), TimeUnit.SECONDS);
         }
@@ -133,26 +121,39 @@ public abstract class BaseConnectionHandler<ConnectionHandler extends BaseConnec
 
     public abstract long getHeartbeatInitialDelay();
 
-    private void handshakeSuccessfully(ChannelHandlerContext ctx, FullHttpResponse msg) {
+    private void handshakeSuccessfully(Channel channel) {
         if (log.isDebugEnabled()) {
             log.debug("握手完成!");
         }
-        this.handshaker.finishHandshake(ctx.channel(), msg);
         this.handshakeFuture.setSuccess();
 
         heartbeatCancel();
-        heartbeatStart(ctx);
+        heartbeatStart(channel);
         if (this.listener != null) {
             listener.onConnected((ConnectionHandler) BaseConnectionHandler.this);
         }
     }
 
-    private void handshakeFailed(FullHttpResponse msg, WebSocketHandshakeException e) {
-        log.error("握手失败！status:" + msg.status(), e);
-        this.handshakeFuture.setFailure(e);
+    private void handshakeFailed(ChannelHandlerContext ctx, WebSocketClientProtocolHandler.ClientHandshakeStateEvent evt) {
+        log.error("握手失败！ {}", evt);
+        this.handshakeFuture.setFailure(new BaseException(evt.name()));
 
         if (listener != null) {
             this.listener.onConnectFailed((ConnectionHandler) this);
+        }
+    }
+
+    @Override
+    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+        if (log.isDebugEnabled()) {
+            log.debug("userEventTriggered {}", evt);
+        }
+        if (evt == WebSocketClientProtocolHandler.ClientHandshakeStateEvent.HANDSHAKE_COMPLETE) {
+            handshakeSuccessfully(ctx.channel());
+        } else if (evt == WebSocketClientProtocolHandler.ClientHandshakeStateEvent.HANDSHAKE_TIMEOUT) {
+            handshakeFailed(ctx, (WebSocketClientProtocolHandler.ClientHandshakeStateEvent) evt);
+        } else {
+            super.userEventTriggered(ctx, evt);
         }
     }
 
