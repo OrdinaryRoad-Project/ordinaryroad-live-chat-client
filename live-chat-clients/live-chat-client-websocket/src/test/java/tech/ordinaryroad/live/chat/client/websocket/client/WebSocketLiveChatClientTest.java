@@ -49,6 +49,7 @@ import io.netty.handler.stream.ChunkedWriteHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
+import tech.ordinaryroad.live.chat.client.servers.netty.handler.base.IBaseConnectionHandler;
 import tech.ordinaryroad.live.chat.client.websocket.config.WebSocketLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.websocket.listener.IWebSocketMsgListener;
 import tech.ordinaryroad.live.chat.client.websocket.msg.WebSocketMsg;
@@ -78,7 +79,17 @@ class WebSocketLiveChatClientTest {
                 .websocketUri("ws://127.0.0.1:8080/websocket")
                 .build();
 
-        client = new WebSocketLiveChatClient(config, new IWebSocketMsgListener() {
+        client = new WebSocketLiveChatClient(config, new IBaseConnectionHandler() {
+            @Override
+            public void sendHeartbeat(ChannelHandlerContext ctx) {
+                log.debug("忽略发送心跳包");
+            }
+
+            @Override
+            public void sendAuthRequest(Channel channel) {
+                log.debug("忽略发送认证包");
+            }
+        }, new IWebSocketMsgListener() {
             @Override
             public void onMsg(IMsg msg) {
                 ByteBuf byteBuf = ((WebSocketMsg) msg).getByteBuf();
@@ -147,16 +158,15 @@ class WebSocketLiveChatClientTest {
                                     if (frame instanceof TextWebSocketFrame) {
                                         // Send the uppercase string back.
                                         String request = ((TextWebSocketFrame) frame).text();
-                                        ctx.channel().writeAndFlush(new TextWebSocketFrame(request.toUpperCase(Locale.US)));
-                                        ctx.channel().writeAndFlush(new BinaryWebSocketFrame(Unpooled.wrappedBuffer(request.toUpperCase(Locale.US).getBytes(StandardCharsets.UTF_8))));
+                                        ctx.channel().writeAndFlush(new TextWebSocketFrame("from server:" + request.toUpperCase(Locale.US)));
+                                        ctx.channel().writeAndFlush(new BinaryWebSocketFrame(Unpooled.wrappedBuffer(("from server:" + request.toUpperCase(Locale.US)).getBytes(StandardCharsets.UTF_8))));
                                         System.out.println("收到TextWebSocketFrame消息 " + request);
                                     } else if (frame instanceof BinaryWebSocketFrame) {
-                                        WebSocketFrame copy = frame.copy();
                                         ByteBuf content = frame.content();
                                         byte[] bytes = new byte[content.readableBytes()];
                                         content.readBytes(bytes);
                                         System.out.println("收到BinaryWebSocketFrame消息 " + new String(bytes));
-                                        ctx.channel().writeAndFlush(copy);
+                                        ctx.channel().writeAndFlush(new BinaryWebSocketFrame(Unpooled.wrappedBuffer(("from server:" + new String(bytes)).getBytes(StandardCharsets.UTF_8))));
                                     } else {
                                         String message = "unsupported frame type: " + frame.getClass().getName();
                                         throw new UnsupportedOperationException(message);
