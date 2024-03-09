@@ -58,6 +58,8 @@ public class WebSocketBinaryFrameHandler extends BaseNettyClientBinaryFrameHandl
 
     @Override
     protected List<IWebSocketMsg> decode(ByteBuf byteBuf) {
-        return Collections.singletonList(new WebSocketMsg(byteBuf));
+        byte[] bytes = new byte[byteBuf.readableBytes()];
+        byteBuf.readBytes(bytes);
+        return Collections.singletonList(new WebSocketMsg(bytes));
     }
 }

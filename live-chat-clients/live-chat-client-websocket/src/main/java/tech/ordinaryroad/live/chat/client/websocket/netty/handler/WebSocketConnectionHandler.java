@@ -26,13 +26,14 @@ package tech.ordinaryroad.live.chat.client.websocket.netty.handler;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
+import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientConnectionHandler;
 import tech.ordinaryroad.live.chat.client.servers.netty.handler.base.IBaseConnectionHandler;
 import tech.ordinaryroad.live.chat.client.websocket.client.WebSocketLiveChatClient;
+
+import java.util.function.Supplier;
 
 
 /**
@@ -47,29 +48,29 @@ public class WebSocketConnectionHandler extends BaseNettyClientConnectionHandler
 
     private final IBaseConnectionHandler connectionHandler;
 
-    public WebSocketConnectionHandler(WebSocketClientHandshaker handshaker, IBaseConnectionHandler connectionHandler, WebSocketLiveChatClient client, IBaseConnectionListener<WebSocketConnectionHandler> listener) {
-        super(handshaker, client, listener);
+    public WebSocketConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, IBaseConnectionHandler connectionHandler, WebSocketLiveChatClient client, IBaseConnectionListener<WebSocketConnectionHandler> listener) {
+        super(webSocketProtocolHandler, client, listener);
         this.connectionHandler = connectionHandler;
     }
 
-    public WebSocketConnectionHandler(WebSocketClientHandshaker handshaker, IBaseConnectionHandler connectionHandler, WebSocketLiveChatClient client) {
-        this(handshaker, connectionHandler, client, null);
+    public WebSocketConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, IBaseConnectionHandler connectionHandler, WebSocketLiveChatClient client) {
+        this(webSocketProtocolHandler, connectionHandler, client, null);
     }
 
-    public WebSocketConnectionHandler(WebSocketClientHandshaker handshaker, IBaseConnectionHandler connectionHandler) {
-        this(handshaker, connectionHandler, null);
+    public WebSocketConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, IBaseConnectionHandler connectionHandler) {
+        this(webSocketProtocolHandler, connectionHandler, null);
     }
 
-    public WebSocketConnectionHandler(WebSocketClientHandshaker handshaker) {
-        this(handshaker, null);
+    public WebSocketConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler) {
+        this(webSocketProtocolHandler, null);
     }
 
     @Override
-    public void sendHeartbeat(ChannelHandlerContext ctx) {
+    public void sendHeartbeat(Channel channel) {
         if (connectionHandler == null) {
             return;
         }
-        connectionHandler.sendHeartbeat(ctx);
+        connectionHandler.sendHeartbeat(channel);
     }
 
     @Override

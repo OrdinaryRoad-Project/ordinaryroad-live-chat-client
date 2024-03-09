@@ -77,11 +77,12 @@ class WebSocketLiveChatClientTest {
         WebSocketLiveChatClientConfig config = WebSocketLiveChatClientConfig.builder()
 //                .websocketUri("wss://localhost:8443/websocket")
                 .websocketUri("ws://127.0.0.1:8080/websocket")
+                .forwardWebsocketUri("ws://127.0.0.1:8765")
                 .build();
 
         client = new WebSocketLiveChatClient(config, new IBaseConnectionHandler() {
             @Override
-            public void sendHeartbeat(ChannelHandlerContext ctx) {
+            public void sendHeartbeat(Channel channel) {
                 log.debug("忽略发送心跳包");
             }
 
@@ -92,10 +93,8 @@ class WebSocketLiveChatClientTest {
         }, new IWebSocketMsgListener() {
             @Override
             public void onMsg(IMsg msg) {
-                ByteBuf byteBuf = ((WebSocketMsg) msg).getByteBuf();
-                byte[] bytes = new byte[byteBuf.readableBytes()];
-                byteBuf.readBytes(bytes);
-                String string = new String(bytes);
+                byte[] bytes = ((WebSocketMsg) msg).getBytes();
+                String string = new String(bytes, StandardCharsets.UTF_8);
                 log.debug("收到消息 {}", string);
             }
         });

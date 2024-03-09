@@ -30,7 +30,8 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
-import io.netty.handler.codec.http.websocketx.WebSocketClientHandshakerFactory;
+import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolConfig;
+import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
 import io.netty.handler.codec.http.websocketx.WebSocketVersion;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
@@ -94,9 +95,17 @@ public class WebSocketLiveChatClient extends BaseNettyClient<
     @Override
     public WebSocketConnectionHandler initConnectionHandler(IBaseConnectionListener<WebSocketConnectionHandler> clientConnectionListener) {
         return new WebSocketConnectionHandler(
-                WebSocketClientHandshakerFactory.newHandshaker(getWebsocketUri(), WebSocketVersion.V13, null, true, new DefaultHttpHeaders(), getConfig().getMaxFramePayloadLength()),
-                connectionHandler, WebSocketLiveChatClient.this, clientConnectionListener
-        );
+                () -> new WebSocketClientProtocolHandler(
+                        WebSocketClientProtocolConfig.newBuilder()
+                                .webSocketUri(getWebsocketUri())
+                                .version(WebSocketVersion.V13)
+                                .subprotocol(null)
+                                .allowExtensions(true)
+                                .customHeaders(new DefaultHttpHeaders())
+                                .maxFramePayloadLength(getConfig().getMaxFramePayloadLength())
+                                .build()
+                ),
+                connectionHandler, WebSocketLiveChatClient.this, clientConnectionListener);
     }
 
     @Override

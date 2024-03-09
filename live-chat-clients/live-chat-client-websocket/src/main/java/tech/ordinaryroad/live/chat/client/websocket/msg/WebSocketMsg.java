@@ -24,12 +24,13 @@
 
 package tech.ordinaryroad.live.chat.client.websocket.msg;
 
-import io.netty.buffer.ByteBuf;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tech.ordinaryroad.live.chat.client.websocket.msg.base.IWebSocketMsg;
+
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author mjz
@@ -41,6 +42,10 @@ import tech.ordinaryroad.live.chat.client.websocket.msg.base.IWebSocketMsg;
 @NoArgsConstructor
 public class WebSocketMsg implements IWebSocketMsg {
 
-    private ByteBuf byteBuf;
+    private byte[] bytes;
 
+    @Override
+    public String toString() {
+        return new String(bytes, StandardCharsets.UTF_8);
+    }
 }
