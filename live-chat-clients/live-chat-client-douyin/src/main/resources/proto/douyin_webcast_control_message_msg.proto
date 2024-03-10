@@ -1,0 +1,14 @@
+syntax = "proto3";
+import "Common.proto";
+
+package tech.ordinaryroad.live.chat.client.douyin.protobuf;
+
+option java_package = "tech.ordinaryroad.live.chat.client.douyin.protobuf";
+option java_outer_classname = "douyin_webcast_control_message_msgProto";
+option java_multiple_files = true;
+option objc_class_prefix = "GPB";
+
+message douyin_webcast_control_message_msg {
+  Common common = 1;
+  int32 status = 2;
+}
