@@ -24,6 +24,7 @@
 
 package tech.ordinaryroad.live.chat.client.douyin.netty.handler;
 
+import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ZipUtil;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -38,6 +39,7 @@ import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.douyin.api.DouyinApis;
 import tech.ordinaryroad.live.chat.client.douyin.client.DouyinLiveChatClient;
 import tech.ordinaryroad.live.chat.client.douyin.constant.DouyinCmdEnum;
+import tech.ordinaryroad.live.chat.client.douyin.constant.DouyinPayloadTypeEnum;
 import tech.ordinaryroad.live.chat.client.douyin.listener.IDouyinMsgListener;
 import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinDanmuMsg;
 import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinEnterRoomMsg;
@@ -49,7 +51,9 @@ import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNetty
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author mjz
@@ -140,21 +144,47 @@ public class DouyinBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<
     protected List<IDouyinMsg> decode(ByteBuf byteBuf) {
         try {
             douyin_websocket_frame douyinWebsocketFrame = douyin_websocket_frame.parseFrom(byteBuf.nioBuffer());
-            ByteString payload = douyinWebsocketFrame.getPayload();
-            byte[] bytes = ZipUtil.unGzip(payload.newInput());
-            douyin_websocket_frame_msg douyinWebsocketFrameMsg = douyin_websocket_frame_msg.parseFrom(bytes);
 
-            // 抖音不是使用心跳，而是ACK
-            if (douyinWebsocketFrameMsg.getNeedAck()) {
-                douyin_websocket_frame ack = douyin_websocket_frame.newBuilder()
-                        .setLogId(douyinWebsocketFrame.getLogId())
-                        .setPayloadType("ack")
-                        .setPayload(douyinWebsocketFrameMsg.getInternalExtBytes())
-                        .build();
-                channelHandlerContext.writeAndFlush(new BinaryWebSocketFrame(Unpooled.wrappedBuffer(ack.toByteArray())));
+            byte[] bytes;
+            Map<String, String> headersListMap = douyinWebsocketFrame.getHeadersListMap();
+            String compressType = MapUtil.getStr(headersListMap, "compress_type");
+            if (!"gzip".equalsIgnoreCase(compressType)) {
+                if (log.isWarnEnabled()) {
+                    log.warn("暂不支持的压缩方式: {}", compressType);
+                }
+                return Collections.emptyList();
+            }
+            ByteString payload = douyinWebsocketFrame.getPayload();
+            bytes = ZipUtil.unGzip(payload.newInput());
+
+            String payloadType = douyinWebsocketFrame.getPayloadType();
+            DouyinPayloadTypeEnum payloadTypeEnum = DouyinPayloadTypeEnum.getByCode(payloadType);
+            if (payloadTypeEnum == null) {
+                if (log.isDebugEnabled()) {
+                    log.debug("暂不支持的payloadType: {}", payloadType);
+                }
+                return Collections.emptyList();
             }
 
-            return new ArrayList<>(douyinWebsocketFrameMsg.getMessagesListList());
+            switch (payloadTypeEnum) {
+                case MSG: {
+                    douyin_websocket_frame_msg douyinWebsocketFrameMsg = douyin_websocket_frame_msg.parseFrom(bytes);
+                    // ACK
+                    if (douyinWebsocketFrameMsg.getNeedAck()) {
+                        douyin_websocket_frame ack = douyin_websocket_frame.newBuilder()
+                                .setLogId(douyinWebsocketFrame.getLogId())
+                                .setPayloadType(DouyinPayloadTypeEnum.ACK.getCode())
+                                .setPayload(douyinWebsocketFrameMsg.getInternalExtBytes())
+                                .build();
+                        channelHandlerContext.writeAndFlush(new BinaryWebSocketFrame(Unpooled.wrappedBuffer(ack.toByteArray())));
+                    }
+                    return new ArrayList<>(douyinWebsocketFrameMsg.getMessagesListList());
+                }
+                default: {
+                    // ignore
+                }
+            }
+            return Collections.emptyList();
         } catch (InvalidProtocolBufferException e) {
             throw new BaseException(e);
         }
