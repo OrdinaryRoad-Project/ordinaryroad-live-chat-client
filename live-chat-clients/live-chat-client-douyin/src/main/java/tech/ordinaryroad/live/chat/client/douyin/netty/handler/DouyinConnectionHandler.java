@@ -24,7 +24,10 @@
 
 package tech.ordinaryroad.live.chat.client.douyin.netty.handler;
 
+import io.netty.buffer.Unpooled;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
+import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
@@ -41,6 +44,10 @@ import java.util.function.Supplier;
 @ChannelHandler.Sharable
 public class DouyinConnectionHandler extends BaseNettyClientConnectionHandler<DouyinLiveChatClient, DouyinConnectionHandler> {
 
+    /**
+     * 心跳包
+     */
+    private static final byte[] HEARTBEAT_BYTES = {58, 2, 104, 98};
     /**
      * 以ClientConfig为主
      */
@@ -79,13 +86,10 @@ public class DouyinConnectionHandler extends BaseNettyClientConnectionHandler<Do
     }
 
     @Override
-    public long getHeartbeatPeriod() {
-        return 0;
-    }
-
-    @Override
-    public long getHeartbeatInitialDelay() {
-        return 0;
+    public void sendHeartbeat(Channel channel) {
+        // douyin_websocket_frame.newBuilder().setPayloadType("hb").build().toByteArray()
+        // Base64.decode("OgJoYg==");
+        channel.writeAndFlush(new BinaryWebSocketFrame(Unpooled.wrappedBuffer(HEARTBEAT_BYTES)));
     }
 
     public Object getRoomId() {
