@@ -48,7 +48,7 @@ class DouyinLiveChatClientTest {
 
             @Override
             public void onCmdMsg(DouyinCmdEnum cmd, ICmdMsg<DouyinCmdEnum> cmdMsg) {
-                // log.debug("收到CMD消息{} {}", cmd, cmdMsg);
+                log.debug("收到CMD消息{} {}", cmd, cmdMsg);
             }
 
             @Override
@@ -86,7 +86,7 @@ class DouyinLiveChatClientTest {
 
             @Override
             public void onLikeMsg(DouyinBinaryFrameHandler binaryFrameHandler, DouyinLikeMsg msg) {
-                log.info("{} 收到点赞 [{}] {}({})", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid());
+                log.info("{} 收到点赞 [{}] {}({})x{}", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid(), msg.getClickCount());
             }
 
             @Override
