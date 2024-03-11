@@ -38,7 +38,8 @@ public interface IBilibiliMsgListener extends IBaseMsgListener<BilibiliBinaryFra
         IGiftMsgListener<BilibiliBinaryFrameHandler, SendGiftMsg>,
         ISuperChatMsgListener<BilibiliBinaryFrameHandler, SuperChatMessageMsg>,
         IEnterRoomMsgListener<BilibiliBinaryFrameHandler, InteractWordMsg>,
-        ILikeMsgListener<BilibiliBinaryFrameHandler, LikeInfoV3ClickMsg> {
+        ILikeMsgListener<BilibiliBinaryFrameHandler, LikeInfoV3ClickMsg>,
+        ILiveStatusChangeListener<BilibiliBinaryFrameHandler, BilibiliLiveStatusChangeMsg> {
 
     /**
      * 收到礼物
