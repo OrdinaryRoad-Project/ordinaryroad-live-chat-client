@@ -22,21 +22,21 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.douyin.listener;
+package tech.ordinaryroad.live.chat.client.commons.base.msg;
 
-import tech.ordinaryroad.live.chat.client.commons.base.listener.*;
-import tech.ordinaryroad.live.chat.client.douyin.constant.DouyinCmdEnum;
-import tech.ordinaryroad.live.chat.client.douyin.msg.*;
-import tech.ordinaryroad.live.chat.client.douyin.netty.handler.DouyinBinaryFrameHandler;
+import tech.ordinaryroad.live.chat.client.commons.base.constant.LiveStatusAction;
 
 /**
+ * 直播状态变化消息
+ *
  * @author mjz
- * @date 2024/1/2
+ * @date 2024/3/10
  */
-public interface IDouyinMsgListener extends IBaseMsgListener<DouyinBinaryFrameHandler, DouyinCmdEnum>,
-        IDanmuMsgListener<DouyinBinaryFrameHandler, DouyinDanmuMsg>,
-        IGiftMsgListener<DouyinBinaryFrameHandler, DouyinGiftMsg>,
-        IEnterRoomMsgListener<DouyinBinaryFrameHandler, DouyinEnterRoomMsg>,
-        ILikeMsgListener<DouyinBinaryFrameHandler, DouyinLikeMsg>,
-        ILiveStatusChangeListener<DouyinBinaryFrameHandler, DouyinControlMsg> {
+public interface ILiveStatusChangeMsg extends IMsg {
+
+    /**
+     * 状态变化
+     */
+    LiveStatusAction getLiveStatusAction();
+
 }

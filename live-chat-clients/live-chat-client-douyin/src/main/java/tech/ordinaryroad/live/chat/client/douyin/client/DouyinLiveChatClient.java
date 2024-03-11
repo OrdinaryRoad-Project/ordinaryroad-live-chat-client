@@ -36,6 +36,7 @@ import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolConfig;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
 import io.netty.handler.codec.http.websocketx.WebSocketVersion;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.douyin.api.DouyinApis;
@@ -68,6 +69,7 @@ public class DouyinLiveChatClient extends BaseNettyClient<
         DouyinConnectionHandler,
         DouyinBinaryFrameHandler> {
 
+    @Getter
     private DouyinApis.RoomInitResult roomInitResult = new DouyinApis.RoomInitResult();
 
     public DouyinLiveChatClient(DouyinLiveChatClientConfig config, List<IDouyinMsgListener> msgListeners, IDouyinConnectionListener connectionListener, EventLoopGroup workerGroup) {

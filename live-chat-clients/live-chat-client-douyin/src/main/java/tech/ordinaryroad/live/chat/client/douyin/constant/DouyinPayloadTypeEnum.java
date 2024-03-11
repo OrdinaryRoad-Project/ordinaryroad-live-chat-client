@@ -22,21 +22,44 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.douyin.listener;
+package tech.ordinaryroad.live.chat.client.douyin.constant;
 
-import tech.ordinaryroad.live.chat.client.commons.base.listener.*;
-import tech.ordinaryroad.live.chat.client.douyin.constant.DouyinCmdEnum;
-import tech.ordinaryroad.live.chat.client.douyin.msg.*;
-import tech.ordinaryroad.live.chat.client.douyin.netty.handler.DouyinBinaryFrameHandler;
+import cn.hutool.core.util.StrUtil;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
  * @author mjz
- * @date 2024/1/2
+ * @date 2024/3/10
  */
-public interface IDouyinMsgListener extends IBaseMsgListener<DouyinBinaryFrameHandler, DouyinCmdEnum>,
-        IDanmuMsgListener<DouyinBinaryFrameHandler, DouyinDanmuMsg>,
-        IGiftMsgListener<DouyinBinaryFrameHandler, DouyinGiftMsg>,
-        IEnterRoomMsgListener<DouyinBinaryFrameHandler, DouyinEnterRoomMsg>,
-        ILikeMsgListener<DouyinBinaryFrameHandler, DouyinLikeMsg>,
-        ILiveStatusChangeListener<DouyinBinaryFrameHandler, DouyinControlMsg> {
+@Getter
+@RequiredArgsConstructor
+public enum DouyinPayloadTypeEnum {
+
+    /**
+     * 心跳、心跳回复
+     */
+    HB("hb"),
+
+    /**
+     * 消息
+     */
+    MSG("msg"),
+
+    ACK("ack"),
+    ;
+
+    private final String code;
+
+    public static DouyinPayloadTypeEnum getByCode(String code) {
+        if (StrUtil.isBlank(code)) {
+            return null;
+        }
+        for (DouyinPayloadTypeEnum value : values()) {
+            if (value.getCode().equals(code)) {
+                return value;
+            }
+        }
+        return null;
+    }
 }

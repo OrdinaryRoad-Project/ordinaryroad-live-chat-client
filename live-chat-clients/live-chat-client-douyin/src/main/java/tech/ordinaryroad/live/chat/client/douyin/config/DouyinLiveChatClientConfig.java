@@ -42,6 +42,12 @@ import tech.ordinaryroad.live.chat.client.servers.netty.client.config.BaseNettyC
 public class DouyinLiveChatClientConfig extends BaseNettyClientConfig {
 
     @Builder.Default
+    private long heartbeatInitialDelay = 5;
+
+    @Builder.Default
+    private long heartbeatPeriod = 10;
+
+    @Builder.Default
     private int aggregatorMaxContentLength = 64 * 1024 * 1024;
 
     @Builder.Default

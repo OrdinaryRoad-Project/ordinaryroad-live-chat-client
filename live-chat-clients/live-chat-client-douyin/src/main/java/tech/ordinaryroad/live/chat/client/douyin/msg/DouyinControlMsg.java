@@ -22,21 +22,39 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.douyin.listener;
+package tech.ordinaryroad.live.chat.client.douyin.msg;
 
-import tech.ordinaryroad.live.chat.client.commons.base.listener.*;
-import tech.ordinaryroad.live.chat.client.douyin.constant.DouyinCmdEnum;
-import tech.ordinaryroad.live.chat.client.douyin.msg.*;
-import tech.ordinaryroad.live.chat.client.douyin.netty.handler.DouyinBinaryFrameHandler;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import tech.ordinaryroad.live.chat.client.commons.base.constant.LiveStatusAction;
+import tech.ordinaryroad.live.chat.client.commons.base.msg.ILiveStatusChangeMsg;
+import tech.ordinaryroad.live.chat.client.douyin.msg.base.IDouyinMsg;
+import tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_control_message_msg;
 
 /**
  * @author mjz
- * @date 2024/1/2
+ * @date 2024/3/10
  */
-public interface IDouyinMsgListener extends IBaseMsgListener<DouyinBinaryFrameHandler, DouyinCmdEnum>,
-        IDanmuMsgListener<DouyinBinaryFrameHandler, DouyinDanmuMsg>,
-        IGiftMsgListener<DouyinBinaryFrameHandler, DouyinGiftMsg>,
-        IEnterRoomMsgListener<DouyinBinaryFrameHandler, DouyinEnterRoomMsg>,
-        ILikeMsgListener<DouyinBinaryFrameHandler, DouyinLikeMsg>,
-        ILiveStatusChangeListener<DouyinBinaryFrameHandler, DouyinControlMsg> {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class DouyinControlMsg implements IDouyinMsg, ILiveStatusChangeMsg {
+
+    private douyin_webcast_control_message_msg msg;
+
+    @Override
+    public LiveStatusAction getLiveStatusAction() {
+        if (msg.getStatus() == 3) {
+            return LiveStatusAction.END;
+        }
+        return null;
+    }
+
+    @Override
+    public String toString() {
+        return msg.toString();
+    }
 }

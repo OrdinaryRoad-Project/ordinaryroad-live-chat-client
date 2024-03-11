@@ -36,6 +36,7 @@ import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCookieUtil;
+import tech.ordinaryroad.live.chat.client.douyin.constant.DouyinRoomStatusEnum;
 import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinGiftMsg;
 import tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_gift_message_msg;
 
@@ -57,6 +58,7 @@ public class DouyinApis {
     public static final int AC_NONCE_LENGTH = 21;
     public static final String PATTERN_USER_UNIQUE_ID = "\\\\\"user_unique_id\\\\\":\\\\\"(\\d+)\\\\\"";
     public static final String PATTERN_ROOM_ID = "\\\\\"roomId\\\\\":\\\\\"(\\d+)\\\\\"";
+    public static final String PATTERN_ROOM_STATUS = "\\\\\"roomInfo\\\\\".+\\\\\"status\\\\\":(\\d+)";
     /**
      * 礼物连击缓存
      */
@@ -78,13 +80,21 @@ public class DouyinApis {
         if (response2.getStatus() != HttpStatus.HTTP_OK) {
             throw new BaseException("获取" + roomId + "真实房间ID失败");
         }
-        String user_unique_id = StrUtil.emptyToDefault(ReUtil.getGroup1(PATTERN_USER_UNIQUE_ID, response2.body()), RandomUtil.randomNumbers(19));
+        String body2 = response2.body();
+        String user_unique_id = StrUtil.emptyToDefault(ReUtil.getGroup1(PATTERN_USER_UNIQUE_ID, body2), RandomUtil.randomNumbers(19));
         long realRoomId;
-        String realRoomIdString = ReUtil.getGroup1(PATTERN_ROOM_ID, response2.body());
+        String realRoomIdString = ReUtil.getGroup1(PATTERN_ROOM_ID, body2);
         try {
             realRoomId = NumberUtil.parseLong(realRoomIdString);
         } catch (Exception e) {
             throw new BaseException("获取" + roomId + "真实房间ID失败");
+        }
+        int roomStatus;
+        String roomStatusString = ReUtil.getGroup1(PATTERN_ROOM_STATUS, body2);
+        try {
+            roomStatus = NumberUtil.parseInt(roomStatusString);
+        } catch (Exception e) {
+            throw new BaseException("获取" + roomId + "直播间状态失败");
         }
 
         return RoomInitResult.builder()
@@ -93,6 +103,7 @@ public class DouyinApis {
                 .acNonce(__ac_nonce)
                 .realRoomId(realRoomId)
                 .userUniqueId(user_unique_id)
+                .roomStatus(DouyinRoomStatusEnum.getByCode(roomStatus))
                 .build();
     }
 
@@ -144,5 +155,6 @@ public class DouyinApis {
         private String acNonce;
         private long realRoomId;
         private String userUniqueId;
+        private DouyinRoomStatusEnum roomStatus;
     }
 }

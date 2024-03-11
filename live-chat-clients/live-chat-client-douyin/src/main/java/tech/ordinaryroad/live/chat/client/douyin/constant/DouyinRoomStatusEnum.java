@@ -22,21 +22,39 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.douyin.listener;
+package tech.ordinaryroad.live.chat.client.douyin.constant;
 
-import tech.ordinaryroad.live.chat.client.commons.base.listener.*;
-import tech.ordinaryroad.live.chat.client.douyin.constant.DouyinCmdEnum;
-import tech.ordinaryroad.live.chat.client.douyin.msg.*;
-import tech.ordinaryroad.live.chat.client.douyin.netty.handler.DouyinBinaryFrameHandler;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
  * @author mjz
- * @date 2024/1/2
+ * @date 2024/3/10
  */
-public interface IDouyinMsgListener extends IBaseMsgListener<DouyinBinaryFrameHandler, DouyinCmdEnum>,
-        IDanmuMsgListener<DouyinBinaryFrameHandler, DouyinDanmuMsg>,
-        IGiftMsgListener<DouyinBinaryFrameHandler, DouyinGiftMsg>,
-        IEnterRoomMsgListener<DouyinBinaryFrameHandler, DouyinEnterRoomMsg>,
-        ILikeMsgListener<DouyinBinaryFrameHandler, DouyinLikeMsg>,
-        ILiveStatusChangeListener<DouyinBinaryFrameHandler, DouyinControlMsg> {
+@Getter
+@RequiredArgsConstructor
+public enum DouyinRoomStatusEnum {
+
+    /**
+     * 未开播
+     */
+    STOPPED(4),
+
+    /**
+     * 直播中
+     */
+    LIVING(2),
+    ;
+
+    private final int code;
+
+    public static DouyinRoomStatusEnum getByCode(int code) {
+        for (DouyinRoomStatusEnum value : values()) {
+            if (value.getCode() == code) {
+                return value;
+            }
+        }
+        return null;
+    }
+
 }
