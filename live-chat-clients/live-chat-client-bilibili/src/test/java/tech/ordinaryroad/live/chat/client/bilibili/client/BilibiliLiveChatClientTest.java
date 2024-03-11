@@ -92,6 +92,7 @@ class BilibiliLiveChatClientTest {
 
             @Override
             public void onLiveStatusMsg(BilibiliBinaryFrameHandler binaryFrameHandler, BilibiliLiveStatusChangeMsg msg) {
+                IBilibiliMsgListener.super.onLiveStatusMsg(binaryFrameHandler, msg);
                 log.error("{} 状态变化 {}", binaryFrameHandler.getRoomId(), msg.getLiveStatusAction(client.getConfig().getRoomId()));
             }
 
