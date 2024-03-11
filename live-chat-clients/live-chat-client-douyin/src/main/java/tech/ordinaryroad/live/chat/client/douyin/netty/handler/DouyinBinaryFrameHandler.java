@@ -41,10 +41,7 @@ import tech.ordinaryroad.live.chat.client.douyin.client.DouyinLiveChatClient;
 import tech.ordinaryroad.live.chat.client.douyin.constant.DouyinCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyin.constant.DouyinPayloadTypeEnum;
 import tech.ordinaryroad.live.chat.client.douyin.listener.IDouyinMsgListener;
-import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinDanmuMsg;
-import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinEnterRoomMsg;
-import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinGiftMsg;
-import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinLikeMsg;
+import tech.ordinaryroad.live.chat.client.douyin.msg.*;
 import tech.ordinaryroad.live.chat.client.douyin.msg.base.IDouyinMsg;
 import tech.ordinaryroad.live.chat.client.douyin.protobuf.*;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientBinaryFrameHandler;
@@ -129,6 +126,16 @@ public class DouyinBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<
                 try {
                     douyin_webcast_like_message_msg douyinWebcastLikeMessageMsg = douyin_webcast_like_message_msg.parseFrom(payload);
                     iteratorMsgListeners(msgListener -> msgListener.onLikeMsg(DouyinBinaryFrameHandler.this, new DouyinLikeMsg(douyinWebcastLikeMessageMsg)));
+                } catch (InvalidProtocolBufferException e) {
+                    throw new BaseException(e);
+                }
+                break;
+            }
+
+            case WebcastControlMessage: {
+                try {
+                    douyin_webcast_control_message_msg douyinWebcastControlMessageMsg = douyin_webcast_control_message_msg.parseFrom(payload);
+                    iteratorMsgListeners(msgListener -> msgListener.onLiveStatusMsg(DouyinBinaryFrameHandler.this, new DouyinControlMsg(douyinWebcastControlMessageMsg)));
                 } catch (InvalidProtocolBufferException e) {
                     throw new BaseException(e);
                 }
