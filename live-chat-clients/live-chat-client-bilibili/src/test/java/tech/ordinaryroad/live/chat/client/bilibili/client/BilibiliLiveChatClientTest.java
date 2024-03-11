@@ -28,7 +28,9 @@ import cn.hutool.core.thread.ThreadUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import tech.ordinaryroad.live.chat.client.bilibili.api.BilibiliApis;
 import tech.ordinaryroad.live.chat.client.bilibili.config.BilibiliLiveChatClientConfig;
+import tech.ordinaryroad.live.chat.client.bilibili.config.BilibiliLiveStatusEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.BilibiliCmdEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliMsgListener;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.*;
@@ -86,6 +88,11 @@ class BilibiliLiveChatClientTest {
             public void onLikeMsg(BilibiliBinaryFrameHandler binaryFrameHandler, LikeInfoV3ClickMsg msg) {
                 IBilibiliMsgListener.super.onLikeMsg(binaryFrameHandler, msg);
                 log.info("{} 收到点赞 {} {}({})", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid());
+            }
+
+            @Override
+            public void onLiveStatusMsg(BilibiliBinaryFrameHandler binaryFrameHandler, BilibiliLiveStatusChangeMsg msg) {
+                log.error("{} 状态变化 {}", binaryFrameHandler.getRoomId(), msg.getLiveStatusAction(client.getConfig().getRoomId()));
             }
 
             @Override
@@ -155,12 +162,20 @@ class BilibiliLiveChatClientTest {
 
         client.addStatusChangeListener((evt, oldStatus, newStatus) -> {
             if (newStatus == ClientStatusEnums.CONNECTED) {
-                ThreadUtil.execAsync(() -> {
-                    ThreadUtil.sleep(5000);
-                    client.clickLike(5, () -> {
-                        log.warn("为主播点赞成功");
-                    });
-                });
+                if (oldStatus == ClientStatusEnums.CONNECTING) {
+                    // 0 未开播，1 直播中，2 投稿视频
+                    log.error("开播状态: {}", client.getRoomInitResult().getLive_status());
+//                ThreadUtil.execAsync(() -> {
+//                    ThreadUtil.sleep(5000);
+//                    client.clickLike(5, () -> {
+//                        log.warn("为主播点赞成功");
+//                    });
+//                });
+                } else if (oldStatus == ClientStatusEnums.RECONNECTING) {
+                    BilibiliApis.RoomInitResult roomInitResult = BilibiliApis.roomInit(client.getConfig().getRoomId(), client.getConfig().getCookie());
+                    BilibiliLiveStatusEnum liveStatus = roomInitResult.getLive_status();
+                    log.error("重连后的开播状态: {}", liveStatus);
+                }
             }
         });
 

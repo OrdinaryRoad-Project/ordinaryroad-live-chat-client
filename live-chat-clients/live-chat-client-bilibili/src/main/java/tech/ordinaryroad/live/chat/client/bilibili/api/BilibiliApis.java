@@ -37,6 +37,7 @@ import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.bilibili.api.request.BilibiliLikeReportV3Request;
 import tech.ordinaryroad.live.chat.client.bilibili.api.request.BilibiliSendMsgRequest;
+import tech.ordinaryroad.live.chat.client.bilibili.config.BilibiliLiveStatusEnum;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCookieUtil;
 
@@ -233,7 +234,7 @@ public class BilibiliApis {
         private boolean is_hidden;
         private boolean is_locked;
         private boolean is_portrait;
-        private int live_status;
+        private BilibiliLiveStatusEnum live_status;
         private int hidden_till;
         private int lock_till;
         private boolean encrypted;

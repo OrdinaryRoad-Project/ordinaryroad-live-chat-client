@@ -140,6 +140,13 @@ public class BilibiliBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
                 break;
             }
 
+            case LIVE:
+            case STOP_LIVE_ROOM_LIST: {
+                BilibiliLiveStatusChangeMsg bilibiliLiveStatusChangeMsg = BaseBilibiliMsg.OBJECT_MAPPER.convertValue(sendSmsReplyMsg, BilibiliLiveStatusChangeMsg.class);
+                iteratorMsgListeners(msgListener -> msgListener.onLiveStatusMsg(BilibiliBinaryFrameHandler.this, bilibiliLiveStatusChangeMsg));
+                break;
+            }
+
             default: {
                 iteratorMsgListeners(msgListener -> msgListener.onOtherCmdMsg(BilibiliBinaryFrameHandler.this, cmd, cmdMsg));
             }

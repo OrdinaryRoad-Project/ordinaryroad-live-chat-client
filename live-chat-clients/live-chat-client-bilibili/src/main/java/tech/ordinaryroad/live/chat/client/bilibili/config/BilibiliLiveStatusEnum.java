@@ -22,33 +22,45 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.commons.base.msg;
+package tech.ordinaryroad.live.chat.client.bilibili.config;
 
-import tech.ordinaryroad.live.chat.client.commons.base.constant.LiveStatusAction;
-import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
+import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
- * 直播状态变化消息
- *
  * @author mjz
- * @date 2024/3/10
+ * @date 2024/3/11
  */
-public interface ILiveStatusChangeMsg extends IMsg {
+@Getter
+@RequiredArgsConstructor
+public enum BilibiliLiveStatusEnum {
 
     /**
-     * 状态变化
-     *
-     * @param roomId B站平台需要传入
+     * 未开播
      */
-    default LiveStatusAction getLiveStatusAction(Object roomId) {
-        throw new BaseException("暂不支持该操作");
-    }
+    STOPPED(0),
 
     /**
-     * 状态变化
+     * 直播中
      */
-    default LiveStatusAction getLiveStatusAction() {
-        return getLiveStatusAction(null);
-    }
+    LIVING(1),
 
+    /**
+     * 投稿视频轮播
+     */
+    CAROUSEL(2),
+    ;
+
+    @JsonValue
+    private final int code;
+
+    public static BilibiliLiveStatusEnum getByCode(int code) {
+        for (BilibiliLiveStatusEnum value : values()) {
+            if (value.getCode() == code) {
+                return value;
+            }
+        }
+        return null;
+    }
 }
