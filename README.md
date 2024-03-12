@@ -265,6 +265,7 @@ public class ClientModeExample {
         - IGiftMsg: 内置获取发送方ID、发送方用户名、发送方头像、接收方ID、接收方用户名、礼物名称、礼物图片、礼物ID、礼物个数、礼物单价等方法
         - IEnterRoomMsg: 内置获取用户ID、用户名、用户头像、粉丝牌名称、粉丝牌等级方法
         - ILikeMsg: 内置获取用户ID、用户名、用户头像、粉丝牌名称、粉丝牌等级、点赞数方法
+        - ILiveStatusChangeMsg: 内置获取状态变化方法
 - 消息抽象类
     - BaseMsg：实现IMsg接口，提供存放未知属性的字段
         - BaseCmdMsg：继承自BaseMsg，实现ICmdMsg接口
@@ -284,6 +285,8 @@ public class ClientModeExample {
         - onEnterRoomMsg：进入房间消息回调
     - ILikeMsgListener（B站、快手、抖音支持获取点赞的个数）
         - onLikeMsg：收到点赞消息
+    - ILiveStatusChangeListener（B站、抖音测试只有下播消息）
+        - onLiveStatusMsg：收到状态变化消息
 
 #### 3.1.2 commons-client
 
@@ -335,11 +338,11 @@ public class ClientModeExample {
 >
 > <img src="assets/donate.png" width="200px">
 
-| 日期         | 捐赠人 | 金额    | 留言   | 渠道  |
-|------------|-----|-------|------|-----|
+| 日期         | 捐赠人 |    金额 | 留言   | 渠道  |
+|------------|----:|------:|:-----|-----|
 | 2024-03-06 | **睿 | 88.88 | 佬 加油 | ZFB |
-| 2024-03-10 | **豪 | 88.8  | 大佬加油 | ZFB |
-| ...        | ... | ...   | ...  | ... |
+| 2024-03-10 | **豪 |  88.8 | 大佬加油 | ZFB |
+| ...        | ... |   ... | ...  | ... |
 
 ## Star History
 
