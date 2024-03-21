@@ -42,13 +42,13 @@ import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import lombok.extern.slf4j.Slf4j;
+import tech.ordinaryroad.live.chat.client.bilibili.api.BilibiliApis;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.BilibiliCmdEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.ProtoverEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliMsgListener;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.DanmuMsgMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.SendGiftMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.SendSmsReplyMsg;
-import tech.ordinaryroad.live.chat.client.bilibili.netty.frame.factory.BilibiliWebSocketFrameFactory;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliConnectionHandler;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
@@ -73,6 +73,7 @@ public class BilibiliHandlerModeExample {
     static String cookie = System.getenv("cookie");
     // TODO 修改版本
     static ProtoverEnum protover = ProtoverEnum.NORMAL_BROTLI;
+    static BilibiliApis.RoomInitResult roomInitResult = BilibiliApis.roomInit(roomId, cookie);
 
     public static void main(String[] args) {
         log.error("cookie: {}", cookie);
@@ -98,7 +99,7 @@ public class BilibiliHandlerModeExample {
                             // 监听是否握手成功
                             connectionHandler.getHandshakeFuture().addListener((ChannelFutureListener) handshakeFuture -> {
                                 // 5s内认证
-                                sendAuth();
+                                connectionHandler.sendAuthRequest(channel);
                             });
                         } else {
                             log.error("连接建立失败", connectFuture.cause());
@@ -127,7 +128,7 @@ public class BilibiliHandlerModeExample {
                                     .customHeaders(new DefaultHttpHeaders())
                                     .build()
                     ),
-                    roomId, protover, connectionListener, cookie
+                    roomInitResult, roomId, protover, connectionListener, cookie
             );
             IBilibiliMsgListener msgListener = new IBilibiliMsgListener() {
                 @Override
@@ -218,9 +219,9 @@ public class BilibiliHandlerModeExample {
                             pipeline.addLast(new ChunkedWriteHandler());
                             // 添加一个聚合器，这个聚合器主要是将HttpMessage聚合成FullHttpRequest/Response
                             pipeline.addLast(new HttpObjectAggregator(1024 * 64));
-
 //                            pipeline.addLast(WebSocketClientCompressionHandler.INSTANCE);
-//                            pipeline.addLast(new WebSocketServerProtocolHandler("/sub", null, true, 65536 * 10));
+                            // 添加一个WebSocket协议处理器
+                            pipeline.addLast(finalConnectionHandler.getWebSocketProtocolHandler().get());
 
                             // 连接处理器
                             pipeline.addLast(finalConnectionHandler);
@@ -236,7 +237,7 @@ public class BilibiliHandlerModeExample {
                 channel.close();
             }, 10, TimeUnit.SECONDS);
             // 5s内认证
-            sendAuth();
+            connectionHandler.sendAuthRequest(channel);
 
             channel.closeFuture().sync();
         } catch (Exception e) {
@@ -246,8 +247,4 @@ public class BilibiliHandlerModeExample {
         }
     }
 
-    private static void sendAuth() {
-        log.debug("发送认证包");
-        channel.writeAndFlush(BilibiliWebSocketFrameFactory.getInstance(roomId).createAuth(protover, cookie));
-    }
 }
