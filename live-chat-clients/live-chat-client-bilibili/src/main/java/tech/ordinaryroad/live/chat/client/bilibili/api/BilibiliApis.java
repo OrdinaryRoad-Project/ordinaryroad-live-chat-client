@@ -28,7 +28,6 @@ import cn.hutool.cache.impl.TimedCache;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -40,9 +39,11 @@ import tech.ordinaryroad.live.chat.client.bilibili.api.request.BilibiliSendMsgRe
 import tech.ordinaryroad.live.chat.client.bilibili.config.BilibiliLiveStatusEnum;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCookieUtil;
+import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatHttpUtil;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -60,19 +61,71 @@ public class BilibiliApis {
     public static final TimedCache<Long, String> GIFT_IMG_CACHE = new TimedCache<>(TimeUnit.DAYS.toMillis(1));
     public static final String KEY_COOKIE_CSRF = "bili_jct";
     public static final String KEY_UID = "DedeUserID";
+    public static final String PATTERN_REAL_ROOM_ID = "\\\"roomInitRes\\\".+\\{\\\"room_id\\\":(\\d+)";
+
+    private static final String API_FRONTEND_FINGER_SPI = "https://api.bilibili.com/x/frontend/finger/spi";
+    private static final String API_V = "https://data.bilibili.com/v/";
+    private static final String API_WEB_INTERFACE_NAV = "https://api.bilibili.com/x/web-interface/nav";
+    private static final String API_DANMU_INFO = "https://api.live.bilibili.com/xlive/web-room/v1/index/getDanmuInfo";
+    private static final String API_ROOM_PLAY_INFO = "https://api.live.bilibili.com/xlive/web-room/v2/index/getRoomPlayInfo";
 
     @SneakyThrows
     public static RoomInitResult roomInit(long roomId, String cookie) {
-        @Cleanup
-        HttpResponse response = createGetRequest("https://api.live.bilibili.com/room/v1/Room/room_init?id=" + roomId, cookie).execute();
-        JsonNode dataJsonNode = responseInterceptor(response.body());
-        return OBJECT_MAPPER.readValue(dataJsonNode.toString(), RoomInitResult.class);
+        RoomPlayInfoResult roomPlayInfo = getRoomPlayInfo(roomId, cookie);
+        long realRoomId = roomPlayInfo.room_id;
+        // frontendFingerSpi();
+        String b_3 = OrLiveChatCookieUtil.getCookieByName(cookie, "buvid3", BilibiliApis::v);
+        // webInterfaceNav(cookie);
+        DanmuinfoResult danmuInfo = getDanmuInfo(realRoomId, cookie);
+        return new RoomInitResult.RoomInitResultBuilder()
+                .buvid3(b_3)
+                .uid(OrLiveChatCookieUtil.getCookieByName(cookie, "DedeUserID", () -> "0"))
+                .danmuinfoResult(danmuInfo)
+                .roomPlayInfoResult(roomPlayInfo)
+                .build();
     }
 
     public static JsonNode roomGiftConfig(long roomId, String cookie) {
         @Cleanup
-        HttpResponse response = createGetRequest("https://api.live.bilibili.com/xlive/web-room/v1/giftPanel/roomGiftConfig?platform=pc&source=live&build=0&global_version=0&room_id=" + roomId, cookie).execute();
+        HttpResponse response = OrLiveChatHttpUtil.createGet("https://api.live.bilibili.com/xlive/web-room/v1/giftPanel/roomGiftConfig?platform=pc&source=live&build=0&global_version=0&room_id=" + roomId)
+                .cookie(cookie)
+                .execute();
         return responseInterceptor(response.body());
+    }
+
+    /**
+     * {
+     * "code": 0,
+     * "data": {
+     * "b_3": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxBAC9C3C049561infoc",
+     * "b_4": "xxxxxxx-xxxx-xxxx-xxxx-xxxx0EE06EC549561-xxxx32009-xxxxgQAMrcCGKkaytpzZwg=="
+     * },
+     * "message": "ok"
+     * }
+     */
+    @SneakyThrows
+    public static JsonNode frontendFingerSpi() {
+        @Cleanup
+        HttpResponse response = OrLiveChatHttpUtil.createGet(API_FRONTEND_FINGER_SPI).execute();
+        return responseInterceptor(response.body());
+    }
+
+    /**
+     * 返回buvid3
+     */
+    @SneakyThrows
+    public static String v() {
+        @Cleanup
+        HttpResponse response = OrLiveChatHttpUtil.createGet(API_V).execute();
+        return response.getCookieValue("buvid3");
+    }
+
+    @SneakyThrows
+    public static void webInterfaceNav(String cookie) {
+        @Cleanup
+        HttpResponse response = OrLiveChatHttpUtil.createGet(API_WEB_INTERFACE_NAV)
+                .cookie(cookie)
+                .execute();
     }
 
     /**
@@ -105,10 +158,32 @@ public class BilibiliApis {
      * }
      * }</pre>
      */
-    public static JsonNode getDanmuInfo(long roomId, int type, String cookie) {
+    @SneakyThrows
+    public static DanmuinfoResult getDanmuInfo(long roomId, int type, String cookie) {
         @Cleanup
-        HttpResponse response = createGetRequest("https://api.live.bilibili.com/xlive/web-room/v1/index/getDanmuInfo?id=" + roomId + "&type=" + type, cookie).execute();
-        return responseInterceptor(response.body());
+        HttpResponse response = OrLiveChatHttpUtil.createGet(API_DANMU_INFO + "?id=" + roomId + "&type=" + type)
+                .cookie(cookie)
+                .execute();
+        return OBJECT_MAPPER.readValue(responseInterceptor(response.body()).toString(), DanmuinfoResult.class);
+    }
+
+    @SneakyThrows
+    public static DanmuinfoResult getDanmuInfo(long roomId, String cookie) {
+        return getDanmuInfo(roomId, 0, cookie);
+    }
+
+    @SneakyThrows
+    public static RoomPlayInfoResult getRoomPlayInfo(long roomId, int no_playurl, String cookie) {
+        @Cleanup
+        HttpResponse response = OrLiveChatHttpUtil.createGet(API_ROOM_PLAY_INFO + "?room_id=" + roomId + "&no_playurl=" + no_playurl + "&mask=1&qn=0&platform=web&protocol=0,1&format=0,1,2&codec=0,1,2&dolby=5&panorama=1")
+                .cookie(cookie)
+                .execute();
+        return OBJECT_MAPPER.readValue(responseInterceptor(response.body()).toString(), RoomPlayInfoResult.class);
+    }
+
+    @SneakyThrows
+    public static RoomPlayInfoResult getRoomPlayInfo(long roomId, String cookie) {
+        return getRoomPlayInfo(roomId, 1, cookie);
     }
 
     public static String getGiftImgById(long giftId, long roomId) {
@@ -187,8 +262,8 @@ public class BilibiliApis {
     /**
      * 为主播点赞
      *
-     * @param anchor_id  主播Uid {@link RoomInitResult#uid}
-     * @param realRoomId 真实房间Id {@link RoomInitResult#room_id}
+     * @param anchor_id  主播Uid {@link RoomPlayInfoResult#uid}
+     * @param realRoomId 真实房间Id {@link RoomPlayInfoResult#room_id}
      * @param cookie     Cookie
      */
     public static void likeReportV3(long anchor_id, long realRoomId, String cookie) {
@@ -200,11 +275,6 @@ public class BilibiliApis {
         });
         BilibiliLikeReportV3Request request = new BilibiliLikeReportV3Request(realRoomId, uid, anchor_id, biliJct, biliJct);
         likeReportV3(request, cookie);
-    }
-
-    public static HttpRequest createGetRequest(String url, String cookies) {
-        return HttpUtil.createGet(url)
-                .cookie(cookies);
     }
 
     private static JsonNode responseInterceptor(String responseString) {
@@ -226,11 +296,35 @@ public class BilibiliApis {
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class RoomInitResult {
+    public static class DanmuinfoResult {
+        private String group;
+        private int business_id;
+        private double refresh_row_factor;
+        private int refresh_rate;
+        private int max_delay;
+        private String token;
+        private List<Host_list> host_list;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class Host_list {
+        private String host;
+        private int port;
+        private int wss_port;
+        private int ws_port;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class RoomPlayInfoResult {
         private long room_id;
         private int short_id;
         private long uid;
-        private int need_p2p;
         private boolean is_hidden;
         private boolean is_locked;
         private boolean is_portrait;
@@ -241,8 +335,22 @@ public class BilibiliApis {
         private boolean pwd_verified;
         private long live_time;
         private int room_shield;
-        private int is_sp;
-        private int special_type;
+        private List<Integer> all_special_types;
+        private JsonNode playurl_info;
+        private int official_type;
+        private int official_room_id;
+        private int risk_with_delay;
     }
 
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class RoomInitResult {
+        private String buvid3;
+        private String uid;
+
+        private DanmuinfoResult danmuinfoResult = new DanmuinfoResult();
+        private RoomPlayInfoResult roomPlayInfoResult = new RoomPlayInfoResult();
+    }
 }

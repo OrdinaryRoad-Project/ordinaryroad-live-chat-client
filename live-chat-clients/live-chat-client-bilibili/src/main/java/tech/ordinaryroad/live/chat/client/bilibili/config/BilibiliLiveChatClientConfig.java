@@ -49,10 +49,7 @@ public class BilibiliLiveChatClientConfig extends BaseNettyClientConfig {
      * @see ProtoverEnum
      */
     @Builder.Default
-    private ProtoverEnum protover = ProtoverEnum.NORMAL_ZLIB;
-
-    @Builder.Default
-    private String websocketUri = "wss://broadcastlv.chat.bilibili.com:443/sub";
+    private ProtoverEnum protover = ProtoverEnum.NORMAL_BROTLI;
 
     @Override
     public Long getRoomId() {

@@ -24,20 +24,15 @@
 
 package tech.ordinaryroad.live.chat.client.bilibili.netty.frame.factory;
 
-import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.NumberUtil;
-import com.fasterxml.jackson.databind.JsonNode;
+import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import tech.ordinaryroad.live.chat.client.bilibili.api.BilibiliApis;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.ProtoverEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.AuthMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.HeartbeatMsg;
-import tech.ordinaryroad.live.chat.client.bilibili.netty.frame.AuthWebSocketFrame;
-import tech.ordinaryroad.live.chat.client.bilibili.netty.frame.HeartbeatWebSocketFrame;
 import tech.ordinaryroad.live.chat.client.bilibili.util.BilibiliCodecUtil;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
-import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCookieUtil;
 
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -66,31 +61,22 @@ public class BilibiliWebSocketFrameFactory {
      * 创建认证包
      *
      * @param protover {@link ProtoverEnum}
-     * @param cookie   浏览器cookie，仅用来维持登录状态
      * @return AuthWebSocketFrame
      */
-    public AuthWebSocketFrame createAuth(ProtoverEnum protover, String cookie) {
+    public BinaryWebSocketFrame createAuth(ProtoverEnum protover, BilibiliApis.RoomInitResult roomInitResult) {
         try {
-            Map<String, String> cookieMap = OrLiveChatCookieUtil.parseCookieString(cookie);
-            String buvid3 = OrLiveChatCookieUtil.getCookieByName(cookieMap, "buvid3", () -> UUID.randomUUID().toString());
-            String uid = OrLiveChatCookieUtil.getCookieByName(cookieMap, "DedeUserID", () -> "0");
-            BilibiliApis.RoomInitResult data = BilibiliApis.roomInit(roomId, cookie);
-            JsonNode danmuInfo = BilibiliApis.getDanmuInfo(roomId, 0, cookie);
-            long realRoomId = data.getRoom_id();
-            AuthMsg authMsg = new AuthMsg(realRoomId, protover.getCode(), buvid3, danmuInfo.get("token").asText());
-            authMsg.setUid(NumberUtil.parseLong(uid));
-            return new AuthWebSocketFrame(BilibiliCodecUtil.encode(authMsg));
+            String buvid3 = roomInitResult.getBuvid3();
+            long realRoomId = roomInitResult.getRoomPlayInfoResult().getRoom_id();
+            AuthMsg authMsg = new AuthMsg(realRoomId, protover.getCode(), buvid3, roomInitResult.getDanmuinfoResult().getToken());
+            authMsg.setUid(NumberUtil.parseLong(roomInitResult.getUid()));
+            return new BinaryWebSocketFrame(BilibiliCodecUtil.encode(authMsg));
         } catch (Exception e) {
             throw new BaseException(String.format("认证包创建失败，请检查房间号是否正确。roomId: %d, msg: %s", roomId, e.getMessage()));
         }
     }
 
-    public AuthWebSocketFrame createAuth(ProtoverEnum protover) {
-        return this.createAuth(protover, null);
-    }
-
-    public HeartbeatWebSocketFrame createHeartbeat(ProtoverEnum protover) {
-        return new HeartbeatWebSocketFrame(BilibiliCodecUtil.encode(this.getHeartbeatMsg(protover)));
+    public BinaryWebSocketFrame createHeartbeat(ProtoverEnum protover) {
+        return new BinaryWebSocketFrame(BilibiliCodecUtil.encode(this.getHeartbeatMsg(protover)));
     }
 
     /**

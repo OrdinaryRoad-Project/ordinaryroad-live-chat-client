@@ -22,33 +22,22 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.bilibili.netty.frame.base;
+package tech.ordinaryroad.live.chat.client.commons.util;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
-import tech.ordinaryroad.live.chat.client.bilibili.constant.OperationEnum;
-import tech.ordinaryroad.live.chat.client.bilibili.constant.ProtoverEnum;
+import cn.hutool.http.GlobalHeaders;
+import cn.hutool.http.Header;
+import cn.hutool.http.HttpUtil;
 
 /**
- * 实现Bilibili协议的BinaryWebSocketFrame
- * <a href="https://github.com/SocialSisterYi/bilibili-API-collect/blob/master/live/message_stream.md#数据包格式">数据包格式</a>
- *
  * @author mjz
- * @date 2023/1/5
+ * @date 2024/3/20
  */
-public abstract class BaseBilibiliWebSocketFrame extends BinaryWebSocketFrame {
+public class OrLiveChatHttpUtil extends HttpUtil {
 
-    public static int sequence = 0;
+    public static final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36";
 
-    public ProtoverEnum getProtoverEnum() {
-        return ProtoverEnum.getByCode(super.content().getShort(6));
+    static {
+        GlobalHeaders.INSTANCE.header(Header.USER_AGENT, USER_AGENT);
     }
 
-    public OperationEnum getOperationEnum() {
-        return OperationEnum.getByCode(super.content().getInt(8));
-    }
-
-    public BaseBilibiliWebSocketFrame(ByteBuf byteBuf) {
-        super(byteBuf);
-    }
 }

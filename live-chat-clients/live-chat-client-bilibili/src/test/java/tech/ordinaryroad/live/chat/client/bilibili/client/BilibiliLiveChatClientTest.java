@@ -165,7 +165,7 @@ class BilibiliLiveChatClientTest {
             if (newStatus == ClientStatusEnums.CONNECTED) {
                 if (oldStatus == ClientStatusEnums.CONNECTING) {
                     // 0 未开播，1 直播中，2 投稿视频
-                    log.error("开播状态: {}", client.getRoomInitResult().getLive_status());
+                    log.error("开播状态: {}", client.getRoomInitResult().getRoomPlayInfoResult().getLive_status());
 //                ThreadUtil.execAsync(() -> {
 //                    ThreadUtil.sleep(5000);
 //                    client.clickLike(5, () -> {
@@ -173,8 +173,8 @@ class BilibiliLiveChatClientTest {
 //                    });
 //                });
                 } else if (oldStatus == ClientStatusEnums.RECONNECTING) {
-                    BilibiliApis.RoomInitResult roomInitResult = BilibiliApis.roomInit(client.getConfig().getRoomId(), client.getConfig().getCookie());
-                    BilibiliLiveStatusEnum liveStatus = roomInitResult.getLive_status();
+                    BilibiliApis.RoomPlayInfoResult roomPlayInfo = BilibiliApis.getRoomPlayInfo(client.getConfig().getRoomId(), client.getConfig().getCookie());
+                    BilibiliLiveStatusEnum liveStatus = roomPlayInfo.getLive_status();
                     log.error("重连后的开播状态: {}", liveStatus);
                 }
             }
