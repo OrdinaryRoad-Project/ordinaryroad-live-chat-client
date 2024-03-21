@@ -68,6 +68,25 @@ public class OrLiveChatCookieUtil {
         return map;
     }
 
+    public static String toCookieString(Map<String, String> cookies) {
+        if (cookies.isEmpty()) {
+            return null;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<String, String> stringStringEntry : cookies.entrySet()) {
+            String key = stringStringEntry.getKey();
+            String value = stringStringEntry.getValue();
+            sb.append(key)
+                    .append("=")
+                    .append(value)
+                    .append("; ");
+        }
+        int length = sb.length();
+        sb.delete(length - 2, length);
+        return sb.toString();
+    }
+
     public static String getCookieByName(Map<String, String> cookieMap, String name, Supplier<String> supplier) {
         String str = MapUtil.getStr(cookieMap, name);
         return str == null ? supplier.get() : str;

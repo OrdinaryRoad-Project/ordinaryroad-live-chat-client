@@ -77,7 +77,7 @@ public class BilibiliCodecUtil {
         out.writeShort(FRAME_HEADER_LENGTH);
         out.writeShort(msg.getProtoverEnum().getCode());
         out.writeInt(msg.getOperationEnum().getCode());
-        out.writeInt(sequence++);
+        out.writeInt(++sequence);
         out.writeBytes(bodyBytes);
         return out;
     }

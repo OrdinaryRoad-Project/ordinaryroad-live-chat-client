@@ -24,6 +24,8 @@
 
 package tech.ordinaryroad.live.chat.client.bilibili.client;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -128,6 +130,16 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
     }
 
     @Override
+    protected String getWebSocketUriString() {
+        String webSocketUriString = super.getWebSocketUriString();
+        if (StrUtil.isNotBlank(webSocketUriString)) {
+            return webSocketUriString;
+        }
+        BilibiliApis.Host_list hostList = CollUtil.get(roomInitResult.getDanmuinfoResult().getHost_list(), RandomUtil.randomInt(roomInitResult.getDanmuinfoResult().getHost_list().size()));
+        return StrUtil.format("wss://{}:{}/sub", hostList.getHost(), hostList.getWss_port());
+    }
+
+    @Override
     public void sendDanmu(Object danmu, Runnable success, Consumer<Throwable> failed) {
         if (!checkCanSendDanmu(false)) {
             return;
@@ -141,7 +153,7 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
 
                 boolean sendSuccess = false;
                 try {
-                    BilibiliApis.sendMsg(msg, roomInitResult.getRoom_id(), getConfig().getCookie());
+                    BilibiliApis.sendMsg(msg, roomInitResult.getRoomPlayInfoResult().getRoom_id(), getConfig().getCookie());
                     sendSuccess = true;
                 } catch (Exception e) {
                     log.error("bilibili弹幕发送失败", e);
@@ -179,7 +191,7 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
 
         boolean successfullyClicked = false;
         try {
-            BilibiliApis.likeReportV3(roomInitResult.getUid(), roomInitResult.getRoom_id(), getConfig().getCookie());
+            BilibiliApis.likeReportV3(roomInitResult.getRoomPlayInfoResult().getUid(), roomInitResult.getRoomPlayInfoResult().getRoom_id(), getConfig().getCookie());
             successfullyClicked = true;
         } catch (Exception e) {
             log.error("Bilibili为直播间点赞失败", e);
