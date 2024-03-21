@@ -108,8 +108,12 @@ public class KuaishouLiveChatClient extends BaseNettyClient<
 
     @Override
     protected String getWebSocketUriString() {
+        String webSocketUriString = super.getWebSocketUriString();
+        if (StrUtil.isNotBlank(webSocketUriString)) {
+            return webSocketUriString;
+        }
         List<String> websocketUrls = roomInitResult.getWebsocketUrls();
-        return CollUtil.get(websocketUrls, RandomUtil.randomInt(0, websocketUrls.size()));
+        return CollUtil.get(websocketUrls, RandomUtil.randomInt(websocketUrls.size()));
     }
 
     @Override

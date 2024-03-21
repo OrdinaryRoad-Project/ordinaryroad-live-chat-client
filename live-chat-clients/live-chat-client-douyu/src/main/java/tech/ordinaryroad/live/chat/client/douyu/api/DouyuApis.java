@@ -30,7 +30,10 @@ import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.MD5;
-import cn.hutool.http.*;
+import cn.hutool.http.Header;
+import cn.hutool.http.HttpResponse;
+import cn.hutool.http.HttpStatus;
+import cn.hutool.http.HttpUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -39,6 +42,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseMsg;
+import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatHttpUtil;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLocalDateTimeUtil;
 import tech.ordinaryroad.live.chat.client.douyu.msg.dto.GiftPropSingle;
 
@@ -87,7 +91,9 @@ public class DouyuApis {
     public static long getRealRoomId(long roomId, String cookie) {
         String realRoomIdString = null;
         @Cleanup
-        HttpResponse execute = createGetRequest("https://www.douyu.com/" + roomId, cookie).execute();
+        HttpResponse execute = OrLiveChatHttpUtil.createGet("https://www.douyu.com/" + roomId)
+                .cookie(cookie)
+                .execute();
         if (execute.getStatus() == HttpStatus.HTTP_NOT_FOUND) {
             throw new BaseException("获取" + roomId + "真实房间ID失败");
         }
@@ -122,7 +128,9 @@ public class DouyuApis {
 
     public static JsonNode getServerInfo(long roomId, String cookie) {
         @Cleanup
-        HttpResponse execute = createPostRequest("https://www.douyu.com/lapi/live/gateway/web/" + roomId + "?isH5=1", cookie).execute();
+        HttpResponse execute = OrLiveChatHttpUtil.createPost("https://www.douyu.com/lapi/live/gateway/web/" + roomId + "?isH5=1")
+                .cookie(cookie)
+                .execute();
         return responseInterceptor(execute.body());
     }
 
@@ -139,14 +147,14 @@ public class DouyuApis {
 
     public static JsonNode getGiftList(long roomId) {
         @Cleanup
-        HttpResponse execute = createGetRequest(API_GIFT_LIST + roomId, null).execute();
+        HttpResponse execute = OrLiveChatHttpUtil.createGet(API_GIFT_LIST + roomId).execute();
         return responseInterceptor(execute.body());
     }
 
     @SneakyThrows
     public static GiftPropSingle getGiftPropSingleByPid(String pid) {
         @Cleanup
-        HttpResponse execute = createGetRequest(API_PROP_SINGLE + pid, null).execute();
+        HttpResponse execute = OrLiveChatHttpUtil.createGet(API_PROP_SINGLE + pid).execute();
         JsonNode jsonNode = responseInterceptor(execute.body());
         return BaseMsg.OBJECT_MAPPER.readValue(jsonNode.toString(), GiftPropSingle.class);
     }
@@ -166,16 +174,6 @@ public class DouyuApis {
 
     public static String generateVk(String did) {
         return generateVk(OrLocalDateTimeUtil.zonedCurrentTimeSecs(), did);
-    }
-
-    public static HttpRequest createGetRequest(String url, String cookie) {
-        return HttpUtil.createGet(url)
-                .cookie(cookie);
-    }
-
-    public static HttpRequest createPostRequest(String url, String cookie) {
-        return HttpUtil.createPost(url)
-                .cookie(cookie);
     }
 
     private static JsonNode responseInterceptor(String responseString) {

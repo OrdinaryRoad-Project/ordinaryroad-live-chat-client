@@ -31,11 +31,11 @@ import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpStatus;
-import cn.hutool.http.HttpUtil;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCookieUtil;
+import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatHttpUtil;
 import tech.ordinaryroad.live.chat.client.douyin.constant.DouyinRoomStatusEnum;
 import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinGiftMsg;
 import tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_gift_message_msg;
@@ -68,13 +68,13 @@ public class DouyinApis {
         Map<String, String> cookieMap = OrLiveChatCookieUtil.parseCookieString(cookie);
 
         @Cleanup
-        HttpResponse response1 = HttpUtil.createGet("https://live.douyin.com/").cookie(cookie).execute();
+        HttpResponse response1 = OrLiveChatHttpUtil.createGet("https://live.douyin.com/").cookie(cookie).execute();
         String ttwid = OrLiveChatCookieUtil.getCookieByName(cookieMap, KEY_COOKIE_TTWID, () -> response1.getCookie(KEY_COOKIE_TTWID).getValue());
         String msToken = OrLiveChatCookieUtil.getCookieByName(cookieMap, KEY_COOKIE_MS_TOKEN, () -> RandomUtil.randomString(MS_TOKEN_BASE_STRING, MS_TOKEN_LENGTH));
         String __ac_nonce = OrLiveChatCookieUtil.getCookieByName(cookieMap, KEY_COOKIE_AC_NONCE, () -> RandomUtil.randomString(AC_NONCE_LENGTH));
 
         @Cleanup
-        HttpResponse response2 = HttpUtil.createGet("https://live.douyin.com/" + roomId)
+        HttpResponse response2 = OrLiveChatHttpUtil.createGet("https://live.douyin.com/" + roomId)
                 .cookie(StrUtil.emptyToDefault(cookie, KEY_COOKIE_TTWID + "=" + ttwid + "; " + KEY_COOKIE_MS_TOKEN + "=" + msToken + "; " + KEY_COOKIE_AC_NONCE + "=" + __ac_nonce))
                 .execute();
         if (response2.getStatus() != HttpStatus.HTTP_OK) {
