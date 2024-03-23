@@ -22,19 +22,17 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.douyu.netty.frame;
+package tech.ordinaryroad.live.chat.client.servers.netty.client.handler;
 
-import io.netty.buffer.ByteBuf;
-import tech.ordinaryroad.live.chat.client.douyu.netty.frame.base.BaseDouyuWebSocketFrame;
+import io.netty.handler.codec.MessageToMessageCodec;
+import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
+import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 
 /**
+ * BinaryWebSocketFrameToMessageCodec
+ *
  * @author mjz
- * @date 2023/1/5
+ * @date 2024/3/22
  */
-public class AuthWebSocketFrame extends BaseDouyuWebSocketFrame {
-
-    public AuthWebSocketFrame(ByteBuf byteBuf) {
-        super(byteBuf);
-    }
-
+public abstract class BinaryWebSocketFrameToMessageCodec<MSG extends IMsg> extends MessageToMessageCodec<BinaryWebSocketFrame, MSG> {
 }

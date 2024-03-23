@@ -25,9 +25,11 @@
 package tech.ordinaryroad.live.chat.client.websocket.client;
 
 import cn.hutool.core.util.StrUtil;
-import io.netty.buffer.Unpooled;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolConfig;
@@ -45,6 +47,7 @@ import tech.ordinaryroad.live.chat.client.websocket.listener.IWebSocketConnectio
 import tech.ordinaryroad.live.chat.client.websocket.listener.IWebSocketMsgListener;
 import tech.ordinaryroad.live.chat.client.websocket.msg.base.IWebSocketMsg;
 import tech.ordinaryroad.live.chat.client.websocket.netty.handler.WebSocketBinaryFrameHandler;
+import tech.ordinaryroad.live.chat.client.websocket.netty.handler.WebSocketChannelInitializer;
 import tech.ordinaryroad.live.chat.client.websocket.netty.handler.WebSocketConnectionHandler;
 
 import java.nio.charset.StandardCharsets;
@@ -109,8 +112,8 @@ public class WebSocketLiveChatClient extends BaseNettyClient<
     }
 
     @Override
-    public WebSocketBinaryFrameHandler initBinaryFrameHandler() {
-        return new WebSocketBinaryFrameHandler(super.msgListeners, WebSocketLiveChatClient.this);
+    protected void initChannel(SocketChannel channel) {
+        channel.pipeline().addLast(new WebSocketChannelInitializer(this));
     }
 
     @Override
@@ -125,7 +128,9 @@ public class WebSocketLiveChatClient extends BaseNettyClient<
             addMsgListener(new IWebSocketMsgListener() {
                 @Override
                 public void onMsg(IMsg msg) {
-                    forwardClient.send(new BinaryWebSocketFrame(Unpooled.wrappedBuffer(msg.toString().getBytes(StandardCharsets.UTF_8))));
+                    ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer();
+                    buffer.writeCharSequence(msg.toString(), StandardCharsets.UTF_8);
+                    forwardClient.send(new BinaryWebSocketFrame(buffer));
                 }
             });
         }
@@ -138,5 +143,13 @@ public class WebSocketLiveChatClient extends BaseNettyClient<
             throw new BaseException("WebSocketLiveChatClient.send 仅支持 BinaryWebSocketFrame类型的消息");
         }
         super.send(msg, success, failed);
+    }
+
+    @Override
+    public void destroy() {
+        if (forwardClient != null) {
+            forwardClient.destroy();
+        }
+        super.destroy();
     }
 }

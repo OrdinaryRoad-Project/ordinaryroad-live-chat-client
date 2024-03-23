@@ -27,22 +27,25 @@ package tech.ordinaryroad.live.chat.client.huya.client;
 import cn.hutool.core.util.StrUtil;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolConfig;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
-import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketVersion;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
+import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
 import tech.ordinaryroad.live.chat.client.huya.config.HuyaLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.huya.constant.HuyaCmdEnum;
 import tech.ordinaryroad.live.chat.client.huya.listener.IHuyaConnectionListener;
 import tech.ordinaryroad.live.chat.client.huya.listener.IHuyaMsgListener;
 import tech.ordinaryroad.live.chat.client.huya.listener.impl.HuyaForwardMsgListener;
+import tech.ordinaryroad.live.chat.client.huya.msg.WebSocketCommand;
 import tech.ordinaryroad.live.chat.client.huya.msg.base.IHuyaMsg;
-import tech.ordinaryroad.live.chat.client.huya.netty.frame.factory.HuyaWebSocketFrameFactory;
+import tech.ordinaryroad.live.chat.client.huya.msg.factory.HuyaMsgFactory;
 import tech.ordinaryroad.live.chat.client.huya.netty.handler.HuyaBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.huya.netty.handler.HuyaConnectionHandler;
+import tech.ordinaryroad.live.chat.client.huya.netty.handler.HuyaLiveChatClientChannelInitializer;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
 
 import java.util.List;
@@ -94,7 +97,13 @@ public class HuyaLiveChatClient extends BaseNettyClient<
     @Override
     public void init() {
         if (StrUtil.isNotBlank(getConfig().getForwardWebsocketUri())) {
-            addMsgListener(new HuyaForwardMsgListener(getConfig().getForwardWebsocketUri()));
+            HuyaForwardMsgListener forwardMsgListener = new HuyaForwardMsgListener(getConfig().getForwardWebsocketUri());
+            addMsgListener(forwardMsgListener);
+            addStatusChangeListener((evt, oldStatus, newStatus) -> {
+                if (newStatus == ClientStatusEnums.DESTROYED) {
+                    forwardMsgListener.destroyForwardClient();
+                }
+            });
         }
         super.init();
     }
@@ -117,8 +126,8 @@ public class HuyaLiveChatClient extends BaseNettyClient<
     }
 
     @Override
-    public HuyaBinaryFrameHandler initBinaryFrameHandler() {
-        return new HuyaBinaryFrameHandler(super.msgListeners, HuyaLiveChatClient.this);
+    protected void initChannel(SocketChannel channel) {
+        channel.pipeline().addLast(new HuyaLiveChatClientChannelInitializer(HuyaLiveChatClient.this));
     }
 
     @Override
@@ -133,20 +142,20 @@ public class HuyaLiveChatClient extends BaseNettyClient<
                 log.debug("{} huya发送弹幕 {}", getConfig().getRoomId(), danmu);
             }
 
-            WebSocketFrame webSocketFrame = null;
+            WebSocketCommand webSocketCommand = null;
             try {
-                webSocketFrame = HuyaWebSocketFrameFactory.getInstance(getConfig().getRoomId()).createSendMessageReq(msg, getConfig().getVer(), getConfig().getCookie());
+                webSocketCommand = HuyaMsgFactory.getInstance(getConfig().getRoomId()).createSendMessageReq(msg, getConfig().getVer(), getConfig().getCookie());
             } catch (Exception e) {
                 log.error("huya弹幕包创建失败", e);
                 if (failed != null) {
                     failed.accept(e);
                 }
             }
-            if (webSocketFrame == null) {
+            if (webSocketCommand == null) {
                 return;
             }
 
-            send(webSocketFrame, () -> {
+            send(webSocketCommand, () -> {
                 if (log.isDebugEnabled()) {
                     log.debug("huya弹幕发送成功 {}", danmu);
                 }

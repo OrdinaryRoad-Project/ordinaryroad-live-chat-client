@@ -29,7 +29,7 @@ import com.aayushatharva.brotli4j.Brotli4jLoader;
 import com.aayushatharva.brotli4j.decoder.BrotliInputStream;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
+import io.netty.buffer.ByteBufAllocator;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.OperationEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.ProtoverEnum;
@@ -42,7 +42,6 @@ import tech.ordinaryroad.live.chat.client.bilibili.msg.base.IBilibiliMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
@@ -61,8 +60,7 @@ public class BilibiliCodecUtil {
 
     public static final short FRAME_HEADER_LENGTH = 16;
 
-    public static ByteBuf encode(BaseBilibiliMsg msg) {
-        ByteBuf out = Unpooled.buffer(FRAME_HEADER_LENGTH);
+    public static ByteBuf encode(IBilibiliMsg msg, ByteBuf out) {
         String bodyJsonString = StrUtil.EMPTY;
         // HeartbeatMsg不需要正文，如果序列化后得到`{}`，则替换为空字符串
         if (!(msg instanceof HeartbeatMsg)) {
@@ -82,8 +80,11 @@ public class BilibiliCodecUtil {
         return out;
     }
 
-    public static List<IBilibiliMsg> decode(ByteBuf in) {
-        List<IBilibiliMsg> msgList = new ArrayList<>();
+    public static ByteBuf encode(IBilibiliMsg msg) {
+        return encode(msg, ByteBufAllocator.DEFAULT.buffer(FRAME_HEADER_LENGTH));
+    }
+
+    public static List<IBilibiliMsg> decode(ByteBuf in, List<IBilibiliMsg> msgList) {
         Queue<ByteBuf> pendingByteBuf = new LinkedList<>();
 
         do {
@@ -93,6 +94,10 @@ public class BilibiliCodecUtil {
         } while (in != null);
 
         return msgList;
+    }
+
+    public static List<IBilibiliMsg> decode(ByteBuf in) {
+        return decode(in, new ArrayList<>());
     }
 
     /**
@@ -129,19 +134,19 @@ public class BilibiliCodecUtil {
                     Inflater inflater = new Inflater();
                     inflater.reset();
                     inflater.setInput(inputBytes);
-                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(contentLength);
+                    ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer();
                     try {
                         byte[] bytes = new byte[1024];
                         while (!inflater.finished()) {
                             int count = inflater.inflate(bytes);
-                            byteArrayOutputStream.write(bytes, 0, count);
+                            buffer.writeBytes(bytes, 0, count);
                         }
                     } catch (DataFormatException e) {
                         throw new BaseException(e);
+                    } finally {
+                        inflater.end();
                     }
-                    inflater.end();
-
-                    return doDecode(Unpooled.wrappedBuffer(byteArrayOutputStream.toByteArray()), pendingByteBuf);
+                    return doDecode(buffer.duplicate(), pendingByteBuf);
                 }
                 case HEARTBEAT_REPLY: {
                     BigInteger bigInteger = new BigInteger(inputBytes);
@@ -181,17 +186,15 @@ public class BilibiliCodecUtil {
                     Brotli4jLoader.ensureAvailability();
 
                     ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(inputBytes);
-                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(contentLength);
+                    ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer();
                     byte[] bytes = new byte[1024];
                     BrotliInputStream brotliInputStream = null;
-                    ByteBuf wrappedBuffer = null;
                     try {
                         brotliInputStream = new BrotliInputStream(byteArrayInputStream);
                         int count;
                         while ((count = brotliInputStream.read(bytes)) > -1) {
-                            byteArrayOutputStream.write(bytes, 0, count);
+                            buffer.writeBytes(bytes, 0, count);
                         }
-                        wrappedBuffer = Unpooled.wrappedBuffer(byteArrayOutputStream.toByteArray());
                     } catch (IOException e) {
                         throw new BaseException(e);
                     } finally {
@@ -200,12 +203,11 @@ public class BilibiliCodecUtil {
                             if (brotliInputStream != null) {
                                 brotliInputStream.close();
                             }
-                            byteArrayOutputStream.close();
                         } catch (IOException e) {
                             log.error("解压失败", e);
                         }
                     }
-                    return doDecode(wrappedBuffer, pendingByteBuf);
+                    return doDecode(buffer, pendingByteBuf);
                 }
                 case HEARTBEAT_REPLY: {
                     BigInteger bigInteger = new BigInteger(inputBytes);

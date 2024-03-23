@@ -22,19 +22,27 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.douyu.netty.frame;
+package tech.ordinaryroad.live.chat.client.websocket.netty.handler;
 
-import io.netty.buffer.ByteBuf;
-import tech.ordinaryroad.live.chat.client.douyu.netty.frame.base.BaseDouyuWebSocketFrame;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
+import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BinaryWebSocketFrameToMessageCodec;
+import tech.ordinaryroad.live.chat.client.websocket.msg.WebSocketMsg;
+
+import java.util.List;
 
 /**
  * @author mjz
- * @date 2023/9/8
+ * @date 2024/3/23
  */
-public class KeepliveWebSocketFrame extends BaseDouyuWebSocketFrame {
-
-    public KeepliveWebSocketFrame(ByteBuf byteBuf) {
-        super(byteBuf);
+public class WebSocketCodecHandler extends BinaryWebSocketFrameToMessageCodec<WebSocketMsg> {
+    @Override
+    protected void encode(ChannelHandlerContext ctx, WebSocketMsg msg, List<Object> out) throws Exception {
+        out.add(msg);
     }
 
+    @Override
+    protected void decode(ChannelHandlerContext ctx, BinaryWebSocketFrame msg, List<Object> out) throws Exception {
+        out.add(new WebSocketMsg(msg.content().copy()));
+    }
 }

@@ -50,6 +50,7 @@ import tech.ordinaryroad.live.chat.client.bilibili.msg.DanmuMsgMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.SendGiftMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.SendSmsReplyMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliBinaryFrameHandler;
+import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliCodecHandler;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliConnectionHandler;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseCmdMsg;
@@ -97,7 +98,7 @@ public class BilibiliHandlerModeExample {
                             log.debug("连接建立成功！");
                             channel = connectFuture.channel();
                             // 监听是否握手成功
-                            connectionHandler.getHandshakeFuture().addListener((ChannelFutureListener) handshakeFuture -> {
+                            connectionHandler.getHandshakePromise().addListener((ChannelFutureListener) handshakeFuture -> {
                                 // 5s内认证
                                 connectionHandler.sendAuthRequest(channel);
                             });
@@ -222,16 +223,18 @@ public class BilibiliHandlerModeExample {
 //                            pipeline.addLast(WebSocketClientCompressionHandler.INSTANCE);
                             // 添加一个WebSocket协议处理器
                             pipeline.addLast(finalConnectionHandler.getWebSocketProtocolHandler().get());
+                            // pipeline.addLast(WebSocketClientCompressionHandler.INSTANCE);
 
                             // 连接处理器
                             pipeline.addLast(finalConnectionHandler);
+                            pipeline.addLast(new BilibiliCodecHandler());
                             pipeline.addLast(bilibiliHandler);
                         }
                     });
 
             channel = bootstrap.connect().sync().channel();
             // 阻塞等待是否握手成功
-            connectionHandler.getHandshakeFuture().sync();
+            connectionHandler.getHandshakePromise().sync();
             log.error("连接成功，10s后将断开连接，模拟自动重连");
             workerGroup.schedule(() -> {
                 channel.close();

@@ -24,7 +24,6 @@
 
 package tech.ordinaryroad.live.chat.client.douyu.netty.handler;
 
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
@@ -36,7 +35,6 @@ import tech.ordinaryroad.live.chat.client.douyu.msg.DgbMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.DouyuCmdMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.UenterMsg;
 import tech.ordinaryroad.live.chat.client.douyu.msg.base.IDouyuMsg;
-import tech.ordinaryroad.live.chat.client.douyu.util.DouyuCodecUtil;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientBinaryFrameHandler;
 
 import java.util.List;
@@ -89,10 +87,5 @@ public class DouyuBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<B
                 iteratorMsgListeners(msgListener -> msgListener.onOtherCmdMsg(DouyuBinaryFrameHandler.this, cmd, cmdMsg));
             }
         }
-    }
-
-    @Override
-    protected List<IDouyuMsg> decode(ByteBuf byteBuf) {
-        return DouyuCodecUtil.decode(byteBuf);
     }
 }

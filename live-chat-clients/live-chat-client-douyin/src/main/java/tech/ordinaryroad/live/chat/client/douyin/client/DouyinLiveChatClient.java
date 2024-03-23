@@ -32,6 +32,7 @@ import cn.hutool.http.Header;
 import cn.hutool.http.HttpUtil;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolConfig;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
@@ -39,6 +40,7 @@ import io.netty.handler.codec.http.websocketx.WebSocketVersion;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
+import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
 import tech.ordinaryroad.live.chat.client.douyin.api.DouyinApis;
 import tech.ordinaryroad.live.chat.client.douyin.config.DouyinLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.douyin.constant.DouyinCmdEnum;
@@ -48,6 +50,7 @@ import tech.ordinaryroad.live.chat.client.douyin.listener.impl.DouyinForwardMsgL
 import tech.ordinaryroad.live.chat.client.douyin.msg.base.IDouyinMsg;
 import tech.ordinaryroad.live.chat.client.douyin.netty.handler.DouyinBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.douyin.netty.handler.DouyinConnectionHandler;
+import tech.ordinaryroad.live.chat.client.douyin.netty.handler.DouyinLiveChatClientChannelInitializer;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
 
 import java.util.Date;
@@ -104,7 +107,13 @@ public class DouyinLiveChatClient extends BaseNettyClient<
     public void init() {
         roomInitResult = DouyinApis.roomInit(getConfig().getRoomId(), getConfig().getCookie());
         if (StrUtil.isNotBlank(getConfig().getForwardWebsocketUri())) {
-            addMsgListener(new DouyinForwardMsgListener(getConfig().getForwardWebsocketUri()));
+            DouyinForwardMsgListener forwardMsgListener = new DouyinForwardMsgListener(getConfig().getForwardWebsocketUri());
+            addMsgListener(forwardMsgListener);
+            addStatusChangeListener((evt, oldStatus, newStatus) -> {
+                if (newStatus == ClientStatusEnums.DESTROYED) {
+                    forwardMsgListener.destroyForwardClient();
+                }
+            });
         }
         super.init();
     }
@@ -130,8 +139,8 @@ public class DouyinLiveChatClient extends BaseNettyClient<
     }
 
     @Override
-    public DouyinBinaryFrameHandler initBinaryFrameHandler() {
-        return new DouyinBinaryFrameHandler(super.msgListeners, DouyinLiveChatClient.this);
+    protected void initChannel(SocketChannel channel) {
+        channel.pipeline().addLast(new DouyinLiveChatClientChannelInitializer(this));
     }
 
     @Override

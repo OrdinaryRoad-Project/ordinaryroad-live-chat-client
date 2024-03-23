@@ -22,34 +22,23 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.websocket.netty.handler;
+package tech.ordinaryroad.live.chat.client.servers.netty.client.handler;
 
-import io.netty.channel.ChannelHandler;
-import lombok.extern.slf4j.Slf4j;
-import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientBinaryFrameHandler;
-import tech.ordinaryroad.live.chat.client.websocket.client.WebSocketLiveChatClient;
-import tech.ordinaryroad.live.chat.client.websocket.constant.WebSocketCmdEnum;
-import tech.ordinaryroad.live.chat.client.websocket.listener.IWebSocketMsgListener;
-import tech.ordinaryroad.live.chat.client.websocket.msg.base.IWebSocketMsg;
-
-import java.util.List;
-
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.socket.SocketChannel;
+import lombok.Getter;
+import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
 
 /**
- * 消息处理器
- *
  * @author mjz
- * @date 2024/3/8
+ * @date 2024/3/22
  */
-@Slf4j
-@ChannelHandler.Sharable
-public class WebSocketBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<WebSocketLiveChatClient, WebSocketBinaryFrameHandler, WebSocketCmdEnum, IWebSocketMsg, IWebSocketMsgListener> {
+public abstract class BaseNettyClientChannelInitializer<CLIENT extends BaseNettyClient<?, ?, ?, ?, ?, ?>> extends ChannelInitializer<SocketChannel> {
 
-    public WebSocketBinaryFrameHandler(List<IWebSocketMsgListener> msgListeners, WebSocketLiveChatClient client) {
-        super(msgListeners, client);
-    }
+    @Getter
+    protected final CLIENT client;
 
-    public WebSocketBinaryFrameHandler(List<IWebSocketMsgListener> msgListeners, long roomId) {
-        super(msgListeners, roomId);
+    public BaseNettyClientChannelInitializer(CLIENT client) {
+        this.client = client;
     }
 }

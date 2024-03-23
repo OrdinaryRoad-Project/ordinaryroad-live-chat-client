@@ -24,8 +24,8 @@
 
 package tech.ordinaryroad.live.chat.client.douyin.netty.handler;
 
-import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandler;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
@@ -87,9 +87,21 @@ public class DouyinConnectionHandler extends BaseNettyClientConnectionHandler<Do
 
     @Override
     public void sendHeartbeat(Channel channel) {
+        if (log.isDebugEnabled()) {
+            log.debug("发送心跳包");
+        }
         // douyin_websocket_frame.newBuilder().setPayloadType("hb").build().toByteArray()
         // Base64.decode("OgJoYg==");
-        channel.writeAndFlush(new BinaryWebSocketFrame(Unpooled.wrappedBuffer(HEARTBEAT_BYTES)));
+        channel.writeAndFlush(new BinaryWebSocketFrame(channel.alloc().buffer().writeBytes(HEARTBEAT_BYTES)))
+                .addListener((ChannelFutureListener) future -> {
+                    if (future.isSuccess()) {
+                        if (log.isDebugEnabled()) {
+                            log.debug("心跳包发送完成");
+                        }
+                    } else {
+                        log.error("心跳包发送失败", future.cause());
+                    }
+                });
     }
 
     public Object getRoomId() {

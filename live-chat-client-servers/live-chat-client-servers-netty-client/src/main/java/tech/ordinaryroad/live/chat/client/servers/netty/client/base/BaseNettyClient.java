@@ -70,7 +70,6 @@ public abstract class BaseNettyClient
     private final EventLoopGroup workerGroup;
     @Getter
     private final Bootstrap bootstrap = new Bootstrap();
-    private BinaryFrameHandler binaryFrameHandler;
     private ConnectionHandler connectionHandler;
     private IBaseConnectionListener<ConnectionHandler> connectionListener;
     private Channel channel;
@@ -82,9 +81,14 @@ public abstract class BaseNettyClient
      */
     private volatile long lastSendDanmuTimeInMillis;
 
-    public abstract ConnectionHandler initConnectionHandler(IBaseConnectionListener<ConnectionHandler> clientConnectionListener);
+    /**
+     * 初始化Channel，添加自己的Handler
+     */
+    protected void initChannel(SocketChannel channel) {
+        // ignore
+    }
 
-    public abstract BinaryFrameHandler initBinaryFrameHandler();
+    public abstract ConnectionHandler initConnectionHandler(IBaseConnectionListener<ConnectionHandler> clientConnectionListener);
 
     protected BaseNettyClient(Config config, EventLoopGroup workerGroup, IBaseConnectionListener<ConnectionHandler> connectionListener) {
         super(config);
@@ -144,7 +148,6 @@ public abstract class BaseNettyClient
                     BaseNettyClient.this.onDisconnected(connectionHandler);
                 }
             };
-            this.binaryFrameHandler = this.initBinaryFrameHandler();
             this.connectionHandler = this.initConnectionHandler(this.clientConnectionListener);
 
             SslContext finalSslCtx = sslCtx;
@@ -178,10 +181,8 @@ public abstract class BaseNettyClient
 
                             // 连接处理器
                             pipeline.addLast(BaseNettyClient.this.connectionHandler);
-                            // 弹幕处理器
-                            if (BaseNettyClient.this.binaryFrameHandler != null) {
-                                pipeline.addLast(BaseNettyClient.this.binaryFrameHandler);
-                            }
+
+                            BaseNettyClient.this.initChannel(ch);
                         }
                     });
             this.setStatus(ClientStatusEnums.INITIALIZED);
@@ -216,7 +217,7 @@ public abstract class BaseNettyClient
                 }
                 this.channel = connectFuture.channel();
                 // 监听是否握手成功
-                this.connectionHandler.getHandshakeFuture().addListener((ChannelFutureListener) handshakeFuture -> {
+                this.connectionHandler.getHandshakePromise().addListener((ChannelFutureListener) handshakeFuture -> {
                     try {
                         connectionHandler.sendAuthRequest(channel);
                         if (success != null) {
@@ -292,13 +293,13 @@ public abstract class BaseNettyClient
 
     @Override
     public void destroy() {
-        super.destroy();
-
         // 销毁时不需要重连
         this.cancelReconnect = true;
         workerGroup.shutdownGracefully().addListener(future -> {
             if (future.isSuccess()) {
                 this.setStatus(ClientStatusEnums.DESTROYED);
+                // 设置完 DESTROYED 后再删除监听器
+                super.destroy();
             } else {
                 throw new BaseException("client销毁失败", future.cause());
             }
@@ -359,12 +360,6 @@ public abstract class BaseNettyClient
         this.lastSendDanmuTimeInMillis = System.currentTimeMillis();
         if (log.isDebugEnabled()) {
             log.debug("弹幕发送完成");
-        }
-    }
-
-    public void iteratorMsgListeners(Consumer<MsgListener> consumer) {
-        if (binaryFrameHandler != null) {
-            binaryFrameHandler.iteratorMsgListeners(consumer);
         }
     }
 }

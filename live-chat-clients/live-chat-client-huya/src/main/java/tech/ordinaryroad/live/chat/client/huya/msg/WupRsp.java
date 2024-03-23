@@ -26,6 +26,7 @@ package tech.ordinaryroad.live.chat.client.huya.msg;
 
 import lombok.NoArgsConstructor;
 import tech.ordinaryroad.live.chat.client.huya.constant.HuyaOperationEnum;
+import tech.ordinaryroad.live.chat.client.huya.msg.base.BaseWup;
 
 /**
  * @author mjz

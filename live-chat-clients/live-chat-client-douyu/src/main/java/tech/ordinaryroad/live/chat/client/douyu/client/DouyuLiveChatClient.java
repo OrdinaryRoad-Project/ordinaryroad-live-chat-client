@@ -110,7 +110,13 @@ public class DouyuLiveChatClient extends DouyuWsLiveChatClient implements IDouyu
     @Override
     public void init() {
         if (StrUtil.isNotBlank(getConfig().getForwardWebsocketUri())) {
-            addMsgListener(new DouyuForwardMsgListener(getConfig().getForwardWebsocketUri()));
+            DouyuForwardMsgListener forwardMsgListener = new DouyuForwardMsgListener(getConfig().getForwardWebsocketUri());
+            addMsgListener(forwardMsgListener);
+            addStatusChangeListener((evt, oldStatus, newStatus) -> {
+                if (newStatus == ClientStatusEnums.DESTROYED) {
+                    forwardMsgListener.destroyForwardClient();
+                }
+            });
         }
         super.init();
 
@@ -255,18 +261,15 @@ public class DouyuLiveChatClient extends DouyuWsLiveChatClient implements IDouyu
         if (status == ClientStatusEnums.CONNECTED) {
             return;
         }
-        super.setStatus(status);
-    }
-
-    @Override
-    public void destroy() {
+        // 只要不是连接成功就直接销毁DanmuClient
         destroyDanmuClient();
-        super.destroy();
+        super.setStatus(status);
     }
 
     private void destroyDanmuClient() {
         if (danmuClient != null) {
             danmuClient.destroy();
+            danmuClient = null;
         }
     }
 }

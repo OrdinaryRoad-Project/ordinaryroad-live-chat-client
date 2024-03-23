@@ -26,6 +26,7 @@ package tech.ordinaryroad.live.chat.client.douyu.client;
 
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolConfig;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
@@ -41,6 +42,7 @@ import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuConnectionListene
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuMsgListener;
 import tech.ordinaryroad.live.chat.client.douyu.msg.LoginresMsg;
 import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuBinaryFrameHandler;
+import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuChannelInitializer;
 import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuConnectionHandler;
 
 import java.util.List;
@@ -99,8 +101,8 @@ public class DouyuWsLiveChatClient extends BaseDouyuLiveChatClient implements ID
     }
 
     @Override
-    public DouyuBinaryFrameHandler initBinaryFrameHandler() {
-        return new DouyuBinaryFrameHandler(msgListeners, DouyuWsLiveChatClient.this);
+    protected void initChannel(SocketChannel channel) {
+        channel.pipeline().addLast(new DouyuChannelInitializer<>(this));
     }
 
     @Override

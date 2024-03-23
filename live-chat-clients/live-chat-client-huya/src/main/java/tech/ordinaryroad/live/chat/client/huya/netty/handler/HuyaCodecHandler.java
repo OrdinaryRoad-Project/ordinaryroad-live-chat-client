@@ -22,18 +22,35 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.douyu.netty.frame.base;
+package tech.ordinaryroad.live.chat.client.huya.netty.handler;
 
-import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
+import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
+import tech.ordinaryroad.live.chat.client.huya.msg.WebSocketCommand;
+import tech.ordinaryroad.live.chat.client.huya.msg.base.IHuyaMsg;
+import tech.ordinaryroad.live.chat.client.huya.util.HuyaCodecUtil;
+import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BinaryWebSocketFrameToMessageCodec;
+
+import java.util.List;
 
 /**
  * @author mjz
- * @date 2023/8/27
+ * @date 2024/3/22
  */
-public abstract class BaseDouyuWebSocketFrame extends BinaryWebSocketFrame {
+public class HuyaCodecHandler extends BinaryWebSocketFrameToMessageCodec<IHuyaMsg> {
+    @Override
+    protected void encode(ChannelHandlerContext ctx, IHuyaMsg msg, List<Object> out) throws Exception {
+        if (msg instanceof WebSocketCommand) {
+            out.add(new BinaryWebSocketFrame(ctx.alloc().buffer().writeBytes(((WebSocketCommand) msg).toByteArray())));
+        } else {
+            throw new BaseException("暂不支持" + msg.getClass());
+        }
+    }
 
-    public BaseDouyuWebSocketFrame(ByteBuf byteBuf) {
-        super(byteBuf);
+    @Override
+    protected void decode(ChannelHandlerContext ctx, BinaryWebSocketFrame msg, List<Object> out) throws Exception {
+        out.addAll(HuyaCodecUtil.decode(msg.content()));
     }
 }
+

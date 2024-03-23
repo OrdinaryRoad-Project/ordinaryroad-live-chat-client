@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.bilibili.api.BilibiliApis;
 import tech.ordinaryroad.live.chat.client.bilibili.client.BilibiliLiveChatClient;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.ProtoverEnum;
-import tech.ordinaryroad.live.chat.client.bilibili.netty.frame.factory.BilibiliWebSocketFrameFactory;
+import tech.ordinaryroad.live.chat.client.bilibili.msg.factory.BilibiliMsgFactory;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientConnectionHandler;
 
@@ -118,8 +118,8 @@ public class BilibiliConnectionHandler extends BaseNettyClientConnectionHandler<
         });
     }
 
-    private static BilibiliWebSocketFrameFactory getWebSocketFrameFactory(long roomId) {
-        return BilibiliWebSocketFrameFactory.getInstance(roomId);
+    private static BilibiliMsgFactory getWebSocketFrameFactory(long roomId) {
+        return BilibiliMsgFactory.getInstance(roomId);
     }
 
     @Override

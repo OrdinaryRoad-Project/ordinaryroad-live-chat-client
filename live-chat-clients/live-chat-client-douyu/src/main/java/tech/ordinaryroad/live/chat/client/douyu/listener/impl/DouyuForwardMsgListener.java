@@ -25,7 +25,8 @@
 package tech.ordinaryroad.live.chat.client.douyu.listener.impl;
 
 import cn.hutool.core.util.StrUtil;
-import io.netty.buffer.Unpooled;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
@@ -78,6 +79,12 @@ public class DouyuForwardMsgListener implements IDouyuMsgListener {
         if (webSocketLiveChatClient == null) {
             return;
         }
-        webSocketLiveChatClient.send(new BinaryWebSocketFrame(Unpooled.wrappedBuffer(msg.toString().getBytes(StandardCharsets.UTF_8))));
+        ByteBuf byteBuf = ByteBufAllocator.DEFAULT.buffer();
+        byteBuf.writeCharSequence(msg.toString(), StandardCharsets.UTF_8);
+        webSocketLiveChatClient.send(new BinaryWebSocketFrame(byteBuf));
+    }
+
+    public void destroyForwardClient() {
+        webSocketLiveChatClient.destroy();
     }
 }

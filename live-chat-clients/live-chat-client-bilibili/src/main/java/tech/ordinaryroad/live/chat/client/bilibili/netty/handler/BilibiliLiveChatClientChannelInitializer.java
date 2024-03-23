@@ -22,34 +22,29 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.websocket.netty.handler;
+package tech.ordinaryroad.live.chat.client.bilibili.netty.handler;
 
-import io.netty.channel.ChannelHandler;
-import lombok.extern.slf4j.Slf4j;
-import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientBinaryFrameHandler;
-import tech.ordinaryroad.live.chat.client.websocket.client.WebSocketLiveChatClient;
-import tech.ordinaryroad.live.chat.client.websocket.constant.WebSocketCmdEnum;
-import tech.ordinaryroad.live.chat.client.websocket.listener.IWebSocketMsgListener;
-import tech.ordinaryroad.live.chat.client.websocket.msg.base.IWebSocketMsg;
-
-import java.util.List;
-
+import io.netty.channel.ChannelPipeline;
+import io.netty.channel.socket.SocketChannel;
+import tech.ordinaryroad.live.chat.client.bilibili.client.BilibiliLiveChatClient;
+import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientChannelInitializer;
 
 /**
- * 消息处理器
- *
  * @author mjz
- * @date 2024/3/8
+ * @date 2024/3/22
  */
-@Slf4j
-@ChannelHandler.Sharable
-public class WebSocketBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<WebSocketLiveChatClient, WebSocketBinaryFrameHandler, WebSocketCmdEnum, IWebSocketMsg, IWebSocketMsgListener> {
+public class BilibiliLiveChatClientChannelInitializer extends BaseNettyClientChannelInitializer<BilibiliLiveChatClient> {
 
-    public WebSocketBinaryFrameHandler(List<IWebSocketMsgListener> msgListeners, WebSocketLiveChatClient client) {
-        super(msgListeners, client);
+    public BilibiliLiveChatClientChannelInitializer(BilibiliLiveChatClient client) {
+        super(client);
     }
 
-    public WebSocketBinaryFrameHandler(List<IWebSocketMsgListener> msgListeners, long roomId) {
-        super(msgListeners, roomId);
+    @Override
+    protected void initChannel(SocketChannel ch) throws Exception {
+        ChannelPipeline pipeline = ch.pipeline();
+        // 添加一个编解码器
+        pipeline.addLast(new BilibiliCodecHandler());
+        // 添加一个消息处理器
+        pipeline.addLast(new BilibiliBinaryFrameHandler(client.getMsgListeners(), client));
     }
 }

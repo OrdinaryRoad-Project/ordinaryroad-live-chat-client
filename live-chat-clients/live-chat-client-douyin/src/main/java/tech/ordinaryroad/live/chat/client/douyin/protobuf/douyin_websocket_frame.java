@@ -27,13 +27,15 @@
 
 package tech.ordinaryroad.live.chat.client.douyin.protobuf;
 
+import tech.ordinaryroad.live.chat.client.douyin.msg.base.IDouyinMsg;
+
 /**
  * Protobuf type {@code tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame}
  */
 public final class douyin_websocket_frame extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame)
-    douyin_websocket_frameOrBuilder {
+    douyin_websocket_frameOrBuilder, IDouyinMsg {
 private static final long serialVersionUID = 0L;
   // Use douyin_websocket_frame.newBuilder() to construct.
   private douyin_websocket_frame(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {

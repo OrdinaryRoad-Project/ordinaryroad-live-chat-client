@@ -31,7 +31,7 @@ import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.huya.client.HuyaLiveChatClient;
-import tech.ordinaryroad.live.chat.client.huya.netty.frame.factory.HuyaWebSocketFrameFactory;
+import tech.ordinaryroad.live.chat.client.huya.msg.factory.HuyaMsgFactory;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientConnectionHandler;
 
 import java.util.function.Supplier;
@@ -108,8 +108,8 @@ public class HuyaConnectionHandler extends BaseNettyClientConnectionHandler<Huya
         });
     }
 
-    private static HuyaWebSocketFrameFactory getWebSocketFrameFactory(Object roomId) {
-        return HuyaWebSocketFrameFactory.getInstance(roomId);
+    private static HuyaMsgFactory getWebSocketFrameFactory(Object roomId) {
+        return HuyaMsgFactory.getInstance(roomId);
     }
 
     @Override
@@ -117,7 +117,16 @@ public class HuyaConnectionHandler extends BaseNettyClientConnectionHandler<Huya
         if (log.isDebugEnabled()) {
             log.debug("发送认证包");
         }
-        channel.writeAndFlush(getWebSocketFrameFactory(getRoomId()).createAuth(getVer(), getCookie()));
+        channel.writeAndFlush(getWebSocketFrameFactory(getRoomId()).createAuth(getVer(), getCookie()))
+                .addListener(future -> {
+                    if (future.isSuccess()) {
+                        if (log.isDebugEnabled()) {
+                            log.debug("认证包发送完成");
+                        }
+                    } else {
+                        log.error("认证包发送失败", future.cause());
+                    }
+                });
     }
 
     public Object getRoomId() {

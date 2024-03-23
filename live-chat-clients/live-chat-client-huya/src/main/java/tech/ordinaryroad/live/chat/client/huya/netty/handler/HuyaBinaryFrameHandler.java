@@ -25,7 +25,6 @@
 package tech.ordinaryroad.live.chat.client.huya.netty.handler;
 
 import com.qq.tars.protocol.tars.TarsInputStream;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
@@ -41,8 +40,8 @@ import tech.ordinaryroad.live.chat.client.huya.msg.*;
 import tech.ordinaryroad.live.chat.client.huya.msg.base.IHuyaMsg;
 import tech.ordinaryroad.live.chat.client.huya.msg.dto.MsgItem;
 import tech.ordinaryroad.live.chat.client.huya.msg.dto.PropsItem;
+import tech.ordinaryroad.live.chat.client.huya.msg.factory.HuyaMsgFactory;
 import tech.ordinaryroad.live.chat.client.huya.msg.req.GetPropsListRsp;
-import tech.ordinaryroad.live.chat.client.huya.netty.frame.factory.HuyaWebSocketFrameFactory;
 import tech.ordinaryroad.live.chat.client.huya.util.HuyaCodecUtil;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientBinaryFrameHandler;
 
@@ -106,7 +105,7 @@ public class HuyaBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<Hu
 //            if (log.isDebugEnabled()) {
 //                log.debug("获取礼物列表");
 //            }
-            channelHandlerContext.writeAndFlush(HuyaWebSocketFrameFactory.getInstance(getRoomId()).createGiftListReq(getVer()));
+            channelHandlerContext.writeAndFlush(HuyaMsgFactory.getInstance(getRoomId()).createGiftListReq(getVer()));
         } else if (operationEnum == HuyaOperationEnum.EWSCmd_WupRsp) {
             WupRsp wupRsp = (WupRsp) msg;
             String functionName = wupRsp.getTarsServantRequest().getFunctionName();
@@ -122,7 +121,7 @@ public class HuyaBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<Hu
                 case doLaunch: {
 //                    LiveLaunchRsp liveLaunchRsp = new LiveLaunchRsp();
 //                    liveLaunchRsp = wupRsp.getUniAttribute().getByClass("tRsp", liveLaunchRsp);
-                    channelHandlerContext.writeAndFlush(HuyaWebSocketFrameFactory.getInstance(getRoomId()).createRegisterGroupReq());
+                    channelHandlerContext.writeAndFlush(HuyaMsgFactory.getInstance(getRoomId()).createRegisterGroupReq());
                     break;
                 }
                 case getPropsList: {
@@ -190,10 +189,5 @@ public class HuyaBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<Hu
 
     public String getVer() {
         return client != null ? client.getConfig().getVer() : ver;
-    }
-
-    @Override
-    protected List<IHuyaMsg> decode(ByteBuf byteBuf) {
-        return HuyaCodecUtil.decode(byteBuf);
     }
 }

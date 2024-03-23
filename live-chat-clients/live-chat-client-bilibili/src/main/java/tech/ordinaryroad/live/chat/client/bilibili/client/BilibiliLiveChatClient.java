@@ -29,6 +29,7 @@ import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolConfig;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
@@ -44,8 +45,10 @@ import tech.ordinaryroad.live.chat.client.bilibili.listener.impl.BilibiliForward
 import tech.ordinaryroad.live.chat.client.bilibili.msg.base.IBilibiliMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliConnectionHandler;
+import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliLiveChatClientChannelInitializer;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
+import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
 
 import java.util.List;
@@ -102,9 +105,20 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
     public void init() {
         roomInitResult = BilibiliApis.roomInit(getConfig().getRoomId(), getConfig().getCookie());
         if (StrUtil.isNotBlank(getConfig().getForwardWebsocketUri())) {
-            addMsgListener(new BilibiliForwardMsgListener(getConfig().getForwardWebsocketUri()));
+            BilibiliForwardMsgListener forwardMsgListener = new BilibiliForwardMsgListener(getConfig().getForwardWebsocketUri());
+            addMsgListener(forwardMsgListener);
+            addStatusChangeListener((evt, oldStatus, newStatus) -> {
+                if (newStatus == ClientStatusEnums.DESTROYED) {
+                    forwardMsgListener.destroyForwardClient();
+                }
+            });
         }
         super.init();
+    }
+
+    @Override
+    protected void initChannel(SocketChannel channel) {
+        channel.pipeline().addLast(new BilibiliLiveChatClientChannelInitializer(this));
     }
 
     @Override
@@ -122,11 +136,6 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
                 ),
                 BilibiliLiveChatClient.this, clientConnectionListener
         );
-    }
-
-    @Override
-    public BilibiliBinaryFrameHandler initBinaryFrameHandler() {
-        return new BilibiliBinaryFrameHandler(super.msgListeners, BilibiliLiveChatClient.this);
     }
 
     @Override

@@ -53,7 +53,7 @@ public abstract class BaseConnectionHandler<ConnectionHandler extends BaseConnec
     @Getter
     private final Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler;
     @Getter
-    private ChannelPromise handshakeFuture;
+    private ChannelPromise handshakePromise;
     private final IBaseConnectionListener<ConnectionHandler> listener;
     /**
      * 客户端发送心跳包
@@ -71,7 +71,7 @@ public abstract class BaseConnectionHandler<ConnectionHandler extends BaseConnec
 
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) {
-        this.handshakeFuture = ctx.newPromise();
+        this.handshakePromise = ctx.newPromise();
     }
 
     @Override
@@ -125,7 +125,7 @@ public abstract class BaseConnectionHandler<ConnectionHandler extends BaseConnec
         if (log.isDebugEnabled()) {
             log.debug("握手完成!");
         }
-        this.handshakeFuture.setSuccess();
+        this.handshakePromise.setSuccess();
 
         heartbeatCancel();
         heartbeatStart(channel);
@@ -136,7 +136,7 @@ public abstract class BaseConnectionHandler<ConnectionHandler extends BaseConnec
 
     private void handshakeFailed(ChannelHandlerContext ctx, WebSocketClientProtocolHandler.ClientHandshakeStateEvent evt) {
         log.error("握手失败！ {}", evt);
-        this.handshakeFuture.setFailure(new BaseException(evt.name()));
+        this.handshakePromise.setFailure(new BaseException(evt.name()));
 
         if (listener != null) {
             this.listener.onConnectFailed((ConnectionHandler) this);
@@ -160,8 +160,8 @@ public abstract class BaseConnectionHandler<ConnectionHandler extends BaseConnec
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         log.error("exceptionCaught", cause);
-        if (!this.handshakeFuture.isDone()) {
-            this.handshakeFuture.setFailure(cause);
+        if (!this.handshakePromise.isDone()) {
+            this.handshakePromise.setFailure(cause);
         }
         ctx.close();
     }

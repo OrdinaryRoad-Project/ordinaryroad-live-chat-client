@@ -31,6 +31,4 @@ import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
  * @date 2023/8/26
  */
 public interface IDouyuMsg extends IMsg {
-
-
 }

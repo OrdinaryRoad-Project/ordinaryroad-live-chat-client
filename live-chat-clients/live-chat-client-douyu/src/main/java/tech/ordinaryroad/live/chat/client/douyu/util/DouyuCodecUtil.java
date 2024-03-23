@@ -29,7 +29,7 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
+import io.netty.buffer.ByteBufAllocator;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatReflectUtil;
 import tech.ordinaryroad.live.chat.client.douyu.api.DouyuApis;
@@ -69,7 +69,7 @@ public class DouyuCodecUtil {
     public static final short FRAME_HEADER_LENGTH = 8;
 
     public static ByteBuf encode(BaseDouyuCmdMsg msg, List<String> containProperties) {
-        ByteBuf out = Unpooled.buffer(FRAME_HEADER_LENGTH);
+        ByteBuf out = ByteBufAllocator.DEFAULT.buffer(FRAME_HEADER_LENGTH);
         String bodyDouyuSttString = StrUtil.nullToEmpty(toDouyuSttString(msg, containProperties)) + SUFFIX;
         byte[] bodyBytes = bodyDouyuSttString.getBytes(StandardCharsets.UTF_8);
         int length = bodyBytes.length + FRAME_HEADER_LENGTH;

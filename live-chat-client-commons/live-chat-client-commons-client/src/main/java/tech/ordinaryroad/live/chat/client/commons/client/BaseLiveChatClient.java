@@ -52,7 +52,8 @@ public abstract class BaseLiveChatClient<
     private volatile ClientStatusEnums status = ClientStatusEnums.NEW;
     protected PropertyChangeSupport statusChangeSupport = new PropertyChangeSupport(status);
     protected volatile boolean cancelReconnect = false;
-    protected final List<MsgListener> msgListeners = Collections.synchronizedList(new ArrayList<>());
+    @Getter
+    private final List<MsgListener> msgListeners = Collections.synchronizedList(new ArrayList<>());
 
     protected BaseLiveChatClient(Config config) {
         this.config = config;
@@ -212,4 +213,13 @@ public abstract class BaseLiveChatClient<
         this.msgListeners.clear();
     }
 
+    @SuppressWarnings("ForLoopReplaceableByForEach")
+    public void iteratorMsgListeners(Consumer<MsgListener> consumer) {
+        if (msgListeners.isEmpty()) {
+            return;
+        }
+        for (int i = 0; i < msgListeners.size(); i++) {
+            consumer.accept(msgListeners.get(i));
+        }
+    }
 }
