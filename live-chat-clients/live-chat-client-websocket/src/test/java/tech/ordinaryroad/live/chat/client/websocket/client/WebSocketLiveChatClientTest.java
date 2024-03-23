@@ -78,7 +78,7 @@ class WebSocketLiveChatClientTest {
 //                .websocketUri("wss://localhost:8443/websocket")
 //                .websocketUri("wss://broadcastlv.chat.bilibili.com:443/sub")
                 .websocketUri("ws://127.0.0.1:8080/websocket")
-                .forwardWebsocketUri("ws://127.0.0.1:8765")
+//                .forwardWebsocketUri("ws://127.0.0.1:8765")
                 .build();
 
         client = new WebSocketLiveChatClient(config, new IBaseConnectionHandler() {
@@ -94,8 +94,8 @@ class WebSocketLiveChatClientTest {
         }, new IWebSocketMsgListener() {
             @Override
             public void onMsg(IMsg msg) {
-                byte[] bytes = ((WebSocketMsg) msg).getBytes();
-                String string = new String(bytes, StandardCharsets.UTF_8);
+                ByteBuf content = ((WebSocketMsg) msg).content();
+                String string = content.toString(StandardCharsets.UTF_8);
                 log.debug("收到消息 {}", string);
             }
         });

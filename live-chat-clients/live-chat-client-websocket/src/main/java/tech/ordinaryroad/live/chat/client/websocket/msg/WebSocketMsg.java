@@ -24,10 +24,8 @@
 
 package tech.ordinaryroad.live.chat.client.websocket.msg;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import io.netty.buffer.ByteBuf;
+import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import tech.ordinaryroad.live.chat.client.websocket.msg.base.IWebSocketMsg;
 
 import java.nio.charset.StandardCharsets;
@@ -36,16 +34,21 @@ import java.nio.charset.StandardCharsets;
  * @author mjz
  * @date 2024/3/8
  */
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class WebSocketMsg implements IWebSocketMsg {
+public class WebSocketMsg extends BinaryWebSocketFrame implements IWebSocketMsg {
 
-    private byte[] bytes;
+    public WebSocketMsg() {
+    }
+
+    public WebSocketMsg(ByteBuf binaryData) {
+        super(binaryData);
+    }
+
+    public WebSocketMsg(boolean finalFragment, int rsv, ByteBuf binaryData) {
+        super(finalFragment, rsv, binaryData);
+    }
 
     @Override
     public String toString() {
-        return new String(bytes, StandardCharsets.UTF_8);
+        return content().toString(StandardCharsets.UTF_8);
     }
 }

@@ -24,32 +24,26 @@
 
 package tech.ordinaryroad.live.chat.client.websocket.netty.handler;
 
-import io.netty.channel.ChannelHandler;
-import lombok.extern.slf4j.Slf4j;
-import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientBinaryFrameHandler;
+import io.netty.channel.ChannelPipeline;
+import io.netty.channel.socket.SocketChannel;
+import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientChannelInitializer;
 import tech.ordinaryroad.live.chat.client.websocket.client.WebSocketLiveChatClient;
-import tech.ordinaryroad.live.chat.client.websocket.constant.WebSocketCmdEnum;
-import tech.ordinaryroad.live.chat.client.websocket.listener.IWebSocketMsgListener;
-import tech.ordinaryroad.live.chat.client.websocket.msg.base.IWebSocketMsg;
-
-import java.util.List;
-
 
 /**
- * 消息处理器
- *
  * @author mjz
- * @date 2024/3/8
+ * @date 2024/3/23
  */
-@Slf4j
-@ChannelHandler.Sharable
-public class WebSocketBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<WebSocketLiveChatClient, WebSocketBinaryFrameHandler, WebSocketCmdEnum, IWebSocketMsg, IWebSocketMsgListener> {
+public class WebSocketChannelInitializer extends BaseNettyClientChannelInitializer<WebSocketLiveChatClient> {
 
-    public WebSocketBinaryFrameHandler(List<IWebSocketMsgListener> msgListeners, WebSocketLiveChatClient client) {
-        super(msgListeners, client);
+    public WebSocketChannelInitializer(WebSocketLiveChatClient client) {
+        super(client);
     }
 
-    public WebSocketBinaryFrameHandler(List<IWebSocketMsgListener> msgListeners, long roomId) {
-        super(msgListeners, roomId);
+    @Override
+    protected void initChannel(SocketChannel ch) throws Exception {
+        ChannelPipeline pipeline = ch.pipeline();
+
+        pipeline.addLast(new WebSocketCodecHandler());
+        pipeline.addLast(new WebSocketBinaryFrameHandler(client.getMsgListeners(), client));
     }
 }

@@ -47,6 +47,7 @@ import tech.ordinaryroad.live.chat.client.websocket.listener.IWebSocketConnectio
 import tech.ordinaryroad.live.chat.client.websocket.listener.IWebSocketMsgListener;
 import tech.ordinaryroad.live.chat.client.websocket.msg.base.IWebSocketMsg;
 import tech.ordinaryroad.live.chat.client.websocket.netty.handler.WebSocketBinaryFrameHandler;
+import tech.ordinaryroad.live.chat.client.websocket.netty.handler.WebSocketChannelInitializer;
 import tech.ordinaryroad.live.chat.client.websocket.netty.handler.WebSocketConnectionHandler;
 
 import java.nio.charset.StandardCharsets;
@@ -112,7 +113,7 @@ public class WebSocketLiveChatClient extends BaseNettyClient<
 
     @Override
     protected void initChannel(SocketChannel channel) {
-        channel.pipeline().addLast(new WebSocketBinaryFrameHandler(getMsgListeners(), WebSocketLiveChatClient.this));
+        channel.pipeline().addLast(new WebSocketChannelInitializer(this));
     }
 
     @Override

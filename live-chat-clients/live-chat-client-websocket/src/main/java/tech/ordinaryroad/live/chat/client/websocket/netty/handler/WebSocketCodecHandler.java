@@ -24,32 +24,25 @@
 
 package tech.ordinaryroad.live.chat.client.websocket.netty.handler;
 
-import io.netty.channel.ChannelHandler;
-import lombok.extern.slf4j.Slf4j;
-import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientBinaryFrameHandler;
-import tech.ordinaryroad.live.chat.client.websocket.client.WebSocketLiveChatClient;
-import tech.ordinaryroad.live.chat.client.websocket.constant.WebSocketCmdEnum;
-import tech.ordinaryroad.live.chat.client.websocket.listener.IWebSocketMsgListener;
-import tech.ordinaryroad.live.chat.client.websocket.msg.base.IWebSocketMsg;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
+import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BinaryWebSocketFrameToMessageCodec;
+import tech.ordinaryroad.live.chat.client.websocket.msg.WebSocketMsg;
 
 import java.util.List;
 
-
 /**
- * 消息处理器
- *
  * @author mjz
- * @date 2024/3/8
+ * @date 2024/3/23
  */
-@Slf4j
-@ChannelHandler.Sharable
-public class WebSocketBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<WebSocketLiveChatClient, WebSocketBinaryFrameHandler, WebSocketCmdEnum, IWebSocketMsg, IWebSocketMsgListener> {
-
-    public WebSocketBinaryFrameHandler(List<IWebSocketMsgListener> msgListeners, WebSocketLiveChatClient client) {
-        super(msgListeners, client);
+public class WebSocketCodecHandler extends BinaryWebSocketFrameToMessageCodec<WebSocketMsg> {
+    @Override
+    protected void encode(ChannelHandlerContext ctx, WebSocketMsg msg, List<Object> out) throws Exception {
+        out.add(msg);
     }
 
-    public WebSocketBinaryFrameHandler(List<IWebSocketMsgListener> msgListeners, long roomId) {
-        super(msgListeners, roomId);
+    @Override
+    protected void decode(ChannelHandlerContext ctx, BinaryWebSocketFrame msg, List<Object> out) throws Exception {
+        out.add(new WebSocketMsg(msg.content().duplicate()));
     }
 }
