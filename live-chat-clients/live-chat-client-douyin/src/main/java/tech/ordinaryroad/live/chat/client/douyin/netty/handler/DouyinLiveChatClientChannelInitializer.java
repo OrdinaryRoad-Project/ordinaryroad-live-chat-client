@@ -22,25 +22,29 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.huya.msg;
+package tech.ordinaryroad.live.chat.client.douyin.netty.handler;
 
-import lombok.NoArgsConstructor;
-import tech.ordinaryroad.live.chat.client.huya.constant.HuyaOperationEnum;
-import tech.ordinaryroad.live.chat.client.huya.msg.base.BaseWup;
+import io.netty.channel.ChannelPipeline;
+import io.netty.channel.socket.SocketChannel;
+import tech.ordinaryroad.live.chat.client.douyin.client.DouyinLiveChatClient;
+import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientChannelInitializer;
 
 /**
  * @author mjz
- * @date 2023/10/3
+ * @date 2024/3/22
  */
-@NoArgsConstructor
-public class WupRsp extends BaseWup {
+public class DouyinLiveChatClientChannelInitializer extends BaseNettyClientChannelInitializer<DouyinLiveChatClient> {
 
-    public WupRsp(byte[] vData) {
-        super.decode(vData);
+    public DouyinLiveChatClientChannelInitializer(DouyinLiveChatClient client) {
+        super(client);
     }
 
     @Override
-    public HuyaOperationEnum getOperationEnum() {
-        return HuyaOperationEnum.EWSCmd_WupRsp;
+    protected void initChannel(SocketChannel ch) throws Exception {
+        ChannelPipeline pipeline = ch.pipeline();
+        // 添加一个编解码器
+        pipeline.addLast(new DouyinCodecHandler());
+        // 添加一个消息处理器
+        pipeline.addLast(new DouyinBinaryFrameHandler(client.getMsgListeners(), client));
     }
 }

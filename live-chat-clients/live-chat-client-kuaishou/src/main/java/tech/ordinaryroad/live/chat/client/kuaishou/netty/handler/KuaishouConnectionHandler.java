@@ -25,10 +25,9 @@
 package tech.ordinaryroad.live.chat.client.kuaishou.netty.handler;
 
 import cn.hutool.core.util.RandomUtil;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandler;
-import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
@@ -92,41 +91,44 @@ public class KuaishouConnectionHandler extends BaseNettyClientConnectionHandler<
 
     @Override
     public void sendHeartbeat(Channel channel) {
+        if (log.isDebugEnabled()) {
+            log.debug("发送心跳包");
+        }
         channel.writeAndFlush(
-                new BinaryWebSocketFrame(
-                        Unpooled.wrappedBuffer(SocketMessageOuterClass.SocketMessage.newBuilder()
-                                .setPayloadType(PayloadTypeOuterClass.PayloadType.CS_HEARTBEAT)
-                                .setPayload(
-                                        CSHeartbeatOuterClass.CSHeartbeat.newBuilder()
-                                                .setTimestamp(System.currentTimeMillis())
-                                                .build()
-                                                .toByteString()
-                                )
-                                .build()
-                                .toByteArray()
+                SocketMessageOuterClass.SocketMessage.newBuilder()
+                        .setPayloadType(PayloadTypeOuterClass.PayloadType.CS_HEARTBEAT)
+                        .setPayload(
+                                CSHeartbeatOuterClass.CSHeartbeat.newBuilder()
+                                        .setTimestamp(System.currentTimeMillis())
+                                        .build()
+                                        .toByteString()
                         )
-                )
-        );
+                        .build()
+        ).addListener((ChannelFutureListener) future -> {
+            if (future.isSuccess()) {
+                if (log.isDebugEnabled()) {
+                    log.debug("心跳包发送完成");
+                }
+            } else {
+                log.error("心跳包发送失败", future.cause());
+            }
+        });
     }
 
     @Override
     public void sendAuthRequest(Channel channel) {
         channel.writeAndFlush(
-                new BinaryWebSocketFrame(
-                        Unpooled.wrappedBuffer(SocketMessageOuterClass.SocketMessage.newBuilder()
-                                .setPayloadType(PayloadTypeOuterClass.PayloadType.CS_ENTER_ROOM)
-                                .setPayload(
-                                        CSWebEnterRoomOuterClass.CSWebEnterRoom.newBuilder()
-                                                .setToken(roomInitResult.getToken())
-                                                .setLiveStreamId(roomInitResult.getLiveStreamId())
-                                                .setPageId(RandomUtil.randomString(16) + System.currentTimeMillis())
-                                                .build()
-                                                .toByteString()
-                                )
-                                .build()
-                                .toByteArray()
+                SocketMessageOuterClass.SocketMessage.newBuilder()
+                        .setPayloadType(PayloadTypeOuterClass.PayloadType.CS_ENTER_ROOM)
+                        .setPayload(
+                                CSWebEnterRoomOuterClass.CSWebEnterRoom.newBuilder()
+                                        .setToken(roomInitResult.getToken())
+                                        .setLiveStreamId(roomInitResult.getLiveStreamId())
+                                        .setPageId(RandomUtil.randomString(16) + System.currentTimeMillis())
+                                        .build()
+                                        .toByteString()
                         )
-                )
+                        .build()
         );
     }
 

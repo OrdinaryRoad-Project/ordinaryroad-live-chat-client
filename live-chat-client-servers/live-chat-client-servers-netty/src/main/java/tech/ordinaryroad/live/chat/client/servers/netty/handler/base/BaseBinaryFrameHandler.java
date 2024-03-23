@@ -25,10 +25,8 @@
 package tech.ordinaryroad.live.chat.client.servers.netty.handler.base;
 
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener;
@@ -53,7 +51,7 @@ public abstract class BaseBinaryFrameHandler<
         CmdEnum extends Enum<CmdEnum>,
         Msg extends IMsg,
         MsgListener extends IBaseMsgListener<T, CmdEnum>
-        > extends SimpleChannelInboundHandler<BinaryWebSocketFrame>
+        > extends SimpleChannelInboundHandler<Msg>
         implements IBaseMsgListener<T, CmdEnum> {
 
     @Getter
@@ -70,44 +68,26 @@ public abstract class BaseBinaryFrameHandler<
         }
     }
 
-    /**
-     * 解码收到的二进制流
-     *
-     * @param byteBuf ByteBuf
-     * @return List<Msg>
-     */
-    protected abstract List<Msg> decode(ByteBuf byteBuf);
-
     @SuppressWarnings("unchecked")
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, BinaryWebSocketFrame message) {
-        ByteBuf byteBuf = message.content();
-        List<Msg> msgList = this.decode(byteBuf);
-        if (msgList == null || msgList.isEmpty()) {
-            if (log.isDebugEnabled()) {
-                log.debug("msgList is empty");
+    protected void channelRead0(ChannelHandlerContext ctx, Msg msg) {
+        this.onMsg((T) BaseBinaryFrameHandler.this, msg);
+        if (msg instanceof ICmdMsg<?>) {
+            ICmdMsg<?> cmdMsg = (ICmdMsg<?>) msg;
+            Enum<?> cmdEnum = cmdMsg.getCmdEnum();
+            if (cmdEnum == null) {
+                this.onUnknownCmd((T) BaseBinaryFrameHandler.this, cmdMsg.getCmd(), cmdMsg);
+            } else {
+                this.onCmdMsg((T) BaseBinaryFrameHandler.this, (CmdEnum) cmdEnum, (ICmdMsg<CmdEnum>) cmdMsg);
             }
-            return;
         }
-        for (Msg msg : msgList) {
-            this.onMsg((T) BaseBinaryFrameHandler.this, msg);
-            if (msg instanceof ICmdMsg<?>) {
-                ICmdMsg<?> cmdMsg = (ICmdMsg<?>) msg;
-                Enum<?> cmdEnum = cmdMsg.getCmdEnum();
-                if (cmdEnum == null) {
-                    this.onUnknownCmd((T) BaseBinaryFrameHandler.this, cmdMsg.getCmd(), cmdMsg);
-                } else {
-                    this.onCmdMsg((T) BaseBinaryFrameHandler.this, (CmdEnum) cmdEnum, (ICmdMsg<CmdEnum>) cmdMsg);
-                }
-            }
-            if (msg instanceof BaseCmdMsg<?>) {
-                BaseCmdMsg<?> cmdMsg = (BaseCmdMsg<?>) msg;
-                Enum<?> cmdEnum = cmdMsg.getCmdEnum();
-                if (cmdEnum == null) {
-                    this.onUnknownCmd((T) BaseBinaryFrameHandler.this, cmdMsg.getCmd(), cmdMsg);
-                } else {
-                    this.onCmdMsg((T) BaseBinaryFrameHandler.this, (CmdEnum) cmdEnum, (BaseCmdMsg<CmdEnum>) cmdMsg);
-                }
+        if (msg instanceof BaseCmdMsg<?>) {
+            BaseCmdMsg<?> cmdMsg = (BaseCmdMsg<?>) msg;
+            Enum<?> cmdEnum = cmdMsg.getCmdEnum();
+            if (cmdEnum == null) {
+                this.onUnknownCmd((T) BaseBinaryFrameHandler.this, cmdMsg.getCmd(), cmdMsg);
+            } else {
+                this.onCmdMsg((T) BaseBinaryFrameHandler.this, (CmdEnum) cmdEnum, (BaseCmdMsg<CmdEnum>) cmdMsg);
             }
         }
     }

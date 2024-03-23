@@ -32,6 +32,7 @@ import cn.hutool.http.Header;
 import cn.hutool.http.HttpUtil;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolConfig;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
@@ -48,6 +49,7 @@ import tech.ordinaryroad.live.chat.client.douyin.listener.impl.DouyinForwardMsgL
 import tech.ordinaryroad.live.chat.client.douyin.msg.base.IDouyinMsg;
 import tech.ordinaryroad.live.chat.client.douyin.netty.handler.DouyinBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.douyin.netty.handler.DouyinConnectionHandler;
+import tech.ordinaryroad.live.chat.client.douyin.netty.handler.DouyinLiveChatClientChannelInitializer;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
 
 import java.util.Date;
@@ -130,8 +132,8 @@ public class DouyinLiveChatClient extends BaseNettyClient<
     }
 
     @Override
-    public DouyinBinaryFrameHandler initBinaryFrameHandler() {
-        return new DouyinBinaryFrameHandler(super.msgListeners, DouyinLiveChatClient.this);
+    protected void initChannel(SocketChannel channel) {
+        channel.pipeline().addLast(new DouyinLiveChatClientChannelInitializer(this));
     }
 
     @Override

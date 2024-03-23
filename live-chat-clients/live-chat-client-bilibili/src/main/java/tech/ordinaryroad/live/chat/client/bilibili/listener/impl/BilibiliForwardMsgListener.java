@@ -25,7 +25,8 @@
 package tech.ordinaryroad.live.chat.client.bilibili.listener.impl;
 
 import cn.hutool.core.util.StrUtil;
-import io.netty.buffer.Unpooled;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliMsgListener;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.*;
@@ -97,10 +98,17 @@ public class BilibiliForwardMsgListener implements IBilibiliMsgListener {
         forward(msg);
     }
 
+    @Override
+    public void onLiveStatusMsg(BilibiliLiveStatusChangeMsg msg) {
+        forward(msg);
+    }
+
     private void forward(IMsg msg) {
         if (webSocketLiveChatClient == null) {
             return;
         }
-        webSocketLiveChatClient.send(new BinaryWebSocketFrame(Unpooled.wrappedBuffer(msg.toString().getBytes(StandardCharsets.UTF_8))));
+        ByteBuf byteBuf = ByteBufAllocator.DEFAULT.buffer();
+        byteBuf.writeCharSequence(msg.toString(), StandardCharsets.UTF_8);
+        webSocketLiveChatClient.send(new BinaryWebSocketFrame(byteBuf));
     }
 }

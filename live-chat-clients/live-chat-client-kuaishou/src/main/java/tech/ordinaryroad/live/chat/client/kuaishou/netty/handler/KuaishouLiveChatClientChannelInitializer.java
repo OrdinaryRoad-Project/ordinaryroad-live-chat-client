@@ -22,19 +22,29 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.douyu.netty.frame;
+package tech.ordinaryroad.live.chat.client.kuaishou.netty.handler;
 
-import io.netty.buffer.ByteBuf;
-import tech.ordinaryroad.live.chat.client.douyu.netty.frame.base.BaseDouyuWebSocketFrame;
+import io.netty.channel.ChannelPipeline;
+import io.netty.channel.socket.SocketChannel;
+import tech.ordinaryroad.live.chat.client.kuaishou.client.KuaishouLiveChatClient;
+import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientChannelInitializer;
 
 /**
  * @author mjz
- * @date 2023/1/5
+ * @date 2024/3/23
  */
-public class HeartbeatWebSocketFrame extends BaseDouyuWebSocketFrame {
+public class KuaishouLiveChatClientChannelInitializer extends BaseNettyClientChannelInitializer<KuaishouLiveChatClient> {
 
-    public HeartbeatWebSocketFrame(ByteBuf byteBuf) {
-        super(byteBuf);
+    public KuaishouLiveChatClientChannelInitializer(KuaishouLiveChatClient client) {
+        super(client);
     }
 
+    @Override
+    protected void initChannel(SocketChannel ch) throws Exception {
+        ChannelPipeline pipeline = ch.pipeline();
+        // 添加一个编解码器
+        pipeline.addLast(new KuaishouCodecHandler());
+        // 添加一个消息处理器
+        pipeline.addLast(new KuaishouBinaryFrameHandler(client.getMsgListeners(), client));
+    }
 }

@@ -24,14 +24,10 @@
 
 package tech.ordinaryroad.live.chat.client.kuaishou.netty.handler;
 
-import cn.hutool.core.util.ZipUtil;
 import com.google.protobuf.ByteString;
-import com.google.protobuf.InvalidProtocolBufferException;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.kuaishou.api.KuaishouApis;
 import tech.ordinaryroad.live.chat.client.kuaishou.client.KuaishouLiveChatClient;
@@ -43,7 +39,6 @@ import tech.ordinaryroad.live.chat.client.kuaishou.msg.base.IKuaishouMsg;
 import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.*;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientBinaryFrameHandler;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -99,35 +94,6 @@ public class KuaishouBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
             default: {
                 iteratorMsgListeners(msgListener -> msgListener.onOtherCmdMsg(KuaishouBinaryFrameHandler.this, cmd, socketMessage));
             }
-        }
-    }
-
-    @Override
-    protected List<IKuaishouMsg> decode(ByteBuf byteBuf) {
-        try {
-            SocketMessageOuterClass.SocketMessage socketMessage = SocketMessageOuterClass.SocketMessage.parseFrom(byteBuf.nioBuffer());
-            SocketMessageOuterClass.SocketMessage.CompressionType compressionType = socketMessage.getCompressionType();
-            ByteString payloadByteString = socketMessage.getPayload();
-            byte[] payload;
-            switch (compressionType) {
-                case NONE: {
-                    payload = payloadByteString.toByteArray();
-                    break;
-                }
-                case GZIP: {
-                    payload = ZipUtil.unGzip(payloadByteString.newInput());
-                    break;
-                }
-                default: {
-                    if (log.isWarnEnabled()) {
-                        log.warn("暂不支持的压缩方式 " + compressionType);
-                    }
-                    return Collections.emptyList();
-                }
-            }
-            return Collections.singletonList(socketMessage.toBuilder().setPayload(ByteString.copyFrom(payload)).build());
-        } catch (InvalidProtocolBufferException e) {
-            throw new BaseException(e);
         }
     }
 }

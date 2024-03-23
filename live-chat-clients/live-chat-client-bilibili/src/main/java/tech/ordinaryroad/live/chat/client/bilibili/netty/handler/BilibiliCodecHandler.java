@@ -22,19 +22,30 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.douyu.netty.frame;
+package tech.ordinaryroad.live.chat.client.bilibili.netty.handler;
 
-import io.netty.buffer.ByteBuf;
-import tech.ordinaryroad.live.chat.client.douyu.netty.frame.base.BaseDouyuWebSocketFrame;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
+import tech.ordinaryroad.live.chat.client.bilibili.msg.base.IBilibiliMsg;
+import tech.ordinaryroad.live.chat.client.bilibili.util.BilibiliCodecUtil;
+import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BinaryWebSocketFrameToMessageCodec;
+
+import java.util.List;
 
 /**
+ * B站编解码Handler
+ *
  * @author mjz
- * @date 2023/1/5
+ * @date 2024/3/22
  */
-public class AuthWebSocketFrame extends BaseDouyuWebSocketFrame {
-
-    public AuthWebSocketFrame(ByteBuf byteBuf) {
-        super(byteBuf);
+public class BilibiliCodecHandler extends BinaryWebSocketFrameToMessageCodec<IBilibiliMsg> {
+    @Override
+    protected void encode(ChannelHandlerContext ctx, IBilibiliMsg msg, List<Object> out) throws Exception {
+        out.add(new BinaryWebSocketFrame(BilibiliCodecUtil.encode(msg, ctx.alloc().buffer())));
     }
 
+    @Override
+    protected void decode(ChannelHandlerContext ctx, BinaryWebSocketFrame msg, List<Object> out) throws Exception {
+        out.addAll(BilibiliCodecUtil.decode(msg.content()));
+    }
 }

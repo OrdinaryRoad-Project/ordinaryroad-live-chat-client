@@ -22,39 +22,42 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.bilibili.netty.frame.factory;
+package tech.ordinaryroad.live.chat.client.bilibili.msg.factory;
 
+import cn.hutool.cache.impl.TimedCache;
 import cn.hutool.core.util.NumberUtil;
-import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import tech.ordinaryroad.live.chat.client.bilibili.api.BilibiliApis;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.ProtoverEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.AuthMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.HeartbeatMsg;
-import tech.ordinaryroad.live.chat.client.bilibili.util.BilibiliCodecUtil;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author mjz
  * @date 2023/1/5
  */
-public class BilibiliWebSocketFrameFactory {
+public class BilibiliMsgFactory {
 
-    private static final ConcurrentHashMap<Long, BilibiliWebSocketFrameFactory> CACHE = new ConcurrentHashMap<>();
+    private static final TimedCache<Long, BilibiliMsgFactory> FACTORY_CACHE = new TimedCache<>(TimeUnit.DAYS.toMillis(1), new ConcurrentHashMap<>());
+    private static final TimedCache<ProtoverEnum, HeartbeatMsg> HEARTBEAT_MSG_CACHE = new TimedCache<>(TimeUnit.DAYS.toMillis(1), new ConcurrentHashMap<>());
 
     /**
      * 浏览器地址中的房间id，支持短id
      */
     private final long roomId;
-    private volatile static HeartbeatMsg heartbeatMsg;
 
-    public BilibiliWebSocketFrameFactory(long roomId) {
+    public BilibiliMsgFactory(long roomId) {
         this.roomId = roomId;
     }
 
-    public synchronized static BilibiliWebSocketFrameFactory getInstance(long roomId) {
-        return CACHE.computeIfAbsent(roomId, aLong -> new BilibiliWebSocketFrameFactory(roomId));
+    public static BilibiliMsgFactory getInstance(long roomId) {
+        if (!FACTORY_CACHE.containsKey(roomId)) {
+            FACTORY_CACHE.put(roomId, new BilibiliMsgFactory(roomId));
+        }
+        return FACTORY_CACHE.get(roomId);
     }
 
     /**
@@ -63,37 +66,28 @@ public class BilibiliWebSocketFrameFactory {
      * @param protover {@link ProtoverEnum}
      * @return AuthWebSocketFrame
      */
-    public BinaryWebSocketFrame createAuth(ProtoverEnum protover, BilibiliApis.RoomInitResult roomInitResult) {
+    public AuthMsg createAuth(ProtoverEnum protover, BilibiliApis.RoomInitResult roomInitResult) {
         try {
             String buvid3 = roomInitResult.getBuvid3();
             long realRoomId = roomInitResult.getRoomPlayInfoResult().getRoom_id();
             AuthMsg authMsg = new AuthMsg(realRoomId, protover.getCode(), buvid3, roomInitResult.getDanmuinfoResult().getToken());
             authMsg.setUid(NumberUtil.parseLong(roomInitResult.getUid()));
-            return new BinaryWebSocketFrame(BilibiliCodecUtil.encode(authMsg));
+            return authMsg;
         } catch (Exception e) {
             throw new BaseException(String.format("认证包创建失败，请检查房间号是否正确。roomId: %d, msg: %s", roomId, e.getMessage()));
         }
     }
 
-    public BinaryWebSocketFrame createHeartbeat(ProtoverEnum protover) {
-        return new BinaryWebSocketFrame(BilibiliCodecUtil.encode(this.getHeartbeatMsg(protover)));
-    }
-
     /**
-     * 心跳包单例模式
+     * 创建心跳包
      *
      * @param protover {@link ProtoverEnum}
-     * @return HeartbeatWebSocketFrame
+     * @return AuthWebSocketFrame
      */
-    public HeartbeatMsg getHeartbeatMsg(ProtoverEnum protover) {
-        if (heartbeatMsg == null) {
-            synchronized (BilibiliWebSocketFrameFactory.this) {
-                if (heartbeatMsg == null) {
-                    heartbeatMsg = new HeartbeatMsg(protover.getCode());
-                }
-            }
+    public HeartbeatMsg createHeartbeat(ProtoverEnum protover) {
+        if (!HEARTBEAT_MSG_CACHE.containsKey(protover)) {
+            HEARTBEAT_MSG_CACHE.put(protover, new HeartbeatMsg(protover.getCode()));
         }
-        return heartbeatMsg;
+        return HEARTBEAT_MSG_CACHE.get(protover);
     }
-
 }

@@ -25,7 +25,6 @@
 package tech.ordinaryroad.live.chat.client.bilibili.netty.handler;
 
 import cn.hutool.core.util.StrUtil;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +34,6 @@ import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliMsgListener
 import tech.ordinaryroad.live.chat.client.bilibili.msg.*;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.base.BaseBilibiliMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.base.IBilibiliMsg;
-import tech.ordinaryroad.live.chat.client.bilibili.util.BilibiliCodecUtil;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientBinaryFrameHandler;
 
@@ -151,10 +149,5 @@ public class BilibiliBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
                 iteratorMsgListeners(msgListener -> msgListener.onOtherCmdMsg(BilibiliBinaryFrameHandler.this, cmd, cmdMsg));
             }
         }
-    }
-
-    @Override
-    protected List<IBilibiliMsg> decode(ByteBuf byteBuf) {
-        return BilibiliCodecUtil.decode(byteBuf);
     }
 }

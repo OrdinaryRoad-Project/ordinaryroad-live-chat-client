@@ -25,9 +25,11 @@
 package tech.ordinaryroad.live.chat.client.websocket.client;
 
 import cn.hutool.core.util.StrUtil;
-import io.netty.buffer.Unpooled;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolConfig;
@@ -109,8 +111,8 @@ public class WebSocketLiveChatClient extends BaseNettyClient<
     }
 
     @Override
-    public WebSocketBinaryFrameHandler initBinaryFrameHandler() {
-        return new WebSocketBinaryFrameHandler(super.msgListeners, WebSocketLiveChatClient.this);
+    protected void initChannel(SocketChannel channel) {
+        channel.pipeline().addLast(new WebSocketBinaryFrameHandler(getMsgListeners(), WebSocketLiveChatClient.this));
     }
 
     @Override
@@ -125,7 +127,9 @@ public class WebSocketLiveChatClient extends BaseNettyClient<
             addMsgListener(new IWebSocketMsgListener() {
                 @Override
                 public void onMsg(IMsg msg) {
-                    forwardClient.send(new BinaryWebSocketFrame(Unpooled.wrappedBuffer(msg.toString().getBytes(StandardCharsets.UTF_8))));
+                    ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer();
+                    buffer.writeCharSequence(msg.toString(), StandardCharsets.UTF_8);
+                    forwardClient.send(new BinaryWebSocketFrame(buffer));
                 }
             });
         }

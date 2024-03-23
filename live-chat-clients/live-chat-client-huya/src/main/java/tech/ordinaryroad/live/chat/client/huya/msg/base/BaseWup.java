@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.huya.msg;
+package tech.ordinaryroad.live.chat.client.huya.msg.base;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.qq.tars.protocol.tars.TarsInputStream;
@@ -32,15 +32,14 @@ import com.qq.tars.protocol.util.TarsHelper;
 import com.qq.tars.rpc.protocol.tars.TarsServantRequest;
 import com.qq.tars.rpc.protocol.tup.UniAttribute;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.ByteBufUtil;
-import io.netty.buffer.Unpooled;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseMsg;
-import tech.ordinaryroad.live.chat.client.huya.msg.base.BaseHuyaMsg;
 import tech.ordinaryroad.live.chat.client.huya.util.HuyaCodecUtil;
 
 import java.util.HashMap;
@@ -98,7 +97,7 @@ public abstract class BaseWup extends BaseHuyaMsg {
         TarsOutputStream wupTarsOutputStream = new TarsOutputStream();
         this.writeTo(wupTarsOutputStream);
 
-        ByteBuf buffer = Unpooled.buffer();
+        ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer();
         buffer.writeInt(4 + wupTarsOutputStream.getByteBuffer().position());
         buffer.writeBytes(wupTarsOutputStream.toByteArray());
 
@@ -106,7 +105,7 @@ public abstract class BaseWup extends BaseHuyaMsg {
     }
 
     public void decode(byte[] bytes) {
-        ByteBuf byteBuf = Unpooled.wrappedBuffer(bytes);
+        ByteBuf byteBuf = ByteBufAllocator.DEFAULT.buffer().writeBytes(bytes);
         int size = byteBuf.readInt();
         if (size < 4) {
             return;

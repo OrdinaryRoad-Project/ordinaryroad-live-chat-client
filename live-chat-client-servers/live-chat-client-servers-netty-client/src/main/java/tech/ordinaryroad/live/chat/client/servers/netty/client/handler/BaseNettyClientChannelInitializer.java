@@ -22,25 +22,23 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.huya.msg;
+package tech.ordinaryroad.live.chat.client.servers.netty.client.handler;
 
-import lombok.NoArgsConstructor;
-import tech.ordinaryroad.live.chat.client.huya.constant.HuyaOperationEnum;
-import tech.ordinaryroad.live.chat.client.huya.msg.base.BaseWup;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.socket.SocketChannel;
+import lombok.Getter;
+import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
 
 /**
  * @author mjz
- * @date 2023/10/3
+ * @date 2024/3/22
  */
-@NoArgsConstructor
-public class WupRsp extends BaseWup {
+public abstract class BaseNettyClientChannelInitializer<CLIENT extends BaseNettyClient<?, ?, ?, ?, ?, ?>> extends ChannelInitializer<SocketChannel> {
 
-    public WupRsp(byte[] vData) {
-        super.decode(vData);
-    }
+    @Getter
+    protected final CLIENT client;
 
-    @Override
-    public HuyaOperationEnum getOperationEnum() {
-        return HuyaOperationEnum.EWSCmd_WupRsp;
+    public BaseNettyClientChannelInitializer(CLIENT client) {
+        this.client = client;
     }
 }
