@@ -119,6 +119,7 @@ public class HuyaLiveChatClient extends BaseNettyClient<
                                 .allowExtensions(true)
                                 .customHeaders(new DefaultHttpHeaders())
                                 .maxFramePayloadLength(getConfig().getMaxFramePayloadLength())
+                                .handshakeTimeoutMillis(getConfig().getHandshakeTimeoutMillis())
                                 .build()
                 ),
                 HuyaLiveChatClient.this, clientConnectionListener

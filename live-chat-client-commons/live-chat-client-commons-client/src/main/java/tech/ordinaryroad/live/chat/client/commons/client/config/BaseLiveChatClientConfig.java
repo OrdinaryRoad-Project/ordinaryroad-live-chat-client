@@ -51,6 +51,10 @@ public abstract class BaseLiveChatClientConfig {
     public static final long DEFAULT_HEARTBEAT_INITIAL_DELAY = 15;
     public static final long DEFAULT_HEARTBEAT_PERIOD = 25;
     public static final long DEFAULT_MIN_SEND_DANMU_PERIOD = 3000L;
+    /**
+     * 默认WebSocket握手超时时间
+     */
+    public static final long DEFAULT_HANDSHAKE_TIMEOUT_MILLIS = 5 * 1000L;
 
     private String websocketUri;
 
@@ -99,6 +103,12 @@ public abstract class BaseLiveChatClientConfig {
     @Builder.Default
     private long minSendDanmuPeriod = DEFAULT_MIN_SEND_DANMU_PERIOD;
 
+    /**
+     * 握手超时时间（毫秒）
+     */
+    @Builder.Default
+    private long handshakeTimeoutMillis = DEFAULT_HANDSHAKE_TIMEOUT_MILLIS;
+
     public void setCookie(String cookie) {
         String oldValue = this.cookie;
         this.cookie = cookie;
@@ -120,10 +130,46 @@ public abstract class BaseLiveChatClientConfig {
         this.propertyChangeSupport.firePropertyChange("websocketUri", oldValue, websocketUri);
     }
 
+    public void setForwardWebsocketUri(String forwardWebsocketUri) {
+        String oldValue = this.forwardWebsocketUri;
+        this.forwardWebsocketUri = forwardWebsocketUri;
+        this.propertyChangeSupport.firePropertyChange("forwardWebsocketUri", oldValue, forwardWebsocketUri);
+    }
+
     public void setMinSendDanmuPeriod(long minSendDanmuPeriod) {
         long oldValue = this.minSendDanmuPeriod;
         this.minSendDanmuPeriod = minSendDanmuPeriod;
         this.propertyChangeSupport.firePropertyChange("minSendDanmuPeriod", oldValue, minSendDanmuPeriod);
+    }
+
+    public void setAutoReconnect(boolean autoReconnect) {
+        boolean oldValue = this.autoReconnect;
+        this.autoReconnect = autoReconnect;
+        this.propertyChangeSupport.firePropertyChange("autoReconnect", oldValue, autoReconnect);
+    }
+
+    public void setReconnectDelay(int reconnectDelay) {
+        int oldValue = this.reconnectDelay;
+        this.reconnectDelay = reconnectDelay;
+        this.propertyChangeSupport.firePropertyChange("reconnectDelay", oldValue, reconnectDelay);
+    }
+
+    public void setHeartbeatInitialDelay(long heartbeatInitialDelay) {
+        long oldValue = this.heartbeatInitialDelay;
+        this.heartbeatInitialDelay = heartbeatInitialDelay;
+        this.propertyChangeSupport.firePropertyChange("heartbeatInitialDelay", oldValue, heartbeatInitialDelay);
+    }
+
+    public void setHeartbeatPeriod(long heartbeatPeriod) {
+        long oldValue = this.heartbeatPeriod;
+        this.heartbeatPeriod = heartbeatPeriod;
+        this.propertyChangeSupport.firePropertyChange("heartbeatPeriod", oldValue, heartbeatPeriod);
+    }
+
+    public void setHandshakeTimeoutMillis(long handshakeTimeoutMillis) {
+        long oldValue = this.handshakeTimeoutMillis;
+        this.handshakeTimeoutMillis = handshakeTimeoutMillis;
+        this.propertyChangeSupport.firePropertyChange("handshakeTimeoutMillis", oldValue, handshakeTimeoutMillis);
     }
 
     public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {

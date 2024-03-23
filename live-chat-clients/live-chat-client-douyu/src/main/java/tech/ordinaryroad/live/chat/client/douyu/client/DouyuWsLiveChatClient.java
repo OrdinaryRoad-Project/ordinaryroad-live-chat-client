@@ -94,6 +94,7 @@ public class DouyuWsLiveChatClient extends BaseDouyuLiveChatClient implements ID
                                 .allowExtensions(true)
                                 .customHeaders(new DefaultHttpHeaders())
                                 .maxFramePayloadLength(getConfig().getMaxFramePayloadLength())
+                                .handshakeTimeoutMillis(getConfig().getHandshakeTimeoutMillis())
                                 .build()
                 ),
                 DouyuWsLiveChatClient.this, clientConnectionListener

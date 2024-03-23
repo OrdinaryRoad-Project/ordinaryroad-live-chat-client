@@ -132,6 +132,7 @@ public class DouyinLiveChatClient extends BaseNettyClient<
                                 .allowExtensions(true)
                                 .customHeaders(headers)
                                 .maxFramePayloadLength(getConfig().getMaxFramePayloadLength())
+                                .handshakeTimeoutMillis(getConfig().getHandshakeTimeoutMillis())
                                 .build()
                 ),
                 DouyinLiveChatClient.this, clientConnectionListener

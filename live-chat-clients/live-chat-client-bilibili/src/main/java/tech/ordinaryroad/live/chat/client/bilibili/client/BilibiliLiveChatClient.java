@@ -132,6 +132,7 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
                                 .allowExtensions(true)
                                 .customHeaders(new DefaultHttpHeaders())
                                 .maxFramePayloadLength(getConfig().getMaxFramePayloadLength())
+                                .handshakeTimeoutMillis(getConfig().getHandshakeTimeoutMillis())
                                 .build()
                 ),
                 BilibiliLiveChatClient.this, clientConnectionListener
