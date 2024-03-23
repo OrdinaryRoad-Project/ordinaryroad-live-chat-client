@@ -25,6 +25,8 @@
 package tech.ordinaryroad.live.chat.client.commons.client;
 
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener;
+import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
+import tech.ordinaryroad.live.chat.client.commons.client.listener.IClientStatusChangeListener;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -132,4 +134,20 @@ public interface IBaseLiveChatClient<MsgListener extends IBaseMsgListener<?, ?>>
      */
     void clickLike(int count, Consumer<Throwable> failed);
 
+    /**
+     * 获取当前状态
+     *
+     * @return {@link ClientStatusEnums}
+     */
+    ClientStatusEnums getStatus();
+
+    /**
+     * 添加状态变化监听器
+     */
+    void addStatusChangeListener(IClientStatusChangeListener listener);
+
+    /**
+     * 移除状态变化监听器
+     */
+    void removeStatusChangeListener(IClientStatusChangeListener listener);
 }

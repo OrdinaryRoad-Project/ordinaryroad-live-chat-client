@@ -48,7 +48,6 @@ public abstract class BaseLiveChatClient<
         > implements IBaseLiveChatClient<MsgListener> {
 
     private final Config config;
-    @Getter
     private volatile ClientStatusEnums status = ClientStatusEnums.NEW;
     protected PropertyChangeSupport statusChangeSupport = new PropertyChangeSupport(status);
     protected volatile boolean cancelReconnect = false;
@@ -146,10 +145,17 @@ public abstract class BaseLiveChatClient<
         }
     }
 
+    @Override
+    public ClientStatusEnums getStatus() {
+        return this.status;
+    }
+
+    @Override
     public void addStatusChangeListener(IClientStatusChangeListener listener) {
         this.statusChangeSupport.addPropertyChangeListener(listener);
     }
 
+    @Override
     public void removeStatusChangeListener(IClientStatusChangeListener listener) {
         this.statusChangeSupport.removePropertyChangeListener(listener);
     }
