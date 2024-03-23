@@ -62,7 +62,7 @@ public class DouyinCodecHandler extends BinaryWebSocketFrameToMessageCodec<IDouy
         byte[] bytes;
         String compressType = MapUtil.getStr(douyinWebsocketFrame.getHeadersListMap(), "compress_type");
         // 无压缩
-        if (StrUtil.isBlank(compressType)) {
+        if (StrUtil.isBlank(compressType) || "none".equals(compressType)) {
             bytes = douyinWebsocketFrame.getPayload().toByteArray();
         }
         // gzip
