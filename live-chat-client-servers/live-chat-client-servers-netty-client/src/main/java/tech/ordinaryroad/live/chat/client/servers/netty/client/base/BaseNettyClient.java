@@ -64,7 +64,8 @@ public abstract class BaseNettyClient
                 ConnectionHandler extends BaseConnectionHandler<ConnectionHandler>,
                 BinaryFrameHandler extends BaseBinaryFrameHandler<BinaryFrameHandler, CmdEnum, Msg, MsgListener>
                 >
-        extends BaseLiveChatClient<Config, MsgListener> {
+        extends BaseLiveChatClient<Config, MsgListener>
+        implements IBaseConnectionListener<ConnectionHandler> {
 
     @Getter
     private final EventLoopGroup workerGroup;
@@ -75,7 +76,7 @@ public abstract class BaseNettyClient
     private Channel channel;
     @Getter
     private URI websocketUri;
-    protected IBaseConnectionListener<ConnectionHandler> clientConnectionListener;
+    protected IBaseConnectionListener<ConnectionHandler> clientConnectionListener = this;
     /**
      * 控制弹幕发送频率
      */
@@ -96,6 +97,7 @@ public abstract class BaseNettyClient
         this.connectionListener = connectionListener;
     }
 
+    @Override
     public void onConnected(ConnectionHandler connectionHandler) {
         this.setStatus(ClientStatusEnums.CONNECTED);
         if (this.connectionListener != null) {
@@ -103,14 +105,15 @@ public abstract class BaseNettyClient
         }
     }
 
+    @Override
     public void onConnectFailed(ConnectionHandler connectionHandler) {
         this.setStatus(ClientStatusEnums.CONNECT_FAILED);
-        tryReconnect();
         if (this.connectionListener != null) {
             this.connectionListener.onConnectFailed(connectionHandler);
         }
     }
 
+    @Override
     public void onDisconnected(ConnectionHandler connectionHandler) {
         this.setStatus(ClientStatusEnums.DISCONNECTED);
         tryReconnect();
@@ -132,23 +135,7 @@ public abstract class BaseNettyClient
                 sslCtx = SslContextBuilder.forClient().build();
             }
 
-            this.clientConnectionListener = new IBaseConnectionListener<ConnectionHandler>() {
-                @Override
-                public void onConnected(ConnectionHandler connectionHandler) {
-                    BaseNettyClient.this.onConnected(connectionHandler);
-                }
-
-                @Override
-                public void onConnectFailed(ConnectionHandler connectionHandler) {
-                    BaseNettyClient.this.onConnectFailed(connectionHandler);
-                }
-
-                @Override
-                public void onDisconnected(ConnectionHandler connectionHandler) {
-                    BaseNettyClient.this.onDisconnected(connectionHandler);
-                }
-            };
-            this.connectionHandler = this.initConnectionHandler(this.clientConnectionListener);
+            this.connectionHandler = this.initConnectionHandler(this);
 
             SslContext finalSslCtx = sslCtx;
             this.bootstrap.group(this.workerGroup)
@@ -218,14 +205,16 @@ public abstract class BaseNettyClient
                 this.channel = connectFuture.channel();
                 // 监听是否握手成功
                 this.connectionHandler.getHandshakePromise().addListener((ChannelFutureListener) handshakeFuture -> {
-                    try {
-                        connectionHandler.sendAuthRequest(channel);
-                        if (success != null) {
-                            success.run();
+                    if (handshakeFuture.isSuccess()) {
+                        try {
+                            connectionHandler.sendAuthRequest(channel);
+                            if (success != null) {
+                                success.run();
+                            }
+                        } catch (Exception e) {
+                            log.error("认证包发送失败，断开连接", e);
+                            this.disconnect();
                         }
-                    } catch (Exception e) {
-                        log.error("认证包发送失败，断开连接", e);
-                        this.disconnect();
                     }
                 });
             } else {
