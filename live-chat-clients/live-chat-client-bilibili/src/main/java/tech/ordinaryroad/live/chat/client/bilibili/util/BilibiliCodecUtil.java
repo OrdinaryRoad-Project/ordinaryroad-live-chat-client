@@ -30,7 +30,6 @@ import com.aayushatharva.brotli4j.decoder.BrotliInputStream;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
-import io.netty.buffer.ByteBufOutputStream;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.OperationEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.ProtoverEnum;
@@ -135,25 +134,19 @@ public class BilibiliCodecUtil {
                     Inflater inflater = new Inflater();
                     inflater.reset();
                     inflater.setInput(inputBytes);
-                    ByteBufOutputStream byteBufOutputStream = new ByteBufOutputStream(ByteBufAllocator.DEFAULT.buffer());
+                    ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer();
                     try {
                         byte[] bytes = new byte[1024];
                         while (!inflater.finished()) {
                             int count = inflater.inflate(bytes);
-                            byteBufOutputStream.write(bytes, 0, count);
+                            buffer.writeBytes(bytes, 0, count);
                         }
-                    } catch (DataFormatException | IOException e) {
+                    } catch (DataFormatException e) {
                         throw new BaseException(e);
                     } finally {
-                        try {
-                            byteBufOutputStream.close();
-                        } catch (IOException e) {
-                            log.error("ByteBufOutputStream close失败", e);
-                        }
                         inflater.end();
                     }
-
-                    return doDecode(byteBufOutputStream.buffer(), pendingByteBuf);
+                    return doDecode(buffer.duplicate(), pendingByteBuf);
                 }
                 case HEARTBEAT_REPLY: {
                     BigInteger bigInteger = new BigInteger(inputBytes);
@@ -194,14 +187,13 @@ public class BilibiliCodecUtil {
 
                     ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(inputBytes);
                     ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer();
-                    ByteBufOutputStream byteBufOutputStream = new ByteBufOutputStream(buffer);
                     byte[] bytes = new byte[1024];
                     BrotliInputStream brotliInputStream = null;
                     try {
                         brotliInputStream = new BrotliInputStream(byteArrayInputStream);
                         int count;
                         while ((count = brotliInputStream.read(bytes)) > -1) {
-                            byteBufOutputStream.write(bytes, 0, count);
+                            buffer.writeBytes(bytes, 0, count);
                         }
                     } catch (IOException e) {
                         throw new BaseException(e);
@@ -211,12 +203,11 @@ public class BilibiliCodecUtil {
                             if (brotliInputStream != null) {
                                 brotliInputStream.close();
                             }
-                            byteBufOutputStream.close();
                         } catch (IOException e) {
                             log.error("解压失败", e);
                         }
                     }
-                    return doDecode(byteBufOutputStream.buffer(), pendingByteBuf);
+                    return doDecode(buffer, pendingByteBuf);
                 }
                 case HEARTBEAT_REPLY: {
                     BigInteger bigInteger = new BigInteger(inputBytes);
