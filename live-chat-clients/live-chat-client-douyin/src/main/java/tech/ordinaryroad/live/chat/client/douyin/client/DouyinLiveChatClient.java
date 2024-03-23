@@ -40,6 +40,7 @@ import io.netty.handler.codec.http.websocketx.WebSocketVersion;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
+import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
 import tech.ordinaryroad.live.chat.client.douyin.api.DouyinApis;
 import tech.ordinaryroad.live.chat.client.douyin.config.DouyinLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.douyin.constant.DouyinCmdEnum;
@@ -106,7 +107,13 @@ public class DouyinLiveChatClient extends BaseNettyClient<
     public void init() {
         roomInitResult = DouyinApis.roomInit(getConfig().getRoomId(), getConfig().getCookie());
         if (StrUtil.isNotBlank(getConfig().getForwardWebsocketUri())) {
-            addMsgListener(new DouyinForwardMsgListener(getConfig().getForwardWebsocketUri()));
+            DouyinForwardMsgListener forwardMsgListener = new DouyinForwardMsgListener(getConfig().getForwardWebsocketUri());
+            addMsgListener(forwardMsgListener);
+            addStatusChangeListener((evt, oldStatus, newStatus) -> {
+                if (newStatus == ClientStatusEnums.DESTROYED) {
+                    forwardMsgListener.destroyForwardClient();
+                }
+            });
         }
         super.init();
     }

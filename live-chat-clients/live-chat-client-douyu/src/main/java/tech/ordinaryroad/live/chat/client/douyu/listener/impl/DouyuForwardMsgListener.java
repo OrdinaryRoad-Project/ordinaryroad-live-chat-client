@@ -83,4 +83,8 @@ public class DouyuForwardMsgListener implements IDouyuMsgListener {
         byteBuf.writeCharSequence(msg.toString(), StandardCharsets.UTF_8);
         webSocketLiveChatClient.send(new BinaryWebSocketFrame(byteBuf));
     }
+
+    public void destroyForwardClient() {
+        webSocketLiveChatClient.destroy();
+    }
 }

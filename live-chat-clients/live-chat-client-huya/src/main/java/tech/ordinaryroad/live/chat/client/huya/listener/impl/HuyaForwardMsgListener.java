@@ -83,4 +83,8 @@ public class HuyaForwardMsgListener implements IHuyaMsgListener {
         byteBuf.writeCharSequence(msg.toString(), StandardCharsets.UTF_8);
         webSocketLiveChatClient.send(new BinaryWebSocketFrame(byteBuf));
     }
+
+    public void destroyForwardClient() {
+        webSocketLiveChatClient.destroy();
+    }
 }

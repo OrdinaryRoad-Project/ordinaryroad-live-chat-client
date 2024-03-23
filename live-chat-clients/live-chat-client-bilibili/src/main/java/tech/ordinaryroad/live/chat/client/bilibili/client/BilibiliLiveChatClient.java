@@ -48,6 +48,7 @@ import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliConnect
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliLiveChatClientChannelInitializer;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
+import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
 
 import java.util.List;
@@ -104,7 +105,13 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
     public void init() {
         roomInitResult = BilibiliApis.roomInit(getConfig().getRoomId(), getConfig().getCookie());
         if (StrUtil.isNotBlank(getConfig().getForwardWebsocketUri())) {
-            addMsgListener(new BilibiliForwardMsgListener(getConfig().getForwardWebsocketUri()));
+            BilibiliForwardMsgListener forwardMsgListener = new BilibiliForwardMsgListener(getConfig().getForwardWebsocketUri());
+            addMsgListener(forwardMsgListener);
+            addStatusChangeListener((evt, oldStatus, newStatus) -> {
+                if (newStatus == ClientStatusEnums.DESTROYED) {
+                    forwardMsgListener.destroyForwardClient();
+                }
+            });
         }
         super.init();
     }

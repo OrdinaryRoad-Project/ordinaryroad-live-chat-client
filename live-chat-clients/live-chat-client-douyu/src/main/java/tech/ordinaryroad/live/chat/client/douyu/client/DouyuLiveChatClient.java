@@ -110,7 +110,13 @@ public class DouyuLiveChatClient extends DouyuWsLiveChatClient implements IDouyu
     @Override
     public void init() {
         if (StrUtil.isNotBlank(getConfig().getForwardWebsocketUri())) {
-            addMsgListener(new DouyuForwardMsgListener(getConfig().getForwardWebsocketUri()));
+            DouyuForwardMsgListener forwardMsgListener = new DouyuForwardMsgListener(getConfig().getForwardWebsocketUri());
+            addMsgListener(forwardMsgListener);
+            addStatusChangeListener((evt, oldStatus, newStatus) -> {
+                if (newStatus == ClientStatusEnums.DESTROYED) {
+                    forwardMsgListener.destroyForwardClient();
+                }
+            });
         }
         super.init();
 

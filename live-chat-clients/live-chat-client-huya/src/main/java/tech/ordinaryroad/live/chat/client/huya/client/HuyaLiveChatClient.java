@@ -34,6 +34,7 @@ import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
 import io.netty.handler.codec.http.websocketx.WebSocketVersion;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
+import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
 import tech.ordinaryroad.live.chat.client.huya.config.HuyaLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.huya.constant.HuyaCmdEnum;
 import tech.ordinaryroad.live.chat.client.huya.listener.IHuyaConnectionListener;
@@ -96,7 +97,13 @@ public class HuyaLiveChatClient extends BaseNettyClient<
     @Override
     public void init() {
         if (StrUtil.isNotBlank(getConfig().getForwardWebsocketUri())) {
-            addMsgListener(new HuyaForwardMsgListener(getConfig().getForwardWebsocketUri()));
+            HuyaForwardMsgListener forwardMsgListener = new HuyaForwardMsgListener(getConfig().getForwardWebsocketUri());
+            addMsgListener(forwardMsgListener);
+            addStatusChangeListener((evt, oldStatus, newStatus) -> {
+                if (newStatus == ClientStatusEnums.DESTROYED) {
+                    forwardMsgListener.destroyForwardClient();
+                }
+            });
         }
         super.init();
     }

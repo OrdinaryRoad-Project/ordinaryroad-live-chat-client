@@ -144,4 +144,12 @@ public class WebSocketLiveChatClient extends BaseNettyClient<
         }
         super.send(msg, success, failed);
     }
+
+    @Override
+    public void destroy() {
+        if (forwardClient != null) {
+            forwardClient.destroy();
+        }
+        super.destroy();
+    }
 }
