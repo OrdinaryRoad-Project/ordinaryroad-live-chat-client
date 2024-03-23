@@ -79,7 +79,7 @@ Live room WebSocket chat client
     <!-- 参考github release版本，不需要前缀`v` -->
     <version>${ordinaryroad-live-chat-client.version}</version>
 </dependency>
-```  
+```
 
 ### 斗鱼
 
@@ -243,6 +243,45 @@ public class ClientModeExample {
 }
 ```
 
+#### 2.1.1 Client相关API
+
+- 连接
+    - `void connect(Runnable success, Consumer<Throwable> failed)`
+    - `void connect(Runnable success)`
+    - `void connect()`
+- 断开连接
+    - `void disconnect(boolean cancelReconnect)`
+    - `void disconnect()`
+- 销毁
+    - `void destroy()`
+- 发送消息
+    - `void send(Object msg, Runnable success, Consumer<Throwable> failed)`
+    - `void send(Object msg, Runnable success)`
+    - `void send(Object msg, Consumer<Throwable> failed)`
+    - `void send(Object msg)`
+- 发送弹幕
+    - `void sendDanmu(Object danmu, Runnable success, Consumer<Throwable> failed)`
+    - `void sendDanmu(Object danmu, Runnable success)`
+    - `void sendDanmu(Object danmu, Consumer<Throwable> failed)`
+    - `void sendDanmu(Object danmu)`
+- 为主播点赞
+    - `void clickLike(int count, Runnable success, Consumer<Throwable> failed)`
+    - `void clickLike(int count, Runnable success)`
+    - `void clickLike(int count, Consumer<Throwable> failed)`
+    - `void clickLike(int count)`
+- 添加消息监听器
+    - `boolean addMsgListener(MsgListener msgListener)`
+    - `boolean addMsgListeners(List<MsgListener> msgListeners)`
+- 移除消息监听器
+    - `boolean removeMsgListener(MsgListener msgListener)`
+    - `boolean removeMsgListeners(List<MsgListener> msgListeners)`
+- 获取当前状态
+    - `ClientStatusEnums getStatus()`
+- 添加状态变化监听器
+    - `void addStatusChangeListener(IClientStatusChangeListener listener)`
+- 移除状态变化监听器
+    - `void removeStatusChangeListener(IClientStatusChangeListener listener)`
+
 ### 2.2 高级模式
 
 > 参考 [BilibiliHandlerModeExample](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/tree/main/live-chat-client-examples/handler-example/src/main/java/tech/ordinaryroad/live/chat/client/example/handler/BilibiliHandlerModeExample.java)
@@ -347,6 +386,7 @@ public class ClientModeExample {
 ## Star History
 
 <a href="https://star-history.com/#OrdinaryRoad-Project/ordinaryroad-live-chat-client&Date">
+
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=OrdinaryRoad-Project/ordinaryroad-live-chat-client&type=Date&theme=dark" />
     <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=OrdinaryRoad-Project/ordinaryroad-live-chat-client&type=Date" />
