@@ -106,6 +106,7 @@ public class WebSocketLiveChatClient extends BaseNettyClient<
                                 .allowExtensions(true)
                                 .customHeaders(new DefaultHttpHeaders())
                                 .maxFramePayloadLength(getConfig().getMaxFramePayloadLength())
+                                .handshakeTimeoutMillis(getConfig().getHandshakeTimeoutMillis())
                                 .build()
                 ),
                 connectionHandler, WebSocketLiveChatClient.this, clientConnectionListener);

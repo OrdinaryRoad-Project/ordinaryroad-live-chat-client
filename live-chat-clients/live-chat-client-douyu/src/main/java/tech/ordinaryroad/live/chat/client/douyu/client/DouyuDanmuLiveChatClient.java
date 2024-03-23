@@ -88,6 +88,7 @@ public class DouyuDanmuLiveChatClient extends BaseDouyuLiveChatClient implements
                                 .allowExtensions(true)
                                 .customHeaders(new DefaultHttpHeaders())
                                 .maxFramePayloadLength(getConfig().getMaxFramePayloadLength())
+                                .handshakeTimeoutMillis(getConfig().getHandshakeTimeoutMillis())
                                 .build()
                 ),
                 DouyuDanmuLiveChatClient.this, clientConnectionListener
