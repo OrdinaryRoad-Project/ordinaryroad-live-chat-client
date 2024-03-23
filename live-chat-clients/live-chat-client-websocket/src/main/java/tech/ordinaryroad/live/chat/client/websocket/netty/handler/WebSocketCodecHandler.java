@@ -43,6 +43,6 @@ public class WebSocketCodecHandler extends BinaryWebSocketFrameToMessageCodec<We
 
     @Override
     protected void decode(ChannelHandlerContext ctx, BinaryWebSocketFrame msg, List<Object> out) throws Exception {
-        out.add(new WebSocketMsg(msg.content().duplicate()));
+        out.add(new WebSocketMsg(msg.content().copy()));
     }
 }
