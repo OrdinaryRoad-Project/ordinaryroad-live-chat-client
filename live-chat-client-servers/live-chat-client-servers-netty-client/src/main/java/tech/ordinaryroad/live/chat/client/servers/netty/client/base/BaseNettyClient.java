@@ -30,8 +30,8 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.http.HttpClientCodec;
 import io.netty.handler.codec.http.HttpObjectAggregator;
-import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
+import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -41,11 +41,11 @@ import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 import tech.ordinaryroad.live.chat.client.commons.client.BaseLiveChatClient;
 import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
+import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatUrlUtil;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.config.BaseNettyClientConfig;
 import tech.ordinaryroad.live.chat.client.servers.netty.handler.base.BaseBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.servers.netty.handler.base.BaseConnectionHandler;
 
-import javax.net.ssl.SSLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.concurrent.TimeUnit;
@@ -127,60 +127,15 @@ public abstract class BaseNettyClient
         if (checkStatus(ClientStatusEnums.INITIALIZED)) {
             return;
         }
-        try {
-            this.websocketUri = new URI(getWebSocketUriString());
 
-            SslContext sslCtx = null;
-            if ("wss".equalsIgnoreCase(this.websocketUri.getScheme())) {
-                sslCtx = SslContextBuilder.forClient().build();
-            }
+        this.connectionHandler = this.initConnectionHandler(this);
+        this.bootstrap.group(this.workerGroup)
+                // 创建Channel
+                .channel(NioSocketChannel.class)
+                .option(ChannelOption.TCP_NODELAY, true)
+                .option(ChannelOption.SO_KEEPALIVE, true);
 
-            this.connectionHandler = this.initConnectionHandler(this);
-
-            SslContext finalSslCtx = sslCtx;
-            this.bootstrap.group(this.workerGroup)
-                    // 创建Channel
-                    .channel(NioSocketChannel.class)
-                    .remoteAddress(this.websocketUri.getHost(), getInetPort())
-                    .option(ChannelOption.TCP_NODELAY, true)
-                    .option(ChannelOption.SO_KEEPALIVE, true)
-                    // Channel配置
-                    .handler(new ChannelInitializer<SocketChannel>() {
-                        @Override
-                        protected void initChannel(SocketChannel ch) {
-                            // 责任链
-                            ChannelPipeline pipeline = ch.pipeline();
-
-                            // 放到第一位，支持wss链接服务端
-                            if (finalSslCtx != null) {
-                                pipeline.addLast(finalSslCtx.newHandler(ch.alloc(), BaseNettyClient.this.websocketUri.getHost(), getInetPort()));
-                            }
-
-                            // 添加一个http的编解码器
-                            pipeline.addLast(new HttpClientCodec());
-                            // 添加一个用于支持大数据流的支持
-                            pipeline.addLast(new ChunkedWriteHandler());
-                            // 添加一个聚合器，这个聚合器主要是将HttpMessage聚合成FullHttpRequest/Response
-                            pipeline.addLast(new HttpObjectAggregator(BaseNettyClient.this.getConfig().getAggregatorMaxContentLength()));
-
-                            // 添加一个WebSocket协议处理器
-                            pipeline.addLast(BaseNettyClient.this.connectionHandler.getWebSocketProtocolHandler().get());
-
-                            // 连接处理器
-                            pipeline.addLast(BaseNettyClient.this.connectionHandler);
-
-                            BaseNettyClient.this.initChannel(ch);
-                        }
-                    });
-            this.setStatus(ClientStatusEnums.INITIALIZED);
-        } catch (URISyntaxException | SSLException e) {
-            throw new BaseException(e);
-        }
-    }
-
-    private int getInetPort() {
-        int port = this.websocketUri.getPort();
-        return port == -1 ? "wss".equalsIgnoreCase(websocketUri.getScheme()) ? 443 : 80 : port;
+        this.setStatus(ClientStatusEnums.INITIALIZED);
     }
 
     @Override
@@ -197,34 +152,76 @@ public abstract class BaseNettyClient
         if (getStatus() != ClientStatusEnums.RECONNECTING) {
             this.setStatus(ClientStatusEnums.CONNECTING);
         }
-        this.bootstrap.connect().addListener((ChannelFutureListener) connectFuture -> {
-            if (connectFuture.isSuccess()) {
-                if (log.isDebugEnabled()) {
-                    log.debug("连接建立成功！");
-                }
-                this.channel = connectFuture.channel();
-                // 监听是否握手成功
-                this.connectionHandler.getHandshakePromise().addListener((ChannelFutureListener) handshakeFuture -> {
-                    if (handshakeFuture.isSuccess()) {
-                        try {
-                            connectionHandler.sendAuthRequest(channel);
-                            if (success != null) {
-                                success.run();
+
+        String webSocketUriString = getWebSocketUriString();
+        int port = OrLiveChatUrlUtil.getWebSocketUriPort(webSocketUriString);
+        try {
+            this.websocketUri = new URI(webSocketUriString);
+        } catch (URISyntaxException e) {
+            log.error("WebSocket地址解析失败 " + webSocketUriString, e);
+            failed.accept(e);
+            return;
+        }
+
+        this.bootstrap.handler(new ChannelInitializer<SocketChannel>() {
+                    @Override
+                    protected void initChannel(SocketChannel ch) throws Exception {
+                        // 责任链
+                        ChannelPipeline pipeline = ch.pipeline();
+
+                        if (pipeline.get(SslHandler.class) != null) {
+                            pipeline.remove(SslHandler.class);
+                        }
+                        if ("wss".equalsIgnoreCase(OrLiveChatUrlUtil.getScheme(getWebSocketUriString()))) {
+                            pipeline.addFirst(SslContextBuilder.forClient()
+                                    .build()
+                                    .newHandler(ch.alloc(), BaseNettyClient.this.websocketUri.getHost(), port));
+                        }
+
+                        // 添加一个http的编解码器
+                        pipeline.addLast(new HttpClientCodec());
+                        // 添加一个用于支持大数据流的支持
+                        pipeline.addLast(new ChunkedWriteHandler());
+                        // 添加一个聚合器，这个聚合器主要是将HttpMessage聚合成FullHttpRequest/Response
+                        pipeline.addLast(new HttpObjectAggregator(BaseNettyClient.this.getConfig().getAggregatorMaxContentLength()));
+
+                        // 添加一个WebSocket协议处理器
+                        pipeline.addLast(BaseNettyClient.this.connectionHandler.getWebSocketProtocolHandler().get());
+
+                        // 连接处理器
+                        pipeline.addLast(BaseNettyClient.this.connectionHandler);
+
+                        BaseNettyClient.this.initChannel(ch);
+                    }
+                })
+                .connect(this.websocketUri.getHost(), port).addListener((ChannelFutureListener) connectFuture -> {
+                    if (connectFuture.isSuccess()) {
+                        if (log.isDebugEnabled()) {
+                            log.debug("连接建立成功！");
+                        }
+                        this.channel = connectFuture.channel();
+                        // 监听是否握手成功
+                        this.connectionHandler.getHandshakePromise().addListener((ChannelFutureListener) handshakeFuture -> {
+                            if (handshakeFuture.isSuccess()) {
+                                try {
+                                    connectionHandler.sendAuthRequest(channel);
+                                    if (success != null) {
+                                        success.run();
+                                    }
+                                } catch (Exception e) {
+                                    log.error("认证包发送失败，断开连接", e);
+                                    this.disconnect();
+                                }
                             }
-                        } catch (Exception e) {
-                            log.error("认证包发送失败，断开连接", e);
-                            this.disconnect();
+                        });
+                    } else {
+                        log.error("连接建立失败", connectFuture.cause());
+                        this.onConnectFailed(this.connectionHandler);
+                        if (failed != null) {
+                            failed.accept(connectFuture.cause());
                         }
                     }
                 });
-            } else {
-                log.error("连接建立失败", connectFuture.cause());
-                this.onConnectFailed(this.connectionHandler);
-                if (failed != null) {
-                    failed.accept(connectFuture.cause());
-                }
-            }
-        });
     }
 
     @Override
