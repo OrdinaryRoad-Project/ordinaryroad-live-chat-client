@@ -24,12 +24,15 @@
 
 package tech.ordinaryroad.live.chat.client.douyin.config;
 
+import cn.hutool.core.collection.CollUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.config.BaseNettyClientConfig;
+
+import java.util.List;
 
 /**
  * @author mjz
@@ -40,6 +43,8 @@ import tech.ordinaryroad.live.chat.client.servers.netty.client.config.BaseNettyC
 @AllArgsConstructor
 @SuperBuilder(toBuilder = true)
 public class DouyinLiveChatClientConfig extends BaseNettyClientConfig {
+
+    public static final List<String> WEB_SOCKET_URIS = CollUtil.newArrayList("wss://webcast5-ws-web-lq.douyin.com/webcast/im/push/v2/", "wss://webcast5-ws-web-lf.douyin.com/webcast/im/push/v2/", "wss://webcast5-ws-web-hl.douyin.com/webcast/im/push/v2/");
 
     @Builder.Default
     private long heartbeatInitialDelay = 5;
@@ -93,7 +98,5 @@ public class DouyinLiveChatClientConfig extends BaseNettyClientConfig {
      * &heartbeatDuration=0
      * &signature=Wk407jV1/WbnoIGk
      */
-    @Builder.Default
-    private String websocketUri = "wss://webcast5-ws-web-lf.douyin.com:443/webcast/im/push/v2/";
 
 }

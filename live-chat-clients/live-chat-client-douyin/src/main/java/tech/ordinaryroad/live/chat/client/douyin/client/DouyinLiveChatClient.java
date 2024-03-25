@@ -41,6 +41,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
+import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCollUtil;
 import tech.ordinaryroad.live.chat.client.douyin.api.DouyinApis;
 import tech.ordinaryroad.live.chat.client.douyin.config.DouyinLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.douyin.constant.DouyinCmdEnum;
@@ -146,10 +147,14 @@ public class DouyinLiveChatClient extends BaseNettyClient<
 
     @Override
     protected String getWebSocketUriString() {
+        String webSocketUriString = super.getWebSocketUriString();
+        if (StrUtil.isBlank(webSocketUriString)) {
+            webSocketUriString = OrLiveChatCollUtil.getRandom(DouyinLiveChatClientConfig.WEB_SOCKET_URIS);
+        }
+
         long realRoomId = roomInitResult.getRealRoomId();
         String userUniqueId = roomInitResult.getUserUniqueId();
 
-        String webSocketUriString = super.getWebSocketUriString();
         Map<String, String> queryParams = new HashMap<>();
         queryParams.put("app_name", "douyin_web");
         queryParams.put("version_code", getConfig().getVersionCode());

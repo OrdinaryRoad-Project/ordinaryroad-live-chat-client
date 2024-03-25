@@ -43,7 +43,7 @@ import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseMsg;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatHttpUtil;
-import tech.ordinaryroad.live.chat.client.commons.util.OrLocalDateTimeUtil;
+import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatLocalDateTimeUtil;
 import tech.ordinaryroad.live.chat.client.douyu.msg.dto.GiftPropSingle;
 
 import java.util.List;
@@ -173,7 +173,7 @@ public class DouyuApis {
     }
 
     public static String generateVk(String did) {
-        return generateVk(OrLocalDateTimeUtil.zonedCurrentTimeSecs(), did);
+        return generateVk(OrLiveChatLocalDateTimeUtil.zonedCurrentTimeSecs(), did);
     }
 
     private static JsonNode responseInterceptor(String responseString) {

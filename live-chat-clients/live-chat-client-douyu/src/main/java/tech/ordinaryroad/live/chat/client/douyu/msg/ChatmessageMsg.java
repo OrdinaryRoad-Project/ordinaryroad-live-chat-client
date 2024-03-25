@@ -29,7 +29,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tech.ordinaryroad.live.chat.client.commons.util.OrLocalDateTimeUtil;
+import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatLocalDateTimeUtil;
 import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyu.msg.base.BaseDouyuCmdMsg;
 
@@ -75,8 +75,8 @@ public class ChatmessageMsg extends BaseDouyuCmdMsg {
         this.content = content;
         this.dy = dy;
         this.sender = sender;
-        this.tts = String.valueOf(OrLocalDateTimeUtil.zonedCurrentTimeSecs());
-        this.cst = String.valueOf(OrLocalDateTimeUtil.zonedCurrentTimeMillis() + RandomUtil.randomLong(8000, 10000));
+        this.tts = String.valueOf(OrLiveChatLocalDateTimeUtil.zonedCurrentTimeSecs());
+        this.cst = String.valueOf(OrLiveChatLocalDateTimeUtil.zonedCurrentTimeMillis() + RandomUtil.randomLong(8000, 10000));
     }
 
     @Override

@@ -24,8 +24,6 @@
 
 package tech.ordinaryroad.live.chat.client.bilibili.client;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -49,6 +47,7 @@ import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliLiveCha
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
+import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCollUtil;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
 
 import java.util.List;
@@ -145,7 +144,7 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
         if (StrUtil.isNotBlank(webSocketUriString)) {
             return webSocketUriString;
         }
-        BilibiliApis.Host_list hostList = CollUtil.get(roomInitResult.getDanmuinfoResult().getHost_list(), RandomUtil.randomInt(roomInitResult.getDanmuinfoResult().getHost_list().size()));
+        BilibiliApis.Host_list hostList = OrLiveChatCollUtil.getRandom(roomInitResult.getDanmuinfoResult().getHost_list());
         return StrUtil.format("wss://{}:{}/sub", hostList.getHost(), hostList.getWss_port());
     }
 
