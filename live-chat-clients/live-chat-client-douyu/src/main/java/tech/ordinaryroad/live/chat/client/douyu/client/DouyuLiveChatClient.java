@@ -240,8 +240,7 @@ public class DouyuLiveChatClient extends DouyuWsLiveChatClient implements IDouyu
                         case CONNECTED:
                         case RECONNECTING:
                         case CONNECT_FAILED:
-                        case DISCONNECTED:
-                        case CONNECTING: {
+                        case DISCONNECTED: {
                             super.setStatus(newStatus);
                             break;
                         }
