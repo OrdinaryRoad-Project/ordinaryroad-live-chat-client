@@ -22,41 +22,33 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.douyu.msg;
+package tech.ordinaryroad.live.chat.client.commons.util;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatLocalDateTimeUtil;
-import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
-import tech.ordinaryroad.live.chat.client.douyu.msg.base.BaseDouyuCmdMsg;
+import cn.hutool.core.date.LocalDateTimeUtil;
+
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 /**
- * <pre>{@code
- * type@=keeplive/vbw@=0/cdn@=hs-h5/tick@=1694099389/kd@=da9c384371b4552ac94e1237d2596262/
- * }</pre>
- *
  * @author mjz
  * @date 2023/9/7
  */
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class KeepliveMsg extends BaseDouyuCmdMsg {
+public class OrLiveChatLocalDateTimeUtil extends LocalDateTimeUtil {
 
-    private String vbw = "0";
-    private String cnd;
-    private long tick = OrLiveChatLocalDateTimeUtil.zonedCurrentTimeSecs();
-    private String kd = "";
+    public static ZoneId ZONE_ID_CTT = ZoneId.of(ZoneId.SHORT_IDS.get("CTT"));
 
-    public KeepliveMsg(String cnd) {
-        this.cnd = cnd;
+    /**
+     * 获取中国标准时间的当前时间戳（毫秒）
+     */
+    public static long zonedCurrentTimeMillis() {
+        ZonedDateTime now = ZonedDateTime.now(ZONE_ID_CTT);
+        return now.toEpochSecond() * 1000 + now.getNano() / 1_000_000;
     }
 
-    @Override
-    public String getType() {
-        return DouyuCmdEnum.keeplive.name();
+    /**
+     * 获取中国标准时间的当前时间戳（秒）
+     */
+    public static long zonedCurrentTimeSecs() {
+        return ZonedDateTime.now(ZONE_ID_CTT).toEpochSecond();
     }
 }

@@ -25,8 +25,6 @@
 package tech.ordinaryroad.live.chat.client.kuaishou.client;
 
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.netty.channel.EventLoopGroup;
@@ -41,6 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
+import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCollUtil;
 import tech.ordinaryroad.live.chat.client.kuaishou.api.KuaishouApis;
 import tech.ordinaryroad.live.chat.client.kuaishou.config.KuaishouLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.kuaishou.listener.IKuaishouConnectionListener;
@@ -121,8 +120,7 @@ public class KuaishouLiveChatClient extends BaseNettyClient<
         if (StrUtil.isNotBlank(webSocketUriString)) {
             return webSocketUriString;
         }
-        List<String> websocketUrls = roomInitResult.getWebsocketUrls();
-        return CollUtil.get(websocketUrls, RandomUtil.randomInt(websocketUrls.size()));
+        return OrLiveChatCollUtil.getRandom(roomInitResult.getWebsocketUrls());
     }
 
     @Override

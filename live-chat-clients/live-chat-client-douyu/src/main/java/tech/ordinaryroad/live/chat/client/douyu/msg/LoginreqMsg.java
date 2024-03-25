@@ -27,7 +27,7 @@ package tech.ordinaryroad.live.chat.client.douyu.msg;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import tech.ordinaryroad.live.chat.client.commons.util.OrLocalDateTimeUtil;
+import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatLocalDateTimeUtil;
 import tech.ordinaryroad.live.chat.client.douyu.api.DouyuApis;
 import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyu.msg.base.BaseDouyuCmdMsg;
@@ -73,7 +73,7 @@ public class LoginreqMsg extends BaseDouyuCmdMsg {
     private String cvr = "0";
     private String tvr = "7";
     private String apd = "";
-    private long rt = OrLocalDateTimeUtil.zonedCurrentTimeSecs();
+    private long rt = OrLiveChatLocalDateTimeUtil.zonedCurrentTimeSecs();
     private String vk;
     private String dmbt = "chrome";
     private String dmbv = "116";

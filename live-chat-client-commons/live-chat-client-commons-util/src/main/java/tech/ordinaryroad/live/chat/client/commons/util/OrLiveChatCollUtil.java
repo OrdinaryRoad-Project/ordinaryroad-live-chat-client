@@ -24,31 +24,17 @@
 
 package tech.ordinaryroad.live.chat.client.commons.util;
 
-import cn.hutool.core.date.LocalDateTimeUtil;
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.RandomUtil;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.util.List;
 
 /**
  * @author mjz
- * @date 2023/9/7
+ * @date 2024/3/25
  */
-public class OrLocalDateTimeUtil extends LocalDateTimeUtil {
-
-    public static ZoneId ZONE_ID_CTT = ZoneId.of(ZoneId.SHORT_IDS.get("CTT"));
-
-    /**
-     * 获取中国标准时间的当前时间戳（毫秒）
-     */
-    public static long zonedCurrentTimeMillis() {
-        ZonedDateTime now = ZonedDateTime.now(ZONE_ID_CTT);
-        return now.toEpochSecond() * 1000 + now.getNano() / 1_000_000;
-    }
-
-    /**
-     * 获取中国标准时间的当前时间戳（秒）
-     */
-    public static long zonedCurrentTimeSecs() {
-        return ZonedDateTime.now(ZONE_ID_CTT).toEpochSecond();
+public class OrLiveChatCollUtil extends CollUtil {
+    public static <T> T getRandom(List<T> list) {
+        return CollUtil.get(list, RandomUtil.randomInt(CollUtil.size(list)));
     }
 }
