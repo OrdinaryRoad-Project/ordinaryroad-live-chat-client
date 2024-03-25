@@ -312,6 +312,40 @@ class DouyuLiveChatClientTest implements IDouyuConnectionListener, IDouyuMsgList
         }
     }
 
+    @Test
+    void autoReconnectOnce() throws InterruptedException {
+        DouyuLiveChatClientConfig config = DouyuLiveChatClientConfig.builder()
+                // TODO 修改房间id（支持短id）
+                .autoReconnect(true)
+                // .cookie("12323232'123'213'2'13'2")
+//                .websocketUri("wss://sa.asd.asd:12")
+                .roomId(22222)
+                .build();
+
+        client = new DouyuLiveChatClient(config, this, this);
+        AtomicBoolean a = new AtomicBoolean(false);
+        client.addStatusChangeListener((evt, oldStatus, newStatus) -> {
+            log.error("{} => {}", oldStatus, newStatus);
+            if (!a.get()) {
+                if (newStatus == ClientStatusEnums.CONNECTED) {
+                    ThreadUtil.execAsync(() -> {
+                        ThreadUtil.sleep(10000);
+                        client.disconnect();
+                    });
+                    a.set(true);
+                }
+            }
+        });
+        client.connect();
+
+        // 防止测试时直接退出
+        while (true) {
+            synchronized (lock) {
+                lock.wait();
+            }
+        }
+    }
+
     @Override
     public void onConnected(DouyuConnectionHandler connectionHandler) {
         log.info("{} onConnected", connectionHandler.getRoomId());
