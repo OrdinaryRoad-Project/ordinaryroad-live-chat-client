@@ -4,15 +4,20 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
+import tech.ordinaryroad.live.chat.client.douyin.api.DouyinApis;
 import tech.ordinaryroad.live.chat.client.douyin.config.DouyinLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.douyin.constant.DouyinCmdEnum;
+import tech.ordinaryroad.live.chat.client.douyin.constant.DouyinRoomStatusEnum;
 import tech.ordinaryroad.live.chat.client.douyin.listener.IDouyinMsgListener;
-import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinDanmuMsg;
-import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinEnterRoomMsg;
-import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinGiftMsg;
-import tech.ordinaryroad.live.chat.client.douyin.msg.DouyinLikeMsg;
+import tech.ordinaryroad.live.chat.client.douyin.msg.*;
 import tech.ordinaryroad.live.chat.client.douyin.netty.handler.DouyinBinaryFrameHandler;
+import tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg;
 import tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_gift_message_msg;
+import tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_room_stats_message_msg;
+import tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_social_message_msg;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * @author mjz
@@ -29,6 +34,8 @@ class DouyinLiveChatClientTest {
         String cookie = System.getenv("cookie");
         log.error("cookie: {}", cookie);
         DouyinLiveChatClientConfig config = DouyinLiveChatClientConfig.builder()
+                // .forwardWebsocketUri("ws://127.0.0.1:8080/websocket")
+
                 // TODO 浏览器Cookie
                 .cookie(cookie)
                 .roomId("renyixu1989")
@@ -54,6 +61,30 @@ class DouyinLiveChatClientTest {
             @Override
             public void onOtherCmdMsg(DouyinCmdEnum cmd, ICmdMsg<DouyinCmdEnum> cmdMsg) {
                 log.debug("收到其他CMD消息 {}", cmd);
+                switch (cmd) {
+                    case WebcastRoomStatsMessage: {
+                        DouyinRoomStatsMsg douyinRoomStatsMsg = (DouyinRoomStatsMsg) cmdMsg;
+                        douyin_webcast_room_stats_message_msg msg = douyinRoomStatsMsg.getMsg();
+                        break;
+                    }
+                    case WebcastSocialMessage: {
+                        DouyinSocialMsg douyinSocialMsg = (DouyinSocialMsg) cmdMsg;
+                        douyin_webcast_social_message_msg msg = douyinSocialMsg.getMsg();
+                        switch ((int) msg.getAction()){
+                            case 1:
+                                // 关注
+                                break;
+                            case 3:
+                                // 分享
+                                break;
+                            default:
+                        }
+                        break;
+                    }
+                    default: {
+                        // ignore
+                    }
+                }
             }
 
             @Override

@@ -132,6 +132,26 @@ public class DouyinBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<
                 }
                 break;
             }
+
+            case WebcastSocialMessage: {
+                try {
+                    douyin_webcast_social_message_msg douyinWebcastSocialMessageMsg = douyin_webcast_social_message_msg.parseFrom(payload);
+                    iteratorMsgListeners(msgListener -> msgListener.onOtherCmdMsg(DouyinBinaryFrameHandler.this, DouyinCmdEnum.WebcastSocialMessage, new DouyinSocialMsg(douyinWebcastSocialMessageMsg)));
+                } catch (InvalidProtocolBufferException e) {
+                    throw new BaseException(e);
+                }
+                break;
+            }
+
+            case WebcastRoomStatsMessage: {
+                try {
+                    douyin_webcast_room_stats_message_msg douyinWebcastRoomStatsMessageMsg = douyin_webcast_room_stats_message_msg.parseFrom(payload);
+                    iteratorMsgListeners(msgListener -> msgListener.onOtherCmdMsg(DouyinBinaryFrameHandler.this, DouyinCmdEnum.WebcastRoomStatsMessage, new DouyinRoomStatsMsg(douyinWebcastRoomStatsMessageMsg)));
+                } catch (InvalidProtocolBufferException e) {
+                    throw new BaseException(e);
+                }
+                break;
+            }
             default: {
                 iteratorMsgListeners(msgListener -> msgListener.onOtherCmdMsg(DouyinBinaryFrameHandler.this, cmd, cmdMsg));
             }

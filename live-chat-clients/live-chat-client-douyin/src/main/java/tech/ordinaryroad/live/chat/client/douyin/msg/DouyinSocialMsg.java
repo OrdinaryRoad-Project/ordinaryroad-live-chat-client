@@ -22,66 +22,40 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.douyin.constant;
+package tech.ordinaryroad.live.chat.client.douyin.msg;
 
-import cn.hutool.core.util.StrUtil;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import tech.ordinaryroad.live.chat.client.douyin.constant.DouyinCmdEnum;
+import tech.ordinaryroad.live.chat.client.douyin.msg.base.IDouyinCmdMsg;
 import tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_social_message_msg;
 
 /**
  * @author mjz
- * @date 2024/1/2
+ * @date 2024/3/28
  */
 @Getter
-@RequiredArgsConstructor
-public enum DouyinCmdEnum {
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class DouyinSocialMsg implements IDouyinCmdMsg {
 
-    /**
-     * 弹幕
-     */
-    WebcastChatMessage,
-    /**
-     * 礼物
-     */
-    WebcastGiftMessage,
-    /**
-     * 点赞
-     */
-    WebcastLikeMessage,
-    /**
-     * 入房
-     */
-    WebcastMemberMessage,
-    /**
-     * 房间信息
-     */
-    WebcastRoomStatsMessage,
-    /**
-     * 关注{@link douyin_webcast_social_message_msg#getAction()}=1、分享{@link douyin_webcast_social_message_msg#getAction()}=3
-     */
-    WebcastSocialMessage,
-    WebcastRoomUserSeqMessage,
-    /**
-     * 粉丝团
-     */
-    WebcastFansclubMessage,
-    /**
-     * 直播状态变化
-     */
-    WebcastControlMessage,
-    ;
+    private douyin_webcast_social_message_msg msg;
 
-    public static DouyinCmdEnum getByName(String name) {
-        if (StrUtil.isBlank(name)) {
-            return null;
-        }
+    @Override
+    public String getCmd() {
+        return getCmdEnum().name();
+    }
 
-        for (DouyinCmdEnum value : values()) {
-            if (value.name().equals(name)) {
-                return value;
-            }
-        }
-        return null;
+    @Override
+    public void setCmd(String cmd) {
+        // ignore
+    }
+
+    @Override
+    public DouyinCmdEnum getCmdEnum() {
+        return DouyinCmdEnum.WebcastSocialMessage;
     }
 }

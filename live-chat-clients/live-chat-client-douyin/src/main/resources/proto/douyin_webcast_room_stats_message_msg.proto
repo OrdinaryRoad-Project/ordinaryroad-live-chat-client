@@ -1,0 +1,22 @@
+syntax = "proto3";
+import "Common.proto";
+
+package tech.ordinaryroad.live.chat.client.douyin.protobuf;
+
+option java_package = "tech.ordinaryroad.live.chat.client.douyin.protobuf";
+option java_outer_classname = "douyin_webcast_room_stats_message_msgProto";
+option java_multiple_files = true;
+option objc_class_prefix = "GPB";
+
+message douyin_webcast_room_stats_message_msg {
+  Common common = 1;
+  string displayShort = 2;
+  string displayMiddle = 3;
+  string displayLong = 4;
+  int64  displayValue = 5;
+  int64  displayVersion = 6;
+  bool incremental = 7;
+  bool isHidden = 8;
+  int64 total = 9;
+  int64 displayType = 10;
+}
