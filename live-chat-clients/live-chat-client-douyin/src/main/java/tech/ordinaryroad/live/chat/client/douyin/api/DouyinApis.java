@@ -118,7 +118,7 @@ public class DouyinApis {
 
         long giftCount;
         douyin_webcast_gift_message_msg douyinWebcastGiftMessageMsg = msg.getMsg();
-        if (douyinWebcastGiftMessageMsg.getRepeatEnd() != 1) {// 连击中
+        if (douyinWebcastGiftMessageMsg.getGift().getCombo() && douyinWebcastGiftMessageMsg.getRepeatEnd() != 1) {// 连击中
             return 0;
         }
         long comboCount = douyinWebcastGiftMessageMsg.getComboCount();
