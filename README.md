@@ -9,6 +9,8 @@
 > 提交PR
 >
 > ToDo List: https://github.com/orgs/OrdinaryRoad-Project/projects/1
+>
+> 更新日志：https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/releases
 
 ---
 
