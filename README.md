@@ -83,7 +83,7 @@ Live room WebSocket chat client
 </dependency>
 ```
 
-> 注意：自从`0.3.2`版本开始，B站Client配置中，压缩方式默认为`NORMAL_BROTLI`，当使用Gradle引入时，还需要引入操作系统对应的brotli4j native包，详见：https://github.com/hyperxpro/Brotli4j?tab=readme-ov-file#gradle
+> Gradle用户注意：自从`0.3.2`版本开始，B站Client配置中，压缩方式默认为`NORMAL_BROTLI`，当使用Gradle引入时，还需要引入操作系统对应的brotli4j native包，详见：https://github.com/hyperxpro/Brotli4j?tab=readme-ov-file#gradle
 
 例如：
 
