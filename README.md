@@ -83,6 +83,27 @@ Live room WebSocket chat client
 </dependency>
 ```
 
+> 注意：自从`0.3.2`版本开始，B站Client配置中，压缩方式默认为`NORMAL_BROTLI`，当使用Gradle引入时，还需要引入操作系统对应的brotli4j native包，详见：https://github.com/hyperxpro/Brotli4j?tab=readme-ov-file#gradle
+
+例如：
+
+```groovy
+val liveChatClientBrotliVersion = "1.16.0"
+// Windows
+implementation("com.aayushatharva.brotli4j:native-windows-x86_64:$liveChatClientBrotliVersion")
+implementation("com.aayushatharva.brotli4j:native-windows-aarch64:$liveChatClientBrotliVersion")
+// Linux
+implementation("com.aayushatharva.brotli4j:native-linux-armv7:$liveChatClientBrotliVersion")
+implementation("com.aayushatharva.brotli4j:native-linux-aarch64:$liveChatClientBrotliVersion")
+implementation("com.aayushatharva.brotli4j:native-linux-x86_64:$liveChatClientBrotliVersion")
+implementation("com.aayushatharva.brotli4j:native-linux-s390x:$liveChatClientBrotliVersion")
+implementation("com.aayushatharva.brotli4j:native-linux-riscv64:$liveChatClientBrotliVersion")
+implementation("com.aayushatharva.brotli4j:native-linux-ppc64le:$liveChatClientBrotliVersion")
+// Mac
+implementation("com.aayushatharva.brotli4j:native-osx-aarch64:$liveChatClientBrotliVersion")
+implementation("com.aayushatharva.brotli4j:native-osx-x86_64:$liveChatClientBrotliVersion")
+```
+
 ### 斗鱼
 
 ```xml
