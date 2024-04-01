@@ -104,6 +104,8 @@ implementation("com.aayushatharva.brotli4j:native-osx-aarch64:$liveChatClientBro
 implementation("com.aayushatharva.brotli4j:native-osx-x86_64:$liveChatClientBrotliVersion")
 ```
 
+如果引入后仍无法使用，请修改protover配置项，例如改为`NORMAL_ZLIB`：`BilibiliLiveChatClientConfig.builder().protover(ProtoverEnum.NORMAL_ZLIB).roomId("xxx").build()`
+
 ### 斗鱼
 
 ```xml
