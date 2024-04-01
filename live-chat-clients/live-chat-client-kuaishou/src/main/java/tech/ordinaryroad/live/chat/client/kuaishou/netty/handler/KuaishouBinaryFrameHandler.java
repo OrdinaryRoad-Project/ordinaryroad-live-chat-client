@@ -71,22 +71,22 @@ public class KuaishouBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
                 SCWebFeedPushOuterClass.SCWebFeedPush scWebFeedPush = SCWebFeedPushOuterClass.SCWebFeedPush.parseFrom(payloadByteString);
                 if (scWebFeedPush.getCommentFeedsCount() > 0) {
                     for (WebCommentFeedOuterClass.WebCommentFeed webCommentFeed : scWebFeedPush.getCommentFeedsList()) {
-                        iteratorMsgListeners(msgListener -> msgListener.onDanmuMsg(KuaishouBinaryFrameHandler.this, new KuaishouDanmuMsg(webCommentFeed)));
+                        KuaishouDanmuMsg msg = new KuaishouDanmuMsg(webCommentFeed);
+                        iteratorMsgListeners(msgListener -> msgListener.onDanmuMsg(KuaishouBinaryFrameHandler.this, msg));
                     }
                 }
                 if (scWebFeedPush.getGiftFeedsCount() > 0) {
                     for (WebGiftFeedOuterClass.WebGiftFeed webGiftFeed : scWebFeedPush.getGiftFeedsList()) {
-                        iteratorMsgListeners(msgListener -> {
-                            KuaishouGiftMsg msg = new KuaishouGiftMsg(webGiftFeed);
-                            // 计算礼物个数
-                            KuaishouApis.calculateGiftCount(msg);
-                            msgListener.onGiftMsg(KuaishouBinaryFrameHandler.this, msg);
-                        });
+                        KuaishouGiftMsg msg = new KuaishouGiftMsg(webGiftFeed);
+                        // 计算礼物个数
+                        KuaishouApis.calculateGiftCount(msg);
+                        iteratorMsgListeners(msgListener -> msgListener.onGiftMsg(KuaishouBinaryFrameHandler.this, msg));
                     }
                 }
                 if (scWebFeedPush.getLikeFeedsCount() > 0) {
                     for (WebLikeFeedOuterClass.WebLikeFeed webLikeFeed : scWebFeedPush.getLikeFeedsList()) {
-                        iteratorMsgListeners(msgListener -> msgListener.onLikeMsg(KuaishouBinaryFrameHandler.this, new KuaishouLikeMsg(webLikeFeed)));
+                        KuaishouLikeMsg msg = new KuaishouLikeMsg(webLikeFeed);
+                        iteratorMsgListeners(msgListener -> msgListener.onLikeMsg(KuaishouBinaryFrameHandler.this, msg));
                     }
                 }
                 break;
