@@ -95,7 +95,7 @@ public class DouyinGiftMsg implements IDouyinMsg, IGiftMsg {
 
     @Override
     public int getGiftCount() {
-        return calculatedGiftCount;
+        return this.calculatedGiftCount;
     }
 
     @Override

@@ -84,7 +84,8 @@ public class DouyinBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<
             case WebcastChatMessage: {
                 try {
                     douyin_webcast_chat_message_msg douyinWebcastChatMessageMsg = douyin_webcast_chat_message_msg.parseFrom(payload);
-                    iteratorMsgListeners(msgListener -> msgListener.onDanmuMsg(DouyinBinaryFrameHandler.this, new DouyinDanmuMsg(douyinWebcastChatMessageMsg)));
+                    DouyinDanmuMsg msg = new DouyinDanmuMsg(douyinWebcastChatMessageMsg);
+                    iteratorMsgListeners(msgListener -> msgListener.onDanmuMsg(DouyinBinaryFrameHandler.this, msg));
                 } catch (IOException e) {
                     throw new BaseException(e);
                 }
@@ -93,12 +94,10 @@ public class DouyinBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<
             case WebcastGiftMessage: {
                 try {
                     douyin_webcast_gift_message_msg douyinWebcastGiftMessageMsg = douyin_webcast_gift_message_msg.parseFrom(payload);
-                    iteratorMsgListeners(msgListener -> {
-                        DouyinGiftMsg msg = new DouyinGiftMsg(douyinWebcastGiftMessageMsg);
-                        // 计算礼物个数
-                        DouyinApis.calculateGiftCount(msg);
-                        msgListener.onGiftMsg(DouyinBinaryFrameHandler.this, msg);
-                    });
+                    DouyinGiftMsg msg = new DouyinGiftMsg(douyinWebcastGiftMessageMsg);
+                    // 计算礼物个数
+                    DouyinApis.calculateGiftCount(msg);
+                    iteratorMsgListeners(msgListener -> msgListener.onGiftMsg(DouyinBinaryFrameHandler.this, msg));
                 } catch (InvalidProtocolBufferException e) {
                     throw new BaseException(e);
                 }
@@ -107,7 +106,8 @@ public class DouyinBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<
             case WebcastMemberMessage: {
                 try {
                     douyin_webcast_member_message_msg douyinWebcastMemberMessageMsg = douyin_webcast_member_message_msg.parseFrom(payload);
-                    iteratorMsgListeners(msgListener -> msgListener.onEnterRoomMsg(DouyinBinaryFrameHandler.this, new DouyinEnterRoomMsg(douyinWebcastMemberMessageMsg)));
+                    DouyinEnterRoomMsg msg = new DouyinEnterRoomMsg(douyinWebcastMemberMessageMsg);
+                    iteratorMsgListeners(msgListener -> msgListener.onEnterRoomMsg(DouyinBinaryFrameHandler.this, msg));
                 } catch (InvalidProtocolBufferException e) {
                     throw new BaseException(e);
                 }
@@ -116,7 +116,8 @@ public class DouyinBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<
             case WebcastLikeMessage: {
                 try {
                     douyin_webcast_like_message_msg douyinWebcastLikeMessageMsg = douyin_webcast_like_message_msg.parseFrom(payload);
-                    iteratorMsgListeners(msgListener -> msgListener.onLikeMsg(DouyinBinaryFrameHandler.this, new DouyinLikeMsg(douyinWebcastLikeMessageMsg)));
+                    DouyinLikeMsg msg = new DouyinLikeMsg(douyinWebcastLikeMessageMsg);
+                    iteratorMsgListeners(msgListener -> msgListener.onLikeMsg(DouyinBinaryFrameHandler.this, msg));
                 } catch (InvalidProtocolBufferException e) {
                     throw new BaseException(e);
                 }
@@ -126,7 +127,8 @@ public class DouyinBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<
             case WebcastControlMessage: {
                 try {
                     douyin_webcast_control_message_msg douyinWebcastControlMessageMsg = douyin_webcast_control_message_msg.parseFrom(payload);
-                    iteratorMsgListeners(msgListener -> msgListener.onLiveStatusMsg(DouyinBinaryFrameHandler.this, new DouyinControlMsg(douyinWebcastControlMessageMsg)));
+                    DouyinControlMsg msg = new DouyinControlMsg(douyinWebcastControlMessageMsg);
+                    iteratorMsgListeners(msgListener -> msgListener.onLiveStatusMsg(DouyinBinaryFrameHandler.this, msg));
                 } catch (InvalidProtocolBufferException e) {
                     throw new BaseException(e);
                 }
