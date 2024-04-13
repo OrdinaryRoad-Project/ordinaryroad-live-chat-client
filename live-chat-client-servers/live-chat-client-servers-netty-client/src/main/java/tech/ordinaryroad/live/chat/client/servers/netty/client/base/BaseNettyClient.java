@@ -206,7 +206,7 @@ public abstract class BaseNettyClient
                                 try {
                                     connectionHandler.sendAuthRequest(channel);
                                     if (success != null) {
-                                        success.run();
+                                        channel.eventLoop().execute(success);
                                     }
                                 } catch (Exception e) {
                                     log.error("认证包发送失败，断开连接", e);
@@ -266,11 +266,11 @@ public abstract class BaseNettyClient
             future.addListener((ChannelFutureListener) channelFuture -> {
                 if (channelFuture.isSuccess()) {
                     if (success != null) {
-                        success.run();
+                        channelFuture.channel().eventLoop().execute(success);
                     }
                 } else {
                     if (failed != null) {
-                        failed.accept(channelFuture.cause());
+                        channelFuture.channel().eventLoop().execute(() -> failed.accept(channelFuture.cause()));
                     }
                 }
             });
