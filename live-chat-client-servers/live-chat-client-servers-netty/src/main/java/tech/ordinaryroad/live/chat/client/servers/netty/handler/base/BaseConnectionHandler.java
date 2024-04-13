@@ -129,7 +129,7 @@ public abstract class BaseConnectionHandler<ConnectionHandler extends BaseConnec
 
         heartbeatCancel();
         heartbeatStart(channel);
-        if (this.listener != null) {
+        if (BaseConnectionHandler.this.listener != null) {
             listener.onConnected((ConnectionHandler) BaseConnectionHandler.this);
         }
     }
@@ -139,7 +139,7 @@ public abstract class BaseConnectionHandler<ConnectionHandler extends BaseConnec
         this.handshakePromise.setFailure(new BaseException(evt.name()));
 
         if (listener != null) {
-            this.listener.onConnectFailed((ConnectionHandler) this);
+            BaseConnectionHandler.this.listener.onConnectFailed((ConnectionHandler) BaseConnectionHandler.this);
         }
     }
 
