@@ -24,8 +24,10 @@
 
 package tech.ordinaryroad.live.chat.client.bilibili.netty.handler;
 
+import cn.hutool.core.lang.Pair;
 import cn.hutool.core.util.StrUtil;
 import io.netty.channel.ChannelHandler;
+import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.bilibili.client.BilibiliLiveChatClient;
@@ -50,12 +52,20 @@ import java.util.List;
 @ChannelHandler.Sharable
 public class BilibiliBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<BilibiliLiveChatClient, BilibiliBinaryFrameHandler, BilibiliCmdEnum, IBilibiliMsg, IBilibiliMsgListener> {
 
+    /**
+     * 房间号，短房间号
+     */
+    @Getter
+    private final Pair<Object, Object> roomIdPair;
+
     public BilibiliBinaryFrameHandler(List<IBilibiliMsgListener> msgListeners, BilibiliLiveChatClient client) {
         super(msgListeners, client);
+        this.roomIdPair = Pair.of(client.getRoomInitResult().getRoomPlayInfoResult().getRoom_id(), client.getRoomInitResult().getRoomPlayInfoResult().getShort_id());
     }
 
-    public BilibiliBinaryFrameHandler(List<IBilibiliMsgListener> msgListeners, long roomId) {
+    public BilibiliBinaryFrameHandler(List<IBilibiliMsgListener> msgListeners, long roomId, Pair<Object, Object> roomIdPair) {
         super(msgListeners, roomId);
+        this.roomIdPair = roomIdPair;
     }
 
     @SneakyThrows
@@ -141,6 +151,7 @@ public class BilibiliBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
             case LIVE:
             case STOP_LIVE_ROOM_LIST: {
                 BilibiliLiveStatusChangeMsg bilibiliLiveStatusChangeMsg = BaseBilibiliMsg.OBJECT_MAPPER.convertValue(sendSmsReplyMsg, BilibiliLiveStatusChangeMsg.class);
+                bilibiliLiveStatusChangeMsg.setRoomIdPair(getRoomIdPair());
                 iteratorMsgListeners(msgListener -> msgListener.onLiveStatusMsg(BilibiliBinaryFrameHandler.this, bilibiliLiveStatusChangeMsg));
                 break;
             }

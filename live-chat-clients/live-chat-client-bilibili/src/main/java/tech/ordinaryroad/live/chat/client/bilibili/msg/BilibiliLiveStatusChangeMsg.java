@@ -24,6 +24,7 @@
 
 package tech.ordinaryroad.live.chat.client.bilibili.msg;
 
+import cn.hutool.core.lang.Pair;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -47,6 +48,11 @@ import tech.ordinaryroad.live.chat.client.commons.base.msg.ILiveStatusChangeMsg;
 @NoArgsConstructor
 public class BilibiliLiveStatusChangeMsg extends BaseBilibiliCmdMsg implements ILiveStatusChangeMsg {
 
+    /**
+     * 保存房间号和短房间号
+     */
+    private Pair<Object, Object> roomIdPair;
+
     private JsonNode data;
 
     @Override
@@ -62,8 +68,35 @@ public class BilibiliLiveStatusChangeMsg extends BaseBilibiliCmdMsg implements I
             }
             case STOP_LIVE_ROOM_LIST: {
                 ArrayNode roomIdList = data.withArray("room_id_list");
+                if (data == null || !data.has("room_id_list")) {
+                    return null;
+                }
                 for (JsonNode jsonNode : roomIdList) {
                     if (jsonNode.asLong() == NumberUtil.parseLong(StrUtil.toStringOrNull(roomId))) {
+                        return LiveStatusAction.END;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public LiveStatusAction getLiveStatusAction() {
+        switch (getCmdEnum()) {
+            case LIVE: {
+                return LiveStatusAction.BEGIN;
+            }
+            case STOP_LIVE_ROOM_LIST: {
+                Object roomId = roomIdPair.getKey();
+                Object shortRoomId = roomIdPair.getValue();
+                if (data == null || !data.has("room_id_list")) {
+                    return null;
+                }
+                ArrayNode roomIdList = data.withArray("room_id_list");
+                for (JsonNode jsonNode : roomIdList) {
+                    long aLong = jsonNode.asLong();
+                    if (aLong == NumberUtil.parseLong(StrUtil.toStringOrNull(roomId)) || aLong == NumberUtil.parseLong(StrUtil.toStringOrNull(shortRoomId))) {
                         return LiveStatusAction.END;
                     }
                 }

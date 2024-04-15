@@ -39,6 +39,7 @@ public interface ILiveStatusChangeMsg extends IMsg {
      * 状态变化
      *
      * @param roomId B站平台需要传入
+     * @deprecated Use {@link #getLiveStatusAction()} instead.
      */
     default LiveStatusAction getLiveStatusAction(Object roomId) {
         throw new BaseException("暂不支持该操作");
@@ -47,8 +48,6 @@ public interface ILiveStatusChangeMsg extends IMsg {
     /**
      * 状态变化
      */
-    default LiveStatusAction getLiveStatusAction() {
-        return getLiveStatusAction(null);
-    }
+    LiveStatusAction getLiveStatusAction();
 
 }
