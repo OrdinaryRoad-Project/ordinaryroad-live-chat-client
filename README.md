@@ -254,16 +254,17 @@ public class ClientModeExample {
                 System.out.printf("%s 状态变化 %s\n", binaryFrameHandler.getRoomId(), msg.getLiveStatusAction(binaryFrameHandler.getRoomId()));
             }
         });
-        // 3. 开始监听直播间
-        client.connect();
 
-        // 客户端连接状态回调
+        // 添加客户端连接状态回调
         client.addStatusChangeListener((evt, oldStatus, newStatus) -> {
             if (newStatus == ClientStatusEnums.CONNECTED) {
                 // TODO 要发送的弹幕内容，请注意控制发送频率；框架内置支持设置发送弹幕的最少时间间隔，小于时将忽略该次发送
                 client.sendDanmu("666666" + RandomUtil.randomNumbers(1));
             }
         });
+
+        // 3. 开始监听直播间
+        client.connect();
     }
 }
 ```
