@@ -30,6 +30,7 @@ import com.aayushatharva.brotli4j.decoder.BrotliInputStream;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
+import io.netty.buffer.Unpooled;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.OperationEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.ProtoverEnum;
@@ -134,7 +135,8 @@ public class BilibiliCodecUtil {
                     Inflater inflater = new Inflater();
                     inflater.reset();
                     inflater.setInput(inputBytes);
-                    ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer();
+                    // TODO 改用池化，并处理内存泄漏问题
+                    ByteBuf buffer = Unpooled.buffer();
                     try {
                         byte[] bytes = new byte[1024];
                         while (!inflater.finished()) {
@@ -146,7 +148,7 @@ public class BilibiliCodecUtil {
                     } finally {
                         inflater.end();
                     }
-                    return doDecode(buffer.duplicate(), pendingByteBuf);
+                    return doDecode(buffer, pendingByteBuf);
                 }
                 case HEARTBEAT_REPLY: {
                     BigInteger bigInteger = new BigInteger(inputBytes);
@@ -186,7 +188,8 @@ public class BilibiliCodecUtil {
                     Brotli4jLoader.ensureAvailability();
 
                     ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(inputBytes);
-                    ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer();
+                    // TODO 改用池化，并处理内存泄漏问题
+                    ByteBuf buffer = Unpooled.buffer();
                     byte[] bytes = new byte[1024];
                     BrotliInputStream brotliInputStream = null;
                     try {
