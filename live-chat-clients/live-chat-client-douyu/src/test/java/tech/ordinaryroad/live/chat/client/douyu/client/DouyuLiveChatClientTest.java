@@ -32,6 +32,7 @@ import org.junit.jupiter.api.Test;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseCmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
+import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
 import tech.ordinaryroad.live.chat.client.douyu.config.DouyuLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuConnectionListener;
