@@ -54,9 +54,9 @@ class HuyaCodecUtilTest {
         byte[] decode = Base64.decode("ABAdAAAhCQACBgxsaXZlOjE3MjQ2OTEGDGNoYXQ6MTcyNDY5MRYAIAE2AExcZgA=");
         WebSocketCommand webSocketCommand = new WebSocketCommand(HuyaCodecUtil.newUtf8TarsInputStream(decode));
         byte[] vData = webSocketCommand.getVData();
-        RegisterGroupReq registerGroupReq = new RegisterGroupReq();
-        registerGroupReq.readFrom(HuyaCodecUtil.newUtf8TarsInputStream(vData));
-        List<String> vGroupId = registerGroupReq.getVGroupId();
+        WSRegisterGroupReq wsRegisterGroupReq = new WSRegisterGroupReq();
+        wsRegisterGroupReq.readFrom(HuyaCodecUtil.newUtf8TarsInputStream(vData));
+        List<String> vGroupId = wsRegisterGroupReq.getVGroupId();
     }
 
     @Test
