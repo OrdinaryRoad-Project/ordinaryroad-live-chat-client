@@ -163,8 +163,8 @@ public class DouyinLiveChatClient extends BaseNettyClient<
         queryParams.put("compress", "gzip");
         queryParams.put("device_platform", "web");
         queryParams.put("cookie_enabled", "true");
-        queryParams.put("screen_width", "800");
-        queryParams.put("screen_height", "1280");
+        queryParams.put("screen_width", "1280");
+        queryParams.put("screen_height", "800");
         queryParams.put("browser_language", "zh-CN");
         queryParams.put("browser_platform", "MacIntel");
         queryParams.put("browser_name", "Mozilla");
