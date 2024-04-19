@@ -33,7 +33,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tech.ordinaryroad.live.chat.client.huya.constant.HuyaOperationEnum;
 import tech.ordinaryroad.live.chat.client.huya.msg.base.BaseHuyaMsg;
-import tech.ordinaryroad.live.chat.client.huya.msg.dto.MsgItem;
+import tech.ordinaryroad.live.chat.client.huya.msg.dto.WSMsgItem;
 
 import java.util.List;
 
@@ -48,7 +48,7 @@ import java.util.List;
 public class WSPushMessage_V2 extends BaseHuyaMsg {
 
     private String sGroupId;
-    private List<MsgItem> vMsgItem = CollUtil.newArrayList(new MsgItem());
+    private List<WSMsgItem> vMsgItem = CollUtil.newArrayList(new WSMsgItem());
 
     public WSPushMessage_V2(TarsInputStream is) {
         this.readFrom(is);

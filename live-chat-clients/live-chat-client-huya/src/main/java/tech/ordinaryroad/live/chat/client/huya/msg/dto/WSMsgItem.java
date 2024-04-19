@@ -41,7 +41,7 @@ import tech.ordinaryroad.live.chat.client.huya.msg.base.BaseHuyaCmdMsg;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MsgItem extends BaseHuyaCmdMsg {
+public class WSMsgItem extends BaseHuyaCmdMsg {
 
     private byte[] sMsg;
     private long lMsgId;

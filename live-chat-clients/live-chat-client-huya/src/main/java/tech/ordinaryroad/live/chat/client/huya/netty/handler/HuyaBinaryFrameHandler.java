@@ -38,8 +38,8 @@ import tech.ordinaryroad.live.chat.client.huya.constant.HuyaWupFunctionEnum;
 import tech.ordinaryroad.live.chat.client.huya.listener.IHuyaMsgListener;
 import tech.ordinaryroad.live.chat.client.huya.msg.*;
 import tech.ordinaryroad.live.chat.client.huya.msg.base.IHuyaMsg;
-import tech.ordinaryroad.live.chat.client.huya.msg.dto.MsgItem;
 import tech.ordinaryroad.live.chat.client.huya.msg.dto.PropsItem;
+import tech.ordinaryroad.live.chat.client.huya.msg.dto.WSMsgItem;
 import tech.ordinaryroad.live.chat.client.huya.msg.factory.HuyaMsgFactory;
 import tech.ordinaryroad.live.chat.client.huya.util.HuyaCodecUtil;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientBinaryFrameHandler;
@@ -152,9 +152,9 @@ public class HuyaBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<Hu
         if (cmdMsg instanceof WSPushMessage) {
             WSPushMessage wsPushMessage = (WSPushMessage) cmdMsg;
             dataBytes = wsPushMessage.getDataBytes();
-        } else if (cmdMsg instanceof MsgItem) {
-            MsgItem msgItem = (MsgItem) cmdMsg;
-            dataBytes = msgItem.getSMsg();
+        } else if (cmdMsg instanceof WSMsgItem) {
+            WSMsgItem wsMsgItem = (WSMsgItem) cmdMsg;
+            dataBytes = wsMsgItem.getSMsg();
         } else {
             if (log.isDebugEnabled()) {
                 log.debug("非HuyaCmdMsg {}", cmdMsg.getClass());
