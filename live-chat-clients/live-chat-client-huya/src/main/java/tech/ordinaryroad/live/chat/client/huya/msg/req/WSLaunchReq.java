@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.huya.msg;
+package tech.ordinaryroad.live.chat.client.huya.msg.req;
 
 import com.qq.tars.protocol.tars.TarsInputStream;
 import com.qq.tars.protocol.tars.TarsOutputStream;
@@ -31,54 +31,40 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import tech.ordinaryroad.live.chat.client.huya.msg.dto.WSDeviceInfo;
 
 /**
  * @author mjz
- * @date 2023/10/3
+ * @date 2023/10/5
  */
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserInfo extends TarsStructBase {
+public class WSLaunchReq extends TarsStructBase {
 
-    private long lUid = 0;
-    private boolean bAnonymous = true;
+    private long lUid;
     private String sGuid = "";
-    private String sToken = "";
-    private long lTid = 0;
-    private long lSid = 0;
-    private long lGroupId = 0;
-    private long lGroupType = 0;
-    private String sAppId = "";
     private String sUA = "";
+    private String sAppSrc = "";
+    private WSDeviceInfo tDeviceInfo = new WSDeviceInfo();
 
     @Override
     public void writeTo(TarsOutputStream os) {
         os.write(this.lUid, 0);
-        os.write(this.bAnonymous, 1);
-        os.write(this.sGuid, 2);
-        os.write(this.sToken, 3);
-        os.write(this.lTid, 4);
-        os.write(this.lSid, 5);
-        os.write(this.lGroupId, 6);
-        os.write(this.lGroupType, 7);
-        os.write(this.sAppId, 8);
-        os.write(this.sUA, 9);
+        os.write(this.sGuid, 1);
+        os.write(this.sUA, 2);
+        os.write(this.sAppSrc, 3);
+        os.write(this.tDeviceInfo, 4);
     }
 
     @Override
     public void readFrom(TarsInputStream is) {
-        this.lUid = is.read(this.lUid, 0, true);
-        this.bAnonymous = is.read(this.bAnonymous, 1, true);
-        this.sGuid = is.read(this.sGuid, 2, true);
-        this.sToken = is.read(this.sToken, 3, true);
-        this.lTid = is.read(this.lTid, 4, true);
-        this.lSid = is.read(this.lSid, 5, true);
-        this.lGroupId = is.read(this.lGroupId, 6, true);
-        this.lGroupType = is.read(this.lGroupType, 7, true);
-        this.sAppId = is.read(this.sAppId, 8, true);
-        this.sUA = is.read(this.sUA, 9, true);
+        this.lUid = is.read(this.lUid, 0, false);
+        this.sGuid = is.read(this.sGuid, 1, false);
+        this.sUA = is.read(this.sUA, 2, false);
+        this.sAppSrc = is.read(this.sAppSrc, 3, false);
+        this.tDeviceInfo = (WSDeviceInfo) is.directRead(this.tDeviceInfo, 4, false);
     }
 
     @Override

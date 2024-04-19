@@ -47,12 +47,12 @@ public class BulletFormat extends TarsStructBase {
 
     private int iFontColor = -1;
     private int iFontSize = 4;
-    private int iTextSpeed = 0;
+    private int iTextSpeed;
     private int iTransitionType = 1;
-    private int iPopupStyle = 0;
+    private int iPopupStyle;
     private BulletBorderGroundFormat tBorderGroundFormat = new BulletBorderGroundFormat();
     private List<Integer> vGraduatedColor = CollUtil.newArrayList(0);
-    private int iAvatarFlag = 0;
+    private int iAvatarFlag;
     private int iAvatarTerminalFlag = -1;
 
     @Override

@@ -55,9 +55,9 @@ public class MsgItem extends BaseHuyaCmdMsg {
 
     @Override
     public void readFrom(TarsInputStream is) {
-        super.setLUri(is.read(super.getLUri(), 0, true));
-        this.sMsg = is.read(this.sMsg, 1, true);
-        this.lMsgId = is.read(this.lMsgId, 2, true);
+        super.setLUri(is.read(super.getLUri(), 0, false));
+        this.sMsg = is.read(this.sMsg, 1, false);
+        this.lMsgId = is.read(this.lMsgId, 2, false);
     }
 
     @Override

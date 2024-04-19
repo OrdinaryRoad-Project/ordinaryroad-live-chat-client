@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.huya.msg.req;
+package tech.ordinaryroad.live.chat.client.huya.msg.dto;
 
 import com.qq.tars.protocol.tars.TarsInputStream;
 import com.qq.tars.protocol.tars.TarsOutputStream;
@@ -31,52 +31,33 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tech.ordinaryroad.live.chat.client.huya.msg.dto.UserId;
 
 /**
  * @author mjz
- * @date 2023/10/2
+ * @date 2024/4/19
  */
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetPropsListReq extends TarsStructBase {
+public class StreamerNode extends TarsStructBase {
 
-    private UserId tUserId = new UserId();
-    private String sMd5 = "";
-    private int iTemplateType;
-    private String sVersion = "";
-    private int iAppId;
-    private long lPresenterUid;
-    private long lSid;
-    private long lSubSid;
-    private int iGameId;
+    private short iGiftLevel;
+    private short iStreamerLevel;
+    private short iMaterialType;
 
     @Override
     public void writeTo(TarsOutputStream os) {
-        os.write(this.tUserId, 1);
-        os.write(this.sMd5, 2);
-        os.write(this.iTemplateType, 3);
-        os.write(this.sVersion, 4);
-        os.write(this.iAppId, 5);
-        os.write(this.lPresenterUid, 6);
-        os.write(this.lSid, 7);
-        os.write(this.lSubSid, 8);
-        os.write(this.iGameId, 9);
+        os.write(this.iGiftLevel, 0);
+        os.write(this.iStreamerLevel, 1);
+        os.write(this.iMaterialType, 2);
     }
 
     @Override
     public void readFrom(TarsInputStream is) {
-        is.read(this.tUserId, 1, false);
-        is.read(this.sMd5, 2, false);
-        is.read(this.iTemplateType, 3, false);
-        is.read(this.sVersion, 4, false);
-        is.read(this.iAppId, 5, false);
-        is.read(this.lPresenterUid, 6, false);
-        is.read(this.lSid, 7, false);
-        is.read(this.lSubSid, 8, false);
-        is.read(this.iGameId, 9, false);
+        this.iGiftLevel = is.read(this.iGiftLevel, 0, false);
+        this.iStreamerLevel = is.read(this.iStreamerLevel, 1, false);
+        this.iMaterialType = is.read(this.iMaterialType, 2, false);
     }
 
     @Override

@@ -22,19 +22,19 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.huya.msg.req;
+package tech.ordinaryroad.live.chat.client.huya.msg;
 
+import cn.hutool.core.collection.CollUtil;
 import com.qq.tars.protocol.tars.TarsInputStream;
 import com.qq.tars.protocol.tars.TarsOutputStream;
-import com.qq.tars.protocol.tars.TarsStructBase;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tech.ordinaryroad.live.chat.client.huya.msg.dto.MsgStatInfo;
+import tech.ordinaryroad.live.chat.client.huya.constant.HuyaOperationEnum;
+import tech.ordinaryroad.live.chat.client.huya.msg.base.BaseHuyaMsg;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 /**
  * @author mjz
@@ -44,44 +44,29 @@ import java.util.Map;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateUserInfoReq extends TarsStructBase {
+public class WSRegisterGroupRsp extends BaseHuyaMsg {
 
-    private String sAppSrc = "";
-    private String sGuid = "";
-    private int iReportMsgIdRatio;
-    private int iSupportAck;
-    private MsgStatInfo tWSMsgStatInfo = new MsgStatInfo();
-    private Map<String, String> mCustomHeader = new HashMap<>();
-    private int iMsgDegradeLevel;
+    private int iResCode;
+    private List<String> vSupportP2PGroupId = CollUtil.newArrayList("");
 
-    public UpdateUserInfoReq(TarsInputStream is) {
+    public WSRegisterGroupRsp(TarsInputStream is) {
         this.readFrom(is);
     }
 
     @Override
     public void writeTo(TarsOutputStream os) {
-        os.write(this.sAppSrc, 0);
-        os.write(this.sGuid, 1);
-        os.write(this.iReportMsgIdRatio, 2);
-        os.write(this.iSupportAck, 3);
-        os.write(this.tWSMsgStatInfo, 6);
-        os.write(this.mCustomHeader, 7);
-        os.write(this.iMsgDegradeLevel, 8);
+        os.write(this.iResCode, 0);
+        os.write(this.vSupportP2PGroupId, 1);
     }
 
     @Override
     public void readFrom(TarsInputStream is) {
-        this.sAppSrc = is.read(this.sAppSrc, 0, true);
-        this.sGuid = is.read(this.sGuid, 1, true);
-        this.iReportMsgIdRatio = is.read(this.iReportMsgIdRatio, 2, true);
-        this.iSupportAck = is.read(this.iSupportAck, 3, true);
-        this.tWSMsgStatInfo = (MsgStatInfo) is.directRead(this.tWSMsgStatInfo, 6, true);
-        this.mCustomHeader = is.readStringMap( 7, true);
-        this.iMsgDegradeLevel = is.read(this.iMsgDegradeLevel, 8, true);
+        this.iResCode = is.read(this.iResCode, 0, true);
+        this.vSupportP2PGroupId = is.readArray(this.vSupportP2PGroupId, 1, true);
     }
 
     @Override
-    public TarsStructBase newInit() {
-        return this;
+    public HuyaOperationEnum getOperationEnum() {
+        return HuyaOperationEnum.EWSCmdS2C_RegisterGroupRsp;
     }
 }

@@ -22,16 +22,16 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.huya.msg.req;
+package tech.ordinaryroad.live.chat.client.huya.msg;
 
 import com.qq.tars.protocol.tars.TarsInputStream;
 import com.qq.tars.protocol.tars.TarsOutputStream;
-import com.qq.tars.protocol.tars.TarsStructBase;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tech.ordinaryroad.live.chat.client.huya.msg.dto.UserId;
+import tech.ordinaryroad.live.chat.client.huya.constant.HuyaOperationEnum;
+import tech.ordinaryroad.live.chat.client.huya.msg.base.BaseHuyaCmdMsg;
 
 /**
  * @author mjz
@@ -41,46 +41,44 @@ import tech.ordinaryroad.live.chat.client.huya.msg.dto.UserId;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetPropsListReq extends TarsStructBase {
+public class WSPushMessage extends BaseHuyaCmdMsg {
 
-    private UserId tUserId = new UserId();
-    private String sMd5 = "";
-    private int iTemplateType;
-    private String sVersion = "";
-    private int iAppId;
-    private long lPresenterUid;
-    private long lSid;
-    private long lSubSid;
-    private int iGameId;
+    private int ePushType;
+    private byte[] dataBytes;
+    private int iProtocolType;
+    private String sGroupId = "";
+    private long lMsgId;
+    private int iMsgTag;
+
+    public WSPushMessage(TarsInputStream is) {
+        this.readFrom(is);
+    }
 
     @Override
     public void writeTo(TarsOutputStream os) {
-        os.write(this.tUserId, 1);
-        os.write(this.sMd5, 2);
-        os.write(this.iTemplateType, 3);
-        os.write(this.sVersion, 4);
-        os.write(this.iAppId, 5);
-        os.write(this.lPresenterUid, 6);
-        os.write(this.lSid, 7);
-        os.write(this.lSubSid, 8);
-        os.write(this.iGameId, 9);
+        os.write(this.ePushType, 0);
+        os.write(super.getLUri(), 1);
+        os.write(this.dataBytes, 2);
+        os.write(this.iProtocolType, 3);
+        os.write(this.sGroupId, 4);
+        os.write(this.lMsgId, 5);
+        os.write(this.iMsgTag, 6);
+
     }
 
     @Override
     public void readFrom(TarsInputStream is) {
-        is.read(this.tUserId, 1, false);
-        is.read(this.sMd5, 2, false);
-        is.read(this.iTemplateType, 3, false);
-        is.read(this.sVersion, 4, false);
-        is.read(this.iAppId, 5, false);
-        is.read(this.lPresenterUid, 6, false);
-        is.read(this.lSid, 7, false);
-        is.read(this.lSubSid, 8, false);
-        is.read(this.iGameId, 9, false);
+        this.ePushType = is.read(this.ePushType, 0, false);
+        super.setLUri(is.read(super.getLUri(), 1, false));
+        this.dataBytes = is.read(this.dataBytes, 2, false);
+        this.iProtocolType = is.read(this.iProtocolType, 3, false);
+        this.sGroupId = is.read(this.sGroupId, 4, false);
+        this.lMsgId = is.read(this.lMsgId, 5, false);
+        this.iMsgTag = is.read(this.iMsgTag, 6, false);
     }
 
     @Override
-    public TarsStructBase newInit() {
-        return this;
+    public HuyaOperationEnum getOperationEnum() {
+        return HuyaOperationEnum.EWSCmdS2C_MsgPushReq_V2;
     }
 }

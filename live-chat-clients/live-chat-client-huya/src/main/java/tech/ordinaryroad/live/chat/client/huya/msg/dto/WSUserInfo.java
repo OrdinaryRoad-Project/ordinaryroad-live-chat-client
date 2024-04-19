@@ -22,52 +22,67 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.huya.msg;
+package tech.ordinaryroad.live.chat.client.huya.msg.dto;
 
-import cn.hutool.core.collection.CollUtil;
 import com.qq.tars.protocol.tars.TarsInputStream;
 import com.qq.tars.protocol.tars.TarsOutputStream;
+import com.qq.tars.protocol.tars.TarsStructBase;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tech.ordinaryroad.live.chat.client.huya.constant.HuyaOperationEnum;
-import tech.ordinaryroad.live.chat.client.huya.msg.base.BaseHuyaMsg;
-import tech.ordinaryroad.live.chat.client.huya.msg.dto.MsgItem;
-
-import java.util.List;
 
 /**
  * @author mjz
- * @date 2023/10/5
+ * @date 2023/10/3
  */
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PushMessage_V2 extends BaseHuyaMsg {
+public class WSUserInfo extends TarsStructBase {
 
-    private String sGroupId;
-    private List<MsgItem> vMsgItem = CollUtil.newArrayList(new MsgItem());
-
-    public PushMessage_V2(TarsInputStream is) {
-        this.readFrom(is);
-    }
+    private long lUid;
+    private boolean bAnonymous = true;
+    private String sGuid = "";
+    private String sToken = "";
+    private long lTid;
+    private long lSid;
+    private long lGroupId;
+    private long lGroupType;
+    private String sAppId = "";
+    private String sUA = "";
 
     @Override
     public void writeTo(TarsOutputStream os) {
-        os.write(this.sGroupId, 0);
-        os.write(this.vMsgItem, 1);
+        os.write(this.lUid, 0);
+        os.write(this.bAnonymous, 1);
+        os.write(this.sGuid, 2);
+        os.write(this.sToken, 3);
+        os.write(this.lTid, 4);
+        os.write(this.lSid, 5);
+        os.write(this.lGroupId, 6);
+        os.write(this.lGroupType, 7);
+        os.write(this.sAppId, 8);
+        os.write(this.sUA, 9);
     }
 
     @Override
     public void readFrom(TarsInputStream is) {
-        this.sGroupId = is.read(this.sGroupId, 0, true);
-        this.vMsgItem = is.readArray(this.vMsgItem, 1, true);
+        this.lUid = is.read(this.lUid, 0, true);
+        this.bAnonymous = is.read(this.bAnonymous, 1, true);
+        this.sGuid = is.read(this.sGuid, 2, true);
+        this.sToken = is.read(this.sToken, 3, true);
+        this.lTid = is.read(this.lTid, 4, true);
+        this.lSid = is.read(this.lSid, 5, true);
+        this.lGroupId = is.read(this.lGroupId, 6, true);
+        this.lGroupType = is.read(this.lGroupType, 7, true);
+        this.sAppId = is.read(this.sAppId, 8, true);
+        this.sUA = is.read(this.sUA, 9, true);
     }
 
     @Override
-    public HuyaOperationEnum getOperationEnum() {
-        return HuyaOperationEnum.EWSCmdS2C_MsgPushReq_V2;
+    public TarsStructBase newInit() {
+        return this;
     }
 }

@@ -45,12 +45,16 @@ public class DecorationInfo extends TarsStructBase {
     private int iAppId = 0;
     private int iViewType = 0;
     private byte[] vData;
+    private long lSourceId;
+    private int iType;
 
     @Override
     public void writeTo(TarsOutputStream os) {
         os.write(this.iAppId, 0);
         os.write(this.iViewType, 1);
         os.write(this.vData, 2);
+        os.write(this.lSourceId, 3);
+        os.write(this.iType, 4);
     }
 
     @Override
@@ -58,6 +62,8 @@ public class DecorationInfo extends TarsStructBase {
         this.iAppId = is.read(this.iAppId, 0, true);
         this.iViewType = is.read(this.iViewType, 1, true);
         this.vData = is.read(this.vData, 2, true);
+        this.lSourceId = is.read(this.lSourceId, 3, false);
+        this.iType = is.read(this.iType, 4, false);
     }
 
     @Override

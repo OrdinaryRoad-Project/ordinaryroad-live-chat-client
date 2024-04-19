@@ -22,8 +22,9 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.huya.msg.req;
+package tech.ordinaryroad.live.chat.client.huya.msg;
 
+import cn.hutool.core.collection.CollUtil;
 import com.qq.tars.protocol.tars.TarsInputStream;
 import com.qq.tars.protocol.tars.TarsOutputStream;
 import com.qq.tars.protocol.tars.TarsStructBase;
@@ -33,7 +34,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tech.ordinaryroad.live.chat.client.huya.msg.dto.PropsItem;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,9 +46,7 @@ import java.util.List;
 @NoArgsConstructor
 public class GetPropsListRsp extends TarsStructBase {
 
-    private List<PropsItem> vPropsItemList = new ArrayList<PropsItem>() {{
-        add(new PropsItem());
-    }};
+    private List<PropsItem> vPropsItemList = CollUtil.newArrayList(new PropsItem());
     private String sMd5 = "";
     private short iNewEffectSwitch = 0;
     private short iMirrorRoomShowNum = 0;

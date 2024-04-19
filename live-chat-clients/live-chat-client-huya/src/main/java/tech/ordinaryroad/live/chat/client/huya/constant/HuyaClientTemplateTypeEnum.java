@@ -35,6 +35,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum HuyaClientTemplateTypeEnum {
 
+    TPL_LIANYUN(128),
     TPL_PC(64),
     TPL_WEB(32),
     TPL_JIEDAI(16),
@@ -42,6 +43,7 @@ public enum HuyaClientTemplateTypeEnum {
     TPL_MATCH(4),
     TPL_HUYAAPP(2),
     TPL_MIRROR(1),
+    TPL_QQ_MINI(256),
     ;
 
     private final int code;

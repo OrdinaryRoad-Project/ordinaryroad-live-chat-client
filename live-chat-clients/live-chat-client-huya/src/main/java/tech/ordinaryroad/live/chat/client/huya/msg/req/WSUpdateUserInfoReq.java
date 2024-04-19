@@ -22,16 +22,19 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.huya.msg;
+package tech.ordinaryroad.live.chat.client.huya.msg.req;
 
 import com.qq.tars.protocol.tars.TarsInputStream;
 import com.qq.tars.protocol.tars.TarsOutputStream;
+import com.qq.tars.protocol.tars.TarsStructBase;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tech.ordinaryroad.live.chat.client.huya.constant.HuyaOperationEnum;
-import tech.ordinaryroad.live.chat.client.huya.msg.base.BaseHuyaMsg;
+import tech.ordinaryroad.live.chat.client.huya.msg.dto.MsgStatInfo;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author mjz
@@ -41,35 +44,44 @@ import tech.ordinaryroad.live.chat.client.huya.msg.base.BaseHuyaMsg;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterRsp extends BaseHuyaMsg {
+public class WSUpdateUserInfoReq extends TarsStructBase {
 
-    private int iResCode;
-    private long lRequestId;
-    private String sMessage = "";
-    private String sBCConnHost = "";
+    private String sAppSrc = "";
+    private String sGuid = "";
+    private int iReportMsgIdRatio;
+    private int iSupportAck;
+    private MsgStatInfo tWSMsgStatInfo = new MsgStatInfo();
+    private Map<String, String> mCustomHeader = new HashMap<>();
+    private int iMsgDegradeLevel;
 
-    public RegisterRsp(TarsInputStream is) {
+    public WSUpdateUserInfoReq(TarsInputStream is) {
         this.readFrom(is);
     }
 
     @Override
     public void writeTo(TarsOutputStream os) {
-        os.write(this.iResCode, 0);
-        os.write(this.lRequestId, 1);
-        os.write(this.sMessage, 2);
-        os.write(this.sBCConnHost, 3);
+        os.write(this.sAppSrc, 0);
+        os.write(this.sGuid, 1);
+        os.write(this.iReportMsgIdRatio, 2);
+        os.write(this.iSupportAck, 3);
+        os.write(this.tWSMsgStatInfo, 6);
+        os.write(this.mCustomHeader, 7);
+        os.write(this.iMsgDegradeLevel, 8);
     }
 
     @Override
     public void readFrom(TarsInputStream is) {
-        this.iResCode = is.read(this.iResCode, 0, true);
-        this.lRequestId = is.read(this.lRequestId, 1, true);
-        this.sMessage = is.read(this.sMessage, 2, true);
-        this.sBCConnHost = is.read(this.sBCConnHost, 3, true);
+        this.sAppSrc = is.read(this.sAppSrc, 0, false);
+        this.sGuid = is.read(this.sGuid, 1, false);
+        this.iReportMsgIdRatio = is.read(this.iReportMsgIdRatio, 2, false);
+        this.iSupportAck = is.read(this.iSupportAck, 3, false);
+        this.tWSMsgStatInfo = (MsgStatInfo) is.directRead(this.tWSMsgStatInfo, 6, false);
+        this.mCustomHeader = is.readStringMap( 7, false);
+        this.iMsgDegradeLevel = is.read(this.iMsgDegradeLevel, 8, false);
     }
 
     @Override
-    public HuyaOperationEnum getOperationEnum() {
-        return HuyaOperationEnum.EWSCmd_RegisterRsp;
+    public TarsStructBase newInit() {
+        return this;
     }
 }

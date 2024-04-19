@@ -22,9 +22,8 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.huya.msg.req;
+package tech.ordinaryroad.live.chat.client.huya.msg.dto;
 
-import cn.hutool.core.collection.CollUtil;
 import com.qq.tars.protocol.tars.TarsInputStream;
 import com.qq.tars.protocol.tars.TarsOutputStream;
 import com.qq.tars.protocol.tars.TarsStructBase;
@@ -32,8 +31,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 /**
  * @author mjz
@@ -43,21 +40,30 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterGroupReq extends TarsStructBase {
+public class WSDeviceInfo extends TarsStructBase {
 
-    private List<String> vGroupId = CollUtil.newArrayList("");
-    private String sToken = "";
+    private String sIMEI = "";
+    private String sAPN = "";
+    private String sNetType = "";
+    private String sDeviceId = "";
+    private String sMId = "";
 
     @Override
     public void writeTo(TarsOutputStream os) {
-        os.write(this.vGroupId, 0);
-        os.write(this.sToken, 1);
+        os.write(this.sIMEI, 0);
+        os.write(this.sAPN, 1);
+        os.write(this.sNetType, 2);
+        os.write(this.sDeviceId, 3);
+        os.write(this.sMId, 4);
     }
 
     @Override
     public void readFrom(TarsInputStream is) {
-        this.vGroupId = is.readArray(this.vGroupId, 0, true);
-        this.sToken = is.read(this.sToken, 1, true);
+        this.sIMEI = is.read(this.sIMEI, 0, false);
+        this.sAPN = is.read(this.sAPN, 1, false);
+        this.sNetType = is.read(this.sNetType, 2, false);
+        this.sDeviceId = is.read(this.sDeviceId, 3, false);
+        this.sMId = is.read(this.sMId, 4, false);
     }
 
     @Override

@@ -72,10 +72,41 @@ public class BadgeInfo extends TarsStructBase {
     private int iExtinguishDays;
     private int iBadgeCate;
     private int iLiveFlag;
+    private int iAutoDeductUpgrade;
 
     @Override
     public void writeTo(TarsOutputStream os) {
-
+        os.write(this.lUid, 0);
+        os.write(this.lBadgeId, 1);
+        os.write(this.sPresenterNickName, 2);
+        os.write(this.sBadgeName, 3);
+        os.write(this.iBadgeLevel, 4);
+        os.write(this.iRank, 5);
+        os.write(this.iScore, 6);
+        os.write(this.iNextScore, 7);
+        os.write(this.iQuotaUsed, 8);
+        os.write(this.iQuota, 9);
+        os.write(this.lQuotaTS, 10);
+        os.write(this.lOpenTS, 11);
+        os.write(this.iVFlag, 12);
+        os.write(this.sVLogo, 13);
+        os.write(this.tChannelInfo, 14);
+        os.write(this.sPresenterLogo, 15);
+        os.write(this.lVExpiredTS, 16);
+        os.write(this.iBadgeType, 17);
+        os.write(this.tFaithInfo, 18);
+        os.write(this.tSuperFansInfo, 19);
+        os.write(this.iBaseQuota, 20);
+        os.write(this.lVConsumRank, 21);
+        os.write(this.iCustomBadgeFlag, 22);
+        os.write(this.iAgingDays, 23);
+        os.write(this.iDayScore, 24);
+        os.write(this.tExternal, 25);
+        os.write(this.iExtinguished, 26);
+        os.write(this.iExtinguishDays, 27);
+        os.write(this.iBadgeCate, 28);
+        os.write(this.iLiveFlag, 29);
+        os.write(this.iAutoDeductUpgrade, 30);
     }
 
     @Override
@@ -110,6 +141,7 @@ public class BadgeInfo extends TarsStructBase {
         this.iExtinguishDays = is.read(this.iExtinguishDays, 27, false);
         this.iBadgeCate = is.read(this.iBadgeCate, 28, false);
         this.iLiveFlag = is.read(this.iLiveFlag, 29, false);
+        this.iLiveFlag = is.read(this.iAutoDeductUpgrade, 30, false);
     }
 
     @Override
