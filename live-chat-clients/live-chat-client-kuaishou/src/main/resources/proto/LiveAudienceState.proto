@@ -13,10 +13,21 @@ message LiveAudienceState {
   LiveFansGroupState liveFansGroupState = 6;
   uint32 wealthGrade = 7;
   string badgeKey = 8;
+  repeated LiveAudienceState_11 liveAudienceState_11 = 11;
 
-enum AssistantType {
-  UNKNOWN_ASSISTANT_TYPE = 0;
-  SUPER = 1;
-  JUNIOR = 2;
-}
+  message LiveAudienceState_11{
+    LiveAudienceState_11_1 liveAudienceState_11_1 = 1;
+    message LiveAudienceState_11_1{
+      // string s1 = 1;
+      string badgeIcon = 2;
+      // uint32 int3 = 3;
+      string badgeName = 4;
+    }
+  }
+
+  enum AssistantType {
+    UNKNOWN_ASSISTANT_TYPE = 0;
+    SUPER = 1;
+    JUNIOR = 2;
+  }
 }

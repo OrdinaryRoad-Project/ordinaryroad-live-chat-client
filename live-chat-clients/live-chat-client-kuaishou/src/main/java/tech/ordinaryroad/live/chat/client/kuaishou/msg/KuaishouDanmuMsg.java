@@ -24,17 +24,14 @@
 
 package tech.ordinaryroad.live.chat.client.kuaishou.msg;
 
-import com.google.protobuf.ByteString;
-import com.google.protobuf.UnknownFieldSet;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IDanmuMsg;
+import tech.ordinaryroad.live.chat.client.kuaishou.api.KuaishouApis;
 import tech.ordinaryroad.live.chat.client.kuaishou.msg.base.IKuaishouMsg;
 import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebCommentFeedOuterClass;
-
-import java.util.List;
 
 /**
  * @author mjz
@@ -50,32 +47,12 @@ public class KuaishouDanmuMsg implements IKuaishouMsg, IDanmuMsg {
 
     @Override
     public String getBadgeName() {
-        String badgeName = null;
-        try {
-            UnknownFieldSet.Field field21 = msg.getSenderState().getUnknownFields().asMap().get(21);
-            List<ByteString> lengthDelimitedList = field21.getLengthDelimitedList();
-            if (!lengthDelimitedList.isEmpty()) {
-                UnknownFieldSet.Field field21_1 = UnknownFieldSet.parseFrom(
-                        lengthDelimitedList.size() > 1 ? lengthDelimitedList.get(1) : lengthDelimitedList.get(0)
-                ).getField(1);
-                List<ByteString> lengthDelimitedList1 = field21_1.getLengthDelimitedList();
-                if (!lengthDelimitedList1.isEmpty()) {
-                    UnknownFieldSet.Field field21_1_4 = UnknownFieldSet.parseFrom((lengthDelimitedList1.get(0))).getField(4);
-                    List<ByteString> lengthDelimitedList2 = field21_1_4.getLengthDelimitedList();
-                    if (!lengthDelimitedList2.isEmpty()) {
-                        badgeName = lengthDelimitedList2.get(0).toStringUtf8();
-                    }
-                }
-            }
-        } catch (Exception e) {
-            // ignore
-        }
-        return badgeName;
+        return KuaishouApis.getBadgeName(msg.getSenderState());
     }
 
     @Override
     public byte getBadgeLevel() {
-        return (byte) msg.getSenderState().getLiveFansGroupState().getIntimacyLevel();
+        return KuaishouApis.getBadgeLevel(msg.getSenderState());
     }
 
     @Override

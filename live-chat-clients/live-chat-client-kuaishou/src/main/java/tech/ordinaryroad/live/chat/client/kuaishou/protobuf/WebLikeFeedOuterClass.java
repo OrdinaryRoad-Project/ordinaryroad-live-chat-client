@@ -86,6 +86,21 @@ public final class WebLikeFeedOuterClass {
      */
     com.google.protobuf.ByteString
         getDeviceHashBytes();
+
+    /**
+     * <code>.LiveAudienceState liveAudienceState = 5;</code>
+     * @return Whether the liveAudienceState field is set.
+     */
+    boolean hasLiveAudienceState();
+    /**
+     * <code>.LiveAudienceState liveAudienceState = 5;</code>
+     * @return The liveAudienceState.
+     */
+    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveAudienceStateOuterClass.LiveAudienceState getLiveAudienceState();
+    /**
+     * <code>.LiveAudienceState liveAudienceState = 5;</code>
+     */
+    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveAudienceStateOuterClass.LiveAudienceStateOrBuilder getLiveAudienceStateOrBuilder();
   }
   /**
    * Protobuf type {@code WebLikeFeed}
@@ -111,6 +126,11 @@ public final class WebLikeFeedOuterClass {
       return new WebLikeFeed();
     }
 
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.internal_static_WebLikeFeed_descriptor;
@@ -239,6 +259,32 @@ public final class WebLikeFeedOuterClass {
       }
     }
 
+    public static final int LIVEAUDIENCESTATE_FIELD_NUMBER = 5;
+    private tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveAudienceStateOuterClass.LiveAudienceState liveAudienceState_;
+    /**
+     * <code>.LiveAudienceState liveAudienceState = 5;</code>
+     * @return Whether the liveAudienceState field is set.
+     */
+    @java.lang.Override
+    public boolean hasLiveAudienceState() {
+      return liveAudienceState_ != null;
+    }
+    /**
+     * <code>.LiveAudienceState liveAudienceState = 5;</code>
+     * @return The liveAudienceState.
+     */
+    @java.lang.Override
+    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveAudienceStateOuterClass.LiveAudienceState getLiveAudienceState() {
+      return liveAudienceState_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveAudienceStateOuterClass.LiveAudienceState.getDefaultInstance() : liveAudienceState_;
+    }
+    /**
+     * <code>.LiveAudienceState liveAudienceState = 5;</code>
+     */
+    @java.lang.Override
+    public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveAudienceStateOuterClass.LiveAudienceStateOrBuilder getLiveAudienceStateOrBuilder() {
+      return liveAudienceState_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveAudienceStateOuterClass.LiveAudienceState.getDefaultInstance() : liveAudienceState_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -265,6 +311,9 @@ public final class WebLikeFeedOuterClass {
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(deviceHash_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 4, deviceHash_);
       }
+      if (liveAudienceState_ != null) {
+        output.writeMessage(5, getLiveAudienceState());
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -287,6 +336,10 @@ public final class WebLikeFeedOuterClass {
       }
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(deviceHash_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, deviceHash_);
+      }
+      if (liveAudienceState_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(5, getLiveAudienceState());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
@@ -314,6 +367,11 @@ public final class WebLikeFeedOuterClass {
           != other.getSortRank()) return false;
       if (!getDeviceHash()
           .equals(other.getDeviceHash())) return false;
+      if (hasLiveAudienceState() != other.hasLiveAudienceState()) return false;
+      if (hasLiveAudienceState()) {
+        if (!getLiveAudienceState()
+            .equals(other.getLiveAudienceState())) return false;
+      }
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
@@ -336,6 +394,10 @@ public final class WebLikeFeedOuterClass {
           getSortRank());
       hash = (37 * hash) + DEVICEHASH_FIELD_NUMBER;
       hash = (53 * hash) + getDeviceHash().hashCode();
+      if (hasLiveAudienceState()) {
+        hash = (37 * hash) + LIVEAUDIENCESTATE_FIELD_NUMBER;
+        hash = (53 * hash) + getLiveAudienceState().hashCode();
+      }
       hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -385,13 +447,11 @@ public final class WebLikeFeedOuterClass {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-
     public static tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-
     public static tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass.WebLikeFeed parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -475,6 +535,11 @@ public final class WebLikeFeedOuterClass {
         }
         sortRank_ = 0L;
         deviceHash_ = "";
+        liveAudienceState_ = null;
+        if (liveAudienceStateBuilder_ != null) {
+          liveAudienceStateBuilder_.dispose();
+          liveAudienceStateBuilder_ = null;
+        }
         return this;
       }
 
@@ -521,6 +586,11 @@ public final class WebLikeFeedOuterClass {
         }
         if (((from_bitField0_ & 0x00000008) != 0)) {
           result.deviceHash_ = deviceHash_;
+        }
+        if (((from_bitField0_ & 0x00000010) != 0)) {
+          result.liveAudienceState_ = liveAudienceStateBuilder_ == null
+              ? liveAudienceState_
+              : liveAudienceStateBuilder_.build();
         }
       }
 
@@ -584,6 +654,9 @@ public final class WebLikeFeedOuterClass {
           bitField0_ |= 0x00000008;
           onChanged();
         }
+        if (other.hasLiveAudienceState()) {
+          mergeLiveAudienceState(other.getLiveAudienceState());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
         return this;
@@ -632,6 +705,13 @@ public final class WebLikeFeedOuterClass {
                 bitField0_ |= 0x00000008;
                 break;
               } // case 34
+              case 42: {
+                input.readMessage(
+                    getLiveAudienceStateFieldBuilder().getBuilder(),
+                    extensionRegistry);
+                bitField0_ |= 0x00000010;
+                break;
+              } // case 42
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -855,7 +935,7 @@ public final class WebLikeFeedOuterClass {
        * @return This builder for chaining.
        */
       public Builder setSortRank(long value) {
-
+        
         sortRank_ = value;
         bitField0_ |= 0x00000004;
         onChanged();
@@ -943,6 +1023,125 @@ public final class WebLikeFeedOuterClass {
         onChanged();
         return this;
       }
+
+      private tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveAudienceStateOuterClass.LiveAudienceState liveAudienceState_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveAudienceStateOuterClass.LiveAudienceState, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveAudienceStateOuterClass.LiveAudienceState.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveAudienceStateOuterClass.LiveAudienceStateOrBuilder> liveAudienceStateBuilder_;
+      /**
+       * <code>.LiveAudienceState liveAudienceState = 5;</code>
+       * @return Whether the liveAudienceState field is set.
+       */
+      public boolean hasLiveAudienceState() {
+        return ((bitField0_ & 0x00000010) != 0);
+      }
+      /**
+       * <code>.LiveAudienceState liveAudienceState = 5;</code>
+       * @return The liveAudienceState.
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveAudienceStateOuterClass.LiveAudienceState getLiveAudienceState() {
+        if (liveAudienceStateBuilder_ == null) {
+          return liveAudienceState_ == null ? tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveAudienceStateOuterClass.LiveAudienceState.getDefaultInstance() : liveAudienceState_;
+        } else {
+          return liveAudienceStateBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.LiveAudienceState liveAudienceState = 5;</code>
+       */
+      public Builder setLiveAudienceState(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveAudienceStateOuterClass.LiveAudienceState value) {
+        if (liveAudienceStateBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          liveAudienceState_ = value;
+        } else {
+          liveAudienceStateBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000010;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.LiveAudienceState liveAudienceState = 5;</code>
+       */
+      public Builder setLiveAudienceState(
+          tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveAudienceStateOuterClass.LiveAudienceState.Builder builderForValue) {
+        if (liveAudienceStateBuilder_ == null) {
+          liveAudienceState_ = builderForValue.build();
+        } else {
+          liveAudienceStateBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000010;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.LiveAudienceState liveAudienceState = 5;</code>
+       */
+      public Builder mergeLiveAudienceState(tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveAudienceStateOuterClass.LiveAudienceState value) {
+        if (liveAudienceStateBuilder_ == null) {
+          if (((bitField0_ & 0x00000010) != 0) &&
+            liveAudienceState_ != null &&
+            liveAudienceState_ != tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveAudienceStateOuterClass.LiveAudienceState.getDefaultInstance()) {
+            getLiveAudienceStateBuilder().mergeFrom(value);
+          } else {
+            liveAudienceState_ = value;
+          }
+        } else {
+          liveAudienceStateBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000010;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.LiveAudienceState liveAudienceState = 5;</code>
+       */
+      public Builder clearLiveAudienceState() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        liveAudienceState_ = null;
+        if (liveAudienceStateBuilder_ != null) {
+          liveAudienceStateBuilder_.dispose();
+          liveAudienceStateBuilder_ = null;
+        }
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.LiveAudienceState liveAudienceState = 5;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveAudienceStateOuterClass.LiveAudienceState.Builder getLiveAudienceStateBuilder() {
+        bitField0_ |= 0x00000010;
+        onChanged();
+        return getLiveAudienceStateFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.LiveAudienceState liveAudienceState = 5;</code>
+       */
+      public tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveAudienceStateOuterClass.LiveAudienceStateOrBuilder getLiveAudienceStateOrBuilder() {
+        if (liveAudienceStateBuilder_ != null) {
+          return liveAudienceStateBuilder_.getMessageOrBuilder();
+        } else {
+          return liveAudienceState_ == null ?
+              tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveAudienceStateOuterClass.LiveAudienceState.getDefaultInstance() : liveAudienceState_;
+        }
+      }
+      /**
+       * <code>.LiveAudienceState liveAudienceState = 5;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveAudienceStateOuterClass.LiveAudienceState, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveAudienceStateOuterClass.LiveAudienceState.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveAudienceStateOuterClass.LiveAudienceStateOrBuilder> 
+          getLiveAudienceStateFieldBuilder() {
+        if (liveAudienceStateBuilder_ == null) {
+          liveAudienceStateBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveAudienceStateOuterClass.LiveAudienceState, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveAudienceStateOuterClass.LiveAudienceState.Builder, tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveAudienceStateOuterClass.LiveAudienceStateOrBuilder>(
+                  getLiveAudienceState(),
+                  getParentForChildren(),
+                  isClean());
+          liveAudienceState_ = null;
+        }
+        return liveAudienceStateBuilder_;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -1022,24 +1221,27 @@ public final class WebLikeFeedOuterClass {
   static {
     java.lang.String[] descriptorData = {
       "\n\021WebLikeFeed.proto\032\024SimpleUserInfo.prot" +
-      "o\"^\n\013WebLikeFeed\022\n\n\002id\030\001 \001(\t\022\035\n\004user\030\002 \001" +
-      "(\0132\017.SimpleUserInfo\022\020\n\010sortRank\030\003 \001(\004\022\022\n" +
-      "\ndeviceHash\030\004 \001(\tB6\n4tech.ordinaryroad.l" +
-      "ive.chat.client.kuaishou.protobufb\006proto" +
-      "3"
+      "o\032\027LiveAudienceState.proto\"\215\001\n\013WebLikeFe" +
+      "ed\022\n\n\002id\030\001 \001(\t\022\035\n\004user\030\002 \001(\0132\017.SimpleUse" +
+      "rInfo\022\020\n\010sortRank\030\003 \001(\004\022\022\n\ndeviceHash\030\004 " +
+      "\001(\t\022-\n\021liveAudienceState\030\005 \001(\0132\022.LiveAud" +
+      "ienceStateB6\n4tech.ordinaryroad.live.cha" +
+      "t.client.kuaishou.protobufb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SimpleUserInfoOuterClass.getDescriptor(),
+          tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveAudienceStateOuterClass.getDescriptor(),
         });
     internal_static_WebLikeFeed_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_WebLikeFeed_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_WebLikeFeed_descriptor,
-        new java.lang.String[] { "Id", "User", "SortRank", "DeviceHash", });
+        new java.lang.String[] { "Id", "User", "SortRank", "DeviceHash", "LiveAudienceState", });
     tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SimpleUserInfoOuterClass.getDescriptor();
+    tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveAudienceStateOuterClass.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

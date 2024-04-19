@@ -55,12 +55,12 @@ public class KuaishouGiftMsg implements IKuaishouMsg, IGiftMsg {
 
     @Override
     public String getBadgeName() {
-        return IGiftMsg.super.getBadgeName();
+        return KuaishouApis.getBadgeName(msg.getLiveAudienceState());
     }
 
     @Override
     public byte getBadgeLevel() {
-        return IGiftMsg.super.getBadgeLevel();
+        return KuaishouApis.getBadgeLevel(msg.getLiveAudienceState());
     }
 
     @Override

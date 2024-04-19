@@ -29,6 +29,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ILikeMsg;
+import tech.ordinaryroad.live.chat.client.kuaishou.api.KuaishouApis;
 import tech.ordinaryroad.live.chat.client.kuaishou.msg.base.IKuaishouMsg;
 import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClass;
 
@@ -43,6 +44,16 @@ import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebLikeFeedOuterClas
 public class KuaishouLikeMsg implements IKuaishouMsg, ILikeMsg {
 
     private WebLikeFeedOuterClass.WebLikeFeed msg;
+
+    @Override
+    public String getBadgeName() {
+        return KuaishouApis.getBadgeName(msg.getLiveAudienceState());
+    }
+
+    @Override
+    public byte getBadgeLevel() {
+        return KuaishouApis.getBadgeLevel(msg.getLiveAudienceState());
+    }
 
     @Override
     public String getUid() {

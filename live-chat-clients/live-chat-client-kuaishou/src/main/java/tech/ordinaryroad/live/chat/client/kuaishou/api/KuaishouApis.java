@@ -37,6 +37,7 @@ import lombok.*;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCookieUtil;
 import tech.ordinaryroad.live.chat.client.kuaishou.msg.KuaishouGiftMsg;
+import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.LiveAudienceStateOuterClass;
 import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass;
 
 import java.util.ArrayList;
@@ -242,6 +243,38 @@ public class KuaishouApis {
 
         msg.setCalculatedGiftCount(giftCount);
         return giftCount;
+    }
+
+    /**
+     * 获取粉丝牌名称
+     */
+    public static String getBadgeName(LiveAudienceStateOuterClass.LiveAudienceState liveAudienceState) {
+        String badgeName = null;
+        try {
+            for (LiveAudienceStateOuterClass.LiveAudienceState.LiveAudienceState_11 liveAudienceState11 : liveAudienceState.getLiveAudienceState11List()) {
+                String badgeIcon = liveAudienceState11.getLiveAudienceState111().getBadgeIcon();
+                if (StrUtil.startWithIgnoreCase(badgeIcon, "fans")) {
+                    badgeName = liveAudienceState11.getLiveAudienceState111().getBadgeName();
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            // ignore
+        }
+        return badgeName;
+    }
+
+    /**
+     * 获取粉丝牌等级
+     */
+    public static byte getBadgeLevel(LiveAudienceStateOuterClass.LiveAudienceState liveAudienceState) {
+        byte badgeLevel = 0;
+        try {
+            badgeLevel = (byte) liveAudienceState.getLiveFansGroupState().getIntimacyLevel();
+        } catch (Exception e) {
+            // ignore
+        }
+        return badgeLevel;
     }
 
     @Data

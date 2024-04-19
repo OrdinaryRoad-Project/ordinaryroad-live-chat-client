@@ -1,6 +1,7 @@
 syntax = "proto3";
 import "SimpleUserInfo.proto";
 import "WebLiveAssistantType.proto";
+import "LiveAudienceState.proto";
 
 option java_package = "tech.ordinaryroad.live.chat.client.kuaishou.protobuf";
 
@@ -22,15 +23,16 @@ message WebGiftFeed {
   WebLiveAssistantType liveAssistantType = 15;
   string deviceHash = 16;
   bool danmakuDisplay = 17;
+  LiveAudienceState liveAudienceState = 18;
 
-enum StyleType {
-  UNKNOWN_STYLE = 0;
-  BATCH_STAR_0 = 1;
-  BATCH_STAR_1 = 2;
-  BATCH_STAR_2 = 3;
-  BATCH_STAR_3 = 4;
-  BATCH_STAR_4 = 5;
-  BATCH_STAR_5 = 6;
-  BATCH_STAR_6 = 7;
-}
+  enum StyleType {
+    UNKNOWN_STYLE = 0;
+    BATCH_STAR_0 = 1;
+    BATCH_STAR_1 = 2;
+    BATCH_STAR_2 = 3;
+    BATCH_STAR_3 = 4;
+    BATCH_STAR_4 = 5;
+    BATCH_STAR_5 = 6;
+    BATCH_STAR_6 = 7;
+  }
 }

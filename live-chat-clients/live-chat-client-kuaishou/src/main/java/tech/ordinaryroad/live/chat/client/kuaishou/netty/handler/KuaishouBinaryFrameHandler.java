@@ -67,6 +67,14 @@ public class KuaishouBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
         SocketMessageOuterClass.SocketMessage socketMessage = (SocketMessageOuterClass.SocketMessage) cmdMsg;
         ByteString payloadByteString = socketMessage.getPayload();
         switch (socketMessage.getPayloadType()) {
+            // 用户贡献名单
+            case SC_LIVE_WATCHING_LIST: {
+                SCWebLiveWatchingUsersOuterClass.SCWebLiveWatchingUsers scWebLiveWatchingUsers = SCWebLiveWatchingUsersOuterClass.SCWebLiveWatchingUsers.parseFrom(payloadByteString);
+                List<WebWatchingUserInfoOuterClass.WebWatchingUserInfo> watchingUserList = scWebLiveWatchingUsers.getWatchingUserList();
+                String displayWatchingCount = scWebLiveWatchingUsers.getDisplayWatchingCount();
+                long pendingDuration = scWebLiveWatchingUsers.getPendingDuration();
+                break;
+            }
             case SC_FEED_PUSH: {
                 SCWebFeedPushOuterClass.SCWebFeedPush scWebFeedPush = SCWebFeedPushOuterClass.SCWebFeedPush.parseFrom(payloadByteString);
                 if (scWebFeedPush.getCommentFeedsCount() > 0) {
