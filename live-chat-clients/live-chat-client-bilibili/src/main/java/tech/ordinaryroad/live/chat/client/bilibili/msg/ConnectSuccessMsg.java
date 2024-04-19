@@ -24,13 +24,14 @@
 
 package tech.ordinaryroad.live.chat.client.bilibili.msg;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.OperationEnum;
-import tech.ordinaryroad.live.chat.client.bilibili.msg.base.BaseBilibiliCmdMsg;
+import tech.ordinaryroad.live.chat.client.bilibili.constant.ProtoverEnum;
+import tech.ordinaryroad.live.chat.client.bilibili.msg.base.BaseBilibiliMsg;
 
 /**
  * @author mjz
@@ -40,42 +41,23 @@ import tech.ordinaryroad.live.chat.client.bilibili.msg.base.BaseBilibiliCmdMsg;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SendSmsReplyMsg extends BaseBilibiliCmdMsg {
+public class ConnectSuccessMsg extends BaseBilibiliMsg {
 
-    private Long id;
+    /**
+     * 0: OK,-101: TOKEN_ERROR
+     */
+    private int code;
 
-    private String name;
+    @JsonIgnore
+    private int protover;
 
-    private JsonNode full;
-
-    private JsonNode half;
-
-    private JsonNode side;
-
-    private JsonNode data;
-
-    private JsonNode info;
-
-    private JsonNode msg_common;
-
-    private JsonNode msg_self;
-
-    private JsonNode link_url;
-
-    private JsonNode msg_type;
-
-    private JsonNode shield_uid;
-
-    private JsonNode business_id;
-
-    private JsonNode scatter;
-
-    private long roomid;
-
-    private long real_roomid;
+    @Override
+    public ProtoverEnum getProtoverEnum() {
+        return ProtoverEnum.getByCode(protover);
+    }
 
     @Override
     public OperationEnum getOperationEnum() {
-        return OperationEnum.SEND_SMS_REPLY;
+        return OperationEnum.CONNECT_SUCCESS;
     }
 }

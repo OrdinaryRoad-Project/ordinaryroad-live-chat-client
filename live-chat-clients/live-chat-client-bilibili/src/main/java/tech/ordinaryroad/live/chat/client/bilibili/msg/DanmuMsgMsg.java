@@ -50,7 +50,7 @@ public class DanmuMsgMsg extends BaseBilibiliMsg implements IDanmuMsg {
 
     @Override
     public OperationEnum getOperationEnum() {
-        return OperationEnum.SEND_SMS_REPLY;
+        return OperationEnum.MESSAGE;
     }
 
     @Override

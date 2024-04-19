@@ -53,7 +53,7 @@ public class SuperChatMessageMsg extends BaseBilibiliMsg implements ISuperChatMs
 
     @Override
     public OperationEnum getOperationEnum() {
-        return OperationEnum.SEND_SMS_REPLY;
+        return OperationEnum.MESSAGE;
     }
 
     @Override

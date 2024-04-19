@@ -24,12 +24,13 @@
 
 package tech.ordinaryroad.live.chat.client.bilibili.msg;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.OperationEnum;
-import tech.ordinaryroad.live.chat.client.bilibili.constant.ProtoverEnum;
-import tech.ordinaryroad.live.chat.client.bilibili.msg.base.BaseBilibiliMsg;
+import tech.ordinaryroad.live.chat.client.bilibili.msg.base.BaseBilibiliCmdMsg;
 
 /**
  * @author mjz
@@ -37,56 +38,44 @@ import tech.ordinaryroad.live.chat.client.bilibili.msg.base.BaseBilibiliMsg;
  */
 @Getter
 @Setter
-@RequiredArgsConstructor
-public class AuthMsg extends BaseBilibiliMsg {
+@AllArgsConstructor
+@NoArgsConstructor
+public class MessageMsg extends BaseBilibiliCmdMsg {
 
-    /**
-     * 用户uid，0代表游客
-     */
-    private long uid;
+    private Long id;
 
-    /**
-     * 房间id room_id，不是短id short_id
-     * 可以通过将url参数id改为直播地址中的数字来查询房间真实id
-     * example: <a href="https://api.live.bilibili.com/room/v1/Room/room_init?id=6">https://api.live.bilibili.com/room/v1/Room/room_init?id=6</a>
-     */
-    private final long roomid;
+    private String name;
 
-    /**
-     * 协议版本
-     *
-     * @see ProtoverEnum#getCode()
-     */
-    private final int protover;
+    private JsonNode full;
 
-    /**
-     * 平台标识
-     */
-    private String platform = "web";
-    private int type = 2;
+    private JsonNode half;
 
-    /**
-     * 必须字段
-     *
-     * @since 2023-08-19
-     */
-    private final String buvid;
+    private JsonNode side;
 
-    /**
-     * 认证秘钥（必须字段）
-     *
-     * @since @since 2023-08-19
-     */
-    private final String key;
+    private JsonNode data;
 
-    @Override
-    public ProtoverEnum getProtoverEnum() {
-        return ProtoverEnum.getByCode(this.protover);
-    }
+    private JsonNode info;
+
+    private JsonNode msg_common;
+
+    private JsonNode msg_self;
+
+    private JsonNode link_url;
+
+    private JsonNode msg_type;
+
+    private JsonNode shield_uid;
+
+    private JsonNode business_id;
+
+    private JsonNode scatter;
+
+    private long roomid;
+
+    private long real_roomid;
 
     @Override
     public OperationEnum getOperationEnum() {
-        return OperationEnum.AUTH;
+        return OperationEnum.MESSAGE;
     }
-
 }

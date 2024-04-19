@@ -28,8 +28,8 @@ import cn.hutool.cache.impl.TimedCache;
 import cn.hutool.core.util.NumberUtil;
 import tech.ordinaryroad.live.chat.client.bilibili.api.BilibiliApis;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.ProtoverEnum;
-import tech.ordinaryroad.live.chat.client.bilibili.msg.AuthMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.HeartbeatMsg;
+import tech.ordinaryroad.live.chat.client.bilibili.msg.userAuthenticationMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -66,13 +66,13 @@ public class BilibiliMsgFactory {
      * @param protover {@link ProtoverEnum}
      * @return AuthWebSocketFrame
      */
-    public AuthMsg createAuth(ProtoverEnum protover, BilibiliApis.RoomInitResult roomInitResult) {
+    public userAuthenticationMsg createAuth(ProtoverEnum protover, BilibiliApis.RoomInitResult roomInitResult) {
         try {
             String buvid3 = roomInitResult.getBuvid3();
             long realRoomId = roomInitResult.getRoomPlayInfoResult().getRoom_id();
-            AuthMsg authMsg = new AuthMsg(realRoomId, protover.getCode(), buvid3, roomInitResult.getDanmuinfoResult().getToken());
-            authMsg.setUid(NumberUtil.parseLong(roomInitResult.getUid()));
-            return authMsg;
+            userAuthenticationMsg userAuthenticationMsg = new userAuthenticationMsg(realRoomId, protover.getCode(), buvid3, roomInitResult.getDanmuinfoResult().getToken());
+            userAuthenticationMsg.setUid(NumberUtil.parseLong(roomInitResult.getUid()));
+            return userAuthenticationMsg;
         } catch (Exception e) {
             throw new BaseException(String.format("认证包创建失败，请检查房间号是否正确。roomId: %d, msg: %s", roomId, e.getMessage()));
         }

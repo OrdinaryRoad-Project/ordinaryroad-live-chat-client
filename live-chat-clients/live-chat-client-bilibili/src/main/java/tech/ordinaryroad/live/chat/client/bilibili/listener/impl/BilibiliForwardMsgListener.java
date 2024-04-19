@@ -84,17 +84,17 @@ public class BilibiliForwardMsgListener implements IBilibiliMsgListener {
     }
 
     @Override
-    public void onEntryEffect(SendSmsReplyMsg msg) {
+    public void onEntryEffect(MessageMsg msg) {
         forward(msg);
     }
 
     @Override
-    public void onWatchedChange(SendSmsReplyMsg msg) {
+    public void onWatchedChange(MessageMsg msg) {
         forward(msg);
     }
 
     @Override
-    public void onClickUpdate(SendSmsReplyMsg msg) {
+    public void onClickUpdate(MessageMsg msg) {
         forward(msg);
     }
 

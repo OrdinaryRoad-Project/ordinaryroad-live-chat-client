@@ -75,13 +75,13 @@ public class BilibiliBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
             return;
         }
 
-        SendSmsReplyMsg sendSmsReplyMsg = (SendSmsReplyMsg) cmdMsg;
+        MessageMsg messageMsg = (MessageMsg) cmdMsg;
         switch (cmd) {
             case DANMU_MSG: {
                 DanmuMsgMsg danmuMsgMsg = new DanmuMsgMsg();
-                danmuMsgMsg.setProtover(sendSmsReplyMsg.getProtover());
-                danmuMsgMsg.setInfo(sendSmsReplyMsg.getInfo());
-                danmuMsgMsg.setDm_v2(StrUtil.toStringOrNull(sendSmsReplyMsg.getUnknownProperties().get("dm_v2")));
+                danmuMsgMsg.setProtover(messageMsg.getProtover());
+                danmuMsgMsg.setInfo(messageMsg.getInfo());
+                danmuMsgMsg.setDm_v2(StrUtil.toStringOrNull(messageMsg.getUnknownProperties().get("dm_v2")));
                 iteratorMsgListeners(msgListener -> msgListener.onDanmuMsg(BilibiliBinaryFrameHandler.this, danmuMsgMsg));
                 break;
             }
@@ -89,21 +89,21 @@ public class BilibiliBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
             case SEND_GIFT: {
                 SendGiftMsg sendGiftMsg = new SendGiftMsg();
                 sendGiftMsg.setRoomId(getRoomIdAsLong());
-                sendGiftMsg.setProtover(sendSmsReplyMsg.getProtover());
-                SendGiftMsg.Data data = BaseBilibiliMsg.OBJECT_MAPPER.treeToValue(sendSmsReplyMsg.getData(), SendGiftMsg.Data.class);
+                sendGiftMsg.setProtover(messageMsg.getProtover());
+                SendGiftMsg.Data data = BaseBilibiliMsg.OBJECT_MAPPER.treeToValue(messageMsg.getData(), SendGiftMsg.Data.class);
                 sendGiftMsg.setData(data);
                 iteratorMsgListeners(msgListener -> {
                     msgListener.onGiftMsg(BilibiliBinaryFrameHandler.this, sendGiftMsg);
-                    msgListener.onSendGift(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg);
+                    msgListener.onSendGift(BilibiliBinaryFrameHandler.this, messageMsg);
                 });
                 break;
             }
 
             case SUPER_CHAT_MESSAGE: {
                 SuperChatMessageMsg superChatMessageMsg = new SuperChatMessageMsg();
-                superChatMessageMsg.setProtover(sendSmsReplyMsg.getProtover());
-                superChatMessageMsg.setRoomid(sendSmsReplyMsg.getRoomid());
-                SuperChatMessageMsg.Data data = BaseBilibiliMsg.OBJECT_MAPPER.treeToValue(sendSmsReplyMsg.getData(), SuperChatMessageMsg.Data.class);
+                superChatMessageMsg.setProtover(messageMsg.getProtover());
+                superChatMessageMsg.setRoomid(messageMsg.getRoomid());
+                SuperChatMessageMsg.Data data = BaseBilibiliMsg.OBJECT_MAPPER.treeToValue(messageMsg.getData(), SuperChatMessageMsg.Data.class);
                 superChatMessageMsg.setData(data);
                 iteratorMsgListeners(msgListener -> msgListener.onSuperChatMsg(BilibiliBinaryFrameHandler.this, superChatMessageMsg));
                 break;
@@ -111,46 +111,46 @@ public class BilibiliBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
 
             case INTERACT_WORD: {
                 InteractWordMsg interactWordMsg = new InteractWordMsg();
-                interactWordMsg.setProtover(sendSmsReplyMsg.getProtover());
-                InteractWordMsg.Data data = BaseBilibiliMsg.OBJECT_MAPPER.treeToValue(sendSmsReplyMsg.getData(), InteractWordMsg.Data.class);
+                interactWordMsg.setProtover(messageMsg.getProtover());
+                InteractWordMsg.Data data = BaseBilibiliMsg.OBJECT_MAPPER.treeToValue(messageMsg.getData(), InteractWordMsg.Data.class);
                 interactWordMsg.setData(data);
                 iteratorMsgListeners(msgListener -> {
                     msgListener.onEnterRoomMsg(BilibiliBinaryFrameHandler.this, interactWordMsg);
-                    msgListener.onEnterRoom(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg);
+                    msgListener.onEnterRoom(BilibiliBinaryFrameHandler.this, messageMsg);
                 });
                 break;
             }
 
             case ENTRY_EFFECT: {
-                iteratorMsgListeners(msgListener -> msgListener.onEntryEffect(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg));
+                iteratorMsgListeners(msgListener -> msgListener.onEntryEffect(BilibiliBinaryFrameHandler.this, messageMsg));
                 break;
             }
 
             case WATCHED_CHANGE: {
-                iteratorMsgListeners(msgListener -> msgListener.onWatchedChange(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg));
+                iteratorMsgListeners(msgListener -> msgListener.onWatchedChange(BilibiliBinaryFrameHandler.this, messageMsg));
                 break;
             }
 
             case LIKE_INFO_V3_CLICK: {
                 LikeInfoV3ClickMsg likeInfoV3ClickMsg = new LikeInfoV3ClickMsg();
-                likeInfoV3ClickMsg.setProtover(sendSmsReplyMsg.getProtover());
-                LikeInfoV3ClickMsg.Data data = BaseBilibiliMsg.OBJECT_MAPPER.treeToValue(sendSmsReplyMsg.getData(), LikeInfoV3ClickMsg.Data.class);
+                likeInfoV3ClickMsg.setProtover(messageMsg.getProtover());
+                LikeInfoV3ClickMsg.Data data = BaseBilibiliMsg.OBJECT_MAPPER.treeToValue(messageMsg.getData(), LikeInfoV3ClickMsg.Data.class);
                 likeInfoV3ClickMsg.setData(data);
                 iteratorMsgListeners(msgListener -> {
                     msgListener.onLikeMsg(BilibiliBinaryFrameHandler.this, likeInfoV3ClickMsg);
-                    msgListener.onClickLike(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg);
+                    msgListener.onClickLike(BilibiliBinaryFrameHandler.this, messageMsg);
                 });
                 break;
             }
 
             case LIKE_INFO_V3_UPDATE: {
-                iteratorMsgListeners(msgListener -> msgListener.onClickUpdate(BilibiliBinaryFrameHandler.this, sendSmsReplyMsg));
+                iteratorMsgListeners(msgListener -> msgListener.onClickUpdate(BilibiliBinaryFrameHandler.this, messageMsg));
                 break;
             }
 
             case LIVE:
             case STOP_LIVE_ROOM_LIST: {
-                BilibiliLiveStatusChangeMsg bilibiliLiveStatusChangeMsg = BaseBilibiliMsg.OBJECT_MAPPER.convertValue(sendSmsReplyMsg, BilibiliLiveStatusChangeMsg.class);
+                BilibiliLiveStatusChangeMsg bilibiliLiveStatusChangeMsg = BaseBilibiliMsg.OBJECT_MAPPER.convertValue(messageMsg, BilibiliLiveStatusChangeMsg.class);
                 bilibiliLiveStatusChangeMsg.setRoomIdPair(getRoomIdPair());
                 iteratorMsgListeners(msgListener -> msgListener.onLiveStatusMsg(BilibiliBinaryFrameHandler.this, bilibiliLiveStatusChangeMsg));
                 break;

@@ -57,7 +57,7 @@ public class BilibiliLiveStatusChangeMsg extends BaseBilibiliCmdMsg implements I
 
     @Override
     public OperationEnum getOperationEnum() {
-        return OperationEnum.SEND_SMS_REPLY;
+        return OperationEnum.MESSAGE;
     }
 
     @Override

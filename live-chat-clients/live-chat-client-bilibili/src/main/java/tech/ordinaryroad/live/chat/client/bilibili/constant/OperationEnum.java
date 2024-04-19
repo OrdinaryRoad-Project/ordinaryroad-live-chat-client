@@ -34,33 +34,36 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum OperationEnum {
-    HANDSHAKE(0),
-    HANDSHAKE_REPLY(1),
+
     /**
      * 心跳包
      */
     HEARTBEAT(2),
+
     /**
      * 心跳包回复（人气值）
      */
     HEARTBEAT_REPLY(3),
-    SEND_MSG(4),
 
     /**
      * 普通包（命令）
      */
-    SEND_SMS_REPLY(5),
-    DISCONNECT_REPLY(6),
+    MESSAGE(5),
 
     /**
      * 认证包
      */
-    AUTH(7),
+    USER_AUTHENTICATION(7),
 
     /**
      * 认证包回复
      */
-    AUTH_REPLY(8),
+    CONNECT_SUCCESS(8),
+
+    HANDSHAKE(0),
+    HANDSHAKE_REPLY(1),
+    SEND_MSG(4),
+    DISCONNECT_REPLY(6),
     RAW(9),
     PROTO_READY(10),
     PROTO_FINISH(11),

@@ -34,10 +34,10 @@ import io.netty.buffer.Unpooled;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.OperationEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.ProtoverEnum;
-import tech.ordinaryroad.live.chat.client.bilibili.msg.AuthReplyMsg;
+import tech.ordinaryroad.live.chat.client.bilibili.msg.ConnectSuccessMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.HeartbeatMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.HeartbeatReplyMsg;
-import tech.ordinaryroad.live.chat.client.bilibili.msg.SendSmsReplyMsg;
+import tech.ordinaryroad.live.chat.client.bilibili.msg.MessageMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.base.BaseBilibiliMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.base.IBilibiliMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
@@ -130,7 +130,7 @@ public class BilibiliCodecUtil {
         }
         if (protoverCode == ProtoverEnum.NORMAL_ZLIB.getCode()) {
             switch (operationEnum) {
-                case SEND_SMS_REPLY: {
+                case MESSAGE: {
                     // Decompress the bytes
                     Inflater inflater = new Inflater();
                     inflater.reset();
@@ -183,7 +183,7 @@ public class BilibiliCodecUtil {
             }
         } else if (protoverCode == ProtoverEnum.NORMAL_BROTLI.getCode()) {
             switch (operationEnum) {
-                case SEND_SMS_REPLY: {
+                case MESSAGE: {
                     // Load the native library
                     Brotli4jLoader.ensureAvailability();
 
@@ -231,16 +231,16 @@ public class BilibiliCodecUtil {
 
     public static Optional<IBilibiliMsg> parse(OperationEnum operation, String jsonString) {
         switch (operation) {
-            case SEND_SMS_REPLY: {
+            case MESSAGE: {
                 try {
-                    return Optional.ofNullable(BaseBilibiliMsg.OBJECT_MAPPER.readValue(jsonString, SendSmsReplyMsg.class));
+                    return Optional.ofNullable(BaseBilibiliMsg.OBJECT_MAPPER.readValue(jsonString, MessageMsg.class));
                 } catch (JsonProcessingException e) {
                     throw new BaseException(e);
                 }
             }
-            case AUTH_REPLY: {
+            case CONNECT_SUCCESS: {
                 try {
-                    return Optional.ofNullable(BaseBilibiliMsg.OBJECT_MAPPER.readValue(jsonString, AuthReplyMsg.class));
+                    return Optional.ofNullable(BaseBilibiliMsg.OBJECT_MAPPER.readValue(jsonString, ConnectSuccessMsg.class));
                 } catch (JsonProcessingException e) {
                     throw new BaseException(e);
                 }

@@ -164,7 +164,7 @@ public class SendGiftMsg extends BaseBilibiliMsg implements IGiftMsg {
 
     @Override
     public OperationEnum getOperationEnum() {
-        return OperationEnum.SEND_SMS_REPLY;
+        return OperationEnum.MESSAGE;
     }
 
     @lombok.Data

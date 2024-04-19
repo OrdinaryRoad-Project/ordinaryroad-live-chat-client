@@ -48,14 +48,14 @@ public interface IBilibiliMsgListener extends IBaseMsgListener<BilibiliBinaryFra
      * @param msg                SendSmsReplyMsg
      * @deprecated use {@link IGiftMsgListener#onGiftMsg(Object, Object)}
      */
-    default void onSendGift(BilibiliBinaryFrameHandler binaryFrameHandler, SendSmsReplyMsg msg) {
+    default void onSendGift(BilibiliBinaryFrameHandler binaryFrameHandler, MessageMsg msg) {
         this.onSendGift(msg);
     }
 
     /**
      * @deprecated use {@link IGiftMsgListener#onGiftMsg(Object)}
      */
-    default void onSendGift(SendSmsReplyMsg msg) {
+    default void onSendGift(MessageMsg msg) {
         // ignore
     }
 
@@ -66,14 +66,14 @@ public interface IBilibiliMsgListener extends IBaseMsgListener<BilibiliBinaryFra
      * @param msg                SendSmsReplyMsg
      * @deprecated use {@link IEnterRoomMsgListener#onEnterRoomMsg}
      */
-    default void onEnterRoom(BilibiliBinaryFrameHandler binaryFrameHandler, SendSmsReplyMsg msg) {
+    default void onEnterRoom(BilibiliBinaryFrameHandler binaryFrameHandler, MessageMsg msg) {
         this.onEnterRoom(msg);
     }
 
     /**
      * @deprecated use {@link IEnterRoomMsgListener#onEnterRoomMsg}
      */
-    default void onEnterRoom(SendSmsReplyMsg msg) {
+    default void onEnterRoom(MessageMsg msg) {
         // ignore
     }
 
@@ -81,13 +81,13 @@ public interface IBilibiliMsgListener extends IBaseMsgListener<BilibiliBinaryFra
      * 入场效果（高能用户）
      *
      * @param binaryFrameHandler BilibiliBinaryFrameHandler
-     * @param sendSmsReplyMsg    SendSmsReplyMsg
+     * @param messageMsg    SendSmsReplyMsg
      */
-    default void onEntryEffect(BilibiliBinaryFrameHandler binaryFrameHandler, SendSmsReplyMsg sendSmsReplyMsg) {
-        this.onEntryEffect(sendSmsReplyMsg);
+    default void onEntryEffect(BilibiliBinaryFrameHandler binaryFrameHandler, MessageMsg messageMsg) {
+        this.onEntryEffect(messageMsg);
     }
 
-    default void onEntryEffect(SendSmsReplyMsg sendSmsReplyMsg) {
+    default void onEntryEffect(MessageMsg messageMsg) {
         // ignore
     }
 
@@ -97,11 +97,11 @@ public interface IBilibiliMsgListener extends IBaseMsgListener<BilibiliBinaryFra
      * @param binaryFrameHandler BilibiliBinaryFrameHandler
      * @param msg                SendSmsReplyMsg
      */
-    default void onWatchedChange(BilibiliBinaryFrameHandler binaryFrameHandler, SendSmsReplyMsg msg) {
+    default void onWatchedChange(BilibiliBinaryFrameHandler binaryFrameHandler, MessageMsg msg) {
         this.onWatchedChange(msg);
     }
 
-    default void onWatchedChange(SendSmsReplyMsg msg) {
+    default void onWatchedChange(MessageMsg msg) {
         // ignore
     }
 
@@ -112,14 +112,14 @@ public interface IBilibiliMsgListener extends IBaseMsgListener<BilibiliBinaryFra
      * @param msg                SendSmsReplyMsg
      * @deprecated use {@link ILikeMsgListener#onLikeMsg}
      */
-    default void onClickLike(BilibiliBinaryFrameHandler binaryFrameHandler, SendSmsReplyMsg msg) {
+    default void onClickLike(BilibiliBinaryFrameHandler binaryFrameHandler, MessageMsg msg) {
         this.onClickLike(msg);
     }
 
     /**
      * @deprecated use {@link ILikeMsgListener#onLikeMsg}
      */
-    default void onClickLike(SendSmsReplyMsg msg) {
+    default void onClickLike(MessageMsg msg) {
         // ignore
     }
 
@@ -129,11 +129,11 @@ public interface IBilibiliMsgListener extends IBaseMsgListener<BilibiliBinaryFra
      * @param binaryFrameHandler BilibiliBinaryFrameHandler
      * @param msg                SendSmsReplyMsg
      */
-    default void onClickUpdate(BilibiliBinaryFrameHandler binaryFrameHandler, SendSmsReplyMsg msg) {
+    default void onClickUpdate(BilibiliBinaryFrameHandler binaryFrameHandler, MessageMsg msg) {
         this.onClickUpdate(msg);
     }
 
-    default void onClickUpdate(SendSmsReplyMsg msg) {
+    default void onClickUpdate(MessageMsg msg) {
         // ignore
     }
 }
