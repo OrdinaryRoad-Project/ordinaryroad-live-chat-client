@@ -24,7 +24,6 @@
 
 package tech.ordinaryroad.live.chat.client.bilibili.client;
 
-import cn.hutool.core.thread.ThreadUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -57,7 +56,6 @@ class BilibiliLiveChatClientTest {
                 // TODO 浏览器Cookie
                 .cookie(cookie)
                 .roomId(7777)
-                .roomId(697)
                 .build();
 
         client = new BilibiliLiveChatClient(config, new IBilibiliMsgListener() {
@@ -97,14 +95,14 @@ class BilibiliLiveChatClientTest {
             }
 
             @Override
-            public void onEntryEffect(SendSmsReplyMsg msg) {
+            public void onEntryEffect(MessageMsg msg) {
                 JsonNode data = msg.getData();
                 String copyWriting = data.get("copy_writing").asText();
                 log.info("入场效果 {}", copyWriting);
             }
 
             @Override
-            public void onWatchedChange(SendSmsReplyMsg msg) {
+            public void onWatchedChange(MessageMsg msg) {
                 JsonNode data = msg.getData();
                 int num = data.get("num").asInt();
                 String textSmall = data.get("text_small").asText();
@@ -113,7 +111,7 @@ class BilibiliLiveChatClientTest {
             }
 
             @Override
-            public void onClickLike(SendSmsReplyMsg msg) {
+            public void onClickLike(MessageMsg msg) {
                 JsonNode data = msg.getData();
                 String uname = data.get("uname").asText();
                 String likeText = data.get("like_text").asText();
@@ -121,7 +119,7 @@ class BilibiliLiveChatClientTest {
             }
 
             @Override
-            public void onClickUpdate(SendSmsReplyMsg msg) {
+            public void onClickUpdate(MessageMsg msg) {
                 JsonNode data = msg.getData();
                 int clickCount = data.get("click_count").asInt();
                 log.debug("点赞数更新 {}", clickCount);
@@ -129,7 +127,7 @@ class BilibiliLiveChatClientTest {
 
             @Override
             public void onMsg(IMsg msg) {
-                log.debug("收到{}消息 {}", msg.getClass(), msg);
+                // log.debug("收到{}消息 {}", msg.getClass(), msg);
             }
 
             @Override
@@ -139,16 +137,19 @@ class BilibiliLiveChatClientTest {
 
             @Override
             public void onOtherCmdMsg(BilibiliCmdEnum cmd, ICmdMsg<BilibiliCmdEnum> cmdMsg) {
-//                log.debug("收到其他CMD消息 {}", cmd);
+                log.debug("收到其他CMD消息 {}", cmd);
+                if (!((MessageMsg) cmdMsg).getUnknownProperties().isEmpty()) {
+                    int size = ((MessageMsg) cmdMsg).getUnknownProperties().size();
+                }
                 switch (cmd) {
                     case GUARD_BUY: {
                         // 有人上舰
-                        SendSmsReplyMsg sendSmsReplyMsg = (SendSmsReplyMsg) cmdMsg;
+                        MessageMsg messageMsg = (MessageMsg) cmdMsg;
                         break;
                     }
                     case SUPER_CHAT_MESSAGE_DELETE: {
                         // 删除醒目留言
-                        SendSmsReplyMsg sendSmsReplyMsg = (SendSmsReplyMsg) cmdMsg;
+                        MessageMsg messageMsg = (MessageMsg) cmdMsg;
                         break;
                     }
                 }
@@ -185,6 +186,25 @@ class BilibiliLiveChatClientTest {
             synchronized (lock) {
                 lock.wait();
             }
+        }
+    }
+
+    @Test
+    void liveStatusChangeTest() throws IOException {
+        BilibiliLiveChatClient bilibiliLiveChatClient = new BilibiliLiveChatClient(BilibiliLiveChatClientConfig.builder()
+                .roomId(8159061)
+                .build());
+        bilibiliLiveChatClient.addMsgListener(new IBilibiliMsgListener() {
+            @Override
+            public void onLiveStatusMsg(BilibiliBinaryFrameHandler binaryFrameHandler, BilibiliLiveStatusChangeMsg msg) {
+                IBilibiliMsgListener.super.onLiveStatusMsg(binaryFrameHandler, msg);
+                log.error("{} 状态变化 {} data: {}", binaryFrameHandler.getRoomId(), msg.getLiveStatusAction(), msg.getData());
+            }
+        });
+        bilibiliLiveChatClient.connect();
+
+        while (true) {
+            System.in.read();
         }
     }
 
