@@ -49,6 +49,7 @@ public class UserId extends TarsStructBase {
     private String sCookie = "";
     private int iTokenType;
     private String sDeviceInfo = "";
+    private String sQIMEI = "";
 
 
     @Override
@@ -60,17 +61,19 @@ public class UserId extends TarsStructBase {
         os.write(this.sCookie, 4);
         os.write(this.iTokenType, 5);
         os.write(this.sDeviceInfo, 6);
+        os.write(this.sQIMEI, 7);
     }
 
     @Override
     public void readFrom(TarsInputStream is) {
-        this.lUid = is.read(this.lUid, 0, true);
-        this.sGuid = is.read(this.sGuid, 1, true);
-        this.sToken = is.read(this.sToken, 2, true);
-        this.sHuYaUA = is.read(this.sHuYaUA, 3, true);
-        this.sCookie = is.read(this.sCookie, 4, true);
-        this.iTokenType = is.read(this.iTokenType, 5, true);
-        this.sDeviceInfo = is.read(this.sDeviceInfo, 6, true);
+        this.lUid = is.read(this.lUid, 0, false);
+        this.sGuid = is.read(this.sGuid, 1, false);
+        this.sToken = is.read(this.sToken, 2, false);
+        this.sHuYaUA = is.read(this.sHuYaUA, 3, false);
+        this.sCookie = is.read(this.sCookie, 4, false);
+        this.iTokenType = is.read(this.iTokenType, 5, false);
+        this.sDeviceInfo = is.read(this.sDeviceInfo, 6, false);
+        this.sQIMEI = is.read(this.sQIMEI, 7, false);
     }
 
     @Override

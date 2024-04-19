@@ -106,18 +106,18 @@ public class MessageNoticeMsg extends BaseHuyaMsg implements IDanmuMsg {
 
     @Override
     public void readFrom(TarsInputStream is) {
-        this.tUserInfo = (SenderInfo) is.directRead(this.tUserInfo, 0, true);
-        this.lTid = is.read(this.lTid, 1, true);
-        this.lSid = is.read(this.lSid, 2, true);
-        this.sContent = is.readString(3, true);
-        this.iShowMode = is.read(this.iShowMode, 4, true);
-        this.tFormat = (ContentFormat) is.directRead(this.tFormat, 5, true);
-        this.tBulletFormat = (BulletFormat) is.directRead(this.tBulletFormat, 6, true);
-        this.iTermType = is.read(this.iTermType, 7, true);
-        this.vDecorationPrefix = is.readArray(this.vDecorationPrefix, 8, true);
-        this.vDecorationSuffix = is.readArray(this.vDecorationSuffix, 9, true);
-        this.vAtSomeone = is.readArray(this.vAtSomeone, 10, true);
-        this.lPid = is.read(this.lPid, 11, true);
+        this.tUserInfo = (SenderInfo) is.directRead(this.tUserInfo, 0, false);
+        this.lTid = is.read(this.lTid, 1, false);
+        this.lSid = is.read(this.lSid, 2, false);
+        this.sContent = is.readString(3, false);
+        this.iShowMode = is.read(this.iShowMode, 4, false);
+        this.tFormat = (ContentFormat) is.directRead(this.tFormat, 5, false);
+        this.tBulletFormat = (BulletFormat) is.directRead(this.tBulletFormat, 6, false);
+        this.iTermType = is.read(this.iTermType, 7, false);
+        this.vDecorationPrefix = is.readArray(this.vDecorationPrefix, 8, false);
+        this.vDecorationSuffix = is.readArray(this.vDecorationSuffix, 9, false);
+        this.vAtSomeone = is.readArray(this.vAtSomeone, 10, false);
+        this.lPid = is.read(this.lPid, 11, false);
         this.vBulletPrefix = is.readArray(this.vBulletPrefix, 12, false);
         this.sIconUrl = is.read(this.sIconUrl, 13, false);
         this.iType = is.read(this.iType, 14, false);

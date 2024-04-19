@@ -43,6 +43,11 @@ import tech.ordinaryroad.live.chat.client.huya.msg.base.BaseHuyaMsg;
 @NoArgsConstructor
 public class WebSocketCommand extends BaseHuyaMsg {
 
+    /**
+     * 原名为iCmdType
+     * operation：Client和Server交互的消息类型：认证、心跳等
+     * cmd：Client收到的具体业务类型：弹幕、礼物等
+     */
     private int operation;
     private byte[] vData;
     private long lRequestId;
@@ -68,13 +73,13 @@ public class WebSocketCommand extends BaseHuyaMsg {
 
     @Override
     public void readFrom(TarsInputStream is) {
-        this.operation = is.read(this.operation, 0, true);
-        this.vData = is.read(this.vData, 1, true);
-        this.lRequestId = is.read(this.lRequestId, 2, true);
-        this.traceId = is.read(this.traceId, 3, true);
-        this.iEncryptType = is.read(this.iEncryptType, 4, true);
-        this.lTime = is.read(this.lTime, 5, true);
-        this.sMD5 = is.read(this.sMD5, 6, true);
+        this.operation = is.read(this.operation, 0, false);
+        this.vData = is.read(this.vData, 1, false);
+        this.lRequestId = is.read(this.lRequestId, 2, false);
+        this.traceId = is.read(this.traceId, 3, false);
+        this.iEncryptType = is.read(this.iEncryptType, 4, false);
+        this.lTime = is.read(this.lTime, 5, false);
+        this.sMD5 = is.read(this.sMD5, 6, false);
     }
 
     @Override

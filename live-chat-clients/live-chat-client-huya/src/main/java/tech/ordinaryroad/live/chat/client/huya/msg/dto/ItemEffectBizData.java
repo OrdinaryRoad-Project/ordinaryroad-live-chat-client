@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.huya.msg.req;
+package tech.ordinaryroad.live.chat.client.huya.msg.dto;
 
 import com.qq.tars.protocol.tars.TarsInputStream;
 import com.qq.tars.protocol.tars.TarsOutputStream;
@@ -31,40 +31,30 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tech.ordinaryroad.live.chat.client.huya.msg.dto.DeviceInfo;
 
 /**
  * @author mjz
- * @date 2023/10/5
+ * @date 2024/4/19
  */
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class LaunchReq extends TarsStructBase {
+public class ItemEffectBizData extends TarsStructBase {
 
-    private long lUid;
-    private String sGuid = "";
-    private String sUA = "";
-    private String sAppSrc = "";
-    private DeviceInfo tDeviceInfo = new DeviceInfo();
+    private int iType;
+    private byte[] vData;
 
     @Override
     public void writeTo(TarsOutputStream os) {
-        os.write(this.lUid, 0);
-        os.write(this.sGuid, 1);
-        os.write(this.sUA, 2);
-        os.write(this.sAppSrc, 3);
-        os.write(this.tDeviceInfo, 4);
+        os.write(this.iType, 0);
+        os.write(this.iType, 1);
     }
 
     @Override
     public void readFrom(TarsInputStream is) {
-        this.lUid = is.read(this.lUid, 0, false);
-        this.sGuid = is.read(this.sGuid, 1, false);
-        this.sUA = is.read(this.sUA, 2, false);
-        this.sAppSrc = is.read(this.sAppSrc, 3, false);
-        this.tDeviceInfo = (DeviceInfo) is.directRead(this.tDeviceInfo, 4, false);
+        this.iType = is.read(this.iType, 0, false);
+        this.iType = is.read(this.iType, 1, false);
     }
 
     @Override

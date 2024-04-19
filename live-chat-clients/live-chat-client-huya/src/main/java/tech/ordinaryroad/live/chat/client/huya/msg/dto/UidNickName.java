@@ -53,8 +53,8 @@ public class UidNickName extends TarsStructBase {
 
     @Override
     public void readFrom(TarsInputStream is) {
-        this.lUid = is.read(this.lUid, 0, true);
-        this.sNickName = is.read(this.sNickName, 1, true);
+        this.lUid = is.read(this.lUid, 0, false);
+        this.sNickName = is.read(this.sNickName, 1, false);
     }
 
     @Override

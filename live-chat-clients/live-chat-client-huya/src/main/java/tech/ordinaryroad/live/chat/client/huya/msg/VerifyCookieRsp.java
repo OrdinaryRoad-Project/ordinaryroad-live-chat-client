@@ -56,7 +56,7 @@ public class VerifyCookieRsp extends BaseHuyaMsg {
 
     @Override
     public void readFrom(TarsInputStream is) {
-        this.iValidate = is.read(this.iValidate, 0, true);
+        this.iValidate = is.read(this.iValidate, 0, false);
     }
 
     @Override

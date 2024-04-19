@@ -189,23 +189,23 @@ public class HuyaMsgFactory {
     public WebSocketCommand createRegisterGroupReq() {
         String lYyid = roomInfo.get("lChannelId").asText();
 
-        RegisterGroupReq registerGroupReq = new RegisterGroupReq();
-        registerGroupReq.setVGroupId(CollUtil.newArrayList("live:" + lYyid, "chat:" + lYyid));
+        WSRegisterGroupReq wsRegisterGroupReq = new WSRegisterGroupReq();
+        wsRegisterGroupReq.setVGroupId(CollUtil.newArrayList("live:" + lYyid, "chat:" + lYyid));
 
         WebSocketCommand webSocketCommand = new WebSocketCommand();
         webSocketCommand.setOperation(HuyaOperationEnum.EWSCmdC2S_RegisterGroupReq.getCode());
-        webSocketCommand.setVData(registerGroupReq.toByteArray());
+        webSocketCommand.setVData(wsRegisterGroupReq.toByteArray());
         return webSocketCommand;
     }
 
     public WebSocketCommand createUpdateUserInfoReq() {
-        UpdateUserInfoReq updateUserInfoReq = new UpdateUserInfoReq();
-        updateUserInfoReq.setSAppSrc("HUYA&ZH&2052");
-        updateUserInfoReq.getTWSMsgStatInfo().setISupportAckMsgStat(1);
+        WSUpdateUserInfoReq wsUpdateUserInfoReq = new WSUpdateUserInfoReq();
+        wsUpdateUserInfoReq.setSAppSrc("HUYA&ZH&2052");
+        wsUpdateUserInfoReq.getTWSMsgStatInfo().setISupportAckMsgStat(1);
 
         WebSocketCommand webSocketCommand = new WebSocketCommand();
         webSocketCommand.setOperation(HuyaOperationEnum.EWSCmdC2S_UpdateUserInfoReq.getCode());
-        webSocketCommand.setVData(updateUserInfoReq.toByteArray());
+        webSocketCommand.setVData(wsUpdateUserInfoReq.toByteArray());
         return webSocketCommand;
     }
 

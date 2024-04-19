@@ -89,13 +89,13 @@ public class DouyuWebSocketFrameFactory {
             if (cookieMap.isEmpty()) {
                 // 视为未登录
                 if (mode == DouyuClientModeEnum.DANMU) {
-                    uid = RandomUtil.randomLong(10000000, 19999999);
-                    username = "visitor" + RandomUtil.randomLong(10000000, 19999999);
+                    uid = RandomUtil.randomInt(10000, 19999);
+                    username = "visitor" + RandomUtil.randomInt(1000000000, 1999999999);
                     loginreqMsg = new LoginreqMsg(realRoomId, "", username, uid, ver, aver);
-                    return new BinaryWebSocketFrame(DouyuCodecUtil.encode(loginreqMsg, LoginreqMsg.SHOULD_IGNORE_NEW_LOGIN_PROPERTIES));
+                    return new BinaryWebSocketFrame(DouyuCodecUtil.encode(loginreqMsg, LoginreqMsg.SHOULD_IGNORE_PROPERTIES_WHEN_NOT_LOGGED_IN));
                 } else {
                     loginreqMsg = new LoginreqMsg(realRoomId, "", "", ver, aver, "", "", "", UUID.fastUUID().toString(true));
-                    return new BinaryWebSocketFrame(DouyuCodecUtil.encode(loginreqMsg, LoginreqMsg.SHOULD_IGNORE_OLD_LOGIN_PROPERTIES));
+                    return new BinaryWebSocketFrame(DouyuCodecUtil.encode(loginreqMsg, LoginreqMsg.SHOULD_IGNORE_PROPERTIES_WHEN_LOGGED_IN));
                 }
             }
             // 视为登录
@@ -108,7 +108,7 @@ public class DouyuWebSocketFrameFactory {
                 String dfl = "sn@A=105@Sss@A=1";
                 if (mode == DouyuClientModeEnum.DANMU) {
                     loginreqMsg = new LoginreqMsg(realRoomId, dfl, username, uid, ver, aver);
-                    return new BinaryWebSocketFrame(DouyuCodecUtil.encode(loginreqMsg, LoginreqMsg.SHOULD_IGNORE_NEW_LOGIN_PROPERTIES));
+                    return new BinaryWebSocketFrame(DouyuCodecUtil.encode(loginreqMsg, LoginreqMsg.SHOULD_IGNORE_PROPERTIES_WHEN_NOT_LOGGED_IN));
                 } else {
                     String acfLtkid = OrLiveChatCookieUtil.getCookieByName(cookieMap, DouyuApis.KEY_COOKIE_ACF_LTKID, () -> {
                         throw new BaseException("Cookie中缺少字段" + DouyuApis.KEY_COOKIE_ACF_LTKID);
@@ -120,7 +120,7 @@ public class DouyuWebSocketFrameFactory {
                         throw new BaseException("Cookie中缺少字段" + DouyuApis.KEY_COOKIE_DY_DID);
                     });
                     loginreqMsg = new LoginreqMsg(realRoomId, dfl, username, ver, aver, acfLtkid, "1", acfStk, dyDid);
-                    return new BinaryWebSocketFrame(DouyuCodecUtil.encode(loginreqMsg, LoginreqMsg.SHOULD_IGNORE_OLD_LOGIN_PROPERTIES));
+                    return new BinaryWebSocketFrame(DouyuCodecUtil.encode(loginreqMsg, LoginreqMsg.SHOULD_IGNORE_PROPERTIES_WHEN_LOGGED_IN));
                 }
             }
         } catch (Exception e) {

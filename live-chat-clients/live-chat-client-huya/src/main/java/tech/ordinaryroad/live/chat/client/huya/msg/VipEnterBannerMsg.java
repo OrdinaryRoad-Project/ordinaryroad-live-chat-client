@@ -64,6 +64,7 @@ public class VipEnterBannerMsg extends BaseHuyaMsg implements IEnterRoomMsg {
     private ACEnterBanner tACInfo = new ACEnterBanner();
     private List<CommEnterBanner> vCommEnterBanner = CollUtil.newArrayList(new CommEnterBanner());
     private UserRidePetInfo tRidePetInfo = new UserRidePetInfo();
+    private String sNobleBubbleSource = "";
 
     public VipEnterBannerMsg(TarsInputStream is) {
         this.readFrom(is);
@@ -87,6 +88,7 @@ public class VipEnterBannerMsg extends BaseHuyaMsg implements IEnterRoomMsg {
         os.write(this.tACInfo, 13);
         os.write(this.vCommEnterBanner, 14);
         os.write(this.tRidePetInfo, 15);
+        os.write(this.sNobleBubbleSource, 16);
     }
 
     @Override
@@ -107,6 +109,7 @@ public class VipEnterBannerMsg extends BaseHuyaMsg implements IEnterRoomMsg {
         this.tACInfo = (ACEnterBanner) is.directRead(this.tACInfo, 13, false);
         this.vCommEnterBanner = is.readArray(this.vCommEnterBanner, 14, false);
         this.tRidePetInfo = (UserRidePetInfo) is.directRead(this.tRidePetInfo, 15, false);
+        this.sNobleBubbleSource = is.read(this.sNobleBubbleSource, 16, false);
     }
 
     @Override

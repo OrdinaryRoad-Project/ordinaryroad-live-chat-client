@@ -41,7 +41,6 @@ import tech.ordinaryroad.live.chat.client.huya.msg.base.IHuyaMsg;
 import tech.ordinaryroad.live.chat.client.huya.msg.dto.MsgItem;
 import tech.ordinaryroad.live.chat.client.huya.msg.dto.PropsItem;
 import tech.ordinaryroad.live.chat.client.huya.msg.factory.HuyaMsgFactory;
-import tech.ordinaryroad.live.chat.client.huya.msg.req.GetPropsListRsp;
 import tech.ordinaryroad.live.chat.client.huya.util.HuyaCodecUtil;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientBinaryFrameHandler;
 
@@ -150,9 +149,9 @@ public class HuyaBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<Hu
         }
 
         byte[] dataBytes;
-        if (cmdMsg instanceof PushMessage) {
-            PushMessage pushMessage = (PushMessage) cmdMsg;
-            dataBytes = pushMessage.getDataBytes();
+        if (cmdMsg instanceof WSPushMessage) {
+            WSPushMessage wsPushMessage = (WSPushMessage) cmdMsg;
+            dataBytes = wsPushMessage.getDataBytes();
         } else if (cmdMsg instanceof MsgItem) {
             MsgItem msgItem = (MsgItem) cmdMsg;
             dataBytes = msgItem.getSMsg();

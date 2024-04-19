@@ -44,17 +44,20 @@ public class CustomBadgeDynamicExternal extends TarsStructBase {
 
     private String sFloorExter = "";
     private int iFansIdentity;
+    private int iBadgeSize;
 
     @Override
     public void writeTo(TarsOutputStream os) {
         os.write(this.sFloorExter, 0);
         os.write(this.iFansIdentity, 1);
+        os.write(this.iFansIdentity, 2);
     }
 
     @Override
     public void readFrom(TarsInputStream is) {
         this.sFloorExter = is.read(this.sFloorExter, 0, false);
         this.iFansIdentity = is.read(this.iFansIdentity, 1, false);
+        this.iBadgeSize = is.read(this.iBadgeSize, 2, false);
     }
 
     @Override

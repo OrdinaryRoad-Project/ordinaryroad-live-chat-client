@@ -53,7 +53,7 @@ public class SendMessageReq extends TarsStructBase {
     private int iShowMode;
     private ContentFormat tFormat = new ContentFormat();
     private BulletFormat tBulletFormat = new BulletFormat();
-    private List<UidNickName> vAtSomeone;
+    private List<UidNickName> vAtSomeone = CollUtil.newArrayList(new UidNickName());
     private long lPid;
     private List<MessageTagInfo> vTagInfo = CollUtil.newArrayList(new MessageTagInfo());
     private SendMessageFormat tSenceFormat = new SendMessageFormat();

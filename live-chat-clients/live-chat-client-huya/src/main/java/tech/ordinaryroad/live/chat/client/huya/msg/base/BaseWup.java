@@ -66,7 +66,6 @@ public abstract class BaseWup extends BaseHuyaMsg {
 
     @Override
     public void writeTo(TarsOutputStream os) {
-//        os.write(this.tarsServantRequest.getVersion(), 1);
         os.write(TarsHelper.VERSION3, 1);
         os.write(this.tarsServantRequest.getPacketType(), 2);
         os.write(this.tarsServantRequest.getMessageType(), 3);

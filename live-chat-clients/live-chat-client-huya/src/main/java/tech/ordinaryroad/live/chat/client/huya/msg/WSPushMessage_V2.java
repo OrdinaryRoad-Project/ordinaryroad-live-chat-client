@@ -22,15 +22,20 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.huya.msg.dto;
+package tech.ordinaryroad.live.chat.client.huya.msg;
 
+import cn.hutool.core.collection.CollUtil;
 import com.qq.tars.protocol.tars.TarsInputStream;
 import com.qq.tars.protocol.tars.TarsOutputStream;
-import com.qq.tars.protocol.tars.TarsStructBase;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import tech.ordinaryroad.live.chat.client.huya.constant.HuyaOperationEnum;
+import tech.ordinaryroad.live.chat.client.huya.msg.base.BaseHuyaMsg;
+import tech.ordinaryroad.live.chat.client.huya.msg.dto.MsgItem;
+
+import java.util.List;
 
 /**
  * @author mjz
@@ -40,34 +45,29 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeviceInfo extends TarsStructBase {
+public class WSPushMessage_V2 extends BaseHuyaMsg {
 
-    private String sIMEI = "";
-    private String sAPN = "";
-    private String sNetType = "";
-    private String sDeviceId = "";
-    private String sMId = "";
+    private String sGroupId;
+    private List<MsgItem> vMsgItem = CollUtil.newArrayList(new MsgItem());
+
+    public WSPushMessage_V2(TarsInputStream is) {
+        this.readFrom(is);
+    }
 
     @Override
     public void writeTo(TarsOutputStream os) {
-        os.write(this.sIMEI, 0);
-        os.write(this.sAPN, 1);
-        os.write(this.sNetType, 2);
-        os.write(this.sDeviceId, 3);
-        os.write(this.sMId, 4);
+        os.write(this.sGroupId, 0);
+        os.write(this.vMsgItem, 1);
     }
 
     @Override
     public void readFrom(TarsInputStream is) {
-        this.sIMEI = is.read(this.sIMEI, 0, false);
-        this.sAPN = is.read(this.sAPN, 1, false);
-        this.sNetType = is.read(this.sNetType, 2, false);
-        this.sDeviceId = is.read(this.sDeviceId, 3, false);
-        this.sMId = is.read(this.sMId, 4, false);
+        this.sGroupId = is.read(this.sGroupId, 0, false);
+        this.vMsgItem = is.readArray(this.vMsgItem, 1, false);
     }
 
     @Override
-    public TarsStructBase newInit() {
-        return this;
+    public HuyaOperationEnum getOperationEnum() {
+        return HuyaOperationEnum.EWSCmdS2C_MsgPushReq_V2;
     }
 }

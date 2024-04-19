@@ -82,22 +82,22 @@ public class HuyaCodecUtil {
 
         switch (operationEnum) {
             case EWSCmd_RegisterRsp: {
-                return Collections.singletonList(new RegisterRsp(newUtf8TarsInputStream(webSocketCommand.getVData())));
+                return Collections.singletonList(new WSRegisterRsp(newUtf8TarsInputStream(webSocketCommand.getVData())));
             }
             case EWSCmdS2C_RegisterGroupRsp: {
-                return Collections.singletonList(new RegisterGroupRsp(newUtf8TarsInputStream(webSocketCommand.getVData())));
+                return Collections.singletonList(new WSRegisterGroupRsp(newUtf8TarsInputStream(webSocketCommand.getVData())));
             }
             case EWSCmd_WupRsp: {
                 return Collections.singletonList(new WupRsp(webSocketCommand.getVData()));
             }
             case EWSCmdS2C_MsgPushReq: {
-                return Collections.singletonList(new PushMessage(newUtf8TarsInputStream(webSocketCommand.getVData())));
+                return Collections.singletonList(new WSPushMessage(newUtf8TarsInputStream(webSocketCommand.getVData())));
             }
             case EWSCmdS2C_VerifyCookieRsp: {
                 return Collections.singletonList(new VerifyCookieRsp(newUtf8TarsInputStream(webSocketCommand.getVData())));
             }
             case EWSCmdS2C_MsgPushReq_V2: {
-                PushMessage_V2 pushMessageV2 = new PushMessage_V2(newUtf8TarsInputStream(webSocketCommand.getVData()));
+                WSPushMessage_V2 pushMessageV2 = new WSPushMessage_V2(newUtf8TarsInputStream(webSocketCommand.getVData()));
                 return pushMessageV2.getVMsgItem();
             }
             default: {

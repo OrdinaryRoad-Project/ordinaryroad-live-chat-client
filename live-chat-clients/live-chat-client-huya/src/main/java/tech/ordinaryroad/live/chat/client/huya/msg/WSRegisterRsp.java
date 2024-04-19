@@ -24,7 +24,6 @@
 
 package tech.ordinaryroad.live.chat.client.huya.msg;
 
-import cn.hutool.core.collection.CollUtil;
 import com.qq.tars.protocol.tars.TarsInputStream;
 import com.qq.tars.protocol.tars.TarsOutputStream;
 import lombok.AllArgsConstructor;
@@ -34,8 +33,6 @@ import lombok.Setter;
 import tech.ordinaryroad.live.chat.client.huya.constant.HuyaOperationEnum;
 import tech.ordinaryroad.live.chat.client.huya.msg.base.BaseHuyaMsg;
 
-import java.util.List;
-
 /**
  * @author mjz
  * @date 2023/10/5
@@ -44,29 +41,35 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterGroupRsp extends BaseHuyaMsg {
+public class WSRegisterRsp extends BaseHuyaMsg {
 
     private int iResCode;
-    private List<String> vSupportP2PGroupId = CollUtil.newArrayList("");
+    private long lRequestId;
+    private String sMessage = "";
+    private String sBCConnHost = "";
 
-    public RegisterGroupRsp(TarsInputStream is) {
+    public WSRegisterRsp(TarsInputStream is) {
         this.readFrom(is);
     }
 
     @Override
     public void writeTo(TarsOutputStream os) {
         os.write(this.iResCode, 0);
-        os.write(this.vSupportP2PGroupId, 1);
+        os.write(this.lRequestId, 1);
+        os.write(this.sMessage, 2);
+        os.write(this.sBCConnHost, 3);
     }
 
     @Override
     public void readFrom(TarsInputStream is) {
-        this.iResCode = is.read(this.iResCode, 0, true);
-        this.vSupportP2PGroupId = is.readArray(this.vSupportP2PGroupId, 1, true);
+        this.iResCode = is.read(this.iResCode, 0, false);
+        this.lRequestId = is.read(this.lRequestId, 1, false);
+        this.sMessage = is.read(this.sMessage, 2, false);
+        this.sBCConnHost = is.read(this.sBCConnHost, 3, false);
     }
 
     @Override
     public HuyaOperationEnum getOperationEnum() {
-        return HuyaOperationEnum.EWSCmdS2C_RegisterGroupRsp;
+        return HuyaOperationEnum.EWSCmd_RegisterRsp;
     }
 }
