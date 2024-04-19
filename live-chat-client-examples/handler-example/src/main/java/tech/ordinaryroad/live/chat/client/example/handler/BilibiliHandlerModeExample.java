@@ -48,8 +48,8 @@ import tech.ordinaryroad.live.chat.client.bilibili.constant.BilibiliCmdEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.ProtoverEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliMsgListener;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.DanmuMsgMsg;
+import tech.ordinaryroad.live.chat.client.bilibili.msg.MessageMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.SendGiftMsg;
-import tech.ordinaryroad.live.chat.client.bilibili.msg.SendSmsReplyMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliCodecHandler;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliConnectionHandler;
@@ -146,19 +146,19 @@ public class BilibiliHandlerModeExample {
                 }
 
                 @Override
-                public void onEnterRoom(BilibiliBinaryFrameHandler binaryFrameHandler, SendSmsReplyMsg msg) {
+                public void onEnterRoom(BilibiliBinaryFrameHandler binaryFrameHandler, MessageMsg msg) {
                     log.debug("普通用户进入直播间 {}", msg.getData().get("uname").asText());
                 }
 
                 @Override
-                public void onEntryEffect(BilibiliBinaryFrameHandler binaryFrameHandler, SendSmsReplyMsg msg) {
+                public void onEntryEffect(BilibiliBinaryFrameHandler binaryFrameHandler, MessageMsg msg) {
                     JsonNode data = msg.getData();
                     String copyWriting = data.get("copy_writing").asText();
                     log.info("入场效果 {}", copyWriting);
                 }
 
                 @Override
-                public void onWatchedChange(BilibiliBinaryFrameHandler binaryFrameHandler, SendSmsReplyMsg msg) {
+                public void onWatchedChange(BilibiliBinaryFrameHandler binaryFrameHandler, MessageMsg msg) {
                     JsonNode data = msg.getData();
                     int num = data.get("num").asInt();
                     String textSmall = data.get("text_small").asText();
@@ -167,7 +167,7 @@ public class BilibiliHandlerModeExample {
                 }
 
                 @Override
-                public void onClickLike(BilibiliBinaryFrameHandler binaryFrameHandler, SendSmsReplyMsg msg) {
+                public void onClickLike(BilibiliBinaryFrameHandler binaryFrameHandler, MessageMsg msg) {
                     JsonNode data = msg.getData();
                     String uname = data.get("uname").asText();
                     String likeText = data.get("like_text").asText();
@@ -175,7 +175,7 @@ public class BilibiliHandlerModeExample {
                 }
 
                 @Override
-                public void onClickUpdate(BilibiliBinaryFrameHandler binaryFrameHandler, SendSmsReplyMsg msg) {
+                public void onClickUpdate(BilibiliBinaryFrameHandler binaryFrameHandler, MessageMsg msg) {
                     JsonNode data = msg.getData();
                     int clickCount = data.get("click_count").asInt();
                     log.debug("点赞数更新 {}", clickCount);

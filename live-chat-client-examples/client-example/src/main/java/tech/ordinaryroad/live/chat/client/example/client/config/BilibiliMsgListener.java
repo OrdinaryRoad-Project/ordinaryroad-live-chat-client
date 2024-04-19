@@ -30,8 +30,8 @@ import org.springframework.stereotype.Service;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.BilibiliCmdEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliMsgListener;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.DanmuMsgMsg;
+import tech.ordinaryroad.live.chat.client.bilibili.msg.MessageMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.SendGiftMsg;
-import tech.ordinaryroad.live.chat.client.bilibili.msg.SendSmsReplyMsg;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseCmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseMsg;
@@ -60,19 +60,19 @@ public class BilibiliMsgListener implements IBilibiliMsgListener {
     }
 
     @Override
-    public void onEnterRoom(SendSmsReplyMsg msg) {
+    public void onEnterRoom(MessageMsg msg) {
         log.debug("普通用户进入直播间 {}", msg.getData().get("uname").asText());
     }
 
     @Override
-    public void onEntryEffect(SendSmsReplyMsg msg) {
+    public void onEntryEffect(MessageMsg msg) {
         JsonNode data = msg.getData();
         String copyWriting = data.get("copy_writing").asText();
         log.info("入场效果 {}", copyWriting);
     }
 
     @Override
-    public void onWatchedChange(SendSmsReplyMsg msg) {
+    public void onWatchedChange(MessageMsg msg) {
         JsonNode data = msg.getData();
         int num = data.get("num").asInt();
         String textSmall = data.get("text_small").asText();
@@ -81,7 +81,7 @@ public class BilibiliMsgListener implements IBilibiliMsgListener {
     }
 
     @Override
-    public void onClickLike(SendSmsReplyMsg msg) {
+    public void onClickLike(MessageMsg msg) {
         JsonNode data = msg.getData();
         String uname = data.get("uname").asText();
         String likeText = data.get("like_text").asText();
@@ -89,7 +89,7 @@ public class BilibiliMsgListener implements IBilibiliMsgListener {
     }
 
     @Override
-    public void onClickUpdate(SendSmsReplyMsg msg) {
+    public void onClickUpdate(MessageMsg msg) {
         JsonNode data = msg.getData();
         int clickCount = data.get("click_count").asInt();
         log.debug("点赞数更新 {}", clickCount);
