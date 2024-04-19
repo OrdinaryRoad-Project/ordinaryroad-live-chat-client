@@ -38,6 +38,8 @@ import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
 
+import java.io.IOException;
+
 /**
  * @author mjz
  * @date 2023/8/26
