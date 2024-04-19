@@ -31,6 +31,7 @@ import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatLocalDateTimeUt
 import tech.ordinaryroad.live.chat.client.douyu.api.DouyuApis;
 import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyu.msg.base.BaseDouyuCmdMsg;
+import tech.ordinaryroad.live.chat.client.douyu.util.DouyuCodecUtil;
 
 import java.util.Arrays;
 import java.util.List;
@@ -44,8 +45,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LoginreqMsg extends BaseDouyuCmdMsg {
 
-    public static List<String> SHOULD_IGNORE_NEW_LOGIN_PROPERTIES = Arrays.asList("roomid", "dfl", "username", "uid", "ver", "aver", "ct", "type");
-    public static List<String> SHOULD_IGNORE_OLD_LOGIN_PROPERTIES = Arrays.asList("type", "roomid", "dfl", "username", "password", "ltkid", "biz", "stk", "devid", "ct", "pt", "cvr", "tvr", "apd", "rt", "vk", "ver", "aver", "dmbt", "dmbv");
+    /**
+     * 登录状态需要的字段，SHOULD_IGNORE为序列化时需要忽略的字段的前缀
+     *
+     * @see DouyuCodecUtil#SHOULD_IGNORE_PROPERTIES_PREFIX
+     */
+    public static List<String> SHOULD_IGNORE_PROPERTIES_WHEN_NOT_LOGGED_IN = Arrays.asList("roomid", "dfl", "username", "uid", "ver", "aver", "ct", "type");
+    /**
+     * 未登录状态需要的字段，SHOULD_IGNORE为序列化时需要忽略的字段的前缀
+     *
+     * @see DouyuCodecUtil#SHOULD_IGNORE_PROPERTIES_PREFIX
+     */
+    public static List<String> SHOULD_IGNORE_PROPERTIES_WHEN_LOGGED_IN = Arrays.asList("type", "roomid", "dfl", "username", "password", "ltkid", "biz", "stk", "devid", "ct", "pt", "cvr", "tvr", "apd", "rt", "vk", "ver", "aver", "dmbt", "dmbv");
 
     private long roomid;
     private String dfl;
@@ -76,7 +87,7 @@ public class LoginreqMsg extends BaseDouyuCmdMsg {
     private long rt = OrLiveChatLocalDateTimeUtil.zonedCurrentTimeSecs();
     private String vk;
     private String dmbt = "chrome";
-    private String dmbv = "116";
+    private String dmbv = "123";
 
     public LoginreqMsg(long roomid, String dfl, String username, long uid, String ver, String aver) {
         this.roomid = roomid;
