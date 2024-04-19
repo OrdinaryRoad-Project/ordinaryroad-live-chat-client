@@ -176,13 +176,13 @@ public void onOtherCmdMsg(BilibiliCmdEnum cmd, ICmdMsg<BilibiliCmdEnum> cmdMsg) 
         switch (cmd) {
             case GUARD_BUY: {
                 // 有人上舰
-                SendSmsReplyMsg sendSmsReplyMsg = (SendSmsReplyMsg) cmdMsg;
+                MessageMsg messageMsg = (MessageMsg) cmdMsg;
                 ...
                 break;
             }
             case SUPER_CHAT_MESSAGE_DELETE: {
                 // 删除醒目留言
-                SendSmsReplyMsg sendSmsReplyMsg = (SendSmsReplyMsg) cmdMsg;
+                MessageMsg messageMsg = (MessageMsg) cmdMsg;
                 ...
                 break;
             }
