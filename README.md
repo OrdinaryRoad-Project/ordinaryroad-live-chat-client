@@ -323,7 +323,7 @@ public class ClientModeExample {
 定义了一些基础的接口、抽象类：消息、消息监听器、连接连监听器
 
 - 消息接口
-    - IMsg：所有msg都应该继承该类
+    - IMsg：所有msg都应该实现该接口
         - ICmdMsg：有些平台的一些消息正文中没有消息类型cmd字段，例如B站的心跳包，因此再细分为cmdMsg
         - IDanmuMsg: 内置获取用户ID、用户名、用户头像、粉丝牌名称、粉丝牌等级、弹幕内容等方法
             - ISuperChatMsg：醒目留言，内置获取持续时间方法
@@ -331,7 +331,7 @@ public class ClientModeExample {
         - IEnterRoomMsg: 内置获取用户ID、用户名、用户头像、粉丝牌名称、粉丝牌等级方法
         - ILikeMsg: 内置获取用户ID、用户名、用户头像、粉丝牌名称、粉丝牌等级、点赞数方法
         - ILiveStatusChangeMsg: 内置获取状态变化方法
-- 消息抽象类
+- ~~消息抽象类~~（计划弃用）
     - BaseMsg：实现IMsg接口，提供存放未知属性的字段
         - BaseCmdMsg：继承自BaseMsg，实现ICmdMsg接口
 - 消息监听器
