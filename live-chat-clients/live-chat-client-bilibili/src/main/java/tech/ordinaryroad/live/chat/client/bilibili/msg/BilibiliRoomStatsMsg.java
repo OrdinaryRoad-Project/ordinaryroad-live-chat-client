@@ -24,63 +24,62 @@
 
 package tech.ordinaryroad.live.chat.client.bilibili.msg;
 
-import cn.hutool.core.lang.Pair;
-import cn.hutool.core.util.NumberUtil;
-import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import tech.ordinaryroad.live.chat.client.bilibili.constant.BilibiliCmdEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.OperationEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.msg.base.BaseBilibiliCmdMsg;
-import tech.ordinaryroad.live.chat.client.commons.base.constant.LiveStatusAction;
-import tech.ordinaryroad.live.chat.client.commons.base.msg.ILiveStatusChangeMsg;
+import tech.ordinaryroad.live.chat.client.commons.base.msg.IRoomStatsMsg;
 
 /**
+ * BilibiliRoomStatsMsg
+ *
  * @author mjz
- * @date 2024/3/11
+ * @date 2024/4/24
  */
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BilibiliLiveStatusChangeMsg extends BaseBilibiliCmdMsg implements ILiveStatusChangeMsg {
-
-    /**
-     * 保存房间号和短房间号
-     */
-    private Pair<Object, Object> roomIdPair;
+public class BilibiliRoomStatsMsg extends BaseBilibiliCmdMsg implements IRoomStatsMsg {
 
     private JsonNode data;
 
     @Override
-    public OperationEnum getOperationEnum() {
-        return OperationEnum.MESSAGE;
-    }
-
-    @Override
-    public LiveStatusAction getLiveStatusAction() {
-        switch (getCmdEnum()) {
-            case LIVE: {
-                return LiveStatusAction.BEGIN;
-            }
-            case STOP_LIVE_ROOM_LIST: {
-                Object roomId = roomIdPair.getKey();
-                Object shortRoomId = roomIdPair.getValue();
-                if (data == null || !data.has("room_id_list")) {
-                    return null;
-                }
-                ArrayNode roomIdList = data.withArray("room_id_list");
-                for (JsonNode jsonNode : roomIdList) {
-                    long aLong = jsonNode.asLong();
-                    if (aLong == NumberUtil.parseLong(StrUtil.toStringOrNull(roomId)) || aLong == NumberUtil.parseLong(StrUtil.toStringOrNull(shortRoomId))) {
-                        return LiveStatusAction.END;
-                    }
-                }
+    public String getWatchingCount() {
+        if (getCmdEnum() == BilibiliCmdEnum.ONLINE_RANK_COUNT) {
+            if (data != null && data.has("online_count")) {
+                return data.get("online_count").asText();
             }
         }
         return null;
+    }
+
+    @Override
+    public String getWatchedCount() {
+        if (getCmdEnum() == BilibiliCmdEnum.WATCHED_CHANGE) {
+            if (data != null && data.has("num")) {
+                return data.get("num").asText();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public String getLikedCount() {
+        if (getCmdEnum() == BilibiliCmdEnum.LIKE_INFO_V3_UPDATE) {
+            if (data != null && data.has("click_count")) {
+                return data.get("click_count").asText();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public OperationEnum getOperationEnum() {
+        return OperationEnum.MESSAGE;
     }
 }

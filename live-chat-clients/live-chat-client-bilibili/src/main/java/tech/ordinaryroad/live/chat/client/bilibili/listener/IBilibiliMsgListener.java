@@ -39,49 +39,14 @@ public interface IBilibiliMsgListener extends IBaseMsgListener<BilibiliBinaryFra
         ISuperChatMsgListener<BilibiliBinaryFrameHandler, SuperChatMessageMsg>,
         IEnterRoomMsgListener<BilibiliBinaryFrameHandler, InteractWordMsg>,
         ILikeMsgListener<BilibiliBinaryFrameHandler, LikeInfoV3ClickMsg>,
-        ILiveStatusChangeListener<BilibiliBinaryFrameHandler, BilibiliLiveStatusChangeMsg> {
-
-    /**
-     * 收到礼物
-     *
-     * @param binaryFrameHandler BilibiliBinaryFrameHandler
-     * @param msg                SendSmsReplyMsg
-     * @deprecated use {@link IGiftMsgListener#onGiftMsg(Object, Object)}
-     */
-    default void onSendGift(BilibiliBinaryFrameHandler binaryFrameHandler, MessageMsg msg) {
-        this.onSendGift(msg);
-    }
-
-    /**
-     * @deprecated use {@link IGiftMsgListener#onGiftMsg(Object)}
-     */
-    default void onSendGift(MessageMsg msg) {
-        // ignore
-    }
-
-    /**
-     * 普通用户进入直播间
-     *
-     * @param binaryFrameHandler BilibiliBinaryFrameHandler
-     * @param msg                SendSmsReplyMsg
-     * @deprecated use {@link IEnterRoomMsgListener#onEnterRoomMsg}
-     */
-    default void onEnterRoom(BilibiliBinaryFrameHandler binaryFrameHandler, MessageMsg msg) {
-        this.onEnterRoom(msg);
-    }
-
-    /**
-     * @deprecated use {@link IEnterRoomMsgListener#onEnterRoomMsg}
-     */
-    default void onEnterRoom(MessageMsg msg) {
-        // ignore
-    }
+        ILiveStatusChangeListener<BilibiliBinaryFrameHandler, BilibiliLiveStatusChangeMsg>,
+        IRoomStatsListener<BilibiliBinaryFrameHandler, BilibiliRoomStatsMsg> {
 
     /**
      * 入场效果（高能用户）
      *
      * @param binaryFrameHandler BilibiliBinaryFrameHandler
-     * @param messageMsg    SendSmsReplyMsg
+     * @param messageMsg         SendSmsReplyMsg
      */
     default void onEntryEffect(BilibiliBinaryFrameHandler binaryFrameHandler, MessageMsg messageMsg) {
         this.onEntryEffect(messageMsg);
@@ -96,30 +61,16 @@ public interface IBilibiliMsgListener extends IBaseMsgListener<BilibiliBinaryFra
      *
      * @param binaryFrameHandler BilibiliBinaryFrameHandler
      * @param msg                SendSmsReplyMsg
+     * @deprecated use {@link IRoomStatsListener#onRoomStatsMsg}
      */
     default void onWatchedChange(BilibiliBinaryFrameHandler binaryFrameHandler, MessageMsg msg) {
         this.onWatchedChange(msg);
     }
 
+    /**
+     * @deprecated use {@link IRoomStatsListener#onRoomStatsMsg}
+     */
     default void onWatchedChange(MessageMsg msg) {
-        // ignore
-    }
-
-    /**
-     * 为主播点赞
-     *
-     * @param binaryFrameHandler BilibiliBinaryFrameHandler
-     * @param msg                SendSmsReplyMsg
-     * @deprecated use {@link ILikeMsgListener#onLikeMsg}
-     */
-    default void onClickLike(BilibiliBinaryFrameHandler binaryFrameHandler, MessageMsg msg) {
-        this.onClickLike(msg);
-    }
-
-    /**
-     * @deprecated use {@link ILikeMsgListener#onLikeMsg}
-     */
-    default void onClickLike(MessageMsg msg) {
         // ignore
     }
 
@@ -128,11 +79,15 @@ public interface IBilibiliMsgListener extends IBaseMsgListener<BilibiliBinaryFra
      *
      * @param binaryFrameHandler BilibiliBinaryFrameHandler
      * @param msg                SendSmsReplyMsg
+     * @deprecated use {@link IRoomStatsListener#onRoomStatsMsg}
      */
     default void onClickUpdate(BilibiliBinaryFrameHandler binaryFrameHandler, MessageMsg msg) {
         this.onClickUpdate(msg);
     }
 
+    /**
+     * @deprecated use {@link IRoomStatsListener#onRoomStatsMsg}
+     */
     default void onClickUpdate(MessageMsg msg) {
         // ignore
     }
