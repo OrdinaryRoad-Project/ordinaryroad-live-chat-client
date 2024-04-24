@@ -29,12 +29,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import tech.ordinaryroad.live.chat.client.bilibili.constant.BilibiliCmdEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliMsgListener;
-import tech.ordinaryroad.live.chat.client.bilibili.msg.DanmuMsgMsg;
-import tech.ordinaryroad.live.chat.client.bilibili.msg.MessageMsg;
-import tech.ordinaryroad.live.chat.client.bilibili.msg.SendGiftMsg;
+import tech.ordinaryroad.live.chat.client.bilibili.msg.*;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliBinaryFrameHandler;
-import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseCmdMsg;
-import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseMsg;
+import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 
 /**
@@ -48,51 +45,49 @@ public class BilibiliMsgListener implements IBilibiliMsgListener {
     @Override
     public void onDanmuMsg(BilibiliBinaryFrameHandler binaryFrameHandler, DanmuMsgMsg msg) {
         IBilibiliMsgListener.super.onDanmuMsg(binaryFrameHandler, msg);
-
-        log.info("{} 收到弹幕 {}({})：{}", binaryFrameHandler.getRoomId(), msg.getUsername(), msg.getUid(), msg.getContent());
+        log.info("{} 收到弹幕 {} {}({})：{}", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid(), msg.getContent());
     }
 
     @Override
     public void onGiftMsg(BilibiliBinaryFrameHandler binaryFrameHandler, SendGiftMsg msg) {
         IBilibiliMsgListener.super.onGiftMsg(binaryFrameHandler, msg);
-
-        log.info("{} 收到礼物 {}({}) {} {}({})x{}({})", binaryFrameHandler.getRoomId(), msg.getUsername(), msg.getUid(), msg.getData().getAction(), msg.getGiftName(), msg.getGiftId(), msg.getGiftCount(), msg.getGiftPrice());
+        log.info("{} 收到礼物 {} {}({}) {} {}({})x{}({})", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid(), msg.getData().getAction(), msg.getGiftName(), msg.getGiftId(), msg.getGiftCount(), msg.getGiftPrice());
     }
 
     @Override
-    public void onEnterRoom(MessageMsg msg) {
-        log.debug("普通用户进入直播间 {}", msg.getData().get("uname").asText());
+    public void onSuperChatMsg(BilibiliBinaryFrameHandler binaryFrameHandler, SuperChatMessageMsg msg) {
+        IBilibiliMsgListener.super.onSuperChatMsg(binaryFrameHandler, msg);
+        log.info("{} 收到醒目留言 {}({})：{}", binaryFrameHandler.getRoomId(), msg.getUsername(), msg.getUid(), msg.getContent());
     }
 
     @Override
-    public void onEntryEffect(MessageMsg msg) {
+    public void onEnterRoomMsg(InteractWordMsg msg) {
+        log.info("{} {}({}) 进入直播间", msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid());
+    }
+
+    @Override
+    public void onLikeMsg(BilibiliBinaryFrameHandler binaryFrameHandler, LikeInfoV3ClickMsg msg) {
+        IBilibiliMsgListener.super.onLikeMsg(binaryFrameHandler, msg);
+        log.info("{} 收到点赞 [{}] {}({})x{}", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid(), msg.getClickCount());
+    }
+
+    @Override
+    public void onLiveStatusMsg(BilibiliBinaryFrameHandler binaryFrameHandler, BilibiliLiveStatusChangeMsg msg) {
+        IBilibiliMsgListener.super.onLiveStatusMsg(binaryFrameHandler, msg);
+        log.info("{} 状态变化 {}", binaryFrameHandler.getRoomId(), msg.getLiveStatusAction());
+    }
+
+    @Override
+    public void onRoomStatsMsg(BilibiliBinaryFrameHandler binaryFrameHandler, BilibiliRoomStatsMsg msg) {
+        IBilibiliMsgListener.super.onRoomStatsMsg(binaryFrameHandler, msg);
+        log.info("{} 统计信息 累计点赞数: {}, 当前观看人数: {}, 累计观看人数: {}", binaryFrameHandler.getRoomId(), msg.getLikedCount(), msg.getWatchingCount(), msg.getWatchedCount());
+    }
+
+    @Override
+    public void onEntryEffect(BilibiliBinaryFrameHandler binaryFrameHandler, MessageMsg msg) {
         JsonNode data = msg.getData();
         String copyWriting = data.get("copy_writing").asText();
         log.info("入场效果 {}", copyWriting);
-    }
-
-    @Override
-    public void onWatchedChange(MessageMsg msg) {
-        JsonNode data = msg.getData();
-        int num = data.get("num").asInt();
-        String textSmall = data.get("text_small").asText();
-        String textLarge = data.get("text_large").asText();
-        log.debug("观看人数变化 {} {} {}", num, textSmall, textLarge);
-    }
-
-    @Override
-    public void onClickLike(MessageMsg msg) {
-        JsonNode data = msg.getData();
-        String uname = data.get("uname").asText();
-        String likeText = data.get("like_text").asText();
-        log.debug("为主播点赞 {} {}", uname, likeText);
-    }
-
-    @Override
-    public void onClickUpdate(MessageMsg msg) {
-        JsonNode data = msg.getData();
-        int clickCount = data.get("click_count").asInt();
-        log.debug("点赞数更新 {}", clickCount);
     }
 
     @Override
@@ -101,17 +96,17 @@ public class BilibiliMsgListener implements IBilibiliMsgListener {
     }
 
     @Override
-    public void onCmdMsg(BilibiliCmdEnum cmd, BaseCmdMsg<BilibiliCmdEnum> cmdMsg) {
+    public void onCmdMsg(BilibiliCmdEnum cmd, ICmdMsg<BilibiliCmdEnum> cmdMsg) {
         log.debug("收到CMD消息{} {}", cmd, cmdMsg);
     }
 
     @Override
-    public void onOtherCmdMsg(BilibiliCmdEnum cmd, BaseCmdMsg<BilibiliCmdEnum> cmdMsg) {
+    public void onOtherCmdMsg(BilibiliCmdEnum cmd, ICmdMsg<BilibiliCmdEnum> cmdMsg) {
         log.info("收到其他CMD消息 {}", cmd);
     }
 
     @Override
-    public void onUnknownCmd(String cmdString, BaseMsg msg) {
+    public void onUnknownCmd(String cmdString, IMsg msg) {
         log.info("收到未知CMD消息 {}", cmdString);
     }
 }
