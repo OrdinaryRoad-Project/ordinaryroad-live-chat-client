@@ -22,21 +22,25 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.commons.base.msg;
+package tech.ordinaryroad.live.chat.client.commons.base.listener;
 
-import tech.ordinaryroad.live.chat.client.commons.base.constant.LiveStatusAction;
 
 /**
- * 直播状态变化消息
+ * 直播间房间统计消息回调
  *
  * @author mjz
- * @date 2024/3/10
+ * @date 2024/4/24
  */
-public interface ILiveStatusChangeMsg extends IMsg {
+public interface IRoomStatsListener<T, RoomStatsMsg> {
 
     /**
-     * 状态变化
+     * 房间统计消息
      */
-    LiveStatusAction getLiveStatusAction();
+    default void onRoomStatsMsg(T t, RoomStatsMsg msg) {
+        this.onRoomStatsMsg(msg);
+    }
 
+    default void onRoomStatsMsg(RoomStatsMsg msg) {
+        // ignore
+    }
 }

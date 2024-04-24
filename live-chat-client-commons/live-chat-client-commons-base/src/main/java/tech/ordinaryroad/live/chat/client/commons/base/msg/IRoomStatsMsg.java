@@ -24,19 +24,32 @@
 
 package tech.ordinaryroad.live.chat.client.commons.base.msg;
 
-import tech.ordinaryroad.live.chat.client.commons.base.constant.LiveStatusAction;
-
 /**
- * 直播状态变化消息
+ * 房间统计消息
  *
  * @author mjz
- * @date 2024/3/10
+ * @date 2024/4/23
  */
-public interface ILiveStatusChangeMsg extends IMsg {
+public interface IRoomStatsMsg extends IMsg {
 
     /**
-     * 状态变化
+     * 获取累计点赞数
      */
-    LiveStatusAction getLiveStatusAction();
+    default String getLikedCount() {
+        return null;
+    }
 
+    /**
+     * 获取当前观看人数
+     */
+    default String getWatchingCount() {
+        return null;
+    }
+
+    /**
+     * 获取累计观看人数
+     */
+    default String getWatchedCount() {
+        return null;
+    }
 }
