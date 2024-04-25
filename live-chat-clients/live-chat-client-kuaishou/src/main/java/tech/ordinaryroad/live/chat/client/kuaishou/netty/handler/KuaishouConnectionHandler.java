@@ -30,13 +30,13 @@ import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandler;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
 import lombok.extern.slf4j.Slf4j;
+import tech.ordinaryroad.live.chat.client.codec.kuaishou.api.KuaishouApis;
+import tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf.CSHeartbeatOuterClass;
+import tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf.CSWebEnterRoomOuterClass;
+import tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf.PayloadTypeOuterClass;
+import tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf.SocketMessageOuterClass;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
-import tech.ordinaryroad.live.chat.client.kuaishou.api.KuaishouApis;
 import tech.ordinaryroad.live.chat.client.kuaishou.client.KuaishouLiveChatClient;
-import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.CSHeartbeatOuterClass;
-import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.CSWebEnterRoomOuterClass;
-import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PayloadTypeOuterClass;
-import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.SocketMessageOuterClass;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientConnectionHandler;
 
 import java.util.function.Supplier;

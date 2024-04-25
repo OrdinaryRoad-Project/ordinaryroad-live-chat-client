@@ -29,9 +29,9 @@ import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandler;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
 import lombok.extern.slf4j.Slf4j;
+import tech.ordinaryroad.live.chat.client.codec.huya.msg.factory.HuyaMsgFactory;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.huya.client.HuyaLiveChatClient;
-import tech.ordinaryroad.live.chat.client.huya.msg.factory.HuyaMsgFactory;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientConnectionHandler;
 
 import java.util.function.Supplier;

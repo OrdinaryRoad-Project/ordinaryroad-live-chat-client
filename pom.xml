@@ -56,6 +56,7 @@
     <modules>
         <module>live-chat-client-commons</module>
         <module>live-chat-client-servers</module>
+        <module>live-chat-client-codec</module>
         <module>live-chat-clients</module>
     </modules>
 
@@ -149,6 +150,36 @@
             </dependency>
 
             <dependency>
+                <groupId>tech.ordinaryroad</groupId>
+                <artifactId>live-chat-client-codec-bilibili</artifactId>
+                <version>0.6.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>tech.ordinaryroad</groupId>
+                <artifactId>live-chat-client-codec-douyu</artifactId>
+                <version>0.6.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>tech.ordinaryroad</groupId>
+                <artifactId>live-chat-client-codec-huya</artifactId>
+                <version>0.6.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>tech.ordinaryroad</groupId>
+                <artifactId>live-chat-client-codec-douyin</artifactId>
+                <version>0.6.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>tech.ordinaryroad</groupId>
+                <artifactId>live-chat-client-codec-kuaishou</artifactId>
+                <version>0.6.0</version>
+            </dependency>
+
+            <dependency>
                 <groupId>com.aayushatharva.brotli4j</groupId>
                 <artifactId>brotli4j</artifactId>
                 <version>${brotli4j.version}</version>
@@ -175,6 +206,12 @@
             <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty-all</artifactId>
+                <version>${netty-all.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-codec</artifactId>
                 <version>${netty-all.version}</version>
             </dependency>
 

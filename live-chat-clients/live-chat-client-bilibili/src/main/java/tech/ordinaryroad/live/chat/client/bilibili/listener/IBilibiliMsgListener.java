@@ -24,9 +24,9 @@
 
 package tech.ordinaryroad.live.chat.client.bilibili.listener;
 
-import tech.ordinaryroad.live.chat.client.bilibili.constant.BilibiliCmdEnum;
-import tech.ordinaryroad.live.chat.client.bilibili.msg.*;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliBinaryFrameHandler;
+import tech.ordinaryroad.live.chat.client.codec.bilibili.constant.BilibiliCmdEnum;
+import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.*;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.*;
 
 /**

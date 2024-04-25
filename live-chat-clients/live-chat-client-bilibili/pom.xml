@@ -42,22 +42,12 @@
     <dependencies>
         <dependency>
             <groupId>tech.ordinaryroad</groupId>
+            <artifactId>live-chat-client-codec-bilibili</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>tech.ordinaryroad</groupId>
             <artifactId>live-chat-client-websocket</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.aayushatharva.brotli4j</groupId>
-            <artifactId>brotli4j</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.protobuf</groupId>
-            <artifactId>protobuf-java-util</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
         </dependency>
 
         <dependency>

@@ -24,7 +24,6 @@
 
 package tech.ordinaryroad.live.chat.client.douyu.client;
 
-import cn.hutool.cache.impl.TimedCache;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.util.RandomUtil;
@@ -32,30 +31,28 @@ import cn.hutool.core.util.StrUtil;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import lombok.extern.slf4j.Slf4j;
+import tech.ordinaryroad.live.chat.client.codec.douyu.api.DouyuApis;
+import tech.ordinaryroad.live.chat.client.codec.douyu.constant.DouyuCmdEnum;
+import tech.ordinaryroad.live.chat.client.codec.douyu.msg.ChatmsgMsg;
+import tech.ordinaryroad.live.chat.client.codec.douyu.msg.DgbMsg;
+import tech.ordinaryroad.live.chat.client.codec.douyu.msg.MsgrepeaterproxylistMsg;
+import tech.ordinaryroad.live.chat.client.codec.douyu.msg.UenterMsg;
+import tech.ordinaryroad.live.chat.client.codec.douyu.msg.dto.GiftListInfo;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
-import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
-import tech.ordinaryroad.live.chat.client.douyu.api.DouyuApis;
+import tech.ordinaryroad.live.chat.client.commons.util.OrJacksonUtil;
 import tech.ordinaryroad.live.chat.client.douyu.config.DouyuLiveChatClientConfig;
-import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuConnectionListener;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuMsgListener;
 import tech.ordinaryroad.live.chat.client.douyu.listener.impl.DouyuForwardMsgListener;
-import tech.ordinaryroad.live.chat.client.douyu.msg.ChatmsgMsg;
-import tech.ordinaryroad.live.chat.client.douyu.msg.DgbMsg;
-import tech.ordinaryroad.live.chat.client.douyu.msg.MsgrepeaterproxylistMsg;
-import tech.ordinaryroad.live.chat.client.douyu.msg.UenterMsg;
-import tech.ordinaryroad.live.chat.client.douyu.msg.dto.GiftListInfo;
-import tech.ordinaryroad.live.chat.client.douyu.msg.dto.GiftPropSingle;
 import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuConnectionHandler;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 直播间弹幕客户端
@@ -65,17 +62,6 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 public class DouyuLiveChatClient extends DouyuWsLiveChatClient implements IDouyuMsgListener {
-
-    /**
-     * 通用礼物缓存，过期时间1天
-     * pid,Info
-     */
-    public static final TimedCache<String, GiftPropSingle> giftMap = new TimedCache<>(TimeUnit.DAYS.toMillis(1));
-    /**
-     * 房间礼物缓存，过期时间1天
-     * realRoomId,(giftId,Info)
-     */
-    public static final TimedCache<String, Map<String, GiftListInfo>> roomGiftMap = new TimedCache<>(TimeUnit.DAYS.toMillis(1), new HashMap<>());
     private final DouyuWsLiveChatClient proxyClient = this;
     private DouyuDanmuLiveChatClient danmuClient = null;
     private DouyuConnectionHandler connectionHandler;
@@ -125,7 +111,7 @@ public class DouyuLiveChatClient extends DouyuWsLiveChatClient implements IDouyu
                 .get("giftList")
                 .forEach(jsonNode -> {
                     try {
-                        GiftListInfo giftListInfo = BaseMsg.OBJECT_MAPPER.readValue(jsonNode.toString(), GiftListInfo.class);
+                        GiftListInfo giftListInfo = OrJacksonUtil.getInstance().readValue(jsonNode.toString(), GiftListInfo.class);
                         map.put(String.valueOf(giftListInfo.getId()), giftListInfo);
                     } catch (Exception e) {
                         if (log.isDebugEnabled()) {
@@ -134,7 +120,7 @@ public class DouyuLiveChatClient extends DouyuWsLiveChatClient implements IDouyu
                         // ignore
                     }
                 });
-        roomGiftMap.put(String.valueOf(DouyuApis.getRealRoomId(getConfig().getRoomId())), map);
+        DouyuApis.roomGiftMap.put(String.valueOf(DouyuApis.getRealRoomId(getConfig().getRoomId())), map);
     }
 
     @Override

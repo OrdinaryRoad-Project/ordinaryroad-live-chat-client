@@ -30,7 +30,6 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener;
-import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseCmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 
@@ -78,15 +77,6 @@ public abstract class BaseBinaryFrameHandler<
                 this.onUnknownCmd((T) BaseBinaryFrameHandler.this, cmdMsg.getCmd(), cmdMsg);
             } else {
                 this.onCmdMsg((T) BaseBinaryFrameHandler.this, (CmdEnum) cmdEnum, (ICmdMsg<CmdEnum>) cmdMsg);
-            }
-        }
-        if (msg instanceof BaseCmdMsg<?>) {
-            BaseCmdMsg<?> cmdMsg = (BaseCmdMsg<?>) msg;
-            Enum<?> cmdEnum = cmdMsg.getCmdEnum();
-            if (cmdEnum == null) {
-                this.onUnknownCmd((T) BaseBinaryFrameHandler.this, cmdMsg.getCmd(), cmdMsg);
-            } else {
-                this.onCmdMsg((T) BaseBinaryFrameHandler.this, (CmdEnum) cmdEnum, (BaseCmdMsg<CmdEnum>) cmdMsg);
             }
         }
     }

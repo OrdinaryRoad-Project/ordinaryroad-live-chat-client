@@ -29,10 +29,10 @@ import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandler;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
 import lombok.extern.slf4j.Slf4j;
-import tech.ordinaryroad.live.chat.client.bilibili.api.BilibiliApis;
 import tech.ordinaryroad.live.chat.client.bilibili.client.BilibiliLiveChatClient;
-import tech.ordinaryroad.live.chat.client.bilibili.constant.ProtoverEnum;
-import tech.ordinaryroad.live.chat.client.bilibili.msg.factory.BilibiliMsgFactory;
+import tech.ordinaryroad.live.chat.client.codec.bilibili.api.BilibiliApis;
+import tech.ordinaryroad.live.chat.client.codec.bilibili.constant.ProtoverEnum;
+import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.factory.BilibiliMsgFactory;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientConnectionHandler;
 

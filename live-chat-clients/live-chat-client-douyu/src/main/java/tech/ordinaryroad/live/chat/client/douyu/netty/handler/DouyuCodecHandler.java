@@ -26,9 +26,9 @@ package tech.ordinaryroad.live.chat.client.douyu.netty.handler;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
+import tech.ordinaryroad.live.chat.client.codec.douyu.msg.base.IDouyuMsg;
+import tech.ordinaryroad.live.chat.client.codec.douyu.util.DouyuCodecUtil;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
-import tech.ordinaryroad.live.chat.client.douyu.msg.base.IDouyuMsg;
-import tech.ordinaryroad.live.chat.client.douyu.util.DouyuCodecUtil;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BinaryWebSocketFrameToMessageCodec;
 
 import java.util.List;
@@ -45,6 +45,7 @@ public class DouyuCodecHandler extends BinaryWebSocketFrameToMessageCodec<IDouyu
 
     @Override
     protected void decode(ChannelHandlerContext ctx, BinaryWebSocketFrame msg, List<Object> out) throws Exception {
-        out.addAll(DouyuCodecUtil.decode(msg.content()));
+        List<IDouyuMsg> decode = DouyuCodecUtil.decode(msg.content());
+        out.addAll(decode);
     }
 }

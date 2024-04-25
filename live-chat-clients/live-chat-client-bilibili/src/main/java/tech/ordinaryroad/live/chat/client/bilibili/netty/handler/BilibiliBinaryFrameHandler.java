@@ -31,11 +31,11 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.bilibili.client.BilibiliLiveChatClient;
-import tech.ordinaryroad.live.chat.client.bilibili.constant.BilibiliCmdEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliMsgListener;
-import tech.ordinaryroad.live.chat.client.bilibili.msg.*;
-import tech.ordinaryroad.live.chat.client.bilibili.msg.base.BaseBilibiliMsg;
-import tech.ordinaryroad.live.chat.client.bilibili.msg.base.IBilibiliMsg;
+import tech.ordinaryroad.live.chat.client.codec.bilibili.constant.BilibiliCmdEnum;
+import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.*;
+import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.base.BaseBilibiliMsg;
+import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.base.IBilibiliMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientBinaryFrameHandler;
 

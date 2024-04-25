@@ -27,14 +27,15 @@ package tech.ordinaryroad.live.chat.client.douyu.netty.handler;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandler;
+import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import tech.ordinaryroad.live.chat.client.codec.douyu.constant.DouyuClientModeEnum;
+import tech.ordinaryroad.live.chat.client.codec.douyu.msg.factory.DouyuMsgFactory;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.douyu.client.base.BaseDouyuLiveChatClient;
-import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuClientModeEnum;
-import tech.ordinaryroad.live.chat.client.douyu.netty.frame.factory.DouyuWebSocketFrameFactory;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientConnectionHandler;
 
 import java.util.function.Supplier;
@@ -110,9 +111,9 @@ public class DouyuConnectionHandler extends BaseNettyClientConnectionHandler<Bas
         }
         WebSocketFrame webSocketFrame;
         if (mode == DouyuClientModeEnum.DANMU) {
-            webSocketFrame = getWebSocketFrameFactory(getRoomId()).createHeartbeat();
+            webSocketFrame = new BinaryWebSocketFrame(getMsgFactory(getRoomId()).createHeartbeat());
         } else {
-            webSocketFrame = getWebSocketFrameFactory(getRoomId()).createKeeplive(getCookie());
+            webSocketFrame = new BinaryWebSocketFrame(getMsgFactory(getRoomId()).createKeeplive(getCookie()));
         }
         channel.writeAndFlush(webSocketFrame).addListener((ChannelFutureListener) future -> {
             if (future.isSuccess()) {
@@ -130,7 +131,7 @@ public class DouyuConnectionHandler extends BaseNettyClientConnectionHandler<Bas
         if (log.isDebugEnabled()) {
             log.debug("发送认证包");
         }
-        channel.writeAndFlush(getWebSocketFrameFactory(getRoomId()).createAuth(mode, getVer(), getAver(), getCookie()))
+        channel.writeAndFlush(new BinaryWebSocketFrame(getMsgFactory(getRoomId()).createAuth(mode, getVer(), getAver(), getCookie())))
                 .addListener(future -> {
                     if (future.isSuccess()) {
                         if (log.isDebugEnabled()) {
@@ -142,8 +143,8 @@ public class DouyuConnectionHandler extends BaseNettyClientConnectionHandler<Bas
                 });
     }
 
-    private DouyuWebSocketFrameFactory getWebSocketFrameFactory(long roomId) {
-        return DouyuWebSocketFrameFactory.getInstance(roomId);
+    private DouyuMsgFactory getMsgFactory(long roomId) {
+        return DouyuMsgFactory.getInstance(roomId);
     }
 
     public long getRoomId() {

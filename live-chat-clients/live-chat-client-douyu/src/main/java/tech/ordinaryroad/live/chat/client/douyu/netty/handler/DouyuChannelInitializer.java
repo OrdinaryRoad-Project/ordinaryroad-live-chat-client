@@ -27,7 +27,10 @@ package tech.ordinaryroad.live.chat.client.douyu.netty.handler;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import tech.ordinaryroad.live.chat.client.douyu.client.base.BaseDouyuLiveChatClient;
+import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuMsgListener;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientChannelInitializer;
+
+import java.util.List;
 
 /**
  * @author mjz
@@ -45,6 +48,8 @@ public class DouyuChannelInitializer<CLIENT extends BaseDouyuLiveChatClient> ext
         // 添加一个编解码器
         pipeline.addLast(new DouyuCodecHandler());
         // 添加一个消息处理器
+        List<IDouyuMsgListener> msgListeners = client.getMsgListeners();
+        System.out.println(msgListeners);
         pipeline.addLast(new DouyuBinaryFrameHandler(client.getMsgListeners(), client));
     }
 }

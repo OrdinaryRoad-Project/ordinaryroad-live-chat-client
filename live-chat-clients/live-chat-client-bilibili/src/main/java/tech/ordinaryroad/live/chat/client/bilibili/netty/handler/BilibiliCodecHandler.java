@@ -26,8 +26,8 @@ package tech.ordinaryroad.live.chat.client.bilibili.netty.handler;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
-import tech.ordinaryroad.live.chat.client.bilibili.msg.base.IBilibiliMsg;
-import tech.ordinaryroad.live.chat.client.bilibili.util.BilibiliCodecUtil;
+import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.base.IBilibiliMsg;
+import tech.ordinaryroad.live.chat.client.codec.bilibili.util.BilibiliCodecUtil;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BinaryWebSocketFrameToMessageCodec;
 
 import java.util.List;

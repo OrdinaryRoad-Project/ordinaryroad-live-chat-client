@@ -1,23 +1,30 @@
 package tech.ordinaryroad.live.chat.client.douyin.client;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.thread.ThreadUtil;
+import com.google.protobuf.ByteString;
+import com.google.protobuf.InvalidProtocolBufferException;
+import com.google.protobuf.UnknownFieldSet;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import tech.ordinaryroad.live.chat.client.codec.douyin.api.DouyinApis;
+import tech.ordinaryroad.live.chat.client.codec.douyin.constant.DouyinCmdEnum;
+import tech.ordinaryroad.live.chat.client.codec.douyin.constant.DouyinRoomStatusEnum;
+import tech.ordinaryroad.live.chat.client.codec.douyin.msg.*;
+import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.douyin_cmd_msg;
+import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.douyin_webcast_gift_message_msg;
+import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.douyin_webcast_social_message_msg;
+import tech.ordinaryroad.live.chat.client.commons.base.constant.LiveStatusAction;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
-import tech.ordinaryroad.live.chat.client.douyin.api.DouyinApis;
 import tech.ordinaryroad.live.chat.client.douyin.config.DouyinLiveChatClientConfig;
-import tech.ordinaryroad.live.chat.client.douyin.constant.DouyinCmdEnum;
-import tech.ordinaryroad.live.chat.client.douyin.constant.DouyinRoomStatusEnum;
 import tech.ordinaryroad.live.chat.client.douyin.listener.IDouyinMsgListener;
-import tech.ordinaryroad.live.chat.client.douyin.msg.*;
 import tech.ordinaryroad.live.chat.client.douyin.netty.handler.DouyinBinaryFrameHandler;
-import tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_cmd_msg;
-import tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_gift_message_msg;
-import tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_room_stats_message_msg;
-import tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_social_message_msg;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author mjz
@@ -34,17 +41,45 @@ class DouyinLiveChatClientTest {
         String cookie = System.getenv("cookie");
         log.error("cookie: {}", cookie);
         DouyinLiveChatClientConfig config = DouyinLiveChatClientConfig.builder()
-                // .forwardWebsocketUri("ws://127.0.0.1:8080/websocket")
+                 // .forwardWebsocketUri("ws://127.0.0.1:8080/websocket")
 
                 // TODO 浏览器Cookie
-                .cookie(cookie)
+//                .cookie(cookie)
                 .roomId("renyixu1989")
-                .roomId("567789235524")
                 .roomId("166163409118")
                 .roomId("722266687616")
                 .roomId("o333")
                 .roomId("qilongmusic")
+                .roomId("28945346664")
+                .roomId("172783448140")
                 .roomId("yimei20210922")
+                .roomId("964068287342")
+                .roomId("602796691815")
+                .roomId("567789235524")
+                .roomId("678776111594")
+                .roomId("63592101250")
+                .roomId("816299952901")
+                .roomId("929343306831")
+
+                .roomId("929349829592")
+
+
+                // 弹幕游戏2
+                .roomId("358618109921")
+
+                .roomId("569480017381")
+                .roomId("660292215268")
+
+                .roomId("988498434970")
+
+
+                // 弹幕游戏1
+                .roomId("47761745807")
+
+
+                .roomId("193059181093")
+
+                .roomId("63592101250")
                 .build();
 
         client = new DouyinLiveChatClient(config, new IDouyinMsgListener() {
@@ -55,7 +90,7 @@ class DouyinLiveChatClientTest {
 
             @Override
             public void onCmdMsg(DouyinCmdEnum cmd, ICmdMsg<DouyinCmdEnum> cmdMsg) {
-                log.debug("收到CMD消息{} {}", cmd, cmdMsg);
+                // log.debug("收到CMD消息{} {}", cmd, cmdMsg);
             }
 
             @Override
@@ -65,7 +100,7 @@ class DouyinLiveChatClientTest {
                     case WebcastSocialMessage: {
                         DouyinSocialMsg douyinSocialMsg = (DouyinSocialMsg) cmdMsg;
                         douyin_webcast_social_message_msg msg = douyinSocialMsg.getMsg();
-                        switch ((int) msg.getAction()){
+                        switch ((int) msg.getAction()) {
                             case 1:
                                 // 关注
                                 break;
@@ -85,6 +120,14 @@ class DouyinLiveChatClientTest {
             @Override
             public void onUnknownCmd(String cmdString, IMsg msg) {
                 log.debug("收到未知CMD消息 {}", cmdString);
+                douyin_cmd_msg douyinCmdMsg = (douyin_cmd_msg) msg;
+                ByteString payload = douyinCmdMsg.getPayload();
+                try {
+                    UnknownFieldSet unknownFieldSet = UnknownFieldSet.parseFrom(payload);
+                    Map<Integer, UnknownFieldSet.Field> map = unknownFieldSet.asMap();
+                } catch (InvalidProtocolBufferException e) {
+                    throw new RuntimeException(e);
+                }
             }
 
             @Override
@@ -132,6 +175,11 @@ class DouyinLiveChatClientTest {
             }
         });
         client.connect();
+
+        //        ThreadUtil.execAsync(() -> {
+//            ThreadUtil.sleep(5000);
+//            client.disconnect();
+//        });
 
         // 防止测试时直接退出
         while (true) {

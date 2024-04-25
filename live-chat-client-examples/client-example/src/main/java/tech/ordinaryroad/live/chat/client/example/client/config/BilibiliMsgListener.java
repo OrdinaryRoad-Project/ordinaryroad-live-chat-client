@@ -27,10 +27,10 @@ package tech.ordinaryroad.live.chat.client.example.client.config;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import tech.ordinaryroad.live.chat.client.bilibili.constant.BilibiliCmdEnum;
 import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliMsgListener;
-import tech.ordinaryroad.live.chat.client.bilibili.msg.*;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliBinaryFrameHandler;
+import tech.ordinaryroad.live.chat.client.codec.bilibili.constant.BilibiliCmdEnum;
+import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.*;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 
