@@ -92,10 +92,7 @@ public class BilibiliBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
                 sendGiftMsg.setProtover(messageMsg.getProtover());
                 SendGiftMsg.Data data = BaseBilibiliMsg.OBJECT_MAPPER.treeToValue(messageMsg.getData(), SendGiftMsg.Data.class);
                 sendGiftMsg.setData(data);
-                iteratorMsgListeners(msgListener -> {
-                    msgListener.onGiftMsg(BilibiliBinaryFrameHandler.this, sendGiftMsg);
-                    msgListener.onSendGift(BilibiliBinaryFrameHandler.this, messageMsg);
-                });
+                iteratorMsgListeners(msgListener -> msgListener.onGiftMsg(BilibiliBinaryFrameHandler.this, sendGiftMsg));
                 break;
             }
 
@@ -114,10 +111,7 @@ public class BilibiliBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
                 interactWordMsg.setProtover(messageMsg.getProtover());
                 InteractWordMsg.Data data = BaseBilibiliMsg.OBJECT_MAPPER.treeToValue(messageMsg.getData(), InteractWordMsg.Data.class);
                 interactWordMsg.setData(data);
-                iteratorMsgListeners(msgListener -> {
-                    msgListener.onEnterRoomMsg(BilibiliBinaryFrameHandler.this, interactWordMsg);
-                    msgListener.onEnterRoom(BilibiliBinaryFrameHandler.this, messageMsg);
-                });
+                iteratorMsgListeners(msgListener -> msgListener.onEnterRoomMsg(BilibiliBinaryFrameHandler.this, interactWordMsg));
                 break;
             }
 
@@ -126,8 +120,16 @@ public class BilibiliBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
                 break;
             }
 
-            case WATCHED_CHANGE: {
-                iteratorMsgListeners(msgListener -> msgListener.onWatchedChange(BilibiliBinaryFrameHandler.this, messageMsg));
+            case ONLINE_RANK_COUNT:
+            case WATCHED_CHANGE:
+            case LIKE_INFO_V3_UPDATE: {
+                BilibiliRoomStatsMsg bilibiliRoomStatsMsg = BaseBilibiliMsg.OBJECT_MAPPER.convertValue(messageMsg, BilibiliRoomStatsMsg.class);
+                iteratorMsgListeners(msgListener -> msgListener.onRoomStatsMsg(BilibiliBinaryFrameHandler.this, bilibiliRoomStatsMsg));
+                if (cmd == BilibiliCmdEnum.WATCHED_CHANGE) {
+                    iteratorMsgListeners(msgListener -> msgListener.onWatchedChange(BilibiliBinaryFrameHandler.this, messageMsg));
+                } else {
+                    iteratorMsgListeners(msgListener -> msgListener.onClickUpdate(BilibiliBinaryFrameHandler.this, messageMsg));
+                }
                 break;
             }
 
@@ -136,15 +138,7 @@ public class BilibiliBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
                 likeInfoV3ClickMsg.setProtover(messageMsg.getProtover());
                 LikeInfoV3ClickMsg.Data data = BaseBilibiliMsg.OBJECT_MAPPER.treeToValue(messageMsg.getData(), LikeInfoV3ClickMsg.Data.class);
                 likeInfoV3ClickMsg.setData(data);
-                iteratorMsgListeners(msgListener -> {
-                    msgListener.onLikeMsg(BilibiliBinaryFrameHandler.this, likeInfoV3ClickMsg);
-                    msgListener.onClickLike(BilibiliBinaryFrameHandler.this, messageMsg);
-                });
-                break;
-            }
-
-            case LIKE_INFO_V3_UPDATE: {
-                iteratorMsgListeners(msgListener -> msgListener.onClickUpdate(BilibiliBinaryFrameHandler.this, messageMsg));
+                iteratorMsgListeners(msgListener -> msgListener.onLikeMsg(BilibiliBinaryFrameHandler.this, likeInfoV3ClickMsg));
                 break;
             }
 

@@ -22,22 +22,34 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.douyin.listener;
-
-import tech.ordinaryroad.live.chat.client.commons.base.listener.*;
-import tech.ordinaryroad.live.chat.client.douyin.constant.DouyinCmdEnum;
-import tech.ordinaryroad.live.chat.client.douyin.msg.*;
-import tech.ordinaryroad.live.chat.client.douyin.netty.handler.DouyinBinaryFrameHandler;
+package tech.ordinaryroad.live.chat.client.commons.base.msg;
 
 /**
+ * 房间统计消息
+ *
  * @author mjz
- * @date 2024/1/2
+ * @date 2024/4/23
  */
-public interface IDouyinMsgListener extends IBaseMsgListener<DouyinBinaryFrameHandler, DouyinCmdEnum>,
-        IDanmuMsgListener<DouyinBinaryFrameHandler, DouyinDanmuMsg>,
-        IGiftMsgListener<DouyinBinaryFrameHandler, DouyinGiftMsg>,
-        IEnterRoomMsgListener<DouyinBinaryFrameHandler, DouyinEnterRoomMsg>,
-        ILikeMsgListener<DouyinBinaryFrameHandler, DouyinLikeMsg>,
-        ILiveStatusChangeListener<DouyinBinaryFrameHandler, DouyinControlMsg>,
-        IRoomStatsMsgListener<DouyinBinaryFrameHandler, DouyinRoomStatsMsg> {
+public interface IRoomStatsMsg extends IMsg {
+
+    /**
+     * 获取累计点赞数
+     */
+    default String getLikedCount() {
+        return null;
+    }
+
+    /**
+     * 获取当前观看人数
+     */
+    default String getWatchingCount() {
+        return null;
+    }
+
+    /**
+     * 获取累计观看人数
+     */
+    default String getWatchedCount() {
+        return null;
+    }
 }

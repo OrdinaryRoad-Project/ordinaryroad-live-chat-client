@@ -28,7 +28,7 @@ Live room WebSocket chat client
 > *存在平台差异
 > - ✅: 平台支持且已完成
 > - ☑️️: 平台支持但未实现
-> - ❌: 平台暂不支持
+> - ❌: 平台网页端暂不支持
 
 平台适配情况表
 
@@ -42,13 +42,13 @@ Live room WebSocket chat client
 
 平台直播间消息适配情况表
 
-| 平台          | 弹幕 | 礼物        | 醒目留言 | 进入房间    | 点赞      | 状态变化 |
-|-------------|----|-----------|------|---------|---------|------|
-| Bilibili B站 | ✅  | ✅         | ✅    | ✅       | ✅       | ✅    |
-| Douyu 斗鱼    | ✅  | ✅         | ☑️   | ✅       | ❌       | ☑️   |
-| Huya 虎牙     | ✅  | ✅         | ❌    | ✅（高级用户） | ❌       | ☑️   |
-| Douyin 抖音   | ✅  | ✅         | ❌    | ✅       | ✅（点赞个数） | ✅    |
-| Kuaishou 快手 | ✅  | ✅（礼物信息不全） | ❌    | ❌       | ✅       |      |
+| 平台          | 弹幕 | 礼物        | 醒目留言 | 进入房间    | 点赞      | 状态变化 | 统计信息               |
+|-------------|----|-----------|------|---------|---------|------|--------------------|
+| Bilibili B站 | ✅  | ✅         | ✅    | ✅       | ✅       | ✅    | ✅（点赞数、当前人数、累计观看人数） |
+| Douyu 斗鱼    | ✅  | ✅         | ☑️   | ✅       | ❌       | ☑️   | ❌                  |
+| Huya 虎牙     | ✅  | ✅         | ❌    | ✅（高级用户） | ❌       | ☑️   | ❌                  |
+| Douyin 抖音   | ✅  | ✅         | ❌    | ✅       | ✅（点赞个数） | ✅    | ✅（点赞数、当前人数）        |
+| Kuaishou 快手 | ✅  | ✅（礼物信息不全） | ❌    | ❌       | ✅       | ❌    | ✅（点赞数、当前人数）        |
 
 消息接口内置的方法见 [https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/tree/main/live-chat-client-commons/live-chat-client-commons-base/src/main/java/tech/ordinaryroad/live/chat/client/commons/base/msg](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/tree/main/live-chat-client-commons/live-chat-client-commons-base/src/main/java/tech/ordinaryroad/live/chat/client/commons/base/msg)
 
@@ -253,6 +253,12 @@ public class ClientModeExample {
                 IBilibiliMsgListener.super.onLiveStatusMsg(binaryFrameHandler, msg);
                 System.out.printf("%s 状态变化 %s\n", binaryFrameHandler.getRoomId(), msg.getLiveStatusAction(binaryFrameHandler.getRoomId()));
             }
+
+            @Override
+            public void onRoomStatsMsg(BilibiliBinaryFrameHandler binaryFrameHandler, BilibiliRoomStatsMsg msg) {
+                IBilibiliMsgListener.super.onRoomStatsMsg(binaryFrameHandler, msg);
+                System.out.printf("%s 统计信息 累计点赞数: %s, 当前观看人数: %s, 累计观看人数: %s\n", binaryFrameHandler.getRoomId(), msg.getLikedCount(), msg.getWatchingCount(), msg.getWatchedCount());
+            }
         });
 
         // 添加客户端连接状态回调
@@ -352,6 +358,8 @@ public class ClientModeExample {
         - onLikeMsg：收到点赞消息
     - ILiveStatusChangeListener（B站、抖音测试只有下播消息）
         - onLiveStatusMsg：收到状态变化消息
+    - IRoomStatsMsgListener（B站，抖音和快手没有累计观看人数信息）
+        - onRoomStatsMsg：收到信息统计消息
 
 #### 3.1.2 commons-client
 
@@ -433,3 +441,11 @@ public class ClientModeExample {
 ## 免责声明
 
 免责声明：仅供学术研究使用。对于违反相关法律、造成危害的滥用行为，开发者不负任何责任。
+
+## 平台开放平台地址
+
+- B站开放平台：https://openhome.bilibili.com
+- 斗鱼开放平台：https://open.douyu.com
+- 虎牙开放平台：https://open.huya.com
+- 快手开放平台：https://open.kuaishou.com
+- 抖音开放平台：https://open.douyin.com

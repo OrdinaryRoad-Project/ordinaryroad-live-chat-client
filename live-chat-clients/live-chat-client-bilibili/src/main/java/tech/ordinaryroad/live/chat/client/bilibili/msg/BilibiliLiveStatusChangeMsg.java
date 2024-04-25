@@ -61,27 +61,6 @@ public class BilibiliLiveStatusChangeMsg extends BaseBilibiliCmdMsg implements I
     }
 
     @Override
-    public LiveStatusAction getLiveStatusAction(Object roomId) {
-        switch (getCmdEnum()) {
-            case LIVE: {
-                return LiveStatusAction.BEGIN;
-            }
-            case STOP_LIVE_ROOM_LIST: {
-                ArrayNode roomIdList = data.withArray("room_id_list");
-                if (data == null || !data.has("room_id_list")) {
-                    return null;
-                }
-                for (JsonNode jsonNode : roomIdList) {
-                    if (jsonNode.asLong() == NumberUtil.parseLong(StrUtil.toStringOrNull(roomId))) {
-                        return LiveStatusAction.END;
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    @Override
     public LiveStatusAction getLiveStatusAction() {
         switch (getCmdEnum()) {
             case LIVE: {

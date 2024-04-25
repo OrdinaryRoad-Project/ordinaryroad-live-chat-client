@@ -22,45 +22,64 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.douyin.msg;
+package tech.ordinaryroad.live.chat.client.bilibili.msg;
 
-import cn.hutool.core.util.NumberUtil;
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import tech.ordinaryroad.live.chat.client.bilibili.constant.BilibiliCmdEnum;
+import tech.ordinaryroad.live.chat.client.bilibili.constant.OperationEnum;
+import tech.ordinaryroad.live.chat.client.bilibili.msg.base.BaseBilibiliCmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IRoomStatsMsg;
-import tech.ordinaryroad.live.chat.client.douyin.msg.base.IDouyinMsg;
-import tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_like_message_msg;
-import tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_room_stats_message_msg;
 
 /**
+ * BilibiliRoomStatsMsg
+ *
  * @author mjz
- * @date 2024/3/28
+ * @date 2024/4/24
  */
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DouyinRoomStatsMsg implements IDouyinMsg, IRoomStatsMsg {
+public class BilibiliRoomStatsMsg extends BaseBilibiliCmdMsg implements IRoomStatsMsg {
 
-    /**
-     * 保存{@link douyin_webcast_like_message_msg#getTotal()}
-     */
-    private String likedCount;
-
-    private douyin_webcast_room_stats_message_msg msg;
-
-    @Override
-    public String getLikedCount() {
-        return this.likedCount;
-    }
+    private JsonNode data;
 
     @Override
     public String getWatchingCount() {
-        if (msg != null) {
-            return NumberUtil.toStr(msg.getTotal());
+        if (getCmdEnum() == BilibiliCmdEnum.ONLINE_RANK_COUNT) {
+            if (data != null && data.has("online_count")) {
+                return data.get("online_count").asText();
+            }
         }
         return null;
+    }
+
+    @Override
+    public String getWatchedCount() {
+        if (getCmdEnum() == BilibiliCmdEnum.WATCHED_CHANGE) {
+            if (data != null && data.has("num")) {
+                return data.get("num").asText();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public String getLikedCount() {
+        if (getCmdEnum() == BilibiliCmdEnum.LIKE_INFO_V3_UPDATE) {
+            if (data != null && data.has("click_count")) {
+                return data.get("click_count").asText();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public OperationEnum getOperationEnum() {
+        return OperationEnum.MESSAGE;
     }
 }

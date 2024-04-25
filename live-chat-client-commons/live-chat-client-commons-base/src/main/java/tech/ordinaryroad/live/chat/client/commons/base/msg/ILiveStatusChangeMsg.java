@@ -25,7 +25,6 @@
 package tech.ordinaryroad.live.chat.client.commons.base.msg;
 
 import tech.ordinaryroad.live.chat.client.commons.base.constant.LiveStatusAction;
-import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 
 /**
  * 直播状态变化消息
@@ -34,16 +33,6 @@ import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
  * @date 2024/3/10
  */
 public interface ILiveStatusChangeMsg extends IMsg {
-
-    /**
-     * 状态变化
-     *
-     * @param roomId B站平台需要传入
-     * @deprecated Use {@link #getLiveStatusAction()} instead.
-     */
-    default LiveStatusAction getLiveStatusAction(Object roomId) {
-        throw new BaseException("暂不支持该操作");
-    }
 
     /**
      * 状态变化

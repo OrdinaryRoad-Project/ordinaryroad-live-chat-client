@@ -22,22 +22,35 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.douyin.listener;
+package tech.ordinaryroad.live.chat.client.kuaishou.msg;
 
-import tech.ordinaryroad.live.chat.client.commons.base.listener.*;
-import tech.ordinaryroad.live.chat.client.douyin.constant.DouyinCmdEnum;
-import tech.ordinaryroad.live.chat.client.douyin.msg.*;
-import tech.ordinaryroad.live.chat.client.douyin.netty.handler.DouyinBinaryFrameHandler;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import tech.ordinaryroad.live.chat.client.commons.base.msg.IRoomStatsMsg;
+import tech.ordinaryroad.live.chat.client.kuaishou.msg.base.IKuaishouMsg;
 
 /**
  * @author mjz
- * @date 2024/1/2
+ * @date 2024/4/25
  */
-public interface IDouyinMsgListener extends IBaseMsgListener<DouyinBinaryFrameHandler, DouyinCmdEnum>,
-        IDanmuMsgListener<DouyinBinaryFrameHandler, DouyinDanmuMsg>,
-        IGiftMsgListener<DouyinBinaryFrameHandler, DouyinGiftMsg>,
-        IEnterRoomMsgListener<DouyinBinaryFrameHandler, DouyinEnterRoomMsg>,
-        ILikeMsgListener<DouyinBinaryFrameHandler, DouyinLikeMsg>,
-        ILiveStatusChangeListener<DouyinBinaryFrameHandler, DouyinControlMsg>,
-        IRoomStatsMsgListener<DouyinBinaryFrameHandler, DouyinRoomStatsMsg> {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class KuaishouRoomStatsMsg implements IKuaishouMsg, IRoomStatsMsg {
+
+    private String likedCount;
+    private String watchingCount;
+
+    @Override
+    public String getLikedCount() {
+        return this.likedCount;
+    }
+
+    @Override
+    public String getWatchingCount() {
+        return this.watchingCount;
+    }
 }

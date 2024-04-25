@@ -62,11 +62,6 @@ class DouyinLiveChatClientTest {
             public void onOtherCmdMsg(DouyinCmdEnum cmd, ICmdMsg<DouyinCmdEnum> cmdMsg) {
                 log.debug("收到其他CMD消息 {}", cmd);
                 switch (cmd) {
-                    case WebcastRoomStatsMessage: {
-                        DouyinRoomStatsMsg douyinRoomStatsMsg = (DouyinRoomStatsMsg) cmdMsg;
-                        douyin_webcast_room_stats_message_msg msg = douyinRoomStatsMsg.getMsg();
-                        break;
-                    }
                     case WebcastSocialMessage: {
                         DouyinSocialMsg douyinSocialMsg = (DouyinSocialMsg) cmdMsg;
                         douyin_webcast_social_message_msg msg = douyinSocialMsg.getMsg();
@@ -128,6 +123,12 @@ class DouyinLiveChatClientTest {
             @Override
             public void onLiveStatusMsg(DouyinBinaryFrameHandler douyinBinaryFrameHandler, DouyinControlMsg douyinControlMsg) {
                 log.error("状态变化: {}", douyinControlMsg.getMsg().getStatus());
+            }
+
+            @Override
+            public void onRoomStatsMsg(DouyinBinaryFrameHandler binaryFrameHandler, DouyinRoomStatsMsg msg) {
+                IDouyinMsgListener.super.onRoomStatsMsg(binaryFrameHandler, msg);
+                log.info("{} 统计信息 累计点赞数: {}, 当前观看人数: {}, 累计观看人数: {}", binaryFrameHandler.getRoomId(), msg.getLikedCount(), msg.getWatchingCount(), msg.getWatchedCount());
             }
         });
         client.connect();

@@ -87,44 +87,26 @@ class BilibiliLiveChatClientTest {
             @Override
             public void onLikeMsg(BilibiliBinaryFrameHandler binaryFrameHandler, LikeInfoV3ClickMsg msg) {
                 IBilibiliMsgListener.super.onLikeMsg(binaryFrameHandler, msg);
-                log.info("{} 收到点赞 {} {}({})", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid());
+                log.info("{} 收到点赞 [{}] {}({})x{}", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid(), msg.getClickCount());
             }
 
             @Override
             public void onLiveStatusMsg(BilibiliBinaryFrameHandler binaryFrameHandler, BilibiliLiveStatusChangeMsg msg) {
                 IBilibiliMsgListener.super.onLiveStatusMsg(binaryFrameHandler, msg);
-                log.error("{} 状态变化 {}", binaryFrameHandler.getRoomId(), msg.getLiveStatusAction(client.getConfig().getRoomId()));
+                log.error("{} 状态变化 {}", binaryFrameHandler.getRoomId(), msg.getLiveStatusAction());
             }
 
             @Override
-            public void onEntryEffect(MessageMsg msg) {
+            public void onRoomStatsMsg(BilibiliBinaryFrameHandler binaryFrameHandler, BilibiliRoomStatsMsg msg) {
+                IBilibiliMsgListener.super.onRoomStatsMsg(binaryFrameHandler, msg);
+                log.info("{} 统计信息 累计点赞数: {}, 当前观看人数: {}, 累计观看人数: {}", binaryFrameHandler.getRoomId(), msg.getLikedCount(), msg.getWatchingCount(), msg.getWatchedCount());
+            }
+
+            @Override
+            public void onEntryEffect(BilibiliBinaryFrameHandler binaryFrameHandler, MessageMsg msg) {
                 JsonNode data = msg.getData();
                 String copyWriting = data.get("copy_writing").asText();
                 log.info("入场效果 {}", copyWriting);
-            }
-
-            @Override
-            public void onWatchedChange(MessageMsg msg) {
-                JsonNode data = msg.getData();
-                int num = data.get("num").asInt();
-                String textSmall = data.get("text_small").asText();
-                String textLarge = data.get("text_large").asText();
-                log.debug("观看人数变化 {} {} {}", num, textSmall, textLarge);
-            }
-
-            @Override
-            public void onClickLike(MessageMsg msg) {
-                JsonNode data = msg.getData();
-                String uname = data.get("uname").asText();
-                String likeText = data.get("like_text").asText();
-                log.debug("为主播点赞 {} {}", uname, likeText);
-            }
-
-            @Override
-            public void onClickUpdate(MessageMsg msg) {
-                JsonNode data = msg.getData();
-                int clickCount = data.get("click_count").asInt();
-                log.debug("点赞数更新 {}", clickCount);
             }
 
             @Override
