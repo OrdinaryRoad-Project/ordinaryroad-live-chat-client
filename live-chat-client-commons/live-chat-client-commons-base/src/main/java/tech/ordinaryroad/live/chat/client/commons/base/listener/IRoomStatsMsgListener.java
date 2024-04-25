@@ -31,7 +31,7 @@ package tech.ordinaryroad.live.chat.client.commons.base.listener;
  * @author mjz
  * @date 2024/4/24
  */
-public interface IRoomStatsListener<T, RoomStatsMsg> {
+public interface IRoomStatsMsgListener<T, RoomStatsMsg> {
 
     /**
      * 房间统计消息

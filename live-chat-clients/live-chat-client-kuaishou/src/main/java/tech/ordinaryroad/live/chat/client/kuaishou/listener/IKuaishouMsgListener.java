@@ -40,5 +40,5 @@ public interface IKuaishouMsgListener extends IBaseMsgListener<KuaishouBinaryFra
         IDanmuMsgListener<KuaishouBinaryFrameHandler, KuaishouDanmuMsg>,
         IGiftMsgListener<KuaishouBinaryFrameHandler, KuaishouGiftMsg>,
         ILikeMsgListener<KuaishouBinaryFrameHandler, KuaishouLikeMsg>,
-        IRoomStatsListener<KuaishouBinaryFrameHandler, KuaishouRoomStatsMsg> {
+        IRoomStatsMsgListener<KuaishouBinaryFrameHandler, KuaishouRoomStatsMsg> {
 }

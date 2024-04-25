@@ -40,7 +40,7 @@ public interface IBilibiliMsgListener extends IBaseMsgListener<BilibiliBinaryFra
         IEnterRoomMsgListener<BilibiliBinaryFrameHandler, InteractWordMsg>,
         ILikeMsgListener<BilibiliBinaryFrameHandler, LikeInfoV3ClickMsg>,
         ILiveStatusChangeListener<BilibiliBinaryFrameHandler, BilibiliLiveStatusChangeMsg>,
-        IRoomStatsListener<BilibiliBinaryFrameHandler, BilibiliRoomStatsMsg> {
+        IRoomStatsMsgListener<BilibiliBinaryFrameHandler, BilibiliRoomStatsMsg> {
 
     /**
      * 入场效果（高能用户）
@@ -61,14 +61,14 @@ public interface IBilibiliMsgListener extends IBaseMsgListener<BilibiliBinaryFra
      *
      * @param binaryFrameHandler BilibiliBinaryFrameHandler
      * @param msg                SendSmsReplyMsg
-     * @deprecated use {@link IRoomStatsListener#onRoomStatsMsg}
+     * @deprecated use {@link IRoomStatsMsgListener#onRoomStatsMsg}
      */
     default void onWatchedChange(BilibiliBinaryFrameHandler binaryFrameHandler, MessageMsg msg) {
         this.onWatchedChange(msg);
     }
 
     /**
-     * @deprecated use {@link IRoomStatsListener#onRoomStatsMsg}
+     * @deprecated use {@link IRoomStatsMsgListener#onRoomStatsMsg}
      */
     default void onWatchedChange(MessageMsg msg) {
         // ignore
@@ -79,14 +79,14 @@ public interface IBilibiliMsgListener extends IBaseMsgListener<BilibiliBinaryFra
      *
      * @param binaryFrameHandler BilibiliBinaryFrameHandler
      * @param msg                SendSmsReplyMsg
-     * @deprecated use {@link IRoomStatsListener#onRoomStatsMsg}
+     * @deprecated use {@link IRoomStatsMsgListener#onRoomStatsMsg}
      */
     default void onClickUpdate(BilibiliBinaryFrameHandler binaryFrameHandler, MessageMsg msg) {
         this.onClickUpdate(msg);
     }
 
     /**
-     * @deprecated use {@link IRoomStatsListener#onRoomStatsMsg}
+     * @deprecated use {@link IRoomStatsMsgListener#onRoomStatsMsg}
      */
     default void onClickUpdate(MessageMsg msg) {
         // ignore
