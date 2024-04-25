@@ -42,13 +42,13 @@ Live room WebSocket chat client
 
 平台直播间消息适配情况表
 
-| 平台          | 弹幕 | 礼物        | 醒目留言 | 进入房间    | 点赞      | 状态变化 |
-|-------------|----|-----------|------|---------|---------|------|
-| Bilibili B站 | ✅  | ✅         | ✅    | ✅       | ✅       | ✅    |
-| Douyu 斗鱼    | ✅  | ✅         | ☑️   | ✅       | ❌       | ☑️   |
-| Huya 虎牙     | ✅  | ✅         | ❌    | ✅（高级用户） | ❌       | ☑️   |
-| Douyin 抖音   | ✅  | ✅         | ❌    | ✅       | ✅（点赞个数） | ✅    |
-| Kuaishou 快手 | ✅  | ✅（礼物信息不全） | ❌    | ❌       | ✅       |      |
+| 平台          | 弹幕 | 礼物        | 醒目留言 | 进入房间    | 点赞      | 状态变化 | 统计信息               |
+|-------------|----|-----------|------|---------|---------|------|--------------------|
+| Bilibili B站 | ✅  | ✅         | ✅    | ✅       | ✅       | ✅    | ✅（点赞数、当前人数、累计观看人数） |
+| Douyu 斗鱼    | ✅  | ✅         | ☑️   | ✅       | ❌       | ☑️   | ❌                  |
+| Huya 虎牙     | ✅  | ✅         | ❌    | ✅（高级用户） | ❌       | ☑️   | ❌                  |
+| Douyin 抖音   | ✅  | ✅         | ❌    | ✅       | ✅（点赞个数） | ✅    | ✅（点赞数、当前人数）        |
+| Kuaishou 快手 | ✅  | ✅（礼物信息不全） | ❌    | ❌       | ✅       |      | ✅（点赞数、当前人数）        |
 
 消息接口内置的方法见 [https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/tree/main/live-chat-client-commons/live-chat-client-commons-base/src/main/java/tech/ordinaryroad/live/chat/client/commons/base/msg](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/tree/main/live-chat-client-commons/live-chat-client-commons-base/src/main/java/tech/ordinaryroad/live/chat/client/commons/base/msg)
 
@@ -252,6 +252,12 @@ public class ClientModeExample {
             public void onLiveStatusMsg(BilibiliBinaryFrameHandler binaryFrameHandler, BilibiliLiveStatusChangeMsg msg) {
                 IBilibiliMsgListener.super.onLiveStatusMsg(binaryFrameHandler, msg);
                 System.out.printf("%s 状态变化 %s\n", binaryFrameHandler.getRoomId(), msg.getLiveStatusAction(binaryFrameHandler.getRoomId()));
+            }
+
+            @Override
+            public void onRoomStatsMsg(BilibiliBinaryFrameHandler binaryFrameHandler, BilibiliRoomStatsMsg msg) {
+                IBilibiliMsgListener.super.onRoomStatsMsg(binaryFrameHandler, msg);
+                System.out.printf("%s 统计信息 累计点赞数: %s, 当前观看人数: %s, 累计观看人数: %s\n", binaryFrameHandler.getRoomId(), msg.getLikedCount(), msg.getWatchingCount(), msg.getWatchedCount());
             }
         });
 
