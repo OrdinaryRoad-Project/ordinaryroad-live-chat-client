@@ -16,6 +16,9 @@ autolabeler:
   - label: 'cicd'
     branch:
       - '/cicd.+/'
+  - label: 'refactor'
+    branch:
+      - '/refactor.+/'
 # Emoji reference: https://gitmoji.carloscuesta.me/
 categories:
   - title: '🚀 Features'
@@ -28,6 +31,7 @@ categories:
     labels:
       - 'cicd'
       - 'chore'
+      - 'refactor'
 exclude-labels:
   - reverted
   - no-changelog
