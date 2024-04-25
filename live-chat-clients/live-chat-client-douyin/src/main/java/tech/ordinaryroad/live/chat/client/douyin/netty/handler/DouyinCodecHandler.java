@@ -31,11 +31,11 @@ import com.google.protobuf.ByteString;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import lombok.extern.slf4j.Slf4j;
+import tech.ordinaryroad.live.chat.client.codec.douyin.constant.DouyinPayloadTypeEnum;
+import tech.ordinaryroad.live.chat.client.codec.douyin.msg.base.IDouyinMsg;
+import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.douyin_websocket_frame;
+import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.douyin_websocket_frame_msg;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
-import tech.ordinaryroad.live.chat.client.douyin.constant.DouyinPayloadTypeEnum;
-import tech.ordinaryroad.live.chat.client.douyin.msg.base.IDouyinMsg;
-import tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame;
-import tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_websocket_frame_msg;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BinaryWebSocketFrameToMessageCodec;
 
 import java.util.List;

@@ -2,20 +2,28 @@ package tech.ordinaryroad.live.chat.client.kuaishou.client;
 
 import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.http.Header;
+import cn.hutool.http.HttpResponse;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import lombok.Cleanup;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.KuaishouDanmuMsg;
+import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.KuaishouGiftMsg;
+import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.KuaishouLikeMsg;
+import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.KuaishouRoomStatsMsg;
+import tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf.PayloadTypeOuterClass;
+import tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf.WebGiftFeedOuterClass;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
+import tech.ordinaryroad.live.chat.client.commons.util.OrJacksonUtil;
+import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCookieUtil;
+import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatHttpUtil;
 import tech.ordinaryroad.live.chat.client.kuaishou.config.KuaishouLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.kuaishou.listener.IKuaishouMsgListener;
-import tech.ordinaryroad.live.chat.client.kuaishou.msg.KuaishouDanmuMsg;
-import tech.ordinaryroad.live.chat.client.kuaishou.msg.KuaishouGiftMsg;
-import tech.ordinaryroad.live.chat.client.kuaishou.msg.KuaishouLikeMsg;
-import tech.ordinaryroad.live.chat.client.kuaishou.msg.KuaishouRoomStatsMsg;
 import tech.ordinaryroad.live.chat.client.kuaishou.netty.handler.KuaishouBinaryFrameHandler;
-import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PayloadTypeOuterClass;
-import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.WebGiftFeedOuterClass;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,6 +48,9 @@ class KuaishouLiveChatClientTest {
         String cookie = System.getenv("cookie");
         log.error("cookie: {}", cookie);
         KuaishouLiveChatClientConfig config = KuaishouLiveChatClientConfig.builder()
+
+                // .forwardWebsocketUri("ws://127.0.0.1:8080/websocket")
+
                 // TODO 浏览器Cookie
                 .cookie(cookie)
                 .roomId("3xpbyu443usqwau")
@@ -61,6 +72,18 @@ class KuaishouLiveChatClientTest {
                 .roomId("mengyu980726")
                 // 大师1
                 .roomId("3xkz5pb2kx3q4u6")
+
+                .roomId("xx6892530")
+                .roomId("yc566000")
+                .roomId("tianci666")
+                .roomId("kslibai66")
+
+
+                .roomId("Ouluo52134")
+                .roomId("cutgirl325")
+
+
+                .roomId("KPL704668133")
                 .build();
 
         client = new KuaishouLiveChatClient(config, new IKuaishouMsgListener() {

@@ -27,9 +27,9 @@ package tech.ordinaryroad.live.chat.client.example.client.config;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import tech.ordinaryroad.live.chat.client.codec.douyu.msg.ChatmsgMsg;
+import tech.ordinaryroad.live.chat.client.codec.douyu.msg.DgbMsg;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuMsgListener;
-import tech.ordinaryroad.live.chat.client.douyu.msg.ChatmsgMsg;
-import tech.ordinaryroad.live.chat.client.douyu.msg.DgbMsg;
 import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuBinaryFrameHandler;
 
 /**

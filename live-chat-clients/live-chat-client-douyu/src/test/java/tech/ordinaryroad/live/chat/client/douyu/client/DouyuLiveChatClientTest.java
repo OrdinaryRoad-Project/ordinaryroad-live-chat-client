@@ -29,16 +29,16 @@ import cn.hutool.core.util.RandomUtil;
 import io.netty.channel.nio.NioEventLoopGroup;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import tech.ordinaryroad.live.chat.client.codec.douyu.constant.DouyuCmdEnum;
+import tech.ordinaryroad.live.chat.client.codec.douyu.msg.ChatmsgMsg;
+import tech.ordinaryroad.live.chat.client.codec.douyu.msg.DgbMsg;
+import tech.ordinaryroad.live.chat.client.codec.douyu.msg.UenterMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
 import tech.ordinaryroad.live.chat.client.douyu.config.DouyuLiveChatClientConfig;
-import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuConnectionListener;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuMsgListener;
-import tech.ordinaryroad.live.chat.client.douyu.msg.ChatmsgMsg;
-import tech.ordinaryroad.live.chat.client.douyu.msg.DgbMsg;
-import tech.ordinaryroad.live.chat.client.douyu.msg.UenterMsg;
 import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuConnectionHandler;
 
@@ -59,6 +59,7 @@ class DouyuLiveChatClientTest implements IDouyuConnectionListener, IDouyuMsgList
         DouyuLiveChatClientConfig config = DouyuLiveChatClientConfig.builder()
                 // TODO 修改房间id（支持短id）
                 .roomId(74751)
+                .roomId(22222)
                 .build();
 
         client = new DouyuLiveChatClient(config, new IDouyuMsgListener() {

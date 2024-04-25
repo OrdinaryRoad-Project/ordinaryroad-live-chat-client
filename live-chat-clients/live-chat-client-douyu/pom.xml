@@ -42,6 +42,11 @@
     <dependencies>
         <dependency>
             <groupId>tech.ordinaryroad</groupId>
+            <artifactId>live-chat-client-codec-douyu</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>tech.ordinaryroad</groupId>
             <artifactId>live-chat-client-websocket</artifactId>
         </dependency>
 

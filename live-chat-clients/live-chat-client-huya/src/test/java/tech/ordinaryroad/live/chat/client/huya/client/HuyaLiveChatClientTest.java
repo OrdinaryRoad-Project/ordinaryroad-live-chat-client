@@ -29,14 +29,14 @@ import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import tech.ordinaryroad.live.chat.client.codec.huya.constant.HuyaCmdEnum;
+import tech.ordinaryroad.live.chat.client.codec.huya.msg.MessageNoticeMsg;
+import tech.ordinaryroad.live.chat.client.codec.huya.msg.SendItemSubBroadcastPacketMsg;
+import tech.ordinaryroad.live.chat.client.codec.huya.msg.VipEnterBannerMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 import tech.ordinaryroad.live.chat.client.huya.config.HuyaLiveChatClientConfig;
-import tech.ordinaryroad.live.chat.client.huya.constant.HuyaCmdEnum;
 import tech.ordinaryroad.live.chat.client.huya.listener.IHuyaMsgListener;
-import tech.ordinaryroad.live.chat.client.huya.msg.MessageNoticeMsg;
-import tech.ordinaryroad.live.chat.client.huya.msg.SendItemSubBroadcastPacketMsg;
-import tech.ordinaryroad.live.chat.client.huya.msg.VipEnterBannerMsg;
 import tech.ordinaryroad.live.chat.client.huya.netty.handler.HuyaBinaryFrameHandler;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -71,8 +71,8 @@ class HuyaLiveChatClientTest {
 
                 .roomId(29785782)
 
-                .roomId(333003)
                 .roomId("bagea")
+                .roomId(333003)
                 .build();
 
         client = new HuyaLiveChatClient(config, new IHuyaMsgListener() {

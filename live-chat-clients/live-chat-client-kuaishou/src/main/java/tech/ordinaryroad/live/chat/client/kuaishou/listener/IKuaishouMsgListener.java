@@ -24,13 +24,13 @@
 
 package tech.ordinaryroad.live.chat.client.kuaishou.listener;
 
+import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.KuaishouDanmuMsg;
+import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.KuaishouGiftMsg;
+import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.KuaishouLikeMsg;
+import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.KuaishouRoomStatsMsg;
+import tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf.PayloadTypeOuterClass;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.*;
-import tech.ordinaryroad.live.chat.client.kuaishou.msg.KuaishouDanmuMsg;
-import tech.ordinaryroad.live.chat.client.kuaishou.msg.KuaishouGiftMsg;
-import tech.ordinaryroad.live.chat.client.kuaishou.msg.KuaishouLikeMsg;
-import tech.ordinaryroad.live.chat.client.kuaishou.msg.KuaishouRoomStatsMsg;
 import tech.ordinaryroad.live.chat.client.kuaishou.netty.handler.KuaishouBinaryFrameHandler;
-import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PayloadTypeOuterClass;
 
 /**
  * @author mjz

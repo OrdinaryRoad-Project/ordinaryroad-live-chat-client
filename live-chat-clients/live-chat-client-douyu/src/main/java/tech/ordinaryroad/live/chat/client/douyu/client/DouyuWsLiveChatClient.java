@@ -28,19 +28,20 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
+import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolConfig;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
 import io.netty.handler.codec.http.websocketx.WebSocketVersion;
 import lombok.extern.slf4j.Slf4j;
+import tech.ordinaryroad.live.chat.client.codec.douyu.api.DouyuApis;
+import tech.ordinaryroad.live.chat.client.codec.douyu.constant.DouyuClientModeEnum;
+import tech.ordinaryroad.live.chat.client.codec.douyu.msg.LoginresMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
-import tech.ordinaryroad.live.chat.client.douyu.api.DouyuApis;
 import tech.ordinaryroad.live.chat.client.douyu.client.base.BaseDouyuLiveChatClient;
 import tech.ordinaryroad.live.chat.client.douyu.config.DouyuLiveChatClientConfig;
-import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuClientModeEnum;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuConnectionListener;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuMsgListener;
-import tech.ordinaryroad.live.chat.client.douyu.msg.LoginresMsg;
 import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuChannelInitializer;
 import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuConnectionHandler;
@@ -109,7 +110,7 @@ public class DouyuWsLiveChatClient extends BaseDouyuLiveChatClient implements ID
     @Override
     public void onMsg(DouyuBinaryFrameHandler binaryFrameHandler, IMsg msg) {
         if (msg instanceof LoginresMsg) {
-            send(getWebSocketFrameFactory(getConfig().getRoomId()).createKeeplive(getConfig().getCookie()));
+            send(new BinaryWebSocketFrame(getMsgFactory(getConfig().getRoomId()).createKeeplive(getConfig().getCookie())));
         }
     }
 

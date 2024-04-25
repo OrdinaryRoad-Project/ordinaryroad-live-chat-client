@@ -29,7 +29,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import tech.ordinaryroad.live.chat.client.bilibili.constant.ProtoverEnum;
+import tech.ordinaryroad.live.chat.client.codec.bilibili.constant.ProtoverEnum;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatNumberUtil;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.config.BaseNettyClientConfig;
 

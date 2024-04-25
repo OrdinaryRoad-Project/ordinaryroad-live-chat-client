@@ -1,0 +1,21 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>tech.ordinaryroad</groupId>
+        <artifactId>live-chat-client</artifactId>
+        <version>0.6.0</version>
+    </parent>
+    <packaging>pom</packaging>
+
+    <artifactId>live-chat-client-codec</artifactId>
+    <name>ordinaryroad-live-chat-client-codec</name>
+
+    <modules>
+        <module>live-chat-client-codec-bilibili</module>
+        <module>live-chat-client-codec-douyu</module>
+        <module>live-chat-client-codec-huya</module>
+        <module>live-chat-client-codec-douyin</module>
+        <module>live-chat-client-codec-kuaishou</module>
+    </modules>
+</project>

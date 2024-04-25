@@ -27,15 +27,16 @@ package tech.ordinaryroad.live.chat.client.douyu.client.base;
 import cn.hutool.core.collection.CollUtil;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import lombok.extern.slf4j.Slf4j;
+import tech.ordinaryroad.live.chat.client.codec.douyu.constant.DouyuClientModeEnum;
+import tech.ordinaryroad.live.chat.client.codec.douyu.constant.DouyuCmdEnum;
+import tech.ordinaryroad.live.chat.client.codec.douyu.msg.base.IDouyuMsg;
+import tech.ordinaryroad.live.chat.client.codec.douyu.msg.factory.DouyuMsgFactory;
 import tech.ordinaryroad.live.chat.client.douyu.config.DouyuLiveChatClientConfig;
-import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuClientModeEnum;
-import tech.ordinaryroad.live.chat.client.douyu.constant.DouyuCmdEnum;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuConnectionListener;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuMsgListener;
-import tech.ordinaryroad.live.chat.client.douyu.msg.base.IDouyuMsg;
-import tech.ordinaryroad.live.chat.client.douyu.netty.frame.factory.DouyuWebSocketFrameFactory;
 import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuConnectionHandler;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
@@ -102,7 +103,7 @@ public abstract class BaseDouyuLiveChatClient extends BaseNettyClient<
 
             WebSocketFrame webSocketFrame = null;
             try {
-                webSocketFrame = getWebSocketFrameFactory(getConfig().getRoomId()).createDanmu(msg, getConfig().getCookie());
+                webSocketFrame = new BinaryWebSocketFrame(getMsgFactory(getConfig().getRoomId()).createDanmu(msg, getConfig().getCookie()));
             } catch (Exception e) {
                 log.error("douyu弹幕包创建失败", e);
                 if (failed != null) {
@@ -132,8 +133,8 @@ public abstract class BaseDouyuLiveChatClient extends BaseNettyClient<
         }
     }
 
-    protected static DouyuWebSocketFrameFactory getWebSocketFrameFactory(long roomId) {
-        return DouyuWebSocketFrameFactory.getInstance(roomId);
+    protected static DouyuMsgFactory getMsgFactory(long roomId) {
+        return DouyuMsgFactory.getInstance(roomId);
     }
 
 }
