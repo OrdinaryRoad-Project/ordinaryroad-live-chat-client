@@ -6,7 +6,7 @@ import "WebGiftFeed.proto";
 import "WebSystemNoticeFeed.proto";
 import "WebShareFeed.proto";
 
-option java_package = "tech.ordinaryroad.live.chat.client.kuaishou.protobuf";
+option java_package = "tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf";
 
 message SCWebFeedPush {
   string displayWatchingCount = 1;

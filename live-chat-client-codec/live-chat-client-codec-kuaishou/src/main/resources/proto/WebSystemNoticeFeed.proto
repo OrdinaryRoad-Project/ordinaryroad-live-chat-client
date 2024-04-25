@@ -1,7 +1,7 @@
 syntax = "proto3";
 import "SimpleUserInfo.proto";
 
-option java_package = "tech.ordinaryroad.live.chat.client.kuaishou.protobuf";
+option java_package = "tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf";
 
 message WebSystemNoticeFeed {
   string id = 1;

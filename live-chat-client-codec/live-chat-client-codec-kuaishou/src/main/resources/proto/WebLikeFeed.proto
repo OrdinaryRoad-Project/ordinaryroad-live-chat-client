@@ -2,7 +2,7 @@ syntax = "proto3";
 import "SimpleUserInfo.proto";
 import "LiveAudienceState.proto";
 
-option java_package = "tech.ordinaryroad.live.chat.client.kuaishou.protobuf";
+option java_package = "tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf";
 
 message WebLikeFeed {
   string id = 1;

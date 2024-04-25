@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 
-option java_package = "tech.ordinaryroad.live.chat.client.kuaishou.protobuf";
+option java_package = "tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf";
 
 message SCWebPipEnded {
   uint64 time = 1;
