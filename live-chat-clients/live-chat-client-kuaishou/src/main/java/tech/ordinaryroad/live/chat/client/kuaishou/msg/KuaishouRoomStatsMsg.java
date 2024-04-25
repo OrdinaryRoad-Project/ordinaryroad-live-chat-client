@@ -22,23 +22,35 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.kuaishou.listener;
+package tech.ordinaryroad.live.chat.client.kuaishou.msg;
 
-import tech.ordinaryroad.live.chat.client.commons.base.listener.*;
-import tech.ordinaryroad.live.chat.client.kuaishou.msg.KuaishouDanmuMsg;
-import tech.ordinaryroad.live.chat.client.kuaishou.msg.KuaishouGiftMsg;
-import tech.ordinaryroad.live.chat.client.kuaishou.msg.KuaishouLikeMsg;
-import tech.ordinaryroad.live.chat.client.kuaishou.msg.KuaishouRoomStatsMsg;
-import tech.ordinaryroad.live.chat.client.kuaishou.netty.handler.KuaishouBinaryFrameHandler;
-import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.PayloadTypeOuterClass;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import tech.ordinaryroad.live.chat.client.commons.base.msg.IRoomStatsMsg;
+import tech.ordinaryroad.live.chat.client.kuaishou.msg.base.IKuaishouMsg;
 
 /**
  * @author mjz
- * @date 2024/1/5
+ * @date 2024/4/25
  */
-public interface IKuaishouMsgListener extends IBaseMsgListener<KuaishouBinaryFrameHandler, PayloadTypeOuterClass.PayloadType>,
-        IDanmuMsgListener<KuaishouBinaryFrameHandler, KuaishouDanmuMsg>,
-        IGiftMsgListener<KuaishouBinaryFrameHandler, KuaishouGiftMsg>,
-        ILikeMsgListener<KuaishouBinaryFrameHandler, KuaishouLikeMsg>,
-        IRoomStatsListener<KuaishouBinaryFrameHandler, KuaishouRoomStatsMsg> {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class KuaishouRoomStatsMsg implements IKuaishouMsg, IRoomStatsMsg {
+
+    private String likedCount;
+    private String watchingCount;
+
+    @Override
+    public String getLikedCount() {
+        return this.likedCount;
+    }
+
+    @Override
+    public String getWatchingCount() {
+        return this.watchingCount;
+    }
 }

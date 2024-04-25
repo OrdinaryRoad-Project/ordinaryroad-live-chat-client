@@ -35,6 +35,7 @@ import tech.ordinaryroad.live.chat.client.kuaishou.listener.IKuaishouMsgListener
 import tech.ordinaryroad.live.chat.client.kuaishou.msg.KuaishouDanmuMsg;
 import tech.ordinaryroad.live.chat.client.kuaishou.msg.KuaishouGiftMsg;
 import tech.ordinaryroad.live.chat.client.kuaishou.msg.KuaishouLikeMsg;
+import tech.ordinaryroad.live.chat.client.kuaishou.msg.KuaishouRoomStatsMsg;
 import tech.ordinaryroad.live.chat.client.kuaishou.msg.base.IKuaishouMsg;
 import tech.ordinaryroad.live.chat.client.kuaishou.protobuf.*;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientBinaryFrameHandler;
@@ -68,13 +69,13 @@ public class KuaishouBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
         ByteString payloadByteString = socketMessage.getPayload();
         switch (socketMessage.getPayloadType()) {
             // 用户贡献名单
-            case SC_LIVE_WATCHING_LIST: {
-                SCWebLiveWatchingUsersOuterClass.SCWebLiveWatchingUsers scWebLiveWatchingUsers = SCWebLiveWatchingUsersOuterClass.SCWebLiveWatchingUsers.parseFrom(payloadByteString);
-                List<WebWatchingUserInfoOuterClass.WebWatchingUserInfo> watchingUserList = scWebLiveWatchingUsers.getWatchingUserList();
-                String displayWatchingCount = scWebLiveWatchingUsers.getDisplayWatchingCount();
-                long pendingDuration = scWebLiveWatchingUsers.getPendingDuration();
-                break;
-            }
+//            case SC_LIVE_WATCHING_LIST: {
+//                SCWebLiveWatchingUsersOuterClass.SCWebLiveWatchingUsers scWebLiveWatchingUsers = SCWebLiveWatchingUsersOuterClass.SCWebLiveWatchingUsers.parseFrom(payloadByteString);
+//                List<WebWatchingUserInfoOuterClass.WebWatchingUserInfo> watchingUserList = scWebLiveWatchingUsers.getWatchingUserList();
+//                String displayWatchingCount = scWebLiveWatchingUsers.getDisplayWatchingCount();
+//                long pendingDuration = scWebLiveWatchingUsers.getPendingDuration();
+//                break;
+//            }
             case SC_FEED_PUSH: {
                 SCWebFeedPushOuterClass.SCWebFeedPush scWebFeedPush = SCWebFeedPushOuterClass.SCWebFeedPush.parseFrom(payloadByteString);
                 if (scWebFeedPush.getCommentFeedsCount() > 0) {
@@ -97,6 +98,13 @@ public class KuaishouBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
                         iteratorMsgListeners(msgListener -> msgListener.onLikeMsg(KuaishouBinaryFrameHandler.this, msg));
                     }
                 }
+
+                String displayLikeCount = scWebFeedPush.getDisplayLikeCount();
+                String displayWatchingCount = scWebFeedPush.getDisplayWatchingCount();
+                KuaishouRoomStatsMsg kuaishouRoomStatsMsg = new KuaishouRoomStatsMsg();
+                kuaishouRoomStatsMsg.setLikedCount(displayLikeCount);
+                kuaishouRoomStatsMsg.setWatchingCount(displayWatchingCount);
+                iteratorMsgListeners(msgListener -> msgListener.onRoomStatsMsg(KuaishouBinaryFrameHandler.this, kuaishouRoomStatsMsg));
                 break;
             }
             default: {
