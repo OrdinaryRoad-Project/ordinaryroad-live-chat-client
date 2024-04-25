@@ -24,6 +24,7 @@
 
 package tech.ordinaryroad.live.chat.client.douyin.netty.handler;
 
+import cn.hutool.core.util.NumberUtil;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import io.netty.channel.ChannelHandler;
@@ -117,7 +118,14 @@ public class DouyinBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<
                 try {
                     douyin_webcast_like_message_msg douyinWebcastLikeMessageMsg = douyin_webcast_like_message_msg.parseFrom(payload);
                     DouyinLikeMsg msg = new DouyinLikeMsg(douyinWebcastLikeMessageMsg);
-                    iteratorMsgListeners(msgListener -> msgListener.onLikeMsg(DouyinBinaryFrameHandler.this, msg));
+
+                    DouyinRoomStatsMsg douyinRoomStatsMsg = new DouyinRoomStatsMsg();
+                    douyinRoomStatsMsg.setLikedCount(NumberUtil.toStr(douyinWebcastLikeMessageMsg.getTotal()));
+
+                    iteratorMsgListeners(msgListener -> {
+                        msgListener.onLikeMsg(DouyinBinaryFrameHandler.this, msg);
+                        msgListener.onRoomStatsMsg(DouyinBinaryFrameHandler.this, douyinRoomStatsMsg);
+                    });
                 } catch (InvalidProtocolBufferException e) {
                     throw new BaseException(e);
                 }
@@ -148,7 +156,9 @@ public class DouyinBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<
             case WebcastRoomStatsMessage: {
                 try {
                     douyin_webcast_room_stats_message_msg douyinWebcastRoomStatsMessageMsg = douyin_webcast_room_stats_message_msg.parseFrom(payload);
-                    iteratorMsgListeners(msgListener -> msgListener.onOtherCmdMsg(DouyinBinaryFrameHandler.this, DouyinCmdEnum.WebcastRoomStatsMessage, new DouyinRoomStatsMsg(douyinWebcastRoomStatsMessageMsg)));
+                    DouyinRoomStatsMsg douyinRoomStatsMsg = new DouyinRoomStatsMsg();
+                    douyinRoomStatsMsg.setMsg(douyinWebcastRoomStatsMessageMsg);
+                    iteratorMsgListeners(msgListener -> msgListener.onRoomStatsMsg(DouyinBinaryFrameHandler.this, douyinRoomStatsMsg));
                 } catch (InvalidProtocolBufferException e) {
                     throw new BaseException(e);
                 }

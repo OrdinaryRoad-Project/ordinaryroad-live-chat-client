@@ -38,5 +38,6 @@ public interface IDouyinMsgListener extends IBaseMsgListener<DouyinBinaryFrameHa
         IGiftMsgListener<DouyinBinaryFrameHandler, DouyinGiftMsg>,
         IEnterRoomMsgListener<DouyinBinaryFrameHandler, DouyinEnterRoomMsg>,
         ILikeMsgListener<DouyinBinaryFrameHandler, DouyinLikeMsg>,
-        ILiveStatusChangeListener<DouyinBinaryFrameHandler, DouyinControlMsg> {
+        ILiveStatusChangeListener<DouyinBinaryFrameHandler, DouyinControlMsg>,
+        IRoomStatsListener<DouyinBinaryFrameHandler, DouyinRoomStatsMsg> {
 }

@@ -24,12 +24,14 @@
 
 package tech.ordinaryroad.live.chat.client.douyin.msg;
 
+import cn.hutool.core.util.NumberUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tech.ordinaryroad.live.chat.client.douyin.constant.DouyinCmdEnum;
-import tech.ordinaryroad.live.chat.client.douyin.msg.base.IDouyinCmdMsg;
+import tech.ordinaryroad.live.chat.client.commons.base.msg.IRoomStatsMsg;
+import tech.ordinaryroad.live.chat.client.douyin.msg.base.IDouyinMsg;
+import tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_like_message_msg;
 import tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_room_stats_message_msg;
 
 /**
@@ -40,22 +42,25 @@ import tech.ordinaryroad.live.chat.client.douyin.protobuf.douyin_webcast_room_st
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DouyinRoomStatsMsg implements IDouyinCmdMsg {
+public class DouyinRoomStatsMsg implements IDouyinMsg, IRoomStatsMsg {
+
+    /**
+     * 保存{@link douyin_webcast_like_message_msg#getTotal()}
+     */
+    private String likedCount;
 
     private douyin_webcast_room_stats_message_msg msg;
 
     @Override
-    public String getCmd() {
-        return getCmdEnum().name();
+    public String getLikedCount() {
+        return this.likedCount;
     }
 
     @Override
-    public void setCmd(String cmd) {
-        // ignore
-    }
-
-    @Override
-    public DouyinCmdEnum getCmdEnum() {
-        return DouyinCmdEnum.WebcastRoomStatsMessage;
+    public String getWatchingCount() {
+        if (msg != null) {
+            return NumberUtil.toStr(msg.getTotal());
+        }
+        return null;
     }
 }
