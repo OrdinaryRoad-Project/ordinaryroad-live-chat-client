@@ -28,7 +28,7 @@ Live room WebSocket chat client
 > *存在平台差异
 > - ✅: 平台支持且已完成
 > - ☑️️: 平台支持但未实现
-> - ❌: 平台暂不支持
+> - ❌: 平台网页端暂不支持
 
 平台适配情况表
 
@@ -48,7 +48,7 @@ Live room WebSocket chat client
 | Douyu 斗鱼    | ✅  | ✅         | ☑️   | ✅       | ❌       | ☑️   | ❌                  |
 | Huya 虎牙     | ✅  | ✅         | ❌    | ✅（高级用户） | ❌       | ☑️   | ❌                  |
 | Douyin 抖音   | ✅  | ✅         | ❌    | ✅       | ✅（点赞个数） | ✅    | ✅（点赞数、当前人数）        |
-| Kuaishou 快手 | ✅  | ✅（礼物信息不全） | ❌    | ❌       | ✅       |      | ✅（点赞数、当前人数）        |
+| Kuaishou 快手 | ✅  | ✅（礼物信息不全） | ❌    | ❌       | ✅       | ❌    | ✅（点赞数、当前人数）        |
 
 消息接口内置的方法见 [https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/tree/main/live-chat-client-commons/live-chat-client-commons-base/src/main/java/tech/ordinaryroad/live/chat/client/commons/base/msg](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/tree/main/live-chat-client-commons/live-chat-client-commons-base/src/main/java/tech/ordinaryroad/live/chat/client/commons/base/msg)
 
@@ -358,6 +358,8 @@ public class ClientModeExample {
         - onLikeMsg：收到点赞消息
     - ILiveStatusChangeListener（B站、抖音测试只有下播消息）
         - onLiveStatusMsg：收到状态变化消息
+    - IRoomStatsMsgListener（B站，抖音和快手没有累计观看人数信息）
+        - onRoomStatsMsg：收到信息统计消息
 
 #### 3.1.2 commons-client
 
