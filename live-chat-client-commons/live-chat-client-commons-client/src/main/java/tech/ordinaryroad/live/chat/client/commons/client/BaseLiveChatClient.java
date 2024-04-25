@@ -160,20 +160,6 @@ public abstract class BaseLiveChatClient<
         this.statusChangeSupport.removePropertyChangeListener(listener);
     }
 
-    /**
-     * @deprecated use {@link #addStatusChangeListener(IClientStatusChangeListener)}
-     */
-    public void addStatusChangeListener(PropertyChangeListener listener) {
-        this.statusChangeSupport.addPropertyChangeListener(listener);
-    }
-
-    /**
-     * @deprecated use {@link #removeStatusChangeListener(IClientStatusChangeListener)}
-     */
-    public void removeStatusChangeListener(PropertyChangeListener listener) {
-        this.statusChangeSupport.removePropertyChangeListener(listener);
-    }
-
     @Override
     public void destroy() {
         for (PropertyChangeListener propertyChangeListener : this.statusChangeSupport.getPropertyChangeListeners()) {

@@ -25,8 +25,6 @@
 package tech.ordinaryroad.live.chat.client.commons.base.listener;
 
 
-import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseCmdMsg;
-import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 
@@ -90,60 +88,6 @@ public interface IBaseMsgListener<T, CmdEnum extends Enum<CmdEnum>> {
     }
 
     default void onUnknownCmd(String cmdString, IMsg msg) {
-        // ignore
-    }
-
-    /**
-     * 收到cmd消息（所有cmd）
-     *
-     * @param cmd    CmdEnum
-     * @param cmdMsg BaseCmdMsg
-     * @deprecated use {@link #onCmdMsg(T, Enum, ICmdMsg)}
-     */
-    default void onCmdMsg(T t, CmdEnum cmd, BaseCmdMsg<CmdEnum> cmdMsg) {
-        this.onCmdMsg(cmd, cmdMsg);
-    }
-
-    /**
-     * @deprecated use {@link #onCmdMsg(Enum, ICmdMsg)}
-     */
-    default void onCmdMsg(CmdEnum cmd, BaseCmdMsg<CmdEnum> cmdMsg) {
-        // ignore
-    }
-
-    /**
-     * 收到其他cmd消息（存在Enum，但Listener没有对应的回调）
-     *
-     * @param cmd    CmdEnum
-     * @param cmdMsg BaseCmdMsg
-     * @deprecated use {@link #onOtherCmdMsg(T, Enum, ICmdMsg)}
-     */
-    default void onOtherCmdMsg(T t, CmdEnum cmd, BaseCmdMsg<CmdEnum> cmdMsg) {
-        this.onOtherCmdMsg(cmd, cmdMsg);
-    }
-
-    /**
-     * @deprecated use {@link #onOtherCmdMsg(Enum, ICmdMsg)}
-     */
-    default void onOtherCmdMsg(CmdEnum cmd, BaseCmdMsg<CmdEnum> cmdMsg) {
-        // ignore
-    }
-
-    /**
-     * 收到未知cmd消息
-     *
-     * @param cmdString 实际收到的cmd字符串
-     * @param msg       BaseMsg
-     * @deprecated use {@link #onUnknownCmd(T, String, IMsg)}
-     */
-    default void onUnknownCmd(T t, String cmdString, BaseMsg msg) {
-        this.onUnknownCmd(cmdString, msg);
-    }
-
-    /**
-     * @deprecated use {@link #onUnknownCmd(String, IMsg)}
-     */
-    default void onUnknownCmd(String cmdString, BaseMsg msg) {
         // ignore
     }
 }

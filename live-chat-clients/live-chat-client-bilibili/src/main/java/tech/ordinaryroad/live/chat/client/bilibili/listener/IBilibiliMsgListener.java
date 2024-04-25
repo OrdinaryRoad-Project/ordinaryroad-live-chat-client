@@ -55,40 +55,4 @@ public interface IBilibiliMsgListener extends IBaseMsgListener<BilibiliBinaryFra
     default void onEntryEffect(MessageMsg messageMsg) {
         // ignore
     }
-
-    /**
-     * 观看人数变化
-     *
-     * @param binaryFrameHandler BilibiliBinaryFrameHandler
-     * @param msg                SendSmsReplyMsg
-     * @deprecated use {@link IRoomStatsMsgListener#onRoomStatsMsg}
-     */
-    default void onWatchedChange(BilibiliBinaryFrameHandler binaryFrameHandler, MessageMsg msg) {
-        this.onWatchedChange(msg);
-    }
-
-    /**
-     * @deprecated use {@link IRoomStatsMsgListener#onRoomStatsMsg}
-     */
-    default void onWatchedChange(MessageMsg msg) {
-        // ignore
-    }
-
-    /**
-     * 点赞数更新
-     *
-     * @param binaryFrameHandler BilibiliBinaryFrameHandler
-     * @param msg                SendSmsReplyMsg
-     * @deprecated use {@link IRoomStatsMsgListener#onRoomStatsMsg}
-     */
-    default void onClickUpdate(BilibiliBinaryFrameHandler binaryFrameHandler, MessageMsg msg) {
-        this.onClickUpdate(msg);
-    }
-
-    /**
-     * @deprecated use {@link IRoomStatsMsgListener#onRoomStatsMsg}
-     */
-    default void onClickUpdate(MessageMsg msg) {
-        // ignore
-    }
 }
