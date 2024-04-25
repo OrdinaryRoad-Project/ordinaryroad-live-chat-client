@@ -442,7 +442,7 @@ public class ClientModeExample {
 
 免责声明：仅供学术研究使用。对于违反相关法律、造成危害的滥用行为，开发者不负任何责任。
 
-## 平台开放平台地址
+## 各个平台的开放平台地址
 
 - B站开放平台：https://openhome.bilibili.com
 - 斗鱼开放平台：https://open.douyu.com
