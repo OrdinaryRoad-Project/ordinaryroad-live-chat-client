@@ -33,7 +33,6 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
-import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseCmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
@@ -196,21 +195,6 @@ public class DouyuLiveChatClient extends DouyuWsLiveChatClient implements IDouyu
 
                     @Override
                     public void onUnknownCmd(DouyuBinaryFrameHandler binaryFrameHandler, String cmdString, IMsg msg) {
-                        proxyClient.iteratorMsgListeners(msgListener -> msgListener.onUnknownCmd(binaryFrameHandler, cmdString, msg));
-                    }
-
-                    @Override
-                    public void onCmdMsg(DouyuBinaryFrameHandler binaryFrameHandler, DouyuCmdEnum cmd, BaseCmdMsg<DouyuCmdEnum> cmdMsg) {
-                        proxyClient.iteratorMsgListeners(msgListener -> msgListener.onCmdMsg(binaryFrameHandler, cmd, cmdMsg));
-                    }
-
-                    @Override
-                    public void onOtherCmdMsg(DouyuBinaryFrameHandler binaryFrameHandler, DouyuCmdEnum cmd, BaseCmdMsg<DouyuCmdEnum> cmdMsg) {
-                        proxyClient.iteratorMsgListeners(msgListener -> msgListener.onOtherCmdMsg(binaryFrameHandler, cmd, cmdMsg));
-                    }
-
-                    @Override
-                    public void onUnknownCmd(DouyuBinaryFrameHandler binaryFrameHandler, String cmdString, BaseMsg msg) {
                         proxyClient.iteratorMsgListeners(msgListener -> msgListener.onUnknownCmd(binaryFrameHandler, cmdString, msg));
                     }
                 }, new IDouyuConnectionListener() {

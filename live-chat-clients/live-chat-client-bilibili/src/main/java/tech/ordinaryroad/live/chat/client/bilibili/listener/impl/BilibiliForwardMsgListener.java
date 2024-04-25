@@ -89,16 +89,6 @@ public class BilibiliForwardMsgListener implements IBilibiliMsgListener {
     }
 
     @Override
-    public void onWatchedChange(MessageMsg msg) {
-        forward(msg);
-    }
-
-    @Override
-    public void onClickUpdate(MessageMsg msg) {
-        forward(msg);
-    }
-
-    @Override
     public void onLiveStatusMsg(BilibiliLiveStatusChangeMsg msg) {
         forward(msg);
     }

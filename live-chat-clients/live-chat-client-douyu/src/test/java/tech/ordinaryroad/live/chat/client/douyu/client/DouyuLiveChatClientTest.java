@@ -29,8 +29,7 @@ import cn.hutool.core.util.RandomUtil;
 import io.netty.channel.nio.NioEventLoopGroup;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseCmdMsg;
-import tech.ordinaryroad.live.chat.client.commons.base.msg.BaseMsg;
+import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
 import tech.ordinaryroad.live.chat.client.douyu.config.DouyuLiveChatClientConfig;
@@ -90,21 +89,21 @@ class DouyuLiveChatClientTest implements IDouyuConnectionListener, IDouyuMsgList
             }
 
             @Override
-            public void onCmdMsg(DouyuBinaryFrameHandler binaryFrameHandler, DouyuCmdEnum cmd, BaseCmdMsg<DouyuCmdEnum> cmdMsg) {
+            public void onCmdMsg(DouyuBinaryFrameHandler binaryFrameHandler, DouyuCmdEnum cmd, ICmdMsg<DouyuCmdEnum> cmdMsg) {
                 IDouyuMsgListener.super.onCmdMsg(binaryFrameHandler, cmd, cmdMsg);
 
                 log.info("{} 收到CMD消息{} {}", binaryFrameHandler.getRoomId(), cmd, cmdMsg);
             }
 
             @Override
-            public void onOtherCmdMsg(DouyuBinaryFrameHandler binaryFrameHandler, DouyuCmdEnum cmd, BaseCmdMsg<DouyuCmdEnum> cmdMsg) {
+            public void onOtherCmdMsg(DouyuBinaryFrameHandler binaryFrameHandler, DouyuCmdEnum cmd, ICmdMsg<DouyuCmdEnum> cmdMsg) {
                 IDouyuMsgListener.super.onOtherCmdMsg(binaryFrameHandler, cmd, cmdMsg);
 
                 log.debug("{} 收到其他CMD消息 {}", binaryFrameHandler.getRoomId(), cmd);
             }
 
             @Override
-            public void onUnknownCmd(DouyuBinaryFrameHandler binaryFrameHandler, String cmdString, BaseMsg msg) {
+            public void onUnknownCmd(DouyuBinaryFrameHandler binaryFrameHandler, String cmdString, IMsg msg) {
                 IDouyuMsgListener.super.onUnknownCmd(binaryFrameHandler, cmdString, msg);
 
                 log.debug("{} 收到未知CMD消息 {}", binaryFrameHandler.getRoomId(), cmdString);
@@ -221,14 +220,14 @@ class DouyuLiveChatClientTest implements IDouyuConnectionListener, IDouyuMsgList
             }
 
             @Override
-            public void onCmdMsg(DouyuCmdEnum cmd, BaseCmdMsg<DouyuCmdEnum> cmdMsg) {
+            public void onCmdMsg(DouyuCmdEnum cmd, ICmdMsg<DouyuCmdEnum> cmdMsg) {
                 IDouyuMsgListener.super.onCmdMsg(cmd, cmdMsg);
 
                 log.debug("收到CMD消息 {} {}", cmd, cmdMsg);
             }
 
             @Override
-            public void onUnknownCmd(String cmdString, BaseMsg msg) {
+            public void onUnknownCmd(String cmdString, IMsg msg) {
                 IDouyuMsgListener.super.onUnknownCmd(cmdString, msg);
 
                 log.debug("收到未知CMD消息 {} {}", cmdString, msg);

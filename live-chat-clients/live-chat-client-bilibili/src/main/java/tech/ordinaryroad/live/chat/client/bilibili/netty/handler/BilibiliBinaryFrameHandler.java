@@ -125,11 +125,6 @@ public class BilibiliBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
             case LIKE_INFO_V3_UPDATE: {
                 BilibiliRoomStatsMsg bilibiliRoomStatsMsg = BaseBilibiliMsg.OBJECT_MAPPER.convertValue(messageMsg, BilibiliRoomStatsMsg.class);
                 iteratorMsgListeners(msgListener -> msgListener.onRoomStatsMsg(BilibiliBinaryFrameHandler.this, bilibiliRoomStatsMsg));
-                if (cmd == BilibiliCmdEnum.WATCHED_CHANGE) {
-                    iteratorMsgListeners(msgListener -> msgListener.onWatchedChange(BilibiliBinaryFrameHandler.this, messageMsg));
-                } else {
-                    iteratorMsgListeners(msgListener -> msgListener.onClickUpdate(BilibiliBinaryFrameHandler.this, messageMsg));
-                }
                 break;
             }
 
