@@ -31,6 +31,7 @@ import io.netty.channel.ChannelHandler;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.api.KuaishouApis;
+import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.KuaishouCmdMsg;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf.CSHeartbeatOuterClass;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf.CSWebEnterRoomOuterClass;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf.PayloadTypeOuterClass;
@@ -95,15 +96,17 @@ public class KuaishouConnectionHandler extends BaseNettyClientConnectionHandler<
             log.debug("发送心跳包");
         }
         channel.writeAndFlush(
-                SocketMessageOuterClass.SocketMessage.newBuilder()
-                        .setPayloadType(PayloadTypeOuterClass.PayloadType.CS_HEARTBEAT)
-                        .setPayload(
-                                CSHeartbeatOuterClass.CSHeartbeat.newBuilder()
-                                        .setTimestamp(System.currentTimeMillis())
-                                        .build()
-                                        .toByteString()
-                        )
-                        .build()
+                new KuaishouCmdMsg(
+                        SocketMessageOuterClass.SocketMessage.newBuilder()
+                                .setPayloadType(PayloadTypeOuterClass.PayloadType.CS_HEARTBEAT)
+                                .setPayload(
+                                        CSHeartbeatOuterClass.CSHeartbeat.newBuilder()
+                                                .setTimestamp(System.currentTimeMillis())
+                                                .build()
+                                                .toByteString()
+                                )
+                                .build()
+                )
         ).addListener((ChannelFutureListener) future -> {
             if (future.isSuccess()) {
                 if (log.isDebugEnabled()) {
@@ -118,17 +121,19 @@ public class KuaishouConnectionHandler extends BaseNettyClientConnectionHandler<
     @Override
     public void sendAuthRequest(Channel channel) {
         channel.writeAndFlush(
-                SocketMessageOuterClass.SocketMessage.newBuilder()
-                        .setPayloadType(PayloadTypeOuterClass.PayloadType.CS_ENTER_ROOM)
-                        .setPayload(
-                                CSWebEnterRoomOuterClass.CSWebEnterRoom.newBuilder()
-                                        .setToken(roomInitResult.getToken())
-                                        .setLiveStreamId(roomInitResult.getLiveStreamId())
-                                        .setPageId(RandomUtil.randomString(16) + System.currentTimeMillis())
-                                        .build()
-                                        .toByteString()
-                        )
-                        .build()
+                new KuaishouCmdMsg(
+                        SocketMessageOuterClass.SocketMessage.newBuilder()
+                                .setPayloadType(PayloadTypeOuterClass.PayloadType.CS_ENTER_ROOM)
+                                .setPayload(
+                                        CSWebEnterRoomOuterClass.CSWebEnterRoom.newBuilder()
+                                                .setToken(roomInitResult.getToken())
+                                                .setLiveStreamId(roomInitResult.getLiveStreamId())
+                                                .setPageId(RandomUtil.randomString(16) + System.currentTimeMillis())
+                                                .build()
+                                                .toByteString()
+                                )
+                                .build()
+                )
         );
     }
 
