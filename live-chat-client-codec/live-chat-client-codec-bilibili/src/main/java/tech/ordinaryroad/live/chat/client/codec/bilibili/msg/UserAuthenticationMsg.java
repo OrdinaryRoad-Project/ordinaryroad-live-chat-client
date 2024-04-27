@@ -38,7 +38,7 @@ import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.base.BaseBilibiliMs
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class userAuthenticationMsg extends BaseBilibiliMsg {
+public class UserAuthenticationMsg extends BaseBilibiliMsg {
 
     /**
      * 用户uid，0代表游客

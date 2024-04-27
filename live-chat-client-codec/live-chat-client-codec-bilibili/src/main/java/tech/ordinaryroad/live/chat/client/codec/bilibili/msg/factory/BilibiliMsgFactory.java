@@ -29,7 +29,7 @@ import cn.hutool.core.util.NumberUtil;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.api.BilibiliApis;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.constant.ProtoverEnum;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.HeartbeatMsg;
-import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.userAuthenticationMsg;
+import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.UserAuthenticationMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -66,11 +66,11 @@ public class BilibiliMsgFactory {
      * @param protover {@link ProtoverEnum}
      * @return AuthWebSocketFrame
      */
-    public userAuthenticationMsg createAuth(ProtoverEnum protover, BilibiliApis.RoomInitResult roomInitResult) {
+    public UserAuthenticationMsg createAuth(ProtoverEnum protover, BilibiliApis.RoomInitResult roomInitResult) {
         try {
             String buvid3 = roomInitResult.getBuvid3();
             long realRoomId = roomInitResult.getRoomPlayInfoResult().getRoom_id();
-            userAuthenticationMsg userAuthenticationMsg = new userAuthenticationMsg(realRoomId, protover.getCode(), buvid3, roomInitResult.getDanmuinfoResult().getToken());
+            UserAuthenticationMsg userAuthenticationMsg = new UserAuthenticationMsg(realRoomId, protover.getCode(), buvid3, roomInitResult.getDanmuinfoResult().getToken());
             userAuthenticationMsg.setUid(NumberUtil.parseLong(roomInitResult.getUid()));
             return userAuthenticationMsg;
         } catch (Exception e) {

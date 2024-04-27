@@ -105,17 +105,16 @@ public class BilibiliConnectionHandler extends BaseNettyClientConnectionHandler<
         if (log.isDebugEnabled()) {
             log.debug("发送心跳包");
         }
-        channel.writeAndFlush(
-                getWebSocketFrameFactory(getRoomId()).createHeartbeat(getProtover())
-        ).addListener((ChannelFutureListener) future -> {
-            if (future.isSuccess()) {
-                if (log.isDebugEnabled()) {
-                    log.debug("心跳包发送完成");
-                }
-            } else {
-                log.error("心跳包发送失败", future.cause());
-            }
-        });
+        channel.writeAndFlush(getWebSocketFrameFactory(getRoomId()).createHeartbeat(getProtover()))
+                .addListener((ChannelFutureListener) future -> {
+                    if (future.isSuccess()) {
+                        if (log.isDebugEnabled()) {
+                            log.debug("心跳包发送完成");
+                        }
+                    } else {
+                        log.error("心跳包发送失败", future.cause());
+                    }
+                });
     }
 
     private static BilibiliMsgFactory getWebSocketFrameFactory(long roomId) {
@@ -128,15 +127,16 @@ public class BilibiliConnectionHandler extends BaseNettyClientConnectionHandler<
         if (log.isDebugEnabled()) {
             log.debug("发送认证包");
         }
-        channel.writeAndFlush(getWebSocketFrameFactory(getRoomId()).createAuth(getProtover(), roomInitResult)).addListener(future -> {
-            if (future.isSuccess()) {
-                if (log.isDebugEnabled()) {
-                    log.debug("认证包发送完成");
-                }
-            } else {
-                log.error("认证包发送失败", future.cause());
-            }
-        });
+        channel.writeAndFlush(getWebSocketFrameFactory(getRoomId()).createAuth(getProtover(), roomInitResult))
+                .addListener(future -> {
+                    if (future.isSuccess()) {
+                        if (log.isDebugEnabled()) {
+                            log.debug("认证包发送完成");
+                        }
+                    } else {
+                        log.error("认证包发送失败", future.cause());
+                    }
+                });
     }
 
     public long getRoomId() {
