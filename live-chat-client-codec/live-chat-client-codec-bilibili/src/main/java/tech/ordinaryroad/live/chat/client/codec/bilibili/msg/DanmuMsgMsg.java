@@ -33,6 +33,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.constant.OperationEnum;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.base.BaseBilibiliMsg;
+import tech.ordinaryroad.live.chat.client.codec.bilibili.protobuf.DmV2;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IDanmuMsg;
 
 /**
@@ -87,7 +88,7 @@ public class DanmuMsgMsg extends BaseBilibiliMsg implements IDanmuMsg {
     public String getUserAvatar() {
         String avatar = null;
         try {
-            tech.ordinaryroad.live.chat.client.codec.bilibili.protobuf.dm_v2 dmV2 = tech.ordinaryroad.live.chat.client.codec.bilibili.protobuf.dm_v2.parseFrom(Base64.decode(dm_v2));
+            DmV2.dm_v2 dmV2 = DmV2.dm_v2.parseFrom(Base64.decode(dm_v2));
             avatar = dmV2.getDmV220().getAvatar();
 
             if (StrUtil.isBlank(avatar)) {
