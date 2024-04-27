@@ -2,11 +2,6 @@ package tech.ordinaryroad.live.chat.client.kuaishou.client;
 
 import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.http.Header;
-import cn.hutool.http.HttpResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import lombok.Cleanup;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.KuaishouDanmuMsg;
@@ -18,14 +13,10 @@ import tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf.WebGiftFeedOut
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
-import tech.ordinaryroad.live.chat.client.commons.util.OrJacksonUtil;
-import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCookieUtil;
-import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatHttpUtil;
 import tech.ordinaryroad.live.chat.client.kuaishou.config.KuaishouLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.kuaishou.listener.IKuaishouMsgListener;
 import tech.ordinaryroad.live.chat.client.kuaishou.netty.handler.KuaishouBinaryFrameHandler;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

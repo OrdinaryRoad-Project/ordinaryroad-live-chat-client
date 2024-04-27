@@ -72,6 +72,8 @@ class DouyinLiveChatClientTest {
                 .roomId("193059181093")
 
                 .roomId("63592101250")
+
+                .roomId("646454278948")
                 .build();
 
         client = new DouyinLiveChatClient(config, new IDouyinMsgListener() {
