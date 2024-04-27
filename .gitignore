@@ -98,3 +98,5 @@ fabric.properties
 
 .idea
 
+**/src/main/resources/proto/**/*.java
+
