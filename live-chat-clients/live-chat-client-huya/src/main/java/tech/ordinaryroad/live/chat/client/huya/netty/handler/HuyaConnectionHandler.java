@@ -95,17 +95,16 @@ public class HuyaConnectionHandler extends BaseNettyClientConnectionHandler<Huya
         if (log.isDebugEnabled()) {
             log.debug("发送心跳包");
         }
-        channel.writeAndFlush(
-                getWebSocketFrameFactory(getRoomId()).createHeartbeat(getVer(), getCookie())
-        ).addListener((ChannelFutureListener) future -> {
-            if (future.isSuccess()) {
-                if (log.isDebugEnabled()) {
-                    log.debug("心跳包发送完成");
-                }
-            } else {
-                log.error("心跳包发送失败", future.cause());
-            }
-        });
+        channel.writeAndFlush(getWebSocketFrameFactory(getRoomId()).createHeartbeat(getVer(), getCookie()))
+                .addListener((ChannelFutureListener) future -> {
+                    if (future.isSuccess()) {
+                        if (log.isDebugEnabled()) {
+                            log.debug("心跳包发送完成");
+                        }
+                    } else {
+                        log.error("心跳包发送失败", future.cause());
+                    }
+                });
     }
 
     private static HuyaMsgFactory getWebSocketFrameFactory(Object roomId) {
