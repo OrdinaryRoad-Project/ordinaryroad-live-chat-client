@@ -1,29 +1,21 @@
 package tech.ordinaryroad.live.chat.client.douyin.client;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.thread.ThreadUtil;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.UnknownFieldSet;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import tech.ordinaryroad.live.chat.client.codec.douyin.api.DouyinApis;
 import tech.ordinaryroad.live.chat.client.codec.douyin.constant.DouyinCmdEnum;
-import tech.ordinaryroad.live.chat.client.codec.douyin.constant.DouyinRoomStatusEnum;
 import tech.ordinaryroad.live.chat.client.codec.douyin.msg.*;
-import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.douyin_cmd_msg;
-import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.douyin_webcast_gift_message_msg;
-import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.douyin_webcast_social_message_msg;
-import tech.ordinaryroad.live.chat.client.commons.base.constant.LiveStatusAction;
+import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.DouyinCmdMsgOuterClass;
+import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.DouyinWebcastGiftMessageMsgOuterClass;
+import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.DouyinWebcastSocialMessageMsgOuterClass;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 import tech.ordinaryroad.live.chat.client.douyin.config.DouyinLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.douyin.listener.IDouyinMsgListener;
 import tech.ordinaryroad.live.chat.client.douyin.netty.handler.DouyinBinaryFrameHandler;
 
-import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -99,7 +91,7 @@ class DouyinLiveChatClientTest {
                 switch (cmd) {
                     case WebcastSocialMessage: {
                         DouyinSocialMsg douyinSocialMsg = (DouyinSocialMsg) cmdMsg;
-                        douyin_webcast_social_message_msg msg = douyinSocialMsg.getMsg();
+                        DouyinWebcastSocialMessageMsgOuterClass.DouyinWebcastSocialMessageMsg msg = douyinSocialMsg.getMsg();
                         switch ((int) msg.getAction()) {
                             case 1:
                                 // 关注
@@ -120,8 +112,8 @@ class DouyinLiveChatClientTest {
             @Override
             public void onUnknownCmd(String cmdString, IMsg msg) {
                 log.debug("收到未知CMD消息 {}", cmdString);
-                douyin_cmd_msg douyinCmdMsg = (douyin_cmd_msg) msg;
-                ByteString payload = douyinCmdMsg.getPayload();
+                DouyinCmdMsgOuterClass.DouyinCmdMsg douyin_cmd_msg = ((DouyinCmdMsg) msg).getMsg();
+                ByteString payload = douyin_cmd_msg.getPayload();
                 try {
                     UnknownFieldSet unknownFieldSet = UnknownFieldSet.parseFrom(payload);
                     Map<Integer, UnknownFieldSet.Field> map = unknownFieldSet.asMap();
@@ -137,7 +129,7 @@ class DouyinLiveChatClientTest {
 
             @Override
             public void onGiftMsg(DouyinBinaryFrameHandler binaryFrameHandler, DouyinGiftMsg msg) {
-                douyin_webcast_gift_message_msg douyinWebcastGiftMessageMsg = msg.getMsg();
+                DouyinWebcastGiftMessageMsgOuterClass.DouyinWebcastGiftMessageMsg douyinWebcastGiftMessageMsg = msg.getMsg();
 
                 boolean combo = douyinWebcastGiftMessageMsg.getGift().getCombo();
 
