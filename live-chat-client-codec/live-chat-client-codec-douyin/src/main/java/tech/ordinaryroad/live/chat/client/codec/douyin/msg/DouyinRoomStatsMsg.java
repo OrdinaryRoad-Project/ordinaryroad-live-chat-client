@@ -30,8 +30,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tech.ordinaryroad.live.chat.client.codec.douyin.msg.base.IDouyinMsg;
-import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.douyin_webcast_like_message_msg;
-import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.douyin_webcast_room_stats_message_msg;
+import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.DouyinWebcastRoomStatsMessageMsgOuterClass;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IRoomStatsMsg;
 
 /**
@@ -45,11 +44,11 @@ import tech.ordinaryroad.live.chat.client.commons.base.msg.IRoomStatsMsg;
 public class DouyinRoomStatsMsg implements IDouyinMsg, IRoomStatsMsg {
 
     /**
-     * 保存{@link douyin_webcast_like_message_msg#getTotal()}
+     * 保存{@link tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.DouyinWebcastLikeMessageMsgOuterClass.DouyinWebcastLikeMessageMsg#getTotal()}
      */
     private String likedCount;
 
-    private douyin_webcast_room_stats_message_msg msg;
+    private DouyinWebcastRoomStatsMessageMsgOuterClass.DouyinWebcastRoomStatsMessageMsg msg;
 
     @Override
     public String getLikedCount() {

@@ -3,14 +3,11 @@ syntax = "proto3";
 package tech.ordinaryroad.live.chat.client.douyin.protobuf;
 
 option java_package = "tech.ordinaryroad.live.chat.client.codec.douyin.protobuf";
-option java_outer_classname = "douyin_websocket_frame_msgProto";
-option java_multiple_files = true;
-option objc_class_prefix = "GPB";
 
-import "douyin_cmd_msg.proto";
+import "DouyinCmdMsg.proto";
 
-message douyin_websocket_frame_msg {
-  repeated douyin_cmd_msg messages_list = 1;
+message DouyinWebsocketFrameMsg {
+  repeated DouyinCmdMsg messages_list = 1;
   string cursor = 2;
   uint64 fetch_interval = 3;
   uint64 now = 4;

@@ -3,11 +3,8 @@ syntax = "proto3";
 package tech.ordinaryroad.live.chat.client.douyin.protobuf;
 
 option java_package = "tech.ordinaryroad.live.chat.client.codec.douyin.protobuf";
-option java_outer_classname = "Douyin_cmd_msgProto";
-option java_multiple_files = true;
-option objc_class_prefix = "GPB";
 
-message douyin_cmd_msg {
+message DouyinCmdMsg {
   string method = 1;
   bytes payload = 2;
   int64 msg_id = 3;

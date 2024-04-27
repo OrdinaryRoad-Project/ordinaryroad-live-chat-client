@@ -30,7 +30,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tech.ordinaryroad.live.chat.client.codec.douyin.msg.base.IDouyinMsg;
-import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.douyin_webcast_gift_message_msg;
+import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.DouyinWebcastGiftMessageMsgOuterClass;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IGiftMsg;
 
 /**
@@ -43,13 +43,13 @@ import tech.ordinaryroad.live.chat.client.commons.base.msg.IGiftMsg;
 @NoArgsConstructor
 public class DouyinGiftMsg implements IDouyinMsg, IGiftMsg {
 
-    private douyin_webcast_gift_message_msg msg;
+    private DouyinWebcastGiftMessageMsgOuterClass.DouyinWebcastGiftMessageMsg msg;
     /**
      * 计算后得到的礼物个数
      */
     private int calculatedGiftCount;
 
-    public DouyinGiftMsg(douyin_webcast_gift_message_msg msg) {
+    public DouyinGiftMsg(DouyinWebcastGiftMessageMsgOuterClass.DouyinWebcastGiftMessageMsg msg) {
         this.msg = msg;
     }
 

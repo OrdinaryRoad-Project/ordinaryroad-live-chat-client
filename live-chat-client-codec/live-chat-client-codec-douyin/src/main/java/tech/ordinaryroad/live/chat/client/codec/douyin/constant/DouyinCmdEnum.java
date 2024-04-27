@@ -27,7 +27,6 @@ package tech.ordinaryroad.live.chat.client.codec.douyin.constant;
 import cn.hutool.core.util.StrUtil;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.douyin_webcast_social_message_msg;
 
 /**
  * @author mjz
@@ -58,7 +57,7 @@ public enum DouyinCmdEnum {
      */
     WebcastRoomStatsMessage,
     /**
-     * 关注{@link douyin_webcast_social_message_msg#getAction()}=1、分享{@link douyin_webcast_social_message_msg#getAction()}=3
+     * 关注{@link tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.DouyinWebcastSocialMessageMsgOuterClass.DouyinWebcastSocialMessageMsg#getAction()}=1、分享{@link tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.DouyinWebcastSocialMessageMsgOuterClass.DouyinWebcastSocialMessageMsg#getAction()}=3
      */
     WebcastSocialMessage,
     WebcastRoomUserSeqMessage,

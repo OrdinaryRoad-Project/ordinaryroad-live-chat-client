@@ -30,7 +30,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tech.ordinaryroad.live.chat.client.codec.douyin.msg.base.IDouyinMsg;
-import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.douyin_webcast_member_message_msg;
+import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.DouyinWebcastMemberMessageMsgOuterClass;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IEnterRoomMsg;
 
 /**
@@ -43,7 +43,7 @@ import tech.ordinaryroad.live.chat.client.commons.base.msg.IEnterRoomMsg;
 @NoArgsConstructor
 public class DouyinEnterRoomMsg implements IDouyinMsg, IEnterRoomMsg {
 
-    private douyin_webcast_member_message_msg msg;
+    private DouyinWebcastMemberMessageMsgOuterClass.DouyinWebcastMemberMessageMsg msg;
 
     @Override
     public String getBadgeName() {

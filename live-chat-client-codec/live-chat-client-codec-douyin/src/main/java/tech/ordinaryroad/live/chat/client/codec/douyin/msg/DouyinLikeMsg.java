@@ -30,7 +30,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tech.ordinaryroad.live.chat.client.codec.douyin.msg.base.IDouyinMsg;
-import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.douyin_webcast_like_message_msg;
+import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.DouyinWebcastLikeMessageMsgOuterClass;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ILikeMsg;
 
 /**
@@ -43,7 +43,7 @@ import tech.ordinaryroad.live.chat.client.commons.base.msg.ILikeMsg;
 @NoArgsConstructor
 public class DouyinLikeMsg implements IDouyinMsg, ILikeMsg {
 
-    private douyin_webcast_like_message_msg msg;
+    private DouyinWebcastLikeMessageMsgOuterClass.DouyinWebcastLikeMessageMsg msg;
 
     @Override
     public String getBadgeName() {

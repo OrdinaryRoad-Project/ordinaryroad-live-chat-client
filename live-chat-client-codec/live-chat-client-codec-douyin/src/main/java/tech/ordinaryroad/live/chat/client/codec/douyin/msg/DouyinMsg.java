@@ -24,59 +24,23 @@
 
 package tech.ordinaryroad.live.chat.client.codec.douyin.msg;
 
-import cn.hutool.core.collection.CollUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tech.ordinaryroad.live.chat.client.codec.douyin.msg.base.IDouyinMsg;
-import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.DouyinWebcastChatMessageMsgOuterClass;
-import tech.ordinaryroad.live.chat.client.commons.base.msg.IDanmuMsg;
+import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.DouyinWebsocketFrameOuterClass;
 
 /**
  * @author mjz
- * @date 2024/1/9
+ * @date 2024/4/26
  */
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DouyinDanmuMsg implements IDouyinMsg, IDanmuMsg {
+public class DouyinMsg implements IDouyinMsg {
 
-    private DouyinWebcastChatMessageMsgOuterClass.DouyinWebcastChatMessageMsg msg;
+    private DouyinWebsocketFrameOuterClass.DouyinWebsocketFrame msg;
 
-    @Override
-    public String getBadgeName() {
-        return msg.getUser().getFansClub().getData().getClubName();
-    }
-
-    @Override
-    public byte getBadgeLevel() {
-        return (byte) msg.getUser().getFansClub().getData().getLevel();
-    }
-
-    @Override
-    public String getUid() {
-        return Long.toString(msg.getUser().getId());
-    }
-
-    @Override
-    public String getUsername() {
-        return msg.getUser().getNickname();
-    }
-
-    @Override
-    public String getUserAvatar() {
-        return CollUtil.getFirst(msg.getUser().getAvatarThumb().getUrlListListList());
-    }
-
-    @Override
-    public String getContent() {
-        return msg.getContent();
-    }
-
-    @Override
-    public String toString() {
-        return msg.toString();
-    }
 }

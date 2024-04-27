@@ -29,7 +29,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tech.ordinaryroad.live.chat.client.codec.douyin.msg.base.IDouyinMsg;
-import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.douyin_webcast_control_message_msg;
+import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.DouyinWebcastControlMessageMsgOuterClass;
 import tech.ordinaryroad.live.chat.client.commons.base.constant.LiveStatusAction;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ILiveStatusChangeMsg;
 
@@ -43,7 +43,7 @@ import tech.ordinaryroad.live.chat.client.commons.base.msg.ILiveStatusChangeMsg;
 @NoArgsConstructor
 public class DouyinControlMsg implements IDouyinMsg, ILiveStatusChangeMsg {
 
-    private douyin_webcast_control_message_msg msg;
+    private DouyinWebcastControlMessageMsgOuterClass.DouyinWebcastControlMessageMsg msg;
 
     @Override
     public LiveStatusAction getLiveStatusAction() {

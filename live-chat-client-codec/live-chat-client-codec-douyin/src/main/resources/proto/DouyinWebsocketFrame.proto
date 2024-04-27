@@ -3,11 +3,8 @@ syntax = "proto3";
 package tech.ordinaryroad.live.chat.client.douyin.protobuf;
 
 option java_package = "tech.ordinaryroad.live.chat.client.codec.douyin.protobuf";
-option java_outer_classname = "Douyin_websocket_frameProto";
-option java_multiple_files = true;
-option objc_class_prefix = "GPB";
 
-message douyin_websocket_frame {
+message DouyinWebsocketFrame {
   uint64 seq_id = 1;
   uint64 log_id = 2;
   uint64 service = 3;

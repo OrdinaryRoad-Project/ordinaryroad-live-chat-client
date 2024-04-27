@@ -6,11 +6,8 @@ import "PublicAreaCommon.proto";
 package tech.ordinaryroad.live.chat.client.douyin.protobuf;
 
 option java_package = "tech.ordinaryroad.live.chat.client.codec.douyin.protobuf";
-option java_outer_classname = "douyin_webcast_social_message_msgProto";
-option java_multiple_files = true;
-option objc_class_prefix = "GPB";
 
-message douyin_webcast_social_message_msg {
+message DouyinWebcastSocialMessageMsg {
   Common common = 1;
   User user = 2;
   int64 shareType = 3;

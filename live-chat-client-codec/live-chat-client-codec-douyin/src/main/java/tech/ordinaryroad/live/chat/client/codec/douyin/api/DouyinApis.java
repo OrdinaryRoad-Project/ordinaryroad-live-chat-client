@@ -34,7 +34,7 @@ import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.codec.douyin.constant.DouyinRoomStatusEnum;
 import tech.ordinaryroad.live.chat.client.codec.douyin.msg.DouyinGiftMsg;
-import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.douyin_webcast_gift_message_msg;
+import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.DouyinWebcastGiftMessageMsgOuterClass;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCookieUtil;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatHttpUtil;
@@ -117,7 +117,7 @@ public class DouyinApis {
         }
 
         long giftCount;
-        douyin_webcast_gift_message_msg douyinWebcastGiftMessageMsg = msg.getMsg();
+        DouyinWebcastGiftMessageMsgOuterClass.DouyinWebcastGiftMessageMsg douyinWebcastGiftMessageMsg = msg.getMsg();
         if (douyinWebcastGiftMessageMsg.getGift().getCombo() && douyinWebcastGiftMessageMsg.getRepeatEnd() != 1) {// 连击中
             return 0;
         }

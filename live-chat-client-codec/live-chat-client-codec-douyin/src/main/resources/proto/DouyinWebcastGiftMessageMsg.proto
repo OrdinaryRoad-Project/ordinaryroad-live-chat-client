@@ -10,11 +10,8 @@ import "PublicAreaCommon.proto";
 package tech.ordinaryroad.live.chat.client.douyin.protobuf;
 
 option java_package = "tech.ordinaryroad.live.chat.client.codec.douyin.protobuf";
-option java_outer_classname = "Douyin_webcast_gift_message_msgProto";
-option java_multiple_files = true;
-option objc_class_prefix = "GPB";
 
-message douyin_webcast_gift_message_msg {
+message DouyinWebcastGiftMessageMsg {
   Common common = 1;
   uint64 long_gift_id = 2;
   uint64 fan_ticket_count = 3;
