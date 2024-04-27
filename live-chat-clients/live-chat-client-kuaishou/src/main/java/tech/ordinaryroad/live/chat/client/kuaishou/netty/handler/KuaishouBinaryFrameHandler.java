@@ -29,10 +29,7 @@ import io.netty.channel.ChannelHandler;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.api.KuaishouApis;
-import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.KuaishouDanmuMsg;
-import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.KuaishouGiftMsg;
-import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.KuaishouLikeMsg;
-import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.KuaishouRoomStatsMsg;
+import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.*;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.base.IKuaishouMsg;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf.*;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
@@ -65,7 +62,8 @@ public class KuaishouBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
             return;
         }
 
-        SocketMessageOuterClass.SocketMessage socketMessage = (SocketMessageOuterClass.SocketMessage) cmdMsg;
+        KuaishouCmdMsg kuaishouCmdMsg = (KuaishouCmdMsg) cmdMsg;
+        SocketMessageOuterClass.SocketMessage socketMessage = kuaishouCmdMsg.getMsg();
         ByteString payloadByteString = socketMessage.getPayload();
         switch (socketMessage.getPayloadType()) {
             // 用户贡献名单
@@ -108,7 +106,7 @@ public class KuaishouBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
                 break;
             }
             default: {
-                iteratorMsgListeners(msgListener -> msgListener.onOtherCmdMsg(KuaishouBinaryFrameHandler.this, cmd, socketMessage));
+                iteratorMsgListeners(msgListener -> msgListener.onOtherCmdMsg(KuaishouBinaryFrameHandler.this, cmd, kuaishouCmdMsg));
             }
         }
     }

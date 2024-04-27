@@ -30,6 +30,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import lombok.extern.slf4j.Slf4j;
+import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.KuaishouCmdMsg;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.base.IKuaishouMsg;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf.SocketMessageOuterClass;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
@@ -45,8 +46,8 @@ import java.util.List;
 public class KuaishouCodecHandler extends BinaryWebSocketFrameToMessageCodec<IKuaishouMsg> {
     @Override
     protected void encode(ChannelHandlerContext ctx, IKuaishouMsg msg, List<Object> out) throws Exception {
-        if (msg instanceof SocketMessageOuterClass.SocketMessage) {
-            out.add(new BinaryWebSocketFrame(ctx.alloc().buffer().writeBytes(((SocketMessageOuterClass.SocketMessage) msg).toByteArray())));
+        if (msg instanceof KuaishouCmdMsg) {
+            out.add(new BinaryWebSocketFrame(ctx.alloc().buffer().writeBytes(((KuaishouCmdMsg) msg).getMsg().toByteArray())));
         } else {
             throw new BaseException("暂不支持" + msg.getClass());
         }
@@ -75,6 +76,6 @@ public class KuaishouCodecHandler extends BinaryWebSocketFrameToMessageCodec<IKu
                 return;
             }
         }
-        out.add(socketMessage.toBuilder().setPayload(ByteString.copyFrom(payload)).build());
+        out.add(new KuaishouCmdMsg(socketMessage.toBuilder().setPayload(ByteString.copyFrom(payload)).build()));
     }
 }
