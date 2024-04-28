@@ -424,6 +424,25 @@ B站示例，其他平台只需修改`bilibili`即可
 - client-kuaishou
 - client-websocket
 
+### 3.4 codec模块
+
+1. 解码decode：根据平台协议，对收到的二进制流进行解码
+2. 编码encode：根据平台协议，将消息编码为二进制流
+
+- codec-bilibili
+    - BilibiliCodecUtil
+    - BilibiliMsgFactory
+- codec-douyu
+    - DouyuCodecUtil
+    - DouyuMsgFactory
+- codec-huya
+    - HuyaCodecUtil
+    - HuyaMsgFactory
+- codec-douyin
+- codec-kuaishou
+
+> 由于抖音和快手使用的都是Protobuf协议，目前版本暂未实现CodecUtil工具类，可以参考`DouyinCodecHandler`和`KuaishouCodecHandler`中的编解码实现
+
 ## 交流讨论
 
 扫描二维码<img src="assets/QQ频道.jpg" width="200px">
