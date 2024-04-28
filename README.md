@@ -8,9 +8,9 @@
 > 如果对项目感兴趣也欢迎[加入QQ频道](https://pd.qq.com/s/3id0n7fvs)交流讨论，
 > 提交PR
 >
-> ToDo List: https://github.com/orgs/OrdinaryRoad-Project/projects/1
+> ToDo List: [https://github.com/orgs/OrdinaryRoad-Project/projects/1](https://github.com/orgs/OrdinaryRoad-Project/projects/1)
 >
-> 更新日志：https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/releases
+> **更新日志：**[https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/releases](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/releases)
 
 ---
 
@@ -24,6 +24,7 @@ Live room WebSocket chat client
 - Feature 5*: 支持弹幕发送、为主播点赞
 - Feature 6*: 内置收到弹幕、收到礼物、收到醒目留言、用户入房、收到点赞、状态变化回调
 - Feature 7: 支持消息转发
+- Feature 8: 支持单独引入编解码模块
 
 > *存在平台差异
 > - ✅: 平台支持且已完成
@@ -160,15 +161,23 @@ implementation("com.aayushatharva.brotli4j:native-osx-x86_64:$liveChatClientBrot
 
 ### 2.0 不同平台的CMD定义
 
-- B站：[BilibiliCmdEnum](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/blob/main/live-chat-clients/live-chat-client-bilibili/src/main/java/tech/ordinaryroad/live/chat/client/bilibili/constant/BilibiliCmdEnum.java)
-- 斗鱼：[DouyuCmdEnum](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/blob/main/live-chat-clients/live-chat-client-douyu/src/main/java/tech/ordinaryroad/live/chat/client/douyu/constant/DouyuCmdEnum.java)
-- 虎牙：[HuyaCmdEnum](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/blob/main/live-chat-clients/live-chat-client-huya/src/main/java/tech/ordinaryroad/live/chat/client/huya/constant/HuyaCmdEnum.java)
-- 抖音：[DouyinCmdEnum](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/blob/main/live-chat-clients/live-chat-client-douyin/src/main/java/tech/ordinaryroad/live/chat/client/douyin/constant/DouyinCmdEnum.java)
-- 快手：[PayloadTypeOuterClass](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/blob/main/live-chat-clients/live-chat-client-kuaishou/src/main/java/tech/ordinaryroad/live/chat/client/kuaishou/protobuf/PayloadTypeOuterClass.java)
+- B站：[BilibiliCmdEnum](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/blob/main/live-chat-client-codec/live-chat-client-codec-bilibili/src/main/java/tech/ordinaryroad/live/chat/client/codec/bilibili/constant/BilibiliCmdEnum.java)
+- 斗鱼：[DouyuCmdEnum](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/blob/main/live-chat-client-codec/live-chat-client-codec-douyu/src/main/java/tech/ordinaryroad/live/chat/client/codec/douyu/constant/DouyuCmdEnum.java)
+- 虎牙：[HuyaCmdEnum](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/blob/main/live-chat-client-codec/live-chat-client-codec-huya/src/main/java/tech/ordinaryroad/live/chat/client/codec/huya/constant/HuyaCmdEnum.java)
+- 抖音：[DouyinCmdEnum](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/blob/main/live-chat-client-codec/live-chat-client-codec-douyin/src/main/java/tech/ordinaryroad/live/chat/client/codec/douyin/constant/DouyinCmdEnum.java)
+- 快手：[PayloadTypeOuterClass](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/blob/main/live-chat-client-codec/live-chat-client-codec-kuaishou/src/main/java/tech/ordinaryroad/live/chat/client/codec/kuaishou/protobuf/PayloadTypeOuterClass.java)
 
 可以重写`onCmdMsg(收到的所有CMD消息)`或`onOtherCmdMsg(框架未处理的CMD消息)`回调方法，判断CMD来监听框架已经定义的CMD类型
 
 如果要监听的消息枚举类中未定义，可以考虑重写`onUnknownCmdMsg(未知CMD消息)`方法
+
+ICmdMsg类型转换对应关系
+
+- B站：MessageMsg
+- 斗鱼：DouyuCmdMsg
+- 虎牙：WSPushMessage 或 WSMsgItem
+- 抖音：DouyinCmdMsg 或 DouyinSocialMsg(计划下个版本增加ISocialMsg)
+- 快手：KuaishouCmdMsg
 
 ```java
 @Override
@@ -318,6 +327,23 @@ public class ClientModeExample {
 
 > 参考 [BilibiliHandlerModeExample](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/tree/main/live-chat-client-examples/handler-example/src/main/java/tech/ordinaryroad/live/chat/client/example/handler/BilibiliHandlerModeExample.java)
 
+### 2.3 单独引入编解码模块
+
+> 参考 [codec-example](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/tree/main/live-chat-client-examples/codec-example/src/main/java/tech/ordinaryroad/live/chat/client/example/codec/BilibiliCodecExample.java)
+
+B站示例，其他平台只需修改`bilibili`即可
+> 使用Gradle引入B站编解码模块时，参考[#B站](#B站)
+
+```xml
+
+<dependency>
+    <groupId>tech.ordinaryroad</groupId>
+    <artifactId>live-chat-client-codec-bilibili</artifactId>
+    <!-- 参考github release版本，不需要前缀`v` -->
+    <version>${ordinaryroad-live-chat-client.version}</version>
+</dependency>
+```
+
 ## 3 项目说明
 
 ### 3.1 commons模块
@@ -442,7 +468,7 @@ public class ClientModeExample {
 
 免责声明：仅供学术研究使用。对于违反相关法律、造成危害的滥用行为，开发者不负任何责任。
 
-## 各个平台的开放平台地址
+## 另附各个平台的开放平台地址
 
 - B站开放平台：https://openhome.bilibili.com
 - 斗鱼开放平台：https://open.douyu.com
