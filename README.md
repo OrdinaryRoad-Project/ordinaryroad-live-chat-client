@@ -363,9 +363,6 @@ B站示例，其他平台只需修改`bilibili`即可
         - IEnterRoomMsg: 内置获取用户ID、用户名、用户头像、粉丝牌名称、粉丝牌等级方法
         - ILikeMsg: 内置获取用户ID、用户名、用户头像、粉丝牌名称、粉丝牌等级、点赞数方法
         - ILiveStatusChangeMsg: 内置获取状态变化方法
-- ~~消息抽象类~~（计划弃用）
-    - BaseMsg：实现IMsg接口，提供存放未知属性的字段
-        - BaseCmdMsg：继承自BaseMsg，实现ICmdMsg接口
 - 消息监听器
     - IBaseMsgListener（所有平台都支持，其他消息监听器存在平台差异）
         - onMsg：所有消息（不管消息内容）都会调用，不包括由该消息的某个字段派生出的消息，例如快手的弹幕礼物等消息是`SC_FEED_PUSH`中的字段，因此onMsg中不会出现处理后的弹幕、礼物消息，而是包含弹幕、礼物等的`SCWebFeedPush`CMD消息
