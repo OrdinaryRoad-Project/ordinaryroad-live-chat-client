@@ -260,7 +260,7 @@ public class ClientModeExample {
             @Override
             public void onLiveStatusMsg(BilibiliBinaryFrameHandler binaryFrameHandler, BilibiliLiveStatusChangeMsg msg) {
                 IBilibiliMsgListener.super.onLiveStatusMsg(binaryFrameHandler, msg);
-                System.out.printf("%s 状态变化 %s\n", binaryFrameHandler.getRoomId(), msg.getLiveStatusAction(binaryFrameHandler.getRoomId()));
+                System.out.printf("%s 状态变化 %s\n", binaryFrameHandler.getRoomId(), msg.getLiveStatusAction());
             }
 
             @Override
