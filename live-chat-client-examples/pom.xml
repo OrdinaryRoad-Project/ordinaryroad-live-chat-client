@@ -36,5 +36,6 @@
     <modules>
         <module>client-example</module>
         <module>handler-example</module>
+        <module>codec-example</module>
     </modules>
 </project>
