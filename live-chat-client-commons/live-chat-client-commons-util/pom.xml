@@ -4,7 +4,7 @@
     <parent>
         <groupId>tech.ordinaryroad</groupId>
         <artifactId>live-chat-client-commons</artifactId>
-        <version>0.6.0</version>
+        <version>0.6.1</version>
     </parent>
     <packaging>jar</packaging>
 
@@ -23,7 +23,7 @@
 
         <dependency>
             <groupId>com.google.protobuf</groupId>
-            <artifactId>protobuf-java-util</artifactId>
+            <artifactId>protobuf-java</artifactId>
         </dependency>
 
         <dependency>
