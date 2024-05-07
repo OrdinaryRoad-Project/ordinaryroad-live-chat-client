@@ -256,11 +256,7 @@ public abstract class BaseNettyClient
         }
         if (log.isWarnEnabled()) {
             Object roomId = getConfig().getRoomId();
-            if (roomId == null) {
-                log.warn("{}s后将重新连接 {}", getConfig().getReconnectDelay(), getConfig().getWebsocketUri());
-            } else {
-                log.warn("{}s后将重新连接 {}", getConfig().getReconnectDelay(), roomId);
-            }
+            log.warn("{}s后将重新连接 {}", getConfig().getReconnectDelay(), roomId == null ? getConfig().getWebsocketUri() : roomId);
         }
         workerGroup.schedule(() -> {
             this.setStatus(ClientStatusEnums.RECONNECTING);
