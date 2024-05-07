@@ -24,7 +24,6 @@
 
 package tech.ordinaryroad.live.chat.client.servers.netty.client.base;
 
-import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -176,8 +175,8 @@ public abstract class BaseNettyClient
                         // Socks5代理
                         String socks5ProxyHost = getConfig().getSocks5ProxyHost();
                         if (StrUtil.isNotBlank(socks5ProxyHost)) {
-                            String socks5ProxyPort = getConfig().getSocks5ProxyPort();
-                            pipeline.addFirst(new Socks5ProxyHandler(new InetSocketAddress(socks5ProxyHost, NumberUtil.parseInt(socks5ProxyPort)), getConfig().getSocks5ProxyUsername(), getConfig().getSocks5ProxyPassword()));
+                            int socks5ProxyPort = getConfig().getSocks5ProxyPort();
+                            pipeline.addFirst(new Socks5ProxyHandler(new InetSocketAddress(socks5ProxyHost, socks5ProxyPort), getConfig().getSocks5ProxyUsername(), getConfig().getSocks5ProxyPassword()));
                             if (log.isDebugEnabled()) {
                                 log.debug("已启用Socks5代理");
                             }
