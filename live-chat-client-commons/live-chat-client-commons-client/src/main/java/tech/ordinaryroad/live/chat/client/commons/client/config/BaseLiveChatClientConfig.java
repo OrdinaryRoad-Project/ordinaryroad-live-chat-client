@@ -110,26 +110,28 @@ public abstract class BaseLiveChatClientConfig {
     private long handshakeTimeoutMillis = DEFAULT_HANDSHAKE_TIMEOUT_MILLIS;
 
     /**
-     * Socks5代理地址
+     * Socks5代理——地址
      */
     @Builder.Default
     private String socks5ProxyHost = System.getProperty("socksProxyHost");
 
     /**
-     * Socks5代理端口
+     * Socks5代理——端口
      */
     @Builder.Default
     private String socks5ProxyPort = System.getProperty("socksProxyPort");
 
-//    /**
-//     * Socks5代理身份验证——用户名
-//     */
-//    private String socks5ProxyUsername;
-//
-//    /**
-//     * Socks5代理身份验证——密码
-//     */
-//    private String socks5ProxyPassword;
+    /**
+     * Socks5代理——用户名
+     */
+    @Builder.Default
+    private String socks5ProxyUsername = System.getProperty("java.net.socks.username");
+
+    /**
+     * Socks5代理——密码
+     */
+    @Builder.Default
+    private String socks5ProxyPassword = System.getProperty("java.net.socks.password");
 
     public void setWebsocketUri(String websocketUri) {
         String oldValue = this.websocketUri;
@@ -210,17 +212,21 @@ public abstract class BaseLiveChatClientConfig {
         System.setProperty("socksProxyPort", socks5ProxyPort);
     }
 
-//    public void setSocks5ProxyUsername(String socks5ProxyUsername) {
-//        String oldValue = this.socks5ProxyUsername;
-//        this.socks5ProxyUsername = socks5ProxyUsername;
-//        this.propertyChangeSupport.firePropertyChange("socks5ProxyUsername", oldValue, socks5ProxyUsername);
-//    }
-//
-//    public void setSocks5ProxyPassword(String socks5ProxyPassword) {
-//        String oldValue = this.socks5ProxyPassword;
-//        this.socks5ProxyPassword = socks5ProxyPassword;
-//        this.propertyChangeSupport.firePropertyChange("socks5ProxyPassword", oldValue, socks5ProxyPassword);
-//    }
+    public void setSocks5ProxyUsername(String socks5ProxyUsername) {
+        String oldValue = this.socks5ProxyUsername;
+        this.socks5ProxyUsername = socks5ProxyUsername;
+        this.propertyChangeSupport.firePropertyChange("socks5ProxyUsername", oldValue, socks5ProxyUsername);
+
+        System.setProperty("java.net.socks.username", socks5ProxyUsername);
+    }
+
+    public void setSocks5ProxyPassword(String socks5ProxyPassword) {
+        String oldValue = this.socks5ProxyPassword;
+        this.socks5ProxyPassword = socks5ProxyPassword;
+        this.propertyChangeSupport.firePropertyChange("socks5ProxyPassword", oldValue, socks5ProxyPassword);
+
+        System.setProperty("java.net.socks.password", socks5ProxyPassword);
+    }
 
     public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
         this.propertyChangeSupport.addPropertyChangeListener(propertyName, listener);
