@@ -34,7 +34,6 @@ import cn.hutool.crypto.digest.MD5;
 import cn.hutool.http.Header;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpStatus;
-import cn.hutool.http.HttpUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -114,7 +113,7 @@ public class DouyuApis {
         }
         if (HttpStatus.isRedirected(execute.getStatus())) {
             String location = execute.header(Header.LOCATION);
-            Map<String, String> paramMap = HttpUtil.decodeParamMap(location, null);
+            Map<String, String> paramMap = OrLiveChatHttpUtil.decodeParamMap(location, null);
             if (paramMap.containsKey(KEY_REDIRECT_LOCATION_RID)) {
                 realRoomIdString = paramMap.get(KEY_REDIRECT_LOCATION_RID);
             }
