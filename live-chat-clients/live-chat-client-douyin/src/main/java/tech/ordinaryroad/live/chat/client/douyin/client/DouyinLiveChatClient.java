@@ -29,7 +29,6 @@ import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.GlobalHeaders;
 import cn.hutool.http.Header;
-import cn.hutool.http.HttpUtil;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
@@ -45,6 +44,7 @@ import tech.ordinaryroad.live.chat.client.codec.douyin.msg.base.IDouyinMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCollUtil;
+import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatHttpUtil;
 import tech.ordinaryroad.live.chat.client.douyin.config.DouyinLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.douyin.listener.IDouyinConnectionListener;
 import tech.ordinaryroad.live.chat.client.douyin.listener.IDouyinMsgListener;
@@ -196,7 +196,7 @@ public class DouyinLiveChatClient extends BaseNettyClient<
                 "seq:1|" +
                 "wss_info:0-" + System.currentTimeMillis() + "-0-0|" +
                 "wrds_kvs:WebcastRoomStatsMessage-" + System.nanoTime() + "_WebcastRoomRankMessage-" + System.nanoTime() + "_LotteryInfoSyncData-" + System.nanoTime() + "_WebcastActivityEmojiGroupsMessage-" + System.nanoTime());
-        return webSocketUriString + "?" + HttpUtil.toParams(queryParams);
+        return webSocketUriString + "?" + OrLiveChatHttpUtil.toParams(queryParams);
     }
 
     public void sendDanmu(Object danmu, Runnable success, Consumer<Throwable> failed) {
