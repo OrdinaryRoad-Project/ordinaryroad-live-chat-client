@@ -347,17 +347,10 @@ B站示例，其他平台只需修改`bilibili`即可
 
 ### 2.4 设置代理
 
-> 优先级：代码 > 启动参数
+在代码中修改Config`socks5ProxyHost("127.0.0.1")`, `socks5ProxyPort("1080")`
 
-#### 2.4.1 启用Socks5代理
+身份认证（暂未测试）
 
-- 使用方法1：启动时增加参数`-DsocksProxyHost=127.0.0.1 -DsocksProxyPort=1080`
-
-- 使用方法2：在代码中修改Config`socks5ProxyHost("127.0.0.1")`, `socks5ProxyPort("1080")`
-
-#### 2.4.2 身份认证（暂未测试）
-
-- `-Djava.net.socks.username=username -Djava.net.socks.password=password`
 - `socks5ProxyUsername("username")`, `socks5ProxyPassword("password")`
 
 ## 3 项目说明
