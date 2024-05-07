@@ -31,6 +31,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
+import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatHttpUtil;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -112,26 +113,22 @@ public abstract class BaseLiveChatClientConfig {
     /**
      * Socks5代理——地址
      */
-    @Builder.Default
-    private String socks5ProxyHost = System.getProperty("socksProxyHost");
+    private String socks5ProxyHost;
 
     /**
      * Socks5代理——端口
      */
-    @Builder.Default
-    private String socks5ProxyPort = System.getProperty("socksProxyPort");
+    private int socks5ProxyPort;
 
     /**
      * Socks5代理——用户名
      */
-    @Builder.Default
-    private String socks5ProxyUsername = System.getProperty("java.net.socks.username");
+    private String socks5ProxyUsername;
 
     /**
      * Socks5代理——密码
      */
-    @Builder.Default
-    private String socks5ProxyPassword = System.getProperty("java.net.socks.password");
+    private String socks5ProxyPassword;
 
     public void setWebsocketUri(String websocketUri) {
         String oldValue = this.websocketUri;
@@ -201,15 +198,15 @@ public abstract class BaseLiveChatClientConfig {
         this.socks5ProxyHost = socks5ProxyHost;
         this.propertyChangeSupport.firePropertyChange("socks5ProxyHost", oldValue, socks5ProxyHost);
 
-        System.setProperty("socksProxyHost", socks5ProxyHost);
+        OrLiveChatHttpUtil.updateProxyHost(socks5ProxyHost);
     }
 
-    public void setSocks5ProxyPort(String socks5ProxyPort) {
-        String oldValue = this.socks5ProxyPort;
+    public void setSocks5ProxyPort(int socks5ProxyPort) {
+        int oldValue = this.socks5ProxyPort;
         this.socks5ProxyPort = socks5ProxyPort;
         this.propertyChangeSupport.firePropertyChange("socks5ProxyPort", oldValue, socks5ProxyPort);
 
-        System.setProperty("socksProxyPort", socks5ProxyPort);
+        OrLiveChatHttpUtil.updateProxyPort(socks5ProxyPort);
     }
 
     public void setSocks5ProxyUsername(String socks5ProxyUsername) {
@@ -217,7 +214,7 @@ public abstract class BaseLiveChatClientConfig {
         this.socks5ProxyUsername = socks5ProxyUsername;
         this.propertyChangeSupport.firePropertyChange("socks5ProxyUsername", oldValue, socks5ProxyUsername);
 
-        System.setProperty("java.net.socks.username", socks5ProxyUsername);
+        OrLiveChatHttpUtil.updateProxyUsername(socks5ProxyUsername);
     }
 
     public void setSocks5ProxyPassword(String socks5ProxyPassword) {
@@ -225,7 +222,7 @@ public abstract class BaseLiveChatClientConfig {
         this.socks5ProxyPassword = socks5ProxyPassword;
         this.propertyChangeSupport.firePropertyChange("socks5ProxyPassword", oldValue, socks5ProxyPassword);
 
-        System.setProperty("java.net.socks.password", socks5ProxyPassword);
+        OrLiveChatHttpUtil.updateProxyPassword(socks5ProxyPassword);
     }
 
     public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
