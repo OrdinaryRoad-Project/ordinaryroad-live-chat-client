@@ -47,7 +47,7 @@ import java.beans.PropertyChangeSupport;
 @SuperBuilder(toBuilder = true)
 public abstract class BaseLiveChatClientConfig {
 
-    protected PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+    protected final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     public static final long DEFAULT_HEARTBEAT_INITIAL_DELAY = 15;
     public static final long DEFAULT_HEARTBEAT_PERIOD = 25;
     public static final long DEFAULT_MIN_SEND_DANMU_PERIOD = 3000L;
