@@ -24,6 +24,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.java-websocket</groupId>
+            <artifactId>Java-WebSocket</artifactId>
+            <version>1.5.6</version>
+        </dependency>
+
+        <dependency>
             <groupId>tech.ordinaryroad</groupId>
             <artifactId>live-chat-client-websocket</artifactId>
             <version>0.6.2</version>
