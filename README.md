@@ -355,7 +355,7 @@ B站示例，其他平台只需修改`bilibili`即可
 
 - 使用方法2：在代码中修改Config`socks5ProxyHost("127.0.0.1")`, `socks5ProxyPort("1080")`
 
-#### 2.4.2 身份认证
+#### 2.4.2 身份认证（暂未测试）
 
 - `-Djava.net.socks.username=username -Djava.net.socks.password=password`
 - `socks5ProxyUsername("username")`, `socks5ProxyPassword("password")`
