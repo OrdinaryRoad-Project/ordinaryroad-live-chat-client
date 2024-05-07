@@ -198,12 +198,16 @@ public abstract class BaseLiveChatClientConfig {
         String oldValue = this.socks5ProxyHost;
         this.socks5ProxyHost = socks5ProxyHost;
         this.propertyChangeSupport.firePropertyChange("socks5ProxyHost", oldValue, socks5ProxyHost);
+
+        System.setProperty("socksProxyHost", socks5ProxyHost);
     }
 
     public void setSocks5ProxyPort(String socks5ProxyPort) {
         String oldValue = this.socks5ProxyPort;
         this.socks5ProxyPort = socks5ProxyPort;
         this.propertyChangeSupport.firePropertyChange("socks5ProxyPort", oldValue, socks5ProxyPort);
+
+        System.setProperty("socksProxyPort", socks5ProxyPort);
     }
 
 //    public void setSocks5ProxyUsername(String socks5ProxyUsername) {
