@@ -29,7 +29,6 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpStatus;
-import cn.hutool.http.HttpUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.Cleanup;
@@ -37,6 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.codec.huya.msg.dto.PropsItem;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.util.OrJacksonUtil;
+import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatHttpUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -75,7 +75,7 @@ public class HuyaApis {
     }
 
     public static HttpRequest createGetRequest(String url, String cookies) {
-        return HttpUtil.createGet(url)
+        return OrLiveChatHttpUtil.createGet(url)
                 .cookie(cookies);
     }
 

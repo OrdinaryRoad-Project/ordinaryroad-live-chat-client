@@ -25,6 +25,7 @@ Live room WebSocket chat client
 - Feature 6*: 内置收到弹幕、收到礼物、收到醒目留言、用户入房、收到点赞、状态变化回调
 - Feature 7: 支持消息转发
 - Feature 8: 支持单独引入编解码模块
+- Feature 9: 支持网络代理
 
 > *存在平台差异
 > - ✅: 平台支持且已完成
@@ -343,6 +344,16 @@ B站示例，其他平台只需修改`bilibili`即可
     <version>${ordinaryroad-live-chat-client.version}</version>
 </dependency>
 ```
+
+### 2.4 设置代理
+
+> 生效范围：仅项目自身，不会影响引用该项目的父项目
+
+在代码中修改Config`socks5ProxyHost("127.0.0.1")`, `socks5ProxyPort("1080")`
+
+身份认证（暂未测试）
+
+- `socks5ProxyUsername("username")`, `socks5ProxyPassword("password")`
 
 ## 3 项目说明
 

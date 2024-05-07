@@ -40,6 +40,7 @@ import tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf.WebGiftFeedOut
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.util.OrJacksonUtil;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCookieUtil;
+import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatHttpUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -157,7 +158,7 @@ public class KuaishouApis {
     }
 
     public static HttpRequest createRequest(Method method, String url, String cookie) {
-        return HttpUtil.createRequest(method, url)
+        return OrLiveChatHttpUtil.createRequest(method, url)
                 .cookie(cookie)
                 .header(Header.HOST, URLUtil.url(url).getHost())
                 .header(Header.USER_AGENT, USER_AGENT);

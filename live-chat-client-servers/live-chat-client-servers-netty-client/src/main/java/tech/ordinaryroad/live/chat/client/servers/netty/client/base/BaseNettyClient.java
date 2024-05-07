@@ -24,12 +24,14 @@
 
 package tech.ordinaryroad.live.chat.client.servers.netty.client.base;
 
+import cn.hutool.core.util.StrUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.http.HttpClientCodec;
 import io.netty.handler.codec.http.HttpObjectAggregator;
+import io.netty.handler.proxy.Socks5ProxyHandler;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
@@ -46,6 +48,7 @@ import tech.ordinaryroad.live.chat.client.servers.netty.client.config.BaseNettyC
 import tech.ordinaryroad.live.chat.client.servers.netty.handler.base.BaseBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.servers.netty.handler.base.BaseConnectionHandler;
 
+import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.concurrent.TimeUnit;
@@ -169,11 +172,21 @@ public abstract class BaseNettyClient
                         // 责任链
                         ChannelPipeline pipeline = ch.pipeline();
 
+                        // Socks5代理
+                        String socks5ProxyHost = getConfig().getSocks5ProxyHost();
+                        if (StrUtil.isNotBlank(socks5ProxyHost)) {
+                            int socks5ProxyPort = getConfig().getSocks5ProxyPort();
+                            pipeline.addFirst(new Socks5ProxyHandler(new InetSocketAddress(socks5ProxyHost, socks5ProxyPort), getConfig().getSocks5ProxyUsername(), getConfig().getSocks5ProxyPassword()));
+                            if (log.isDebugEnabled()) {
+                                log.debug("已启用Socks5代理");
+                            }
+                        }
+
                         if (pipeline.get(SslHandler.class) != null) {
                             pipeline.remove(SslHandler.class);
                         }
                         if ("wss".equalsIgnoreCase(OrLiveChatUrlUtil.getScheme(getWebSocketUriString()))) {
-                            pipeline.addFirst(SslContextBuilder.forClient()
+                            pipeline.addLast(SslContextBuilder.forClient()
                                     .build()
                                     .newHandler(ch.alloc(), BaseNettyClient.this.websocketUri.getHost(), port));
                         }
@@ -243,11 +256,7 @@ public abstract class BaseNettyClient
         }
         if (log.isWarnEnabled()) {
             Object roomId = getConfig().getRoomId();
-            if (roomId == null) {
-                log.warn("{}s后将重新连接 {}", getConfig().getReconnectDelay(), getConfig().getWebsocketUri());
-            } else {
-                log.warn("{}s后将重新连接 {}", getConfig().getReconnectDelay(), roomId);
-            }
+            log.warn("{}s后将重新连接 {}", getConfig().getReconnectDelay(), roomId == null ? getConfig().getWebsocketUri() : roomId);
         }
         workerGroup.schedule(() -> {
             this.setStatus(ClientStatusEnums.RECONNECTING);

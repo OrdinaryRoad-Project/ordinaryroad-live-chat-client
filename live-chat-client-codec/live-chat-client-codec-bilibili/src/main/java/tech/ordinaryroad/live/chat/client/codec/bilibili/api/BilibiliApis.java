@@ -29,7 +29,6 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpResponse;
-import cn.hutool.http.HttpUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.*;
@@ -219,7 +218,7 @@ public class BilibiliApis {
             throw new BaseException("发送弹幕接口cookie不能为空");
         }
         Map<String, Object> stringObjectMap = BeanUtil.beanToMap(request);
-        @Cleanup HttpResponse execute = HttpUtil.createPost("https://api.live.bilibili.com/msg/send")
+        @Cleanup HttpResponse execute = OrLiveChatHttpUtil.createPost("https://api.live.bilibili.com/msg/send")
                 .cookie(cookie)
                 .form(stringObjectMap)
                 .execute();
@@ -252,7 +251,7 @@ public class BilibiliApis {
             throw new BaseException("为主播点赞接口cookie不能为空");
         }
         Map<String, Object> stringObjectMap = BeanUtil.beanToMap(request);
-        @Cleanup HttpResponse execute = HttpUtil.createPost("https://api.live.bilibili.com/xlive/app-ucenter/v1/like_info_v3/like/likeReportV3")
+        @Cleanup HttpResponse execute = OrLiveChatHttpUtil.createPost("https://api.live.bilibili.com/xlive/app-ucenter/v1/like_info_v3/like/likeReportV3")
                 .cookie(cookie)
                 .form(stringObjectMap)
                 .execute();

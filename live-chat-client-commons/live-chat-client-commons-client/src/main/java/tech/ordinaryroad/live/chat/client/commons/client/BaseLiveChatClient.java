@@ -56,6 +56,12 @@ public abstract class BaseLiveChatClient<
 
     protected BaseLiveChatClient(Config config) {
         this.config = config;
+
+        // 触发setter
+        this.config.setSocks5ProxyHost(this.config.getSocks5ProxyHost());
+        this.config.setSocks5ProxyPort(this.config.getSocks5ProxyPort());
+        this.config.setSocks5ProxyUsername(this.config.getSocks5ProxyUsername());
+        this.config.setSocks5ProxyPassword(this.config.getSocks5ProxyPassword());
     }
 
     public Config getConfig() {

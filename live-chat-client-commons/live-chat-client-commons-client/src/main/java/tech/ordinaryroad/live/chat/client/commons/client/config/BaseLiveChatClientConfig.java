@@ -31,6 +31,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
+import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatHttpUtil;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -47,7 +48,7 @@ import java.beans.PropertyChangeSupport;
 @SuperBuilder(toBuilder = true)
 public abstract class BaseLiveChatClientConfig {
 
-    protected PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+    protected final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     public static final long DEFAULT_HEARTBEAT_INITIAL_DELAY = 15;
     public static final long DEFAULT_HEARTBEAT_PERIOD = 25;
     public static final long DEFAULT_MIN_SEND_DANMU_PERIOD = 3000L;
@@ -109,20 +110,25 @@ public abstract class BaseLiveChatClientConfig {
     @Builder.Default
     private long handshakeTimeoutMillis = DEFAULT_HANDSHAKE_TIMEOUT_MILLIS;
 
-    public void setCookie(String cookie) {
-        String oldValue = this.cookie;
-        this.cookie = cookie;
-        this.propertyChangeSupport.firePropertyChange("cookie", oldValue, cookie);
-    }
+    /**
+     * Socks5代理——地址
+     */
+    private String socks5ProxyHost;
 
-    public void setRoomId(Object roomId) {
-        if (!(roomId instanceof Number || roomId instanceof String)) {
-            throw new BaseException("房间ID仅支持数字或字符串，所传参数类型：" + roomId.getClass() + "值：" + roomId);
-        }
-        Object oldValue = this.roomId;
-        this.roomId = roomId;
-        this.propertyChangeSupport.firePropertyChange("roomId", oldValue, roomId);
-    }
+    /**
+     * Socks5代理——端口
+     */
+    private int socks5ProxyPort;
+
+    /**
+     * Socks5代理——用户名
+     */
+    private String socks5ProxyUsername;
+
+    /**
+     * Socks5代理——密码
+     */
+    private String socks5ProxyPassword;
 
     public void setWebsocketUri(String websocketUri) {
         String oldValue = this.websocketUri;
@@ -136,10 +142,19 @@ public abstract class BaseLiveChatClientConfig {
         this.propertyChangeSupport.firePropertyChange("forwardWebsocketUri", oldValue, forwardWebsocketUri);
     }
 
-    public void setMinSendDanmuPeriod(long minSendDanmuPeriod) {
-        long oldValue = this.minSendDanmuPeriod;
-        this.minSendDanmuPeriod = minSendDanmuPeriod;
-        this.propertyChangeSupport.firePropertyChange("minSendDanmuPeriod", oldValue, minSendDanmuPeriod);
+    public void setCookie(String cookie) {
+        String oldValue = this.cookie;
+        this.cookie = cookie;
+        this.propertyChangeSupport.firePropertyChange("cookie", oldValue, cookie);
+    }
+
+    public void setRoomId(Object roomId) {
+        if (!(roomId instanceof Number || roomId instanceof String)) {
+            throw new BaseException("房间ID仅支持数字或字符串，所传参数类型：" + roomId.getClass() + "值：" + roomId);
+        }
+        Object oldValue = this.roomId;
+        this.roomId = roomId;
+        this.propertyChangeSupport.firePropertyChange("roomId", oldValue, roomId);
     }
 
     public void setAutoReconnect(boolean autoReconnect) {
@@ -166,10 +181,48 @@ public abstract class BaseLiveChatClientConfig {
         this.propertyChangeSupport.firePropertyChange("heartbeatPeriod", oldValue, heartbeatPeriod);
     }
 
+    public void setMinSendDanmuPeriod(long minSendDanmuPeriod) {
+        long oldValue = this.minSendDanmuPeriod;
+        this.minSendDanmuPeriod = minSendDanmuPeriod;
+        this.propertyChangeSupport.firePropertyChange("minSendDanmuPeriod", oldValue, minSendDanmuPeriod);
+    }
+
     public void setHandshakeTimeoutMillis(long handshakeTimeoutMillis) {
         long oldValue = this.handshakeTimeoutMillis;
         this.handshakeTimeoutMillis = handshakeTimeoutMillis;
         this.propertyChangeSupport.firePropertyChange("handshakeTimeoutMillis", oldValue, handshakeTimeoutMillis);
+    }
+
+    public void setSocks5ProxyHost(String socks5ProxyHost) {
+        String oldValue = this.socks5ProxyHost;
+        this.socks5ProxyHost = socks5ProxyHost;
+        this.propertyChangeSupport.firePropertyChange("socks5ProxyHost", oldValue, socks5ProxyHost);
+
+        OrLiveChatHttpUtil.updateProxyHost(socks5ProxyHost);
+    }
+
+    public void setSocks5ProxyPort(int socks5ProxyPort) {
+        int oldValue = this.socks5ProxyPort;
+        this.socks5ProxyPort = socks5ProxyPort;
+        this.propertyChangeSupport.firePropertyChange("socks5ProxyPort", oldValue, socks5ProxyPort);
+
+        OrLiveChatHttpUtil.updateProxyPort(socks5ProxyPort);
+    }
+
+    public void setSocks5ProxyUsername(String socks5ProxyUsername) {
+        String oldValue = this.socks5ProxyUsername;
+        this.socks5ProxyUsername = socks5ProxyUsername;
+        this.propertyChangeSupport.firePropertyChange("socks5ProxyUsername", oldValue, socks5ProxyUsername);
+
+        OrLiveChatHttpUtil.updateProxyUsername(socks5ProxyUsername);
+    }
+
+    public void setSocks5ProxyPassword(String socks5ProxyPassword) {
+        String oldValue = this.socks5ProxyPassword;
+        this.socks5ProxyPassword = socks5ProxyPassword;
+        this.propertyChangeSupport.firePropertyChange("socks5ProxyPassword", oldValue, socks5ProxyPassword);
+
+        OrLiveChatHttpUtil.updateProxyPassword(socks5ProxyPassword);
     }
 
     public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
