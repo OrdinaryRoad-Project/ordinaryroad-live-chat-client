@@ -22,23 +22,19 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.douyin.listener;
-
-import tech.ordinaryroad.live.chat.client.codec.douyin.constant.DouyinCmdEnum;
-import tech.ordinaryroad.live.chat.client.codec.douyin.msg.*;
-import tech.ordinaryroad.live.chat.client.commons.base.listener.*;
-import tech.ordinaryroad.live.chat.client.douyin.netty.handler.DouyinBinaryFrameHandler;
+package tech.ordinaryroad.live.chat.client.commons.base.constant;
 
 /**
  * @author mjz
- * @date 2024/1/2
+ * @date 2024/5/9
  */
-public interface IDouyinMsgListener extends IBaseMsgListener<DouyinBinaryFrameHandler, DouyinCmdEnum>,
-        IDanmuMsgListener<DouyinBinaryFrameHandler, DouyinDanmuMsg>,
-        IGiftMsgListener<DouyinBinaryFrameHandler, DouyinGiftMsg>,
-        IEnterRoomMsgListener<DouyinBinaryFrameHandler, DouyinEnterRoomMsg>,
-        ILikeMsgListener<DouyinBinaryFrameHandler, DouyinLikeMsg>,
-        ILiveStatusChangeListener<DouyinBinaryFrameHandler, DouyinControlMsg>,
-        IRoomStatsMsgListener<DouyinBinaryFrameHandler, DouyinRoomStatsMsg>,
-        ISocialMsgListener<DouyinBinaryFrameHandler, DouyinSocialMsg> {
+public enum SocialActionEnum {
+    /**
+     * 关注了主播
+     */
+    SUBSCRIBE,
+    /**
+     * 分享了直播间
+     */
+    SHARE
 }

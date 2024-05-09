@@ -9,7 +9,6 @@ import tech.ordinaryroad.live.chat.client.codec.douyin.constant.DouyinCmdEnum;
 import tech.ordinaryroad.live.chat.client.codec.douyin.msg.*;
 import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.DouyinCmdMsgOuterClass;
 import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.DouyinWebcastGiftMessageMsgOuterClass;
-import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.DouyinWebcastSocialMessageMsgOuterClass;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 import tech.ordinaryroad.live.chat.client.douyin.config.DouyinLiveChatClientConfig;
@@ -90,25 +89,6 @@ class DouyinLiveChatClientTest {
             @Override
             public void onOtherCmdMsg(DouyinCmdEnum cmd, ICmdMsg<DouyinCmdEnum> cmdMsg) {
                 log.debug("收到其他CMD消息 {}", cmd);
-                switch (cmd) {
-                    case WebcastSocialMessage: {
-                        DouyinSocialMsg douyinSocialMsg = (DouyinSocialMsg) cmdMsg;
-                        DouyinWebcastSocialMessageMsgOuterClass.DouyinWebcastSocialMessageMsg msg = douyinSocialMsg.getMsg();
-                        switch ((int) msg.getAction()) {
-                            case 1:
-                                // 关注
-                                break;
-                            case 3:
-                                // 分享
-                                break;
-                            default:
-                        }
-                        break;
-                    }
-                    default: {
-                        // ignore
-                    }
-                }
             }
 
             @Override
@@ -166,6 +146,11 @@ class DouyinLiveChatClientTest {
             public void onRoomStatsMsg(DouyinBinaryFrameHandler binaryFrameHandler, DouyinRoomStatsMsg msg) {
                 IDouyinMsgListener.super.onRoomStatsMsg(binaryFrameHandler, msg);
                 log.info("{} 统计信息 累计点赞数: {}, 当前观看人数: {}, 累计观看人数: {}", binaryFrameHandler.getRoomId(), msg.getLikedCount(), msg.getWatchingCount(), msg.getWatchedCount());
+            }
+
+            @Override
+            public void onSocialMsg(DouyinBinaryFrameHandler binaryFrameHandler, DouyinSocialMsg msg) {
+                log.info("{} 社交消息 {} {} {}({})", binaryFrameHandler.getRoomId(), msg.getSocialAction(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid());
             }
         });
         client.connect();
