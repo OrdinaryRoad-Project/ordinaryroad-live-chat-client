@@ -146,7 +146,8 @@ public class DouyinBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<
             case WebcastSocialMessage: {
                 try {
                     DouyinWebcastSocialMessageMsgOuterClass.DouyinWebcastSocialMessageMsg douyinWebcastSocialMessageMsg = DouyinWebcastSocialMessageMsgOuterClass.DouyinWebcastSocialMessageMsg.parseFrom(payload);
-                    iteratorMsgListeners(msgListener -> msgListener.onOtherCmdMsg(DouyinBinaryFrameHandler.this, DouyinCmdEnum.WebcastSocialMessage, new DouyinSocialMsg(douyinWebcastSocialMessageMsg)));
+                    DouyinSocialMsg msg = new DouyinSocialMsg(douyinWebcastSocialMessageMsg);
+                    iteratorMsgListeners(msgListener -> msgListener.onSocialMsg(DouyinBinaryFrameHandler.this, msg));
                 } catch (InvalidProtocolBufferException e) {
                     throw new BaseException(e);
                 }

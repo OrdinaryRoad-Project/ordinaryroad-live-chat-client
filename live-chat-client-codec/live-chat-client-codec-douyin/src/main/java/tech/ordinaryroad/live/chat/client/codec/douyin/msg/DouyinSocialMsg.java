@@ -24,13 +24,15 @@
 
 package tech.ordinaryroad.live.chat.client.codec.douyin.msg;
 
+import cn.hutool.core.collection.CollUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tech.ordinaryroad.live.chat.client.codec.douyin.constant.DouyinCmdEnum;
-import tech.ordinaryroad.live.chat.client.codec.douyin.msg.base.IDouyinCmdMsg;
+import tech.ordinaryroad.live.chat.client.codec.douyin.msg.base.IDouyinMsg;
 import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.DouyinWebcastSocialMessageMsgOuterClass;
+import tech.ordinaryroad.live.chat.client.commons.base.constant.SocialActionEnum;
+import tech.ordinaryroad.live.chat.client.commons.base.msg.ISocialMsg;
 
 /**
  * @author mjz
@@ -40,22 +42,50 @@ import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.DouyinWebcastSoc
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DouyinSocialMsg implements IDouyinCmdMsg {
+public class DouyinSocialMsg implements IDouyinMsg, ISocialMsg {
 
     private DouyinWebcastSocialMessageMsgOuterClass.DouyinWebcastSocialMessageMsg msg;
 
     @Override
-    public String getCmd() {
-        return getCmdEnum().name();
+    public String getBadgeName() {
+        return msg.getUser().getFansClub().getData().getClubName();
     }
 
     @Override
-    public void setCmd(String cmd) {
-        // ignore
+    public byte getBadgeLevel() {
+        return (byte) msg.getUser().getFansClub().getData().getLevel();
     }
 
     @Override
-    public DouyinCmdEnum getCmdEnum() {
-        return DouyinCmdEnum.WebcastSocialMessage;
+    public String getUid() {
+        return Long.toString(msg.getUser().getId());
+    }
+
+    @Override
+    public String getUsername() {
+        return msg.getUser().getNickname();
+    }
+
+    @Override
+    public String getUserAvatar() {
+        return CollUtil.getFirst(msg.getUser().getAvatarThumb().getUrlListListList());
+    }
+
+    @Override
+    public SocialActionEnum getSocialAction() {
+        if (msg == null) {
+            return null;
+        }
+
+        if (msg.getAction() == 1L) {
+            // 关注
+            return SocialActionEnum.SUBSCRIBE;
+        }
+        if (msg.getAction() == 3L) {
+            // 分享
+            return SocialActionEnum.SHARE;
+        }
+
+        return null;
     }
 }

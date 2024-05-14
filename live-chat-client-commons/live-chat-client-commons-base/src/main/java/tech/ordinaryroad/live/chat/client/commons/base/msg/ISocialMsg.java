@@ -22,23 +22,51 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.douyin.listener;
+package tech.ordinaryroad.live.chat.client.commons.base.msg;
 
-import tech.ordinaryroad.live.chat.client.codec.douyin.constant.DouyinCmdEnum;
-import tech.ordinaryroad.live.chat.client.codec.douyin.msg.*;
-import tech.ordinaryroad.live.chat.client.commons.base.listener.*;
-import tech.ordinaryroad.live.chat.client.douyin.netty.handler.DouyinBinaryFrameHandler;
+import tech.ordinaryroad.live.chat.client.commons.base.constant.SocialActionEnum;
 
 /**
+ * 社交消息
+ *
  * @author mjz
- * @date 2024/1/2
+ * @date 2024/5/9
+ * @since 0.7.1
  */
-public interface IDouyinMsgListener extends IBaseMsgListener<DouyinBinaryFrameHandler, DouyinCmdEnum>,
-        IDanmuMsgListener<DouyinBinaryFrameHandler, DouyinDanmuMsg>,
-        IGiftMsgListener<DouyinBinaryFrameHandler, DouyinGiftMsg>,
-        IEnterRoomMsgListener<DouyinBinaryFrameHandler, DouyinEnterRoomMsg>,
-        ILikeMsgListener<DouyinBinaryFrameHandler, DouyinLikeMsg>,
-        ILiveStatusChangeListener<DouyinBinaryFrameHandler, DouyinControlMsg>,
-        IRoomStatsMsgListener<DouyinBinaryFrameHandler, DouyinRoomStatsMsg>,
-        ISocialMsgListener<DouyinBinaryFrameHandler, DouyinSocialMsg> {
+public interface ISocialMsg extends IMsg {
+
+    /**
+     * 粉丝牌名称
+     */
+    String getBadgeName();
+
+    /**
+     * 粉丝牌等级
+     */
+    byte getBadgeLevel();
+
+    /**
+     * 弹幕发送者id
+     */
+    String getUid();
+
+    /**
+     * 弹幕发送者用户名
+     */
+    String getUsername();
+
+    /**
+     * 弹幕发送者头像地址
+     *
+     * @since 0.0.11
+     */
+    default String getUserAvatar() {
+        return null;
+    }
+
+    /**
+     * 动作
+     */
+    SocialActionEnum getSocialAction();
+
 }
