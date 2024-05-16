@@ -32,7 +32,6 @@ class DouyinLiveChatClientTest {
         String cookie = System.getenv("cookie");
         log.error("cookie: {}", cookie);
         DouyinLiveChatClientConfig config = DouyinLiveChatClientConfig.builder()
-                 // .forwardWebsocketUri("ws://127.0.0.1:8080/websocket")
 
                 // TODO 浏览器Cookie
 //                .cookie(cookie)
@@ -63,22 +62,24 @@ class DouyinLiveChatClientTest {
 
                 .roomId("988498434970")
 
-
                 // 弹幕游戏1
                 .roomId("47761745807")
 
 
-                .roomId("193059181093")
-
                 .roomId("63592101250")
 
                 .roomId("646454278948")
+                .roomId("193059181093")
+                .roomId("260408198898")
+
+                .roomId("81404386588")
+                .roomId("301753121309")
                 .build();
 
         client = new DouyinLiveChatClient(config, new IDouyinMsgListener() {
             @Override
             public void onMsg(IMsg msg) {
-                // log.debug("收到{}消息 {}", msg.getClass(), msg);
+                log.debug("收到{}消息 {}", msg.getClass(), msg);
             }
 
             @Override
@@ -165,6 +166,39 @@ class DouyinLiveChatClientTest {
             synchronized (lock) {
                 lock.wait();
             }
+        }
+    }
+
+    @Test
+    void giftTest() throws Exception {
+        DouyinLiveChatClient douyinLiveChatClientTest = new DouyinLiveChatClient(DouyinLiveChatClientConfig.builder()
+                .roomId("407702376467")
+                .roomId("507978586806")
+                .build());
+
+        douyinLiveChatClientTest.addMsgListener(new IDouyinMsgListener() {
+            @Override
+            public void onGiftMsg(DouyinGiftMsg msg) {
+                if (msg.getGiftCount() > 0) {
+                    log.info("收到礼物 {} 送出 {}x{}", msg.getUsername(), msg.getGiftName(), msg.getGiftCount());
+                }
+            }
+
+            @Override
+            public void onOtherCmdMsg(DouyinCmdEnum cmd, ICmdMsg<DouyinCmdEnum> cmdMsg) {
+                log.warn("收到其他CMD消息 {} {}", cmd, cmdMsg);
+//                if (cmd == DouyinCmdEnum.WebcastFansclubMessage) {
+//                    DouyinCmdMsgOuterClass.DouyinCmdMsg msg = ((DouyinCmdMsg) cmdMsg).getMsg();
+//                    ByteString payload = msg.getPayload();
+//                    log.warn(payload.toStringUtf8());
+//                }
+            }
+        });
+
+        douyinLiveChatClientTest.connect();
+
+        while (true) {
+            System.in.read();
         }
     }
 
