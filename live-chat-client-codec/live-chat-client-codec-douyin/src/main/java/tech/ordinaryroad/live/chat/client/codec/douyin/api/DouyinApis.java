@@ -108,7 +108,7 @@ public class DouyinApis {
     /**
      * 计算抖音直播间收到礼物的个数
      *
-     * @param msg KuaishouGiftMsg
+     * @param msg DouyinGiftMsg
      * @return 礼物个数
      */
     public static int calculateGiftCount(DouyinGiftMsg msg) {
