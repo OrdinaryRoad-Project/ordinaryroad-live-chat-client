@@ -83,6 +83,16 @@ public class DouyinForwardMsgListener implements IDouyinMsgListener {
         forward(msg);
     }
 
+    @Override
+    public void onRoomStatsMsg(DouyinRoomStatsMsg msg) {
+        forward(msg);
+    }
+
+    @Override
+    public void onSocialMsg(DouyinSocialMsg msg) {
+        forward(msg);
+    }
+
     private void forward(IMsg msg) {
         if (webSocketLiveChatClient == null) {
             return;
