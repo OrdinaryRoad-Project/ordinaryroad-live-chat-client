@@ -97,7 +97,7 @@ public class DouyinBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<
                     DouyinWebcastGiftMessageMsgOuterClass.DouyinWebcastGiftMessageMsg douyinWebcastGiftMessageMsg = DouyinWebcastGiftMessageMsgOuterClass.DouyinWebcastGiftMessageMsg.parseFrom(payload);
                     DouyinGiftMsg msg = new DouyinGiftMsg(douyinWebcastGiftMessageMsg);
                     // 计算礼物个数
-                    DouyinApis.calculateGiftCount(msg);
+                    DouyinApis.calculateGiftCount(msg, getClient().getConfig().getGiftCountCalculationTime());
                     iteratorMsgListeners(msgListener -> msgListener.onGiftMsg(DouyinBinaryFrameHandler.this, msg));
                 } catch (InvalidProtocolBufferException e) {
                     throw new BaseException(e);

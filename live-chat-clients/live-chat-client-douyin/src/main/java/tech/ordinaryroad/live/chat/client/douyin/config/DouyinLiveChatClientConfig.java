@@ -30,6 +30,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import tech.ordinaryroad.live.chat.client.codec.douyin.constant.DouyinGiftCountCalculationTimeEnum;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.config.BaseNettyClientConfig;
 
 import java.util.List;
@@ -63,6 +64,9 @@ public class DouyinLiveChatClientConfig extends BaseNettyClientConfig {
     private String webcastSdkVersion = "1.0.12";
 
     private String updateVersionCode = "1.0.12";
+
+    @Builder.Default
+    private DouyinGiftCountCalculationTimeEnum giftCountCalculationTime = DouyinGiftCountCalculationTimeEnum.IMMEDIATELY;
 
     /**
      * 示例
