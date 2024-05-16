@@ -179,7 +179,7 @@ ICmdMsg类型转换对应关系
 - B站：MessageMsg
 - 斗鱼：DouyuCmdMsg
 - 虎牙：WSPushMessage 或 WSMsgItem
-- 抖音：DouyinCmdMsg 或 DouyinSocialMsg(计划下个版本增加ISocialMsg)
+- 抖音：DouyinCmdMsg
 - 快手：KuaishouCmdMsg
 
 ```java
