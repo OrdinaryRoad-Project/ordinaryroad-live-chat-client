@@ -1,5 +1,7 @@
 syntax = "proto3";
 option go_package = "generated/douyin/";
+option java_package="tech.ordinaryroad.live.chat.client.codec.douyin.protobuf";
+option java_multiple_files=true;
 message Response {
   repeated Message messagesList = 1;
   string cursor = 2;

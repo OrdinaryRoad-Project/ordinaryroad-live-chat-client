@@ -7,8 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import tech.ordinaryroad.live.chat.client.codec.douyin.constant.DouyinCmdEnum;
 import tech.ordinaryroad.live.chat.client.codec.douyin.msg.*;
-import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.DouyinCmdMsgOuterClass;
-import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.DouyinWebcastGiftMessageMsgOuterClass;
+import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.GiftMessage;
+import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.Message;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 import tech.ordinaryroad.live.chat.client.douyin.config.DouyinLiveChatClientConfig;
@@ -74,6 +74,7 @@ class DouyinLiveChatClientTest {
 
                 .roomId("81404386588")
                 .roomId("301753121309")
+                .roomId("447584845941")
                 .build();
 
         client = new DouyinLiveChatClient(config, new IDouyinMsgListener() {
@@ -95,7 +96,7 @@ class DouyinLiveChatClientTest {
             @Override
             public void onUnknownCmd(String cmdString, IMsg msg) {
                 log.debug("收到未知CMD消息 {}", cmdString);
-                DouyinCmdMsgOuterClass.DouyinCmdMsg douyin_cmd_msg = ((DouyinCmdMsg) msg).getMsg();
+                Message douyin_cmd_msg = ((DouyinCmdMsg) msg).getMsg();
                 ByteString payload = douyin_cmd_msg.getPayload();
                 try {
                     UnknownFieldSet unknownFieldSet = UnknownFieldSet.parseFrom(payload);
@@ -112,17 +113,17 @@ class DouyinLiveChatClientTest {
 
             @Override
             public void onGiftMsg(DouyinBinaryFrameHandler binaryFrameHandler, DouyinGiftMsg msg) {
-                DouyinWebcastGiftMessageMsgOuterClass.DouyinWebcastGiftMessageMsg douyinWebcastGiftMessageMsg = msg.getMsg();
+                GiftMessage giftMessage = msg.getMsg();
 
-                boolean combo = douyinWebcastGiftMessageMsg.getGift().getCombo();
+                boolean combo = giftMessage.getGift().getCombo();
 
-                long msgId = douyinWebcastGiftMessageMsg.getCommon().getMsgId();
-                long comboCount = douyinWebcastGiftMessageMsg.getComboCount();
-                long groupId = douyinWebcastGiftMessageMsg.getGroupId();
-                long groupCount = douyinWebcastGiftMessageMsg.getGroupCount();
-                long totalCount = douyinWebcastGiftMessageMsg.getTotalCount();
-                String traceId = douyinWebcastGiftMessageMsg.getTraceId();
-                long repeatCount = douyinWebcastGiftMessageMsg.getRepeatCount();
+                long msgId = giftMessage.getCommon().getMsgId();
+                long comboCount = giftMessage.getComboCount();
+                long groupId = giftMessage.getGroupId();
+                long groupCount = giftMessage.getGroupCount();
+                long totalCount = giftMessage.getTotalCount();
+                String traceId = giftMessage.getTraceId();
+                long repeatCount = giftMessage.getRepeatCount();
                 if (msg.getGiftCount() > 0) {
                     log.info("{} 收到礼物 {} {}({}) {} {}({})x{}({}) msgId:{}, groupId:{}, groupCount:{}, comboCount:{}, totalCount:{}, repeatCount:{}, traceId:{}, combo:{}", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid(), "赠送", msg.getGiftName(), msg.getGiftId(), msg.getGiftCount(), msg.getGiftPrice(), msgId, groupId, groupCount, comboCount, totalCount, repeatCount, traceId, combo);
                 }

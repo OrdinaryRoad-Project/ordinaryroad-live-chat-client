@@ -84,8 +84,8 @@ public class DouyinBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<
         switch (cmd) {
             case WebcastChatMessage: {
                 try {
-                    DouyinWebcastChatMessageMsgOuterClass.DouyinWebcastChatMessageMsg douyinWebcastChatMessageMsg = DouyinWebcastChatMessageMsgOuterClass.DouyinWebcastChatMessageMsg.parseFrom(payload);
-                    DouyinDanmuMsg msg = new DouyinDanmuMsg(douyinWebcastChatMessageMsg);
+                    ChatMessage chatMessage = ChatMessage.parseFrom(payload);
+                    DouyinDanmuMsg msg = new DouyinDanmuMsg(chatMessage);
                     iteratorMsgListeners(msgListener -> msgListener.onDanmuMsg(DouyinBinaryFrameHandler.this, msg));
                 } catch (IOException e) {
                     throw new BaseException(e);
@@ -94,8 +94,8 @@ public class DouyinBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<
             }
             case WebcastGiftMessage: {
                 try {
-                    DouyinWebcastGiftMessageMsgOuterClass.DouyinWebcastGiftMessageMsg douyinWebcastGiftMessageMsg = DouyinWebcastGiftMessageMsgOuterClass.DouyinWebcastGiftMessageMsg.parseFrom(payload);
-                    DouyinGiftMsg msg = new DouyinGiftMsg(douyinWebcastGiftMessageMsg);
+                    GiftMessage giftMessage = GiftMessage.parseFrom(payload);
+                    DouyinGiftMsg msg = new DouyinGiftMsg(giftMessage);
                     // 计算礼物个数
                     DouyinApis.calculateGiftCount(msg, getClient().getConfig().getGiftCountCalculationTime());
                     iteratorMsgListeners(msgListener -> msgListener.onGiftMsg(DouyinBinaryFrameHandler.this, msg));
@@ -106,8 +106,8 @@ public class DouyinBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<
             }
             case WebcastMemberMessage: {
                 try {
-                    DouyinWebcastMemberMessageMsgOuterClass.DouyinWebcastMemberMessageMsg douyinWebcastMemberMessageMsg = DouyinWebcastMemberMessageMsgOuterClass.DouyinWebcastMemberMessageMsg.parseFrom(payload);
-                    DouyinEnterRoomMsg msg = new DouyinEnterRoomMsg(douyinWebcastMemberMessageMsg);
+                    MemberMessage memberMessage = MemberMessage.parseFrom(payload);
+                    DouyinEnterRoomMsg msg = new DouyinEnterRoomMsg(memberMessage);
                     iteratorMsgListeners(msgListener -> msgListener.onEnterRoomMsg(DouyinBinaryFrameHandler.this, msg));
                 } catch (InvalidProtocolBufferException e) {
                     throw new BaseException(e);
@@ -116,11 +116,11 @@ public class DouyinBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<
             }
             case WebcastLikeMessage: {
                 try {
-                    DouyinWebcastLikeMessageMsgOuterClass.DouyinWebcastLikeMessageMsg douyinWebcastLikeMessageMsg = DouyinWebcastLikeMessageMsgOuterClass.DouyinWebcastLikeMessageMsg.parseFrom(payload);
-                    DouyinLikeMsg msg = new DouyinLikeMsg(douyinWebcastLikeMessageMsg);
+                    LikeMessage likeMessage = LikeMessage.parseFrom(payload);
+                    DouyinLikeMsg msg = new DouyinLikeMsg(likeMessage);
 
                     DouyinRoomStatsMsg douyinRoomStatsMsg = new DouyinRoomStatsMsg();
-                    douyinRoomStatsMsg.setLikedCount(NumberUtil.toStr(douyinWebcastLikeMessageMsg.getTotal()));
+                    douyinRoomStatsMsg.setLikedCount(NumberUtil.toStr(likeMessage.getTotal()));
 
                     iteratorMsgListeners(msgListener -> {
                         msgListener.onLikeMsg(DouyinBinaryFrameHandler.this, msg);
@@ -134,8 +134,8 @@ public class DouyinBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<
 
             case WebcastControlMessage: {
                 try {
-                    DouyinWebcastControlMessageMsgOuterClass.DouyinWebcastControlMessageMsg douyinWebcastControlMessageMsg = DouyinWebcastControlMessageMsgOuterClass.DouyinWebcastControlMessageMsg.parseFrom(payload);
-                    DouyinControlMsg msg = new DouyinControlMsg(douyinWebcastControlMessageMsg);
+                    ControlMessage controlMessage = ControlMessage.parseFrom(payload);
+                    DouyinControlMsg msg = new DouyinControlMsg(controlMessage);
                     iteratorMsgListeners(msgListener -> msgListener.onLiveStatusMsg(DouyinBinaryFrameHandler.this, msg));
                 } catch (InvalidProtocolBufferException e) {
                     throw new BaseException(e);
@@ -145,8 +145,8 @@ public class DouyinBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<
 
             case WebcastSocialMessage: {
                 try {
-                    DouyinWebcastSocialMessageMsgOuterClass.DouyinWebcastSocialMessageMsg douyinWebcastSocialMessageMsg = DouyinWebcastSocialMessageMsgOuterClass.DouyinWebcastSocialMessageMsg.parseFrom(payload);
-                    DouyinSocialMsg msg = new DouyinSocialMsg(douyinWebcastSocialMessageMsg);
+                    SocialMessage socialMessage = SocialMessage.parseFrom(payload);
+                    DouyinSocialMsg msg = new DouyinSocialMsg(socialMessage);
                     iteratorMsgListeners(msgListener -> msgListener.onSocialMsg(DouyinBinaryFrameHandler.this, msg));
                 } catch (InvalidProtocolBufferException e) {
                     throw new BaseException(e);
@@ -156,9 +156,9 @@ public class DouyinBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<
 
             case WebcastRoomStatsMessage: {
                 try {
-                    DouyinWebcastRoomStatsMessageMsgOuterClass.DouyinWebcastRoomStatsMessageMsg douyinWebcastRoomStatsMessageMsg = DouyinWebcastRoomStatsMessageMsgOuterClass.DouyinWebcastRoomStatsMessageMsg.parseFrom(payload);
+                    RoomStatsMessage roomStatsMessage = RoomStatsMessage.parseFrom(payload);
                     DouyinRoomStatsMsg douyinRoomStatsMsg = new DouyinRoomStatsMsg();
-                    douyinRoomStatsMsg.setMsg(douyinWebcastRoomStatsMessageMsg);
+                    douyinRoomStatsMsg.setMsg(roomStatsMessage);
                     iteratorMsgListeners(msgListener -> msgListener.onRoomStatsMsg(DouyinBinaryFrameHandler.this, douyinRoomStatsMsg));
                 } catch (InvalidProtocolBufferException e) {
                     throw new BaseException(e);

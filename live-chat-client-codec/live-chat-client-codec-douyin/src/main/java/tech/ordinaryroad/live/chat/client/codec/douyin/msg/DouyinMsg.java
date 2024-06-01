@@ -29,7 +29,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tech.ordinaryroad.live.chat.client.codec.douyin.msg.base.IDouyinMsg;
-import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.DouyinWebsocketFrameOuterClass;
+import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.PushFrame;
 
 /**
  * @author mjz
@@ -41,6 +41,6 @@ import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.DouyinWebsocketF
 @NoArgsConstructor
 public class DouyinMsg implements IDouyinMsg {
 
-    private DouyinWebsocketFrameOuterClass.DouyinWebsocketFrame msg;
+    private PushFrame msg;
 
 }

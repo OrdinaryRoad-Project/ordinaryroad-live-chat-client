@@ -36,7 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.codec.douyin.constant.DouyinGiftCountCalculationTimeEnum;
 import tech.ordinaryroad.live.chat.client.codec.douyin.constant.DouyinRoomStatusEnum;
 import tech.ordinaryroad.live.chat.client.codec.douyin.msg.DouyinGiftMsg;
-import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.DouyinWebcastGiftMessageMsgOuterClass;
+import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.GiftMessage;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCookieUtil;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatHttpUtil;
@@ -63,7 +63,7 @@ public class DouyinApis {
     /**
      * 礼物连击缓存
      */
-    private static final TimedCache<String, DouyinWebcastGiftMessageMsgOuterClass.DouyinWebcastGiftMessageMsg> DOUYIN_GIFT_MSG_CACHE = new TimedCache<>(300 * 1000L, new ConcurrentHashMap<>());
+    private static final TimedCache<String, GiftMessage> DOUYIN_GIFT_MSG_CACHE = new TimedCache<>(300 * 1000L, new ConcurrentHashMap<>());
 
     public static RoomInitResult roomInit(Object roomId, String cookie) {
         Map<String, String> cookieMap = OrLiveChatCookieUtil.parseCookieString(cookie);
@@ -123,32 +123,32 @@ public class DouyinApis {
             return 0;
         }
 
-        DouyinWebcastGiftMessageMsgOuterClass.DouyinWebcastGiftMessageMsg douyinWebcastGiftMessageMsg = msg.getMsg();
+        GiftMessage giftMessage = msg.getMsg();
         long giftCount = 0;
         if (calculationTimeEnum == DouyinGiftCountCalculationTimeEnum.COMBO_END) {
-            if (!douyinWebcastGiftMessageMsg.getGift().getCombo() || douyinWebcastGiftMessageMsg.getRepeatEnd() == 1) {// 非连击中
-                long comboCount = douyinWebcastGiftMessageMsg.getComboCount();
-                if (douyinWebcastGiftMessageMsg.getGroupCount() != 1L) {// 每点击一次送礼的数量不是1时
-                    comboCount = douyinWebcastGiftMessageMsg.getGroupCount() * comboCount;
+            if (!giftMessage.getGift().getCombo() || giftMessage.getRepeatEnd() == 1) {// 非连击中
+                long comboCount = giftMessage.getComboCount();
+                if (giftMessage.getGroupCount() != 1L) {// 每点击一次送礼的数量不是1时
+                    comboCount = giftMessage.getGroupCount() * comboCount;
                 }
                 giftCount = comboCount;
             }
         } else {
             // DouyinGiftCountCalculationTimeEnum.IMMEDIATELY
-            long groupId = douyinWebcastGiftMessageMsg.getGroupId();
-            long giftId = douyinWebcastGiftMessageMsg.getLongGiftId();
+            long groupId = giftMessage.getGroupId();
+            long giftId = giftMessage.getGiftId();
             // groupId有时会重复
             String key = groupId + "-" + msg.getUid() + "-" + giftId;
             if (DOUYIN_GIFT_MSG_CACHE.containsKey(key)) {
-                DouyinWebcastGiftMessageMsgOuterClass.DouyinWebcastGiftMessageMsg douyinWebcastGiftMessageMsgByGroupId = DOUYIN_GIFT_MSG_CACHE.get(key);
-                long repeatCountByGroupId = douyinWebcastGiftMessageMsgByGroupId.getRepeatCount();
-                giftCount = douyinWebcastGiftMessageMsg.getRepeatCount() - repeatCountByGroupId;
+                GiftMessage giftMessageByGroupId = DOUYIN_GIFT_MSG_CACHE.get(key);
+                long repeatCountByGroupId = giftMessageByGroupId.getRepeatCount();
+                giftCount = giftMessage.getRepeatCount() - repeatCountByGroupId;
             } else {
-                giftCount = douyinWebcastGiftMessageMsg.getRepeatCount();
+                giftCount = giftMessage.getRepeatCount();
             }
             // 存在顺序错误的情况，后收到的消息礼物个数反而减少了，跳过缓存该消息，但仍保存计算后的小于0的礼物个数
             if (giftCount > 0) {
-                DOUYIN_GIFT_MSG_CACHE.put(key, douyinWebcastGiftMessageMsg);
+                DOUYIN_GIFT_MSG_CACHE.put(key, giftMessage);
             }
         }
 

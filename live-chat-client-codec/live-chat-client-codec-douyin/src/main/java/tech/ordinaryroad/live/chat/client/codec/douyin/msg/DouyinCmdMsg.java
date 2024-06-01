@@ -30,7 +30,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tech.ordinaryroad.live.chat.client.codec.douyin.constant.DouyinCmdEnum;
 import tech.ordinaryroad.live.chat.client.codec.douyin.msg.base.IDouyinCmdMsg;
-import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.DouyinCmdMsgOuterClass;
+import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.Message;
 
 /**
  * @author mjz
@@ -42,7 +42,7 @@ import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.DouyinCmdMsgOute
 @NoArgsConstructor
 public class DouyinCmdMsg implements IDouyinCmdMsg {
 
-    private DouyinCmdMsgOuterClass.DouyinCmdMsg msg;
+    private Message msg;
 
     @Override
     public String getCmd() {

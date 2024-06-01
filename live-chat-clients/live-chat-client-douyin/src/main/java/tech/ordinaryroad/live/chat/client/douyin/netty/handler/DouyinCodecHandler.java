@@ -24,7 +24,7 @@
 
 package tech.ordinaryroad.live.chat.client.douyin.netty.handler;
 
-import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.ZipUtil;
 import com.google.protobuf.ByteString;
@@ -35,8 +35,9 @@ import tech.ordinaryroad.live.chat.client.codec.douyin.constant.DouyinPayloadTyp
 import tech.ordinaryroad.live.chat.client.codec.douyin.msg.DouyinCmdMsg;
 import tech.ordinaryroad.live.chat.client.codec.douyin.msg.DouyinMsg;
 import tech.ordinaryroad.live.chat.client.codec.douyin.msg.base.IDouyinMsg;
-import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.DouyinWebsocketFrameMsgOuterClass;
-import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.DouyinWebsocketFrameOuterClass;
+import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.HeadersList;
+import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.PushFrame;
+import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.Response;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BinaryWebSocketFrameToMessageCodec;
 
@@ -60,17 +61,24 @@ public class DouyinCodecHandler extends BinaryWebSocketFrameToMessageCodec<IDouy
 
     @Override
     protected void decode(ChannelHandlerContext ctx, BinaryWebSocketFrame msg, List<Object> out) throws Exception {
-        DouyinWebsocketFrameOuterClass.DouyinWebsocketFrame douyinWebsocketFrame = DouyinWebsocketFrameOuterClass.DouyinWebsocketFrame.parseFrom(msg.content().nioBuffer());
+        PushFrame pushFrame = PushFrame.parseFrom(msg.content().nioBuffer());
 
         byte[] bytes;
-        String compressType = MapUtil.getStr(douyinWebsocketFrame.getHeadersListMap(), "compress_type");
+        String compressType = null;
+        if (CollUtil.isNotEmpty(pushFrame.getHeadersListList())) {
+            for (HeadersList headersList : pushFrame.getHeadersListList()) {
+                if ("compress_type".equals(headersList.getKey())) {
+                    compressType = headersList.getValue();
+                }
+            }
+        }
         // 无压缩
         if (StrUtil.isBlank(compressType) || "none".equals(compressType)) {
-            bytes = douyinWebsocketFrame.getPayload().toByteArray();
+            bytes = pushFrame.getPayload().toByteArray();
         }
         // gzip
         else if ("gzip".equalsIgnoreCase(compressType)) {
-            ByteString payload = douyinWebsocketFrame.getPayload();
+            ByteString payload = pushFrame.getPayload();
             bytes = ZipUtil.unGzip(payload.newInput());
         }
         // 暂不支持
@@ -81,7 +89,7 @@ public class DouyinCodecHandler extends BinaryWebSocketFrameToMessageCodec<IDouy
             return;
         }
 
-        String payloadType = douyinWebsocketFrame.getPayloadType();
+        String payloadType = pushFrame.getPayloadType();
         DouyinPayloadTypeEnum payloadTypeEnum = DouyinPayloadTypeEnum.getByCode(payloadType);
         if (payloadTypeEnum == null) {
             if (log.isDebugEnabled()) {
@@ -92,17 +100,17 @@ public class DouyinCodecHandler extends BinaryWebSocketFrameToMessageCodec<IDouy
 
         switch (payloadTypeEnum) {
             case MSG: {
-                DouyinWebsocketFrameMsgOuterClass.DouyinWebsocketFrameMsg douyinWebsocketFrameMsg = DouyinWebsocketFrameMsgOuterClass.DouyinWebsocketFrameMsg.parseFrom(bytes);
+                Response response = Response.parseFrom(bytes);
                 // ACK
-                if (douyinWebsocketFrameMsg.getNeedAck()) {
-                    DouyinWebsocketFrameOuterClass.DouyinWebsocketFrame ack = DouyinWebsocketFrameOuterClass.DouyinWebsocketFrame.newBuilder()
-                            .setLogId(douyinWebsocketFrame.getLogId())
+                if (response.getNeedAck()) {
+                    PushFrame ack = PushFrame.newBuilder()
+                            .setLogId(pushFrame.getLogId())
                             .setPayloadType(DouyinPayloadTypeEnum.ACK.getCode())
-                            .setPayload(douyinWebsocketFrameMsg.getInternalExtBytes())
+                            .setPayload(response.getInternalExtBytes())
                             .build();
                     ctx.writeAndFlush(ack);
                 }
-                out.addAll(douyinWebsocketFrameMsg.getMessagesListList().stream().map(DouyinCmdMsg::new).collect(Collectors.toList()));
+                out.addAll(response.getMessagesListList().stream().map(DouyinCmdMsg::new).collect(Collectors.toList()));
                 return;
             }
             default: {
