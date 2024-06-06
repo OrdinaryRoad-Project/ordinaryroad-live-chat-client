@@ -25,6 +25,8 @@
 package tech.ordinaryroad.live.chat.client.bilibili.client;
 
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.http.GlobalHeaders;
+import cn.hutool.http.Header;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
@@ -122,18 +124,25 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
 
     @Override
     public BilibiliConnectionHandler initConnectionHandler(IBaseConnectionListener<BilibiliConnectionHandler> clientConnectionListener) {
+        DefaultHttpHeaders headers = new DefaultHttpHeaders();
+        headers.add(Header.USER_AGENT.name(), GlobalHeaders.INSTANCE.header(Header.USER_AGENT));
+        headers.add(Header.ORIGIN.name(), "https://live.bilibili.com");
+        headers.add(Header.PRAGMA.name(), "no-cache");
         return new BilibiliConnectionHandler(
-                () -> new WebSocketClientProtocolHandler(
-                        WebSocketClientProtocolConfig.newBuilder()
-                                .webSocketUri(getWebsocketUri())
-                                .version(WebSocketVersion.V13)
-                                .subprotocol(null)
-                                .allowExtensions(true)
-                                .customHeaders(new DefaultHttpHeaders())
-                                .maxFramePayloadLength(getConfig().getMaxFramePayloadLength())
-                                .handshakeTimeoutMillis(getConfig().getHandshakeTimeoutMillis())
-                                .build()
-                ),
+                () -> {
+                    headers.set(Header.HOST.name(), getWebsocketUri().getHost() + ":" + getWebsocketUri().getPort());
+                    return new WebSocketClientProtocolHandler(
+                            WebSocketClientProtocolConfig.newBuilder()
+                                    .webSocketUri(getWebsocketUri())
+                                    .version(WebSocketVersion.V13)
+                                    .subprotocol(null)
+                                    .allowExtensions(true)
+                                    .customHeaders(headers)
+                                    .maxFramePayloadLength(getConfig().getMaxFramePayloadLength())
+                                    .handshakeTimeoutMillis(getConfig().getHandshakeTimeoutMillis())
+                                    .build()
+                    );
+                },
                 BilibiliLiveChatClient.this, clientConnectionListener
         );
     }

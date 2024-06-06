@@ -105,7 +105,7 @@ public class BilibiliConnectionHandler extends BaseNettyClientConnectionHandler<
         if (log.isDebugEnabled()) {
             log.debug("发送心跳包");
         }
-        channel.writeAndFlush(getWebSocketFrameFactory(getRoomId()).createHeartbeat(getProtover()))
+        channel.writeAndFlush(getWebSocketFrameFactory(getRoomId()).createHeartbeat(ProtoverEnum.HEARTBEAT_AUTH_NO_COMPRESSION))
                 .addListener((ChannelFutureListener) future -> {
                     if (future.isSuccess()) {
                         if (log.isDebugEnabled()) {
@@ -127,7 +127,7 @@ public class BilibiliConnectionHandler extends BaseNettyClientConnectionHandler<
         if (log.isDebugEnabled()) {
             log.debug("发送认证包");
         }
-        channel.writeAndFlush(getWebSocketFrameFactory(getRoomId()).createAuth(getProtover(), roomInitResult))
+        channel.writeAndFlush(getWebSocketFrameFactory(getRoomId()).createAuth(ProtoverEnum.HEARTBEAT_AUTH_NO_COMPRESSION, roomInitResult))
                 .addListener(future -> {
                     if (future.isSuccess()) {
                         if (log.isDebugEnabled()) {

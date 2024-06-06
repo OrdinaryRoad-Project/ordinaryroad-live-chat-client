@@ -60,6 +60,7 @@ public class BilibiliApis {
     public static final TimedCache<Long, String> GIFT_IMG_CACHE = new TimedCache<>(TimeUnit.DAYS.toMillis(1));
     public static final String KEY_COOKIE_CSRF = "bili_jct";
     public static final String KEY_UID = "DedeUserID";
+    public static final String KEY_BUVID3 = "buvid3";
     public static final String PATTERN_REAL_ROOM_ID = "\\\"roomInitRes\\\".+\\{\\\"room_id\\\":(\\d+)";
 
     private static final String API_FRONTEND_FINGER_SPI = "https://api.bilibili.com/x/frontend/finger/spi";
@@ -72,13 +73,31 @@ public class BilibiliApis {
     public static RoomInitResult roomInit(long roomId, String cookie) {
         RoomPlayInfoResult roomPlayInfo = getRoomPlayInfo(roomId, cookie);
         long realRoomId = roomPlayInfo.room_id;
-        // frontendFingerSpi();
-        String b_3 = OrLiveChatCookieUtil.getCookieByName(cookie, "buvid3", BilibiliApis::v);
-        // webInterfaceNav(cookie);
+
+        String b_3;
+        String uid;
+        if (StrUtil.isNotBlank(cookie)) {
+            uid = OrLiveChatCookieUtil.getCookieByName(cookie, KEY_UID, () -> {
+                throw new BaseException("cookie中缺少参数" + KEY_UID);
+            });
+            b_3 = OrLiveChatCookieUtil.getCookieByName(cookie, KEY_BUVID3, () -> {
+                throw new BaseException("cookie中缺少参数" + KEY_BUVID3);
+            });
+            // webInterfaceNav(cookie);
+        } else {
+            uid = "0";
+
+            JsonNode jsonNode = frontendFingerSpi();
+            b_3 = jsonNode.get("b_3").asText();
+            String b4 = jsonNode.get("b_4").asText();
+            cookie = KEY_BUVID3 + "=" + b_3
+                    + "; buvid4=" + b4;
+        }
+
         DanmuinfoResult danmuInfo = getDanmuInfo(realRoomId, cookie);
         return new RoomInitResult.RoomInitResultBuilder()
                 .buvid3(b_3)
-                .uid(OrLiveChatCookieUtil.getCookieByName(cookie, "DedeUserID", () -> "0"))
+                .uid(uid)
                 .danmuinfoResult(danmuInfo)
                 .roomPlayInfoResult(roomPlayInfo)
                 .build();
