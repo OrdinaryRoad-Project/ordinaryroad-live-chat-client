@@ -37,6 +37,7 @@ import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.*;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.base.BaseBilibiliMsg;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.base.IBilibiliMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
+import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientBinaryFrameHandler;
 
 import java.util.List;
@@ -66,6 +67,20 @@ public class BilibiliBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
     public BilibiliBinaryFrameHandler(List<IBilibiliMsgListener> msgListeners, long roomId, Pair<Object, Object> roomIdPair) {
         super(msgListeners, roomId);
         this.roomIdPair = roomIdPair;
+    }
+
+    @Override
+    public void onUnknownCmd(BilibiliBinaryFrameHandler binaryFrameHandler, String cmdString, IMsg msg) {
+        if (cmdString.startsWith("DANMU_MSG")) {
+            MessageMsg messageMsg = (MessageMsg) msg;
+            DanmuMsgMsg danmuMsgMsg = new DanmuMsgMsg();
+            danmuMsgMsg.setProtover(messageMsg.getProtover());
+            danmuMsgMsg.setInfo(messageMsg.getInfo());
+            danmuMsgMsg.setDm_v2(StrUtil.toStringOrNull(messageMsg.getUnknownProperties().get("dm_v2")));
+            iteratorMsgListeners(msgListener -> msgListener.onDanmuMsg(BilibiliBinaryFrameHandler.this, danmuMsgMsg));
+        } else {
+            super.onUnknownCmd(binaryFrameHandler, cmdString, msg);
+        }
     }
 
     @SneakyThrows
