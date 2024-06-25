@@ -25,9 +25,10 @@
 package tech.ordinaryroad.live.chat.client.douyin.client;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.http.GlobalHeaders;
+import cn.hutool.crypto.digest.DigestUtil;
 import cn.hutool.http.Header;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -37,10 +38,13 @@ import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolConfig;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
 import io.netty.handler.codec.http.websocketx.WebSocketVersion;
 import lombok.Getter;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.openjdk.nashorn.api.scripting.NashornScriptEngineFactory;
 import tech.ordinaryroad.live.chat.client.codec.douyin.api.DouyinApis;
 import tech.ordinaryroad.live.chat.client.codec.douyin.constant.DouyinCmdEnum;
 import tech.ordinaryroad.live.chat.client.codec.douyin.msg.base.IDouyinMsg;
+import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCollUtil;
@@ -54,6 +58,9 @@ import tech.ordinaryroad.live.chat.client.douyin.netty.handler.DouyinConnectionH
 import tech.ordinaryroad.live.chat.client.douyin.netty.handler.DouyinLiveChatClientChannelInitializer;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
 
+import javax.script.ScriptEngine;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -123,7 +130,7 @@ public class DouyinLiveChatClient extends BaseNettyClient<
     public DouyinConnectionHandler initConnectionHandler(IBaseConnectionListener<DouyinConnectionHandler> clientConnectionListener) {
         DefaultHttpHeaders headers = new DefaultHttpHeaders();
         headers.add(Header.COOKIE.name(), DouyinApis.KEY_COOKIE_TTWID + "=" + roomInitResult.getTtwid());
-        headers.add(Header.USER_AGENT.name(), GlobalHeaders.INSTANCE.header(Header.USER_AGENT));
+        headers.add(Header.USER_AGENT.name(), getConfig().getUserAgent());
         return new DouyinConnectionHandler(
                 () -> new WebSocketClientProtocolHandler(
                         WebSocketClientProtocolConfig.newBuilder()
@@ -168,7 +175,7 @@ public class DouyinLiveChatClient extends BaseNettyClient<
         queryParams.put("browser_language", "zh-CN");
         queryParams.put("browser_platform", "MacIntel");
         queryParams.put("browser_name", "Mozilla");
-        queryParams.put("browser_version", "5.0%20(Macintosh;%20Intel%20Mac%20OS%20X%2010_15_7)%20AppleWebKit/537.36%20(KHTML,%20like%20Gecko)%20Chrome/116.0.0.0%20Safari/537.36");
+        queryParams.put("browser_version", getConfig().getBrowserVersion());
         queryParams.put("browser_online", "true");
         queryParams.put("tz_name", "Asia/Shanghai");
         queryParams.put("host", "https://live.douyin.com");
@@ -184,8 +191,7 @@ public class DouyinLiveChatClient extends BaseNettyClient<
 
         queryParams.put("room_id", Long.toString(realRoomId));
         queryParams.put("user_unique_id", userUniqueId);
-        // TODO 生成signature
-        queryParams.put("signature", "00000000");
+        queryParams.put("signature", getSignature(getConfig().getUserAgent()));
         queryParams.put("cursor", "t-" + System.currentTimeMillis() + "_r-1_d-1_u-1_h-1");
         queryParams.put("internal_ext", "internal_src:dim|" +
                 "wss_push_room_id:" + realRoomId + "|" +
@@ -203,4 +209,34 @@ public class DouyinLiveChatClient extends BaseNettyClient<
         super.sendDanmu(danmu, success, failed);
     }
 
+    public static String JS_SDK;
+
+    static {
+        InputStream resourceAsStream = DouyinLiveChatClient.class.getResourceAsStream("/js/douyin-webmssdk.js");
+        JS_SDK = IoUtil.readUtf8(resourceAsStream);
+    }
+
+    @SneakyThrows
+    public String getSignature(String userAgent) {
+        String JS_ENV = " document = {};\nwindow = {};\nnavigator = {\nuserAgent: '" + userAgent + "'\n};\n";
+        ScriptEngine engineFactory = new NashornScriptEngineFactory().getScriptEngine("--language=es6");
+        engineFactory.eval(JS_ENV + JS_SDK);
+        String signPram = ("live_id=1,aid=6383," +
+                "version_code=$version_code$," +
+                "webcast_sdk_version=1.0.14-beta.0," +
+                "room_id=$roomId$," +
+                "sub_room_id=,sub_channel_id=,did_rule=3," +
+                "user_unique_id=$userId$," +
+                "device_platform=web,device_type=,ac=,identity=audience")
+                .replace("$version_code$", getConfig().getVersionCode())
+                .replace("$roomId$", String.valueOf(roomInitResult.getRealRoomId()))
+                .replace("$userId$", roomInitResult.getUserUniqueId());
+        String md5Hex = DigestUtil.md5Hex(signPram.getBytes(StandardCharsets.UTF_8));
+        try {
+            Object eval = engineFactory.eval("get_sign('" + md5Hex + "')");
+            return eval.toString();
+        } catch (Exception e) {
+            throw new BaseException("Execution failed: getSignature", e);
+        }
+    }
 }

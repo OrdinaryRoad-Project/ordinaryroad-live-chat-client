@@ -25,12 +25,14 @@
 package tech.ordinaryroad.live.chat.client.douyin.config;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import tech.ordinaryroad.live.chat.client.codec.douyin.constant.DouyinGiftCountCalculationTimeEnum;
+import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatHttpUtil;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.config.BaseNettyClientConfig;
 
 import java.util.List;
@@ -59,11 +61,20 @@ public class DouyinLiveChatClientConfig extends BaseNettyClientConfig {
     @Builder.Default
     private int maxFramePayloadLength = 64 * 1024 * 1024;
 
+    @Builder.Default
     private String versionCode = "180800";
 
-    private String webcastSdkVersion = "1.0.12";
+    @Builder.Default
+    private String webcastSdkVersion = "1.0.14-beta.0";
 
-    private String updateVersionCode = "1.0.12";
+    @Builder.Default
+    private String updateVersionCode = "1.0.14-beta.0";
+    @Builder.Default
+    private String userAgent = OrLiveChatHttpUtil.USER_AGENT;
+
+    public String getBrowserVersion() {
+        return StrUtil.removePrefix(getUserAgent(), "Mozilla/");
+    }
 
     @Builder.Default
     private DouyinGiftCountCalculationTimeEnum giftCountCalculationTime = DouyinGiftCountCalculationTimeEnum.IMMEDIATELY;
