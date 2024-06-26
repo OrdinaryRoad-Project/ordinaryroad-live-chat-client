@@ -124,7 +124,20 @@ public class DouyinLiveChatClient extends BaseNettyClient<DouyinLiveChatClientCo
         DefaultHttpHeaders headers = new DefaultHttpHeaders();
         headers.add(Header.COOKIE.name(), DouyinApis.KEY_COOKIE_TTWID + "=" + roomInitResult.getTtwid());
         headers.add(Header.USER_AGENT.name(), getConfig().getUserAgent());
-        return new DouyinConnectionHandler(() -> new WebSocketClientProtocolHandler(WebSocketClientProtocolConfig.newBuilder().webSocketUri(getWebsocketUri()).version(WebSocketVersion.V13).subprotocol(null).allowExtensions(true).customHeaders(headers).maxFramePayloadLength(getConfig().getMaxFramePayloadLength()).handshakeTimeoutMillis(getConfig().getHandshakeTimeoutMillis()).build()), DouyinLiveChatClient.this, clientConnectionListener);
+        return new DouyinConnectionHandler(
+                () -> new WebSocketClientProtocolHandler(
+                        WebSocketClientProtocolConfig.newBuilder()
+                                .webSocketUri(getWebsocketUri())
+                                .version(WebSocketVersion.V13)
+                                .subprotocol(null)
+                                .allowExtensions(true)
+                                .customHeaders(headers)
+                                .maxFramePayloadLength(getConfig().getMaxFramePayloadLength())
+                                .handshakeTimeoutMillis(getConfig().getHandshakeTimeoutMillis())
+                                .build()
+                ),
+                DouyinLiveChatClient.this, clientConnectionListener
+        );
     }
 
     @Override
@@ -173,7 +186,15 @@ public class DouyinLiveChatClient extends BaseNettyClient<DouyinLiveChatClientCo
         queryParams.put("user_unique_id", userUniqueId);
         queryParams.put("signature", getSignature(getConfig().getUserAgent()));
         queryParams.put("cursor", "t-" + System.currentTimeMillis() + "_r-1_d-1_u-1_h-1");
-        queryParams.put("internal_ext", "internal_src:dim|" + "wss_push_room_id:" + realRoomId + "|" + "wss_push_did:" + userUniqueId + "|" + "dim_log_id:" + DateUtil.format(new Date(), "yyyy-MM-dd") + RandomUtil.randomNumbers(6) + RandomUtil.randomString("0123456789ABCDEF", 20) + "|" + "first_req_ms:" + System.currentTimeMillis() + "|" + "fetch_time:" + System.currentTimeMillis() + "|" + "seq:1|" + "wss_info:0-" + System.currentTimeMillis() + "-0-0|" + "wrds_kvs:WebcastRoomStatsMessage-" + System.nanoTime() + "_WebcastRoomRankMessage-" + System.nanoTime() + "_LotteryInfoSyncData-" + System.nanoTime() + "_WebcastActivityEmojiGroupsMessage-" + System.nanoTime());
+        queryParams.put("internal_ext", "internal_src:dim|" +
+                "wss_push_room_id:" + realRoomId + "|" +
+                "wss_push_did:" + userUniqueId + "|" +
+                "dim_log_id:" + DateUtil.format(new Date(), "yyyy-MM-dd") + RandomUtil.randomNumbers(6) + RandomUtil.randomString("0123456789ABCDEF", 20) + "|" +
+                "first_req_ms:" + System.currentTimeMillis() + "|" +
+                "fetch_time:" + System.currentTimeMillis() + "|" +
+                "seq:1|" +
+                "wss_info:0-" + System.currentTimeMillis() + "-0-0|" +
+                "wrds_kvs:WebcastRoomStatsMessage-" + System.nanoTime() + "_WebcastRoomRankMessage-" + System.nanoTime() + "_LotteryInfoSyncData-" + System.nanoTime() + "_WebcastActivityEmojiGroupsMessage-" + System.nanoTime());
         return webSocketUriString + "?" + OrLiveChatHttpUtil.toParams(queryParams);
     }
 
