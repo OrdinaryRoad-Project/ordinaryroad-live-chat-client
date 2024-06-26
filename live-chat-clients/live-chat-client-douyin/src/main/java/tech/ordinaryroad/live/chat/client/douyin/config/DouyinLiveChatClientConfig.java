@@ -87,7 +87,7 @@ public class DouyinLiveChatClientConfig extends BaseNettyClientConfig {
     public static ScriptEngine createScriptEngine() {
         JavaInfo javaInfo = new JavaInfo();
         Class<?> nashornScriptEngineFactoryClass;
-        if (javaInfo.getVersionFloat() > 11) {
+        if (javaInfo.getVersionFloat() >= 11) {
             nashornScriptEngineFactoryClass = Class.forName("org.openjdk.nashorn.api.scripting.NashornScriptEngineFactory");
         } else {
             nashornScriptEngineFactoryClass = Class.forName("jdk.nashorn.api.scripting.NashornScriptEngineFactory");
