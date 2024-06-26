@@ -100,3 +100,4 @@ fabric.properties
 
 **/src/main/resources/proto/**/*.java
 
+**/.DS_Store
