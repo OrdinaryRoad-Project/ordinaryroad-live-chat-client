@@ -55,7 +55,7 @@ public class DouyinApis {
     public static final String KEY_COOKIE_MS_TOKEN = "msToken";
     public static final String KEY_COOKIE_AC_NONCE = "__ac_nonce";
     public static final String MS_TOKEN_BASE_STRING = RandomUtil.BASE_CHAR_NUMBER_LOWER + "=_";
-    public static final int MS_TOKEN_LENGTH = 107;
+    public static final int MS_TOKEN_LENGTH = 116;
     public static final int AC_NONCE_LENGTH = 21;
     public static final String PATTERN_USER_UNIQUE_ID = "\\\\\"user_unique_id\\\\\":\\\\\"(\\d+)\\\\\"";
     public static final String PATTERN_ROOM_ID = "\\\\\"roomId\\\\\":\\\\\"(\\d+)\\\\\"";
@@ -68,21 +68,18 @@ public class DouyinApis {
     public static RoomInitResult roomInit(Object roomId, String cookie) {
         Map<String, String> cookieMap = OrLiveChatCookieUtil.parseCookieString(cookie);
 
-        @Cleanup
-        HttpResponse response1 = OrLiveChatHttpUtil.createGet("https://live.douyin.com/").cookie(cookie).execute();
+        @Cleanup HttpResponse response1 = OrLiveChatHttpUtil.createGet("https://live.douyin.com/").cookie(cookie).execute();
         String ttwid = OrLiveChatCookieUtil.getCookieByName(cookieMap, KEY_COOKIE_TTWID, () -> response1.getCookie(KEY_COOKIE_TTWID).getValue());
         String msToken = OrLiveChatCookieUtil.getCookieByName(cookieMap, KEY_COOKIE_MS_TOKEN, () -> RandomUtil.randomString(MS_TOKEN_BASE_STRING, MS_TOKEN_LENGTH));
         String __ac_nonce = OrLiveChatCookieUtil.getCookieByName(cookieMap, KEY_COOKIE_AC_NONCE, () -> RandomUtil.randomString(AC_NONCE_LENGTH));
 
-        @Cleanup
-        HttpResponse response2 = OrLiveChatHttpUtil.createGet("https://live.douyin.com/" + roomId)
-                .cookie(StrUtil.emptyToDefault(cookie, KEY_COOKIE_TTWID + "=" + ttwid + "; " + KEY_COOKIE_MS_TOKEN + "=" + msToken + "; " + KEY_COOKIE_AC_NONCE + "=" + __ac_nonce))
-                .execute();
+        @Cleanup HttpResponse response2 = OrLiveChatHttpUtil.createGet("https://live.douyin.com/" + roomId).cookie(StrUtil.emptyToDefault(cookie, KEY_COOKIE_TTWID + "=" + ttwid + "; " + KEY_COOKIE_MS_TOKEN + "=" + msToken + "; " + KEY_COOKIE_AC_NONCE + "=" + __ac_nonce)).execute();
         if (response2.getStatus() != HttpStatus.HTTP_OK) {
             throw new BaseException("获取" + roomId + "真实房间ID失败");
         }
         String body2 = response2.body();
-        String user_unique_id = StrUtil.emptyToDefault(ReUtil.getGroup1(PATTERN_USER_UNIQUE_ID, body2), RandomUtil.randomNumbers(19));
+        // 生成7300000000000000000到7999999999999999999之间的随机数
+        String user_unique_id = StrUtil.emptyToDefault(ReUtil.getGroup1(PATTERN_USER_UNIQUE_ID, body2), String.valueOf(RandomUtil.randomLong(730_000_000_000_000_0000L, 7_999_999_999_999_999_999L)));
         long realRoomId;
         String realRoomIdString = ReUtil.getGroup1(PATTERN_ROOM_ID, body2);
         try {
@@ -98,14 +95,7 @@ public class DouyinApis {
             throw new BaseException("获取" + roomId + "直播间状态失败");
         }
 
-        return RoomInitResult.builder()
-                .ttwid(ttwid)
-                .msToken(msToken)
-                .acNonce(__ac_nonce)
-                .realRoomId(realRoomId)
-                .userUniqueId(user_unique_id)
-                .roomStatus(DouyinRoomStatusEnum.getByCode(roomStatus))
-                .build();
+        return RoomInitResult.builder().ttwid(ttwid).msToken(msToken).acNonce(__ac_nonce).realRoomId(realRoomId).userUniqueId(user_unique_id).roomStatus(DouyinRoomStatusEnum.getByCode(roomStatus)).build();
     }
 
     public static RoomInitResult roomInit(Object roomId) {

@@ -24,6 +24,7 @@
 
 package tech.ordinaryroad.live.chat.client.commons.util;
 
+import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.*;
 import lombok.AllArgsConstructor;
@@ -32,6 +33,7 @@ import lombok.NoArgsConstructor;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
+import java.util.Arrays;
 
 /**
  * @author mjz
@@ -39,10 +41,17 @@ import java.net.Proxy;
  */
 public class OrLiveChatHttpUtil extends HttpUtil {
 
-    public static final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36";
+    public static final String USER_AGENT;
     private static final ProxyProperties PROXY_PROPERTIES = new ProxyProperties();
 
     static {
+        USER_AGENT = "Mozilla/5.0 " +
+                // os
+                RandomUtil.randomEle(Arrays.asList("(Windows NT 10.0; WOW64)", "(Windows NT 10.0; WOW64)", "(Windows NT 10.0; Win64; x64)", "(Windows NT 6.3; WOW64)", "(Windows NT 6.3; Win64; x64)", "(Windows NT 6.1; Win64; x64)", "(Windows NT 6.1; WOW64)", "(X11; Linux x86_64)", "(Macintosh; Intel Mac OS X 10_12_6)")) +
+                " AppleWebKit/537.36 (KHTML, like Gecko) Chrome/" +
+                // Chrome version
+                RandomUtil.randomEle(Arrays.asList("110.0.5481.77", "110.0.5481.30", "109.0.5414.74", "108.0.5359.71", "108.0.5359.22", "98.0.4758.48", "97.0.4692.71")) +
+                " Safari/536.32";
         GlobalHeaders.INSTANCE.header(Header.USER_AGENT, USER_AGENT);
     }
 
