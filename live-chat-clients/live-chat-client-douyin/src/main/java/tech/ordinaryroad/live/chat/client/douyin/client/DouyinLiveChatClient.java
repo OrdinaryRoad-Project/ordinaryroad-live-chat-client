@@ -40,7 +40,6 @@ import io.netty.handler.codec.http.websocketx.WebSocketVersion;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.openjdk.nashorn.api.scripting.NashornScriptEngineFactory;
 import tech.ordinaryroad.live.chat.client.codec.douyin.api.DouyinApis;
 import tech.ordinaryroad.live.chat.client.codec.douyin.constant.DouyinCmdEnum;
 import tech.ordinaryroad.live.chat.client.codec.douyin.msg.base.IDouyinMsg;
@@ -72,13 +71,7 @@ import java.util.function.Consumer;
  * @date 2024/1/2
  */
 @Slf4j
-public class DouyinLiveChatClient extends BaseNettyClient<
-        DouyinLiveChatClientConfig,
-        DouyinCmdEnum,
-        IDouyinMsg,
-        IDouyinMsgListener,
-        DouyinConnectionHandler,
-        DouyinBinaryFrameHandler> {
+public class DouyinLiveChatClient extends BaseNettyClient<DouyinLiveChatClientConfig, DouyinCmdEnum, IDouyinMsg, IDouyinMsgListener, DouyinConnectionHandler, DouyinBinaryFrameHandler> {
 
     @Getter
     private DouyinApis.RoomInitResult roomInitResult = new DouyinApis.RoomInitResult();
@@ -219,7 +212,7 @@ public class DouyinLiveChatClient extends BaseNettyClient<
     @SneakyThrows
     public String getSignature(String userAgent) {
         String JS_ENV = " document = {};\nwindow = {};\nnavigator = {\nuserAgent: '" + userAgent + "'\n};\n";
-        ScriptEngine engineFactory = new NashornScriptEngineFactory().getScriptEngine("--language=es6");
+        ScriptEngine engineFactory = getConfig().getScriptEngine();
         engineFactory.eval(JS_ENV + JS_SDK);
         String signPram = ("live_id=1,aid=6383," +
                 "version_code=$version_code$," +
