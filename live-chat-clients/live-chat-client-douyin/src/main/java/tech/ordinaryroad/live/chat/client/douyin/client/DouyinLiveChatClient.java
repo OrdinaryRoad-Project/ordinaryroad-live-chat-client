@@ -40,7 +40,6 @@ import io.netty.handler.codec.http.websocketx.WebSocketVersion;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.openjdk.nashorn.api.scripting.NashornScriptEngineFactory;
 import tech.ordinaryroad.live.chat.client.codec.douyin.api.DouyinApis;
 import tech.ordinaryroad.live.chat.client.codec.douyin.constant.DouyinCmdEnum;
 import tech.ordinaryroad.live.chat.client.codec.douyin.msg.base.IDouyinMsg;
@@ -72,13 +71,7 @@ import java.util.function.Consumer;
  * @date 2024/1/2
  */
 @Slf4j
-public class DouyinLiveChatClient extends BaseNettyClient<
-        DouyinLiveChatClientConfig,
-        DouyinCmdEnum,
-        IDouyinMsg,
-        IDouyinMsgListener,
-        DouyinConnectionHandler,
-        DouyinBinaryFrameHandler> {
+public class DouyinLiveChatClient extends BaseNettyClient<DouyinLiveChatClientConfig, DouyinCmdEnum, IDouyinMsg, IDouyinMsgListener, DouyinConnectionHandler, DouyinBinaryFrameHandler> {
 
     @Getter
     private DouyinApis.RoomInitResult roomInitResult = new DouyinApis.RoomInitResult();
@@ -131,20 +124,7 @@ public class DouyinLiveChatClient extends BaseNettyClient<
         DefaultHttpHeaders headers = new DefaultHttpHeaders();
         headers.add(Header.COOKIE.name(), DouyinApis.KEY_COOKIE_TTWID + "=" + roomInitResult.getTtwid());
         headers.add(Header.USER_AGENT.name(), getConfig().getUserAgent());
-        return new DouyinConnectionHandler(
-                () -> new WebSocketClientProtocolHandler(
-                        WebSocketClientProtocolConfig.newBuilder()
-                                .webSocketUri(getWebsocketUri())
-                                .version(WebSocketVersion.V13)
-                                .subprotocol(null)
-                                .allowExtensions(true)
-                                .customHeaders(headers)
-                                .maxFramePayloadLength(getConfig().getMaxFramePayloadLength())
-                                .handshakeTimeoutMillis(getConfig().getHandshakeTimeoutMillis())
-                                .build()
-                ),
-                DouyinLiveChatClient.this, clientConnectionListener
-        );
+        return new DouyinConnectionHandler(() -> new WebSocketClientProtocolHandler(WebSocketClientProtocolConfig.newBuilder().webSocketUri(getWebsocketUri()).version(WebSocketVersion.V13).subprotocol(null).allowExtensions(true).customHeaders(headers).maxFramePayloadLength(getConfig().getMaxFramePayloadLength()).handshakeTimeoutMillis(getConfig().getHandshakeTimeoutMillis()).build()), DouyinLiveChatClient.this, clientConnectionListener);
     }
 
     @Override
@@ -193,15 +173,7 @@ public class DouyinLiveChatClient extends BaseNettyClient<
         queryParams.put("user_unique_id", userUniqueId);
         queryParams.put("signature", getSignature(getConfig().getUserAgent()));
         queryParams.put("cursor", "t-" + System.currentTimeMillis() + "_r-1_d-1_u-1_h-1");
-        queryParams.put("internal_ext", "internal_src:dim|" +
-                "wss_push_room_id:" + realRoomId + "|" +
-                "wss_push_did:" + userUniqueId + "|" +
-                "dim_log_id:" + DateUtil.format(new Date(), "yyyy-MM-dd") + RandomUtil.randomNumbers(6) + RandomUtil.randomString("0123456789ABCDEF", 20) + "|" +
-                "first_req_ms:" + System.currentTimeMillis() + "|" +
-                "fetch_time:" + System.currentTimeMillis() + "|" +
-                "seq:1|" +
-                "wss_info:0-" + System.currentTimeMillis() + "-0-0|" +
-                "wrds_kvs:WebcastRoomStatsMessage-" + System.nanoTime() + "_WebcastRoomRankMessage-" + System.nanoTime() + "_LotteryInfoSyncData-" + System.nanoTime() + "_WebcastActivityEmojiGroupsMessage-" + System.nanoTime());
+        queryParams.put("internal_ext", "internal_src:dim|" + "wss_push_room_id:" + realRoomId + "|" + "wss_push_did:" + userUniqueId + "|" + "dim_log_id:" + DateUtil.format(new Date(), "yyyy-MM-dd") + RandomUtil.randomNumbers(6) + RandomUtil.randomString("0123456789ABCDEF", 20) + "|" + "first_req_ms:" + System.currentTimeMillis() + "|" + "fetch_time:" + System.currentTimeMillis() + "|" + "seq:1|" + "wss_info:0-" + System.currentTimeMillis() + "-0-0|" + "wrds_kvs:WebcastRoomStatsMessage-" + System.nanoTime() + "_WebcastRoomRankMessage-" + System.nanoTime() + "_LotteryInfoSyncData-" + System.nanoTime() + "_WebcastActivityEmojiGroupsMessage-" + System.nanoTime());
         return webSocketUriString + "?" + OrLiveChatHttpUtil.toParams(queryParams);
     }
 
@@ -219,7 +191,7 @@ public class DouyinLiveChatClient extends BaseNettyClient<
     @SneakyThrows
     public String getSignature(String userAgent) {
         String JS_ENV = " document = {};\nwindow = {};\nnavigator = {\nuserAgent: '" + userAgent + "'\n};\n";
-        ScriptEngine engineFactory = new NashornScriptEngineFactory().getScriptEngine("--language=es6");
+        ScriptEngine engineFactory = getConfig().getScriptEngine();
         engineFactory.eval(JS_ENV + JS_SDK);
         String signPram = ("live_id=1,aid=6383," +
                 "version_code=$version_code$," +
