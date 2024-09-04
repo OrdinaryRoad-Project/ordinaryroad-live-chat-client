@@ -256,8 +256,8 @@ public class DouyuCodecUtil {
             else {
                 String realRoomId = msg.getRid();
                 if (DouyuApis.roomGiftMap.containsKey(realRoomId)) {
-                    Map<String, GiftListInfo> stringGiftListInfoMap = DouyuApis.roomGiftMap.get(realRoomId);
-                    msg.setRoomGiftInfo(stringGiftListInfoMap.getOrDefault(String.valueOf(msg.getGfid()), GiftListInfo.DEFAULT_GIFT));
+                    Map<Integer, GiftListInfo> stringGiftListInfoMap = DouyuApis.roomGiftMap.get(realRoomId);
+                    msg.setRoomGiftInfo(stringGiftListInfoMap.getOrDefault(msg.getGfid(), GiftListInfo.DEFAULT_GIFT));
                 }
             }
         }

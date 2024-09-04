@@ -69,7 +69,7 @@ public class DouyuApis {
      * 房间礼物缓存，过期时间1天
      * realRoomId,(giftId,Info)
      */
-    public static final TimedCache<String, Map<String, GiftListInfo>> roomGiftMap = new TimedCache<>(TimeUnit.DAYS.toMillis(1), new HashMap<>());
+    public static final TimedCache<String, Map<Integer, GiftListInfo>> roomGiftMap = new TimedCache<>(TimeUnit.DAYS.toMillis(1), new HashMap<>());
 
     public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     public static final String PATTERN_BODY_ROOM_ID = "\\$ROOM\\.room_id\\D+(\\d+)";

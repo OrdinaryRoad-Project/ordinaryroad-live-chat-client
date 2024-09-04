@@ -26,6 +26,7 @@ package tech.ordinaryroad.live.chat.client.douyu.client;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import io.netty.channel.EventLoopGroup;
@@ -42,7 +43,6 @@ import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionL
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
-import tech.ordinaryroad.live.chat.client.commons.util.OrJacksonUtil;
 import tech.ordinaryroad.live.chat.client.douyu.config.DouyuLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuConnectionListener;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuMsgListener;
@@ -106,20 +106,17 @@ public class DouyuLiveChatClient extends DouyuWsLiveChatClient implements IDouyu
         super.init();
 
         // 初始化房间礼物列表
-        Map<String, GiftListInfo> map = new HashMap<>();
-        DouyuApis.getGiftList(getConfig().getRoomId())
-                .get("giftList")
-                .forEach(jsonNode -> {
-                    try {
-                        GiftListInfo giftListInfo = OrJacksonUtil.getInstance().readValue(jsonNode.toString(), GiftListInfo.class);
-                        map.put(String.valueOf(giftListInfo.getId()), giftListInfo);
-                    } catch (Exception e) {
-                        if (log.isDebugEnabled()) {
-                            log.debug("获取房间礼物列表异常", e);
-                        }
-                        // ignore
-                    }
-                });
+        Map<Integer, GiftListInfo> map = new HashMap<>();
+        CollUtil.forEach(DouyuApis.getGiftList(getConfig().getRoomId()).getGiftList(), (giftListInfo, index) -> {
+            try {
+                map.put(giftListInfo.getId(), giftListInfo);
+            } catch (Exception e) {
+                if (log.isDebugEnabled()) {
+                    log.debug("获取房间礼物列表异常", e);
+                }
+                // ignore
+            }
+        });
         DouyuApis.roomGiftMap.put(String.valueOf(DouyuApis.getRealRoomId(getConfig().getRoomId())), map);
     }
 
