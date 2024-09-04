@@ -27,7 +27,6 @@ package tech.ordinaryroad.live.chat.client.codec.douyu.api;
 import cn.hutool.cache.impl.TimedCache;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.NumberUtil;
-import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.MD5;
@@ -37,13 +36,13 @@ import cn.hutool.http.HttpStatus;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Cleanup;
-import lombok.SneakyThrows;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.codec.douyu.msg.dto.GiftListInfo;
 import tech.ordinaryroad.live.chat.client.codec.douyu.msg.dto.GiftPropSingle;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.util.OrJacksonUtil;
+import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCollUtil;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatHttpUtil;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatLocalDateTimeUtil;
 
@@ -87,9 +86,12 @@ public class DouyuApis {
     // 查询房间礼物列表：https://gift.douyucdn.cn/api/gift/v3/web/list?rid=
     public static final String API_GIFT_LIST = "https://gift.douyucdn.cn/api/gift/v3/web/list?rid=";
     public static final String API_PROP_SINGLE = "https://gift.douyucdn.cn/api/prop/v1/web/single?pid=";
+    public static final String API_SERVER_INFO = "https://www.douyu.com/lapi/live/gateway/web/";
     public static final String API_AVATAR_PREFIX_SMALL = "_small.jpg";
     public static final String API_AVATAR_PREFIX_MIDDLE = "_middle.jpg";
     public static final String API_AVATAR_PREFIX_BIG = "_big.jpg";
+    // 参考： <a href="https://cjting.me/2020/07/01/douyu-crawler-and-font-anti-crawling">斗鱼关注人数爬取 ── 字体反爬的攻与防</a>
+    public static final String vk_secret = "r5*^5;}2#${XF[h+;'./.Q'1;,-]f'p[";
 
     public static String getAvatarUrl(List<String> list, String prefix) {
         if (CollUtil.isEmpty(list) || list.size() < 3) {
@@ -140,29 +142,33 @@ public class DouyuApis {
         return getRealRoomId(roomId, null);
     }
 
-    public static JsonNode getServerInfo(long roomId, String cookie) {
+    @SneakyThrows
+    public static ServerInfoResult getServerInfo(long roomId, String cookie) {
         @Cleanup
-        HttpResponse execute = OrLiveChatHttpUtil.createPost("https://www.douyu.com/lapi/live/gateway/web/" + roomId + "?isH5=1")
+        HttpResponse execute = OrLiveChatHttpUtil.createPost(API_SERVER_INFO + roomId + "?isH5=1")
                 .cookie(cookie)
                 .execute();
-        return responseInterceptor(execute.body());
+        JsonNode jsonNode = responseInterceptor(execute.body());
+        return OrJacksonUtil.getInstance().readValue(jsonNode.toString(), ServerInfoResult.class);
     }
 
-    public static JsonNode getServerInfo(long roomId) {
+    public static ServerInfoResult getServerInfo(long roomId) {
         return getServerInfo(roomId, null);
     }
 
     public static String getRandomWssUri(long roomId) {
-        JsonNode serverInfo = getServerInfo(roomId);
-        JsonNode wss = serverInfo.get("wss");
-        JsonNode jsonNode = wss.get(RandomUtil.randomInt(0, wss.size()));
-        return "wss://" + jsonNode.get("domain").asText() + ":" + jsonNode.get("port").asInt();
+        ServerInfoResult serverInfoResult = getServerInfo(roomId);
+        List<Wss> wssList = serverInfoResult.getWss();
+        Wss randomWss = OrLiveChatCollUtil.getRandom(wssList);
+        return "wss://" + randomWss.getDomain() + ":" + randomWss.getPort();
     }
 
-    public static JsonNode getGiftList(long roomId) {
+    @SneakyThrows
+    public static GiftListResult getGiftList(long roomId) {
         @Cleanup
         HttpResponse execute = OrLiveChatHttpUtil.createGet(API_GIFT_LIST + roomId).execute();
-        return responseInterceptor(execute.body());
+        JsonNode jsonNode = responseInterceptor(execute.body());
+        return OrJacksonUtil.getInstance().readValue(jsonNode.toString(), GiftListResult.class);
     }
 
     @SneakyThrows
@@ -172,8 +178,6 @@ public class DouyuApis {
         JsonNode jsonNode = responseInterceptor(execute.body());
         return OrJacksonUtil.getInstance().readValue(jsonNode.toString(), GiftPropSingle.class);
     }
-
-    public static final String vk_secret = "r5*^5;}2#${XF[h+;'./.Q'1;,-]f'p[";
 
     /**
      * 参考： <a href="https://cjting.me/2020/07/01/douyu-crawler-and-font-anti-crawling">斗鱼关注人数爬取 ── 字体反爬的攻与防</a>
@@ -203,6 +207,42 @@ public class DouyuApis {
         } catch (JsonProcessingException e) {
             throw new BaseException(e);
         }
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class GiftListResult {
+        private List<GiftListInfo> giftList;
+        private long onceLimit;
+        private JsonNode skinData;
+        private JsonNode tabs;
+        private String tid;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ServerInfoResult {
+        private List<Gateway> gateway;
+        private List<Wss> wss;
+        private int ir;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Gateway {
+        private String ip;
+        private int port;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Wss {
+        private String domain;
+        private int port;
     }
 
 }
