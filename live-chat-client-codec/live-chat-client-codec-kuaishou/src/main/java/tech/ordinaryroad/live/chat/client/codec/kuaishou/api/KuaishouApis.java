@@ -30,10 +30,14 @@ import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
 import cn.hutool.http.*;
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import lombok.*;
+import tech.ordinaryroad.live.chat.client.codec.kuaishou.constant.RoomInfoGetTypeEnum;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.KuaishouGiftMsg;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf.LiveAudienceStateOuterClass;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf.WebGiftFeedOuterClass;
@@ -68,7 +72,7 @@ public class KuaishouApis {
      */
     private static final TimedCache<String, WebGiftFeedOuterClass.WebGiftFeed> WEB_GIFT_FEED_CACHE = new TimedCache<>(300 * 1000L, new ConcurrentHashMap<>());
 
-    public static RoomInitResult roomInit(Object roomId, String cookie) {
+    public static RoomInitResult roomInitSetCookie(Object roomId, String cookie) {
         @Cleanup
         HttpResponse response = createGetRequest("https://live.kuaishou.com/u/" + roomId, cookie)
                 .execute();
@@ -94,9 +98,44 @@ public class KuaishouApis {
                 .liveStreamId(liveStreamId)
                 .build();
     }
+    public static RoomInitResult roomInitGet(Object roomId) {
+        @Cleanup
+        HttpResponse response = createGetRequest("https://live.kuaishou.com/live_api/liveroom/livedetail?principalId=" + roomId, StrUtil.EMPTY)
+                .execute();
+
+        JsonNode bodyDataNode = responseInterceptor(response.body());
+        JsonNode websocketInfoNode = bodyDataNode.get("websocketInfo");
+
+        String liveStreamId = bodyDataNode.get("liveStream").required("id").asText(StrUtil.EMPTY);
+        if (StrUtil.isBlankIfStr(liveStreamId)) {
+            throwExceptionWithTip("主播未开播，liveStreamId为空");
+        }
+        String token = websocketInfoNode.required("token").asText(StrUtil.EMPTY);
+        if (StrUtil.isBlankIfStr(token)) {
+            throwExceptionWithTip("主播未开播，token获取失败");
+        }
+        JsonNode webSocketAddressesNode = websocketInfoNode.get("webSocketAddresses");
+        List<String> websocketUrlList = new ArrayList<>(webSocketAddressesNode.size());
+        for (JsonNode tempJsonNode : webSocketAddressesNode) {
+            websocketUrlList.add(tempJsonNode.asText());
+        }
+        return RoomInitResult.builder()
+                .token(token)
+                .websocketUrls(websocketUrlList)
+                .liveStreamId(liveStreamId)
+                .build();
+    }
+
+    public static RoomInitResult roomInit(Object roomId, RoomInfoGetTypeEnum roomInfoGetType, String cookie) {
+        switch (roomInfoGetType) {
+            case COOKIE: { return roomInitSetCookie(roomId, cookie); }
+            case NOT_COOKIE: { return roomInitGet(roomId); }
+            default: throwExceptionWithTip("错误获取类型"); return null;
+        }
+    }
 
     public static RoomInitResult roomInit(Object roomId) {
-        return roomInit(roomId, null);
+        return roomInit(roomId, RoomInfoGetTypeEnum.NOT_COOKIE, null);
     }
 
     public static JsonNode websocketinfo(Object roomId, String liveStreamId, String cookie) {

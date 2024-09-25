@@ -4,6 +4,7 @@ import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import tech.ordinaryroad.live.chat.client.codec.kuaishou.constant.RoomInfoGetTypeEnum;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.KuaishouDanmuMsg;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.KuaishouGiftMsg;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.KuaishouLikeMsg;
@@ -286,5 +287,105 @@ class KuaishouLiveChatClientTest {
 //        codeToChinese();
 //    }
 
+
+    @Test
+    void notCookie() throws InterruptedException {
+        KuaishouLiveChatClientConfig config = KuaishouLiveChatClientConfig.builder()
+                .roomInfoGetType(RoomInfoGetTypeEnum.NOT_COOKIE)
+                .roomId("y4357890213")
+                .build();
+
+        client = new KuaishouLiveChatClient(config, new IKuaishouMsgListener() {
+            @Override
+            public void onMsg(IMsg msg) {
+                // log.debug("收到{}消息 {}", msg.getClass(), msg);
+            }
+
+            @Override
+            public void onCmdMsg(PayloadTypeOuterClass.PayloadType cmd, ICmdMsg<PayloadTypeOuterClass.PayloadType> cmdMsg) {
+                // log.debug("收到CMD消息{}", cmd);
+            }
+
+            @Override
+            public void onOtherCmdMsg(PayloadTypeOuterClass.PayloadType cmd, ICmdMsg<PayloadTypeOuterClass.PayloadType> cmdMsg) {
+                log.debug("收到其他CMD消息 {}", cmd);
+            }
+
+            @Override
+            public void onUnknownCmd(String cmdString, IMsg msg) {
+                log.debug("收到未知CMD消息 {}", cmdString);
+            }
+
+            @Override
+            public void onDanmuMsg(KuaishouBinaryFrameHandler binaryFrameHandler, KuaishouDanmuMsg msg) {
+                if (msg.getBadgeLevel() > 0) {
+                    String badgeName = msg.getBadgeName();
+                    if (StrUtil.isBlank(badgeName)) {
+                        msg.getBadgeName();
+                    }
+                }
+
+                log.info("{} 收到弹幕 [{}] {}({})：{}", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid(), msg.getContent());
+            }
+
+            @Override
+            public void onGiftMsg(KuaishouBinaryFrameHandler binaryFrameHandler, KuaishouGiftMsg msg) {
+                if (msg.getBadgeLevel() > 0) {
+                    String badgeName = msg.getBadgeName();
+                    if (StrUtil.isBlank(badgeName)) {
+                        msg.getBadgeName();
+                    }
+                }
+
+                String mergeKey = msg.getMsg().getMergeKey();
+                map.computeIfAbsent(mergeKey, s -> new ArrayList<>()).add(msg.getMsg());
+
+                if (msg.getGiftCount() > 0) {
+                    log.info("{} 收到礼物 [{}] {}({}) {} {}({})x{}({}) mergeKey:{},comboCount:{}, batchSize:{}", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid(), "赠送", msg.getGiftName(), msg.getGiftId(), msg.getGiftCount(), msg.getGiftPrice(), msg.getMsg().getMergeKey(), msg.getMsg().getComboCount(), msg.getMsg().getBatchSize());
+                }
+            }
+
+            @Override
+            public void onLikeMsg(KuaishouBinaryFrameHandler binaryFrameHandler, KuaishouLikeMsg msg) {
+                if (msg.getBadgeLevel() > 0) {
+                    String badgeName = msg.getBadgeName();
+                    if (StrUtil.isBlank(badgeName)) {
+                        msg.getBadgeName();
+                    }
+                }
+                log.info("{} 收到点赞 [{}] {}({})", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid());
+            }
+
+            @Override
+            public void onRoomStatsMsg(KuaishouBinaryFrameHandler binaryFrameHandler, KuaishouRoomStatsMsg msg) {
+                IKuaishouMsgListener.super.onRoomStatsMsg(binaryFrameHandler, msg);
+                log.info("{} 统计信息 累计点赞数: {}, 当前观看人数: {}, 累计观看人数: {}", binaryFrameHandler.getRoomId(), msg.getLikedCount(), msg.getWatchingCount(), msg.getWatchedCount());
+            }
+        });
+
+        client.addStatusChangeListener((evt, oldStatus, newStatus) -> {
+            if (newStatus == ClientStatusEnums.CONNECTED) {
+                // 连接成功10秒后发送弹幕
+                ThreadUtil.execAsync(() -> {
+                    ThreadUtil.sleep(10000);
+                    client.sendDanmu("666666", new Runnable() {
+                        @Override
+                        public void run() {
+                            log.warn("弹幕发送成功");
+                        }
+                    });
+                });
+            }
+        });
+
+        client.connect();
+
+        // 防止测试时直接退出
+        while (true) {
+            synchronized (lock) {
+                lock.wait();
+            }
+        }
+    }
 
 }
