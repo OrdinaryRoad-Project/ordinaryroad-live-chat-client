@@ -22,38 +22,37 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.kuaishou.config;
+package tech.ordinaryroad.live.chat.client.codec.kuaishou.constant;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
-import tech.ordinaryroad.live.chat.client.codec.kuaishou.constant.RoomInfoGetTypeEnum;
-import tech.ordinaryroad.live.chat.client.servers.netty.client.config.BaseNettyClientConfig;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
- * @author mjz
- * @date 2024/1/5
+ * @author Xiwi
+ * @date 2024/9/25
  */
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@SuperBuilder(toBuilder = true)
-public class KuaishouLiveChatClientConfig extends BaseNettyClientConfig {
-
-    @Builder.Default
-    private long heartbeatPeriod = 20;
-
+@Getter
+@RequiredArgsConstructor
+public enum RoomInfoGetTypeEnum {
     /**
-     * @see RoomInfoGetTypeEnum
+     * 以Cookie方式
      */
-    @Builder.Default
-    private RoomInfoGetTypeEnum roomInfoGetType = RoomInfoGetTypeEnum.COOKIE;
+    COOKIE(1),
+    /**
+     * 不以Cookie方式
+     */
+    NOT_COOKIE(2);
 
-    public void setRoomInfoGetType(RoomInfoGetTypeEnum roomInfoGetType) {
-        RoomInfoGetTypeEnum oldValue = this.roomInfoGetType;
-        this.roomInfoGetType = roomInfoGetType;
-        super.propertyChangeSupport.firePropertyChange("roomInfoGetType", oldValue, roomInfoGetType);
+    private final int code;
+
+
+    public static RoomInfoGetTypeEnum getByCode(int code) {
+        for (RoomInfoGetTypeEnum value : RoomInfoGetTypeEnum.values()) {
+            if (value.code == code) {
+                return value;
+            }
+        }
+        return null;
     }
+
 }

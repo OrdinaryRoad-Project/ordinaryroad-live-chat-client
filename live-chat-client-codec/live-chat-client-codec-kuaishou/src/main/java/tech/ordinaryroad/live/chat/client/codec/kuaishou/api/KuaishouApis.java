@@ -37,6 +37,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import lombok.*;
+import tech.ordinaryroad.live.chat.client.codec.kuaishou.constant.RoomInfoGetTypeEnum;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.KuaishouGiftMsg;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf.LiveAudienceStateOuterClass;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf.WebGiftFeedOuterClass;
@@ -102,18 +103,21 @@ public class KuaishouApis {
         HttpResponse response = createGetRequest("https://live.kuaishou.com/live_api/liveroom/livedetail?principalId=" + roomId, StrUtil.EMPTY)
                 .execute();
 
-        String body = response.body();
-        JSONObject bodyJson = JSONUtil.parseObj(body);
+        JsonNode bodyDataNode = responseInterceptor(response.body());
+        JsonNode websocketInfoNode = bodyDataNode.get("websocketInfo");
 
-        String liveStreamId = bodyJson.getJSONObject("data").getJSONObject("liveStream").getStr("id", StrUtil.EMPTY);
-        String token = bodyJson.getJSONObject("data").getJSONObject("websocketInfo").getStr("token", StrUtil.EMPTY);
-        if (StrUtil.isBlankIfStr(token)) {
-            throwExceptionWithTip("主播未开播，token获取失败 " + liveStreamId);
+        String liveStreamId = bodyDataNode.get("liveStream").required("id").asText(StrUtil.EMPTY);
+        if (StrUtil.isBlankIfStr(liveStreamId)) {
+            throwExceptionWithTip("主播未开播，liveStreamId为空");
         }
-        JSONArray websocketUrls = bodyJson.getJSONObject("data").getJSONObject("websocketInfo").getJSONArray("webSocketAddresses");
-        ArrayList<String> websocketUrlList = CollUtil.newArrayList();
-        for (int i = 0; i < websocketUrls.size(); i++) {
-            websocketUrlList.add(websocketUrls.getStr(i));
+        String token = websocketInfoNode.required("token").asText(StrUtil.EMPTY);
+        if (StrUtil.isBlankIfStr(token)) {
+            throwExceptionWithTip("主播未开播，token获取失败");
+        }
+        JsonNode webSocketAddressesNode = websocketInfoNode.get("webSocketAddresses");
+        List<String> websocketUrlList = new ArrayList<>(webSocketAddressesNode.size());
+        for (JsonNode tempJsonNode : webSocketAddressesNode) {
+            websocketUrlList.add(tempJsonNode.asText());
         }
         return RoomInitResult.builder()
                 .token(token)
@@ -122,16 +126,16 @@ public class KuaishouApis {
                 .build();
     }
 
-    public static RoomInitResult roomInit(Object roomId, Integer getType) {
-        switch (getType) {
-            case 1: { return roomInitSetCookie(roomId, null); }
-            case 2: { return roomInitGet(roomId); }
+    public static RoomInitResult roomInit(Object roomId, RoomInfoGetTypeEnum roomInfoGetType, String cookie) {
+        switch (roomInfoGetType) {
+            case COOKIE: { return roomInitSetCookie(roomId, cookie); }
+            case NOT_COOKIE: { return roomInitGet(roomId); }
             default: throwExceptionWithTip("错误获取类型"); return null;
         }
     }
 
     public static RoomInitResult roomInit(Object roomId) {
-        return roomInit(roomId, 1);
+        return roomInit(roomId, RoomInfoGetTypeEnum.NOT_COOKIE, null);
     }
 
     public static JsonNode websocketinfo(Object roomId, String liveStreamId, String cookie) {

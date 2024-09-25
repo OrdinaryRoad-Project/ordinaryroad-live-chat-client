@@ -101,7 +101,7 @@ public class KuaishouLiveChatClient extends BaseNettyClient<
 
     @Override
     public void init() {
-        roomInitResult = KuaishouApis.roomInit(getConfig().getRoomId(), getConfig().getCookie());
+        roomInitResult = KuaishouApis.roomInit(getConfig().getRoomId(), getConfig().getRoomInfoGetType(), getConfig().getCookie());
         if (StrUtil.isNotBlank(getConfig().getForwardWebsocketUri())) {
             KuaishouForwardMsgListener forwardMsgListener = new KuaishouForwardMsgListener(getConfig().getForwardWebsocketUri());
             addMsgListener(forwardMsgListener);
