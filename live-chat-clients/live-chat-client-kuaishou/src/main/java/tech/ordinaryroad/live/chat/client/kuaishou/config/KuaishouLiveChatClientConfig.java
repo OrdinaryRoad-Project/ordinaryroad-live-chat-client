@@ -46,6 +46,13 @@ public class KuaishouLiveChatClientConfig extends BaseNettyClientConfig {
     private long heartbeatPeriod = 20;
 
     /**
+     * {@link RoomInfoGetTypeEnum#COOKIE}：
+     * 使用Config中配置的Cookie初始化直播间信息<br>
+     * 如果出现“主播未开播，token获取失败”报错，可能已触发风控，需要更新Cookie，如果不需要Cookie相关功能（发送弹幕、为主播点赞等）可尝试改为{@link RoomInfoGetTypeEnum#NOT_COOKIE}解决
+     * <p>
+     * {@link RoomInfoGetTypeEnum#NOT_COOKIE}：
+     * 不使用Config中配置的Cookie初始化直播间信息
+     *
      * @see RoomInfoGetTypeEnum
      */
     @Builder.Default
