@@ -30,6 +30,9 @@ import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
 import cn.hutool.http.*;
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -68,7 +71,7 @@ public class KuaishouApis {
      */
     private static final TimedCache<String, WebGiftFeedOuterClass.WebGiftFeed> WEB_GIFT_FEED_CACHE = new TimedCache<>(300 * 1000L, new ConcurrentHashMap<>());
 
-    public static RoomInitResult roomInit(Object roomId, String cookie) {
+    public static RoomInitResult roomInitSetCookie(Object roomId, String cookie) {
         @Cleanup
         HttpResponse response = createGetRequest("https://live.kuaishou.com/u/" + roomId, cookie)
                 .execute();
@@ -94,9 +97,41 @@ public class KuaishouApis {
                 .liveStreamId(liveStreamId)
                 .build();
     }
+    public static RoomInitResult roomInitGet(Object roomId) {
+        @Cleanup
+        HttpResponse response = createGetRequest("https://live.kuaishou.com/live_api/liveroom/livedetail?principalId=" + roomId, StrUtil.EMPTY)
+                .execute();
+
+        String body = response.body();
+        JSONObject bodyJson = JSONUtil.parseObj(body);
+
+        String liveStreamId = bodyJson.getJSONObject("data").getJSONObject("liveStream").getStr("id", StrUtil.EMPTY);
+        String token = bodyJson.getJSONObject("data").getJSONObject("websocketInfo").getStr("token", StrUtil.EMPTY);
+        if (StrUtil.isBlankIfStr(token)) {
+            throwExceptionWithTip("主播未开播，token获取失败 " + liveStreamId);
+        }
+        JSONArray websocketUrls = bodyJson.getJSONObject("data").getJSONObject("websocketInfo").getJSONArray("webSocketAddresses");
+        ArrayList<String> websocketUrlList = CollUtil.newArrayList();
+        for (int i = 0; i < websocketUrls.size(); i++) {
+            websocketUrlList.add(websocketUrls.getStr(i));
+        }
+        return RoomInitResult.builder()
+                .token(token)
+                .websocketUrls(websocketUrlList)
+                .liveStreamId(liveStreamId)
+                .build();
+    }
+
+    public static RoomInitResult roomInit(Object roomId, Integer getType) {
+        switch (getType) {
+            case 1: { return roomInitSetCookie(roomId, null); }
+            case 2: { return roomInitGet(roomId); }
+            default: throwExceptionWithTip("错误获取类型"); return null;
+        }
+    }
 
     public static RoomInitResult roomInit(Object roomId) {
-        return roomInit(roomId, null);
+        return roomInit(roomId, 1);
     }
 
     public static JsonNode websocketinfo(Object roomId, String liveStreamId, String cookie) {
