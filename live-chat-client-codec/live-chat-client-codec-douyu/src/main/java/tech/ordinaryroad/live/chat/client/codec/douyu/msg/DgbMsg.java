@@ -24,6 +24,7 @@
 
 package tech.ordinaryroad.live.chat.client.codec.douyu.msg;
 
+import cn.hutool.core.util.StrUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -138,6 +139,7 @@ public class DgbMsg extends BaseDouyuCmdMsg implements IGiftMsg {
     private String eic;
     private String bsfl;
     private String skinid;
+    private String gfn;
 
     // region 额外属性
     private GiftPropSingle giftInfo = GiftPropSingle.DEFAULT_GIFT;
@@ -171,6 +173,10 @@ public class DgbMsg extends BaseDouyuCmdMsg implements IGiftMsg {
 
     @Override
     public String getGiftName() {
+        if (StrUtil.isNotBlank(this.gfn)) {
+            return this.gfn;
+        }
+
         if (this.roomGiftInfo != null && this.roomGiftInfo != GiftListInfo.DEFAULT_GIFT) {
             return this.roomGiftInfo.getName();
         }
