@@ -26,6 +26,7 @@ package tech.ordinaryroad.live.chat.client.codec.douyu.util;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import io.netty.buffer.ByteBuf;
@@ -255,10 +256,8 @@ public class DouyuCodecUtil {
             // 房间礼物
             else {
                 String realRoomId = msg.getRid();
-                if (DouyuApis.roomGiftMap.containsKey(realRoomId)) {
-                    Map<Integer, GiftListInfo> stringGiftListInfoMap = DouyuApis.roomGiftMap.get(realRoomId);
-                    msg.setRoomGiftInfo(stringGiftListInfoMap.getOrDefault(msg.getGfid(), GiftListInfo.DEFAULT_GIFT));
-                }
+                Map<Long, GiftListInfo> stringGiftListInfoMap = DouyuApis.roomGiftMap.get(realRoomId, () -> DouyuApis.updateRoomGiftMapCache(NumberUtil.parseLong(realRoomId)));
+                msg.setRoomGiftInfo(stringGiftListInfoMap.getOrDefault(msg.getGfid(), GiftListInfo.DEFAULT_GIFT));
             }
         }
 

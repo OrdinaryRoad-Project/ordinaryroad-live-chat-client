@@ -51,7 +51,7 @@ public class GiftListInfo {
     private int endTime;
     private JsonNode growthInfo;
     private long hitInterval;
-    private int id;
+    private long id;
     private int isBatchLimited;
     private int isFace;
     private String name = "未知礼物";

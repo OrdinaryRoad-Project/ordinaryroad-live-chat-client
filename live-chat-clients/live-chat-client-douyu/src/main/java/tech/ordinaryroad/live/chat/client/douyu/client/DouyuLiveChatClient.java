@@ -26,7 +26,6 @@ package tech.ordinaryroad.live.chat.client.douyu.client;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import io.netty.channel.EventLoopGroup;
@@ -38,7 +37,6 @@ import tech.ordinaryroad.live.chat.client.codec.douyu.msg.ChatmsgMsg;
 import tech.ordinaryroad.live.chat.client.codec.douyu.msg.DgbMsg;
 import tech.ordinaryroad.live.chat.client.codec.douyu.msg.MsgrepeaterproxylistMsg;
 import tech.ordinaryroad.live.chat.client.codec.douyu.msg.UenterMsg;
-import tech.ordinaryroad.live.chat.client.codec.douyu.msg.dto.GiftListInfo;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
@@ -50,7 +48,6 @@ import tech.ordinaryroad.live.chat.client.douyu.listener.impl.DouyuForwardMsgLis
 import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuConnectionHandler;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -104,20 +101,7 @@ public class DouyuLiveChatClient extends DouyuWsLiveChatClient implements IDouyu
             });
         }
         super.init();
-
-        // 初始化房间礼物列表
-        Map<Integer, GiftListInfo> map = new HashMap<>();
-        CollUtil.forEach(DouyuApis.getGiftList(getConfig().getRoomId()).getGiftList(), (giftListInfo, index) -> {
-            try {
-                map.put(giftListInfo.getId(), giftListInfo);
-            } catch (Exception e) {
-                if (log.isDebugEnabled()) {
-                    log.debug("获取房间礼物列表异常", e);
-                }
-                // ignore
-            }
-        });
-        DouyuApis.roomGiftMap.put(String.valueOf(DouyuApis.getRealRoomId(getConfig().getRoomId())), map);
+        DouyuApis.updateRoomGiftMapCache(getConfig().getRoomId());
     }
 
     @Override

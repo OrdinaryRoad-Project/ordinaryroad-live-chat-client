@@ -69,7 +69,7 @@ public class DouyuApis {
      * 房间礼物缓存，过期时间1天
      * realRoomId,(giftId,Info)
      */
-    public static final TimedCache<String, Map<Integer, GiftListInfo>> roomGiftMap = new TimedCache<>(TimeUnit.DAYS.toMillis(1), new HashMap<>());
+    public static final TimedCache<String, Map<Long, GiftListInfo>> roomGiftMap = new TimedCache<>(TimeUnit.DAYS.toMillis(1), new HashMap<>());
 
     public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     public static final String PATTERN_BODY_ROOM_ID = "\\$ROOM\\.room_id\\D+(\\d+)";
@@ -192,6 +192,28 @@ public class DouyuApis {
 
     public static String generateVk(String did) {
         return generateVk(OrLiveChatLocalDateTimeUtil.zonedCurrentTimeSecs(), did);
+    }
+
+    /**
+     * 更新房间礼物缓存
+     *
+     * @param roomId 房间号
+     */
+    public static Map<Long, GiftListInfo> updateRoomGiftMapCache(long roomId) {
+        Map<Long, GiftListInfo> map = new HashMap<>();
+        List<GiftListInfo> giftList = DouyuApis.getGiftList(roomId).getGiftList();
+        CollUtil.forEach(giftList, (giftListInfo, index) -> {
+            try {
+                map.put(giftListInfo.getId(), giftListInfo);
+            } catch (Exception e) {
+                if (log.isDebugEnabled()) {
+                    log.debug("获取房间礼物列表异常", e);
+                }
+                // ignore
+            }
+        });
+        DouyuApis.roomGiftMap.put(String.valueOf(DouyuApis.getRealRoomId(roomId)), map);
+        return map;
     }
 
     private static JsonNode responseInterceptor(String responseString) {
