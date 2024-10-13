@@ -4,7 +4,7 @@
     <packaging>jar</packaging>
     <groupId>tech.ordinaryroad</groupId>
     <artifactId>live-chat-client-example-handler</artifactId>
-    <version>1.1.1-b02</version>
+    <version>1.1.1-b04</version>
     <name>live-chat-client-example-handler</name>
     <description>live-chat-client-example-handler</description>
 
@@ -21,14 +21,14 @@
             <groupId>tech.ordinaryroad</groupId>
             <artifactId>live-chat-client-bilibili</artifactId>
             <!-- 参考github release版本，不需要前缀`v` -->
-            <version>1.1.1-b02</version>
+            <version>1.1.1-b04</version>
         </dependency>
 
         <dependency>
             <groupId>tech.ordinaryroad</groupId>
             <artifactId>live-chat-client-douyu</artifactId>
             <!-- 参考github release版本，不需要前缀`v` -->
-            <version>1.1.1-b02</version>
+            <version>1.1.1-b04</version>
         </dependency>
 
         <dependency>
