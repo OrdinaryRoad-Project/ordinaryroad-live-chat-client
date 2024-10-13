@@ -26,6 +26,7 @@ package tech.ordinaryroad.live.chat.client.commons.util;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 
 import java.net.HttpCookie;
@@ -58,8 +59,8 @@ public class OrLiveChatCookieUtil {
             try {
                 String[] split = cookies.split("; ");
                 for (String s : split) {
-                    String[] split1 = s.split("=");
-                    map.put(split1[0], split1[1]);
+                    String[] split1 = StrUtil.splitToArray(s, "=");
+                    map.put(split1[0], ArrayUtil.get(split1, 1));
                 }
             } catch (Exception e) {
                 throw new RuntimeException("cookie解析失败 " + cookies, e);
