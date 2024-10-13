@@ -125,7 +125,7 @@ public class DouyuCodecUtil {
             pendingByteBuf.offer(in);
         }
 
-        String bodyDouyuSttString = new String(inputBytes, 0, inputBytes.length - 1);
+        String bodyDouyuSttString = new String(inputBytes, 0, inputBytes.length - 1, StandardCharsets.UTF_8);
         return Optional.ofNullable(parseDouyuSttString(bodyDouyuSttString, msgType));
     }
 
