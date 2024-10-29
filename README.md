@@ -355,8 +355,6 @@ B站示例，其他平台只需修改`bilibili`即可
 
 - `socks5ProxyUsername("username")`, `socks5ProxyPassword("password")`
 
-[![image](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/assets/43869694/8d62ffe3-7ce1-4c72-bbd8-b7b98f68e757)【极光HTTP代理】企业级代理IP云服务商，48小时线下技术支持，仅0.006元/IP- 无效IP不计费](https://www.jghttp.com/?invitation_code=8888956353)
-
 ## 交流讨论
 
 扫描二维码加入QQ/微信频道，或点击链接加入QQ频道【OrdinaryRoad】：https://pd.qq.com/s/3id0n7fvs
