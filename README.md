@@ -5,16 +5,17 @@
 > This project is in progress... 👨‍💻，有问题欢迎[提交issuse](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/issues/new/choose)，
 > 觉得有用的话可以点个小星星⭐️鼓励一下，感谢
 >
-> 如果对项目感兴趣也欢迎[加入QQ频道](https://pd.qq.com/s/3id0n7fvs)交流讨论，
+> 如果对项目感兴趣也欢迎[加入频道](#交流讨论)交流讨论，
 > 提交PR
 >
 > ToDo List: [https://github.com/orgs/OrdinaryRoad-Project/projects/1](https://github.com/orgs/OrdinaryRoad-Project/projects/1)
 >
 > **更新日志：**[https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/releases](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/releases)
-
+>
+> [⭐BarrageFly——让弹幕飞](https://barragefly.ordinaryroad.tech/)，基于该项目的一个弹幕转发、过滤、处理平台
 ---
 
-Live room WebSocket chat client
+## 项目特色
 
 - Feature 0: Netty
 - Feature 1: 消息中的未知属性统一放到单独的MAP中（JSON格式消息）
@@ -32,19 +33,19 @@ Live room WebSocket chat client
 > - ☑️️: 平台支持但未实现
 > - ❌: 平台网页端暂不支持
 
-平台适配情况表
+## 平台适配情况表
 
 | 平台          | LiveChatClient | Cookie | 短直播间id | 发送弹幕 | 为主播点赞 |
 |-------------|----------------|--------|--------|------|-------|
 | Bilibili B站 | ✅              | ✅      | ✅      | ✅    | ✅     | ✅ |
 | Douyu 斗鱼    | ✅              | ✅      | ✅      | ✅    | ❌     |
 | Huya 虎牙     | ✅              | ✅      | ✅      | ✅    | ❌     |
-| Douyin 抖音*   | ✅              | ☑️️    | ✅      | ☑️   | ☑️️   |
+| Douyin 抖音*  | ✅              | ☑️️    | ✅      | ☑️   | ☑️️   |
 | Kuaishou 快手 | ✅              | ✅      | ✅      | ✅    | ✅     |
 
-> *未实现抖音平台的签名算法，相当于半成品
+> *暂未研究明白抖音平台的签名算法
 
-平台直播间消息适配情况表
+## 平台直播间消息适配情况表
 
 | 平台          | 弹幕 | 礼物        | 醒目留言 | 进入房间    | 点赞      | 状态变化 | 统计信息               | 社交消息 |
 |-------------|----|-----------|------|---------|---------|------|--------------------|------|
@@ -60,10 +61,6 @@ Live room WebSocket chat client
 ![运行效果](assets/运行效果.png)
 
 ---
-
-[//]: # ([在线文档]&#40;https://ordinaryroad.tech/or_module/live-chat-client/&#41;)
-
-## [⭐BarrageFly——让弹幕飞](https://barragefly.ordinaryroad.tech/)，基于该项目的一个弹幕转发、过滤、处理平台
 
 ## 0 原理
 
@@ -183,25 +180,26 @@ ICmdMsg类型转换对应关系
 - 快手：KuaishouCmdMsg
 
 ```java
+
 @Override
 public void onOtherCmdMsg(BilibiliCmdEnum cmd, ICmdMsg<BilibiliCmdEnum> cmdMsg) {
-        switch (cmd) {
-            case GUARD_BUY: {
-                // 有人上舰
-                MessageMsg messageMsg = (MessageMsg) cmdMsg;
+    switch (cmd) {
+        case GUARD_BUY: {
+            // 有人上舰
+            MessageMsg messageMsg = (MessageMsg) cmdMsg;
                 ...
-                break;
-            }
-            case SUPER_CHAT_MESSAGE_DELETE: {
-                // 删除醒目留言
-                MessageMsg messageMsg = (MessageMsg) cmdMsg;
-                ...
-                break;
-            }
-            default: {
-                // ignore
-            }
+            break;
         }
+        case SUPER_CHAT_MESSAGE_DELETE: {
+            // 删除醒目留言
+            MessageMsg messageMsg = (MessageMsg) cmdMsg;
+                ...
+            break;
+        }
+        default: {
+            // ignore
+        }
+    }
 }
 ```
 
@@ -359,106 +357,12 @@ B站示例，其他平台只需修改`bilibili`即可
 
 [![image](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/assets/43869694/8d62ffe3-7ce1-4c72-bbd8-b7b98f68e757)【极光HTTP代理】企业级代理IP云服务商，48小时线下技术支持，仅0.006元/IP- 无效IP不计费](https://www.jghttp.com/?invitation_code=8888956353)
 
-## 3 项目说明
-
-### 3.1 commons模块
-
-主要是抽象接口、抽象类的定义
-
-#### 3.1.1 commons-base
-
-定义了一些基础的接口、抽象类：消息、消息监听器、连接连监听器
-
-- 消息接口
-    - IMsg：所有msg都应该实现该接口
-        - ICmdMsg：有些平台的一些消息正文中没有消息类型cmd字段，例如B站的心跳包，因此再细分为cmdMsg
-        - IDanmuMsg: 内置获取用户ID、用户名、用户头像、粉丝牌名称、粉丝牌等级、弹幕内容等方法
-            - ISuperChatMsg：醒目留言，内置获取持续时间方法
-        - IGiftMsg: 内置获取发送方ID、发送方用户名、发送方头像、接收方ID、接收方用户名、礼物名称、礼物图片、礼物ID、礼物个数、礼物单价等方法
-        - IEnterRoomMsg: 内置获取用户ID、用户名、用户头像、粉丝牌名称、粉丝牌等级方法
-        - ILikeMsg: 内置获取用户ID、用户名、用户头像、粉丝牌名称、粉丝牌等级、点赞数方法
-        - ILiveStatusChangeMsg: 内置获取状态变化方法
-- 消息监听器
-    - IBaseMsgListener（所有平台都支持，其他消息监听器存在平台差异）
-        - onMsg：所有消息（不管消息内容）都会调用，不包括由该消息的某个字段派生出的消息，例如快手的弹幕礼物等消息是`SC_FEED_PUSH`中的字段，因此onMsg中不会出现处理后的弹幕、礼物消息，而是包含弹幕、礼物等的`SCWebFeedPush`CMD消息
-        - onCmdMsg：cmd消息（消息体中有表示消息类型的字段时），并且该类型需要处理（例如心跳回复包不需要处理）时调用
-        - onOtherCmdMsg：该消息类型不需要处理（例如PK、点赞数更新等类型）时调用
-        - onUnknownCmd：该消息类型未知（没有对应的枚举类）时调用
-    - IDanmuMsgListener（所有平台）
-        - onDanmuMsg：收到弹幕消息
-    - IGiftMsgListener（所有平台，快手礼物消息不全，缺少礼物单价、接收方信息）
-        - onGiftMsg：收到礼物消息（抖音、快手平台需要判断礼物个数是否大于0）
-    - ISuperChatMsgListener（B站）
-        - onSuperChatMsg：收到醒目留言
-    - IEnterRoomMsgListener（B站、斗鱼、抖音，虎牙只能接收到高级用户的入房回调）
-        - onEnterRoomMsg：进入房间消息回调
-    - ILikeMsgListener（B站、快手、抖音支持获取点赞的个数）
-        - onLikeMsg：收到点赞消息
-    - ILiveStatusChangeListener（B站、抖音测试只有下播消息）
-        - onLiveStatusMsg：收到状态变化消息
-    - IRoomStatsMsgListener（B站，抖音和快手没有累计观看人数信息）
-        - onRoomStatsMsg：收到信息统计消息
-
-#### 3.1.2 commons-client
-
-- 定义了Client的配置：连接地址、房间id、Cookie、心跳、自动重连等相关参数
-- 定义了Client的一些方法：初始化、销毁、连接、断开、添加消息回调、移除消息回调、发送弹幕、为主播点赞等
-- 定义了Client的生命周期
-
-#### 3.1.3 commons-util
-
-- 一些工具类：时间、反射、Cookie
-
-### 3.2 servers模块
-
-对所使用的连接工具的抽象
-
-#### 3.2.1 servers-netty
-
-- 定义了连接处理Handler
-- 定义了数据处理Handler
-
-#### 3.2.2 servers-netty-client
-
-基于`Netty`实现的Client
-
-- 扩展了Client、ClientConfig
-- 扩展Handler增加了Client成员变量
-
-### 3.3 clients模块
-
-对使用`Netty`作为连接工具的`servers-netty-client`的具体实现
-
-- client-bilibili
-- client-douyu
-- client-huya
-- client-douyin
-- client-kuaishou
-- client-websocket
-
-### 3.4 codec模块
-
-1. 解码decode：根据平台协议，对收到的二进制流进行解码
-2. 编码encode：根据平台协议，将消息编码为二进制流
-
-- codec-bilibili
-    - BilibiliCodecUtil
-    - BilibiliMsgFactory
-- codec-douyu
-    - DouyuCodecUtil
-    - DouyuMsgFactory
-- codec-huya
-    - HuyaCodecUtil
-    - HuyaMsgFactory
-- codec-douyin
-- codec-kuaishou
-
-> 由于抖音和快手使用的都是Protobuf协议，目前版本暂未实现CodecUtil工具类，可以参考`DouyinCodecHandler`和`KuaishouCodecHandler`中的编解码实现
-
 ## 交流讨论
 
-扫描二维码<img src="assets/QQ频道.jpg" width="200px">
-或点击链接加入QQ频道【OrdinaryRoad】：https://pd.qq.com/s/3id0n7fvs
+扫描二维码加入QQ/微信频道，或点击链接加入QQ频道【OrdinaryRoad】：https://pd.qq.com/s/3id0n7fvs
+
+<img src="assets/QQ频道.jpg" width="200px">
+<img src="assets/微信频道.jpg" width="200px">
 
 ## 捐赠
 
@@ -474,7 +378,7 @@ B站示例，其他平台只需修改`bilibili`即可
 | 2024-03-10 | **豪 |  88.8 | 大佬加油 | ZFB |
 | 2024-03-25 | **波 | 188.8 | /    | ZFB |
 | 2024-04-02 | **豪 |    30 | /    | ZFB |
-| 2024-04-30 | *h |   100 | 大佬牛逼 | WX |
+| 2024-04-30 |  *h |   100 | 大佬牛逼 | WX  |
 | ...        | ... |   ... | ...  | ... |
 
 ## Star History
