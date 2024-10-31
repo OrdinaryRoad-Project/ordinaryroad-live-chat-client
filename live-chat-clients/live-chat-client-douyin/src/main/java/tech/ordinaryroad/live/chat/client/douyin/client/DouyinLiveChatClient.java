@@ -24,7 +24,6 @@
 
 package tech.ordinaryroad.live.chat.client.douyin.client;
 
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
@@ -60,8 +59,7 @@ import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyCli
 import javax.script.ScriptEngine;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -155,7 +153,7 @@ public class DouyinLiveChatClient extends BaseNettyClient<DouyinLiveChatClientCo
         long realRoomId = roomInitResult.getRealRoomId();
         String userUniqueId = roomInitResult.getUserUniqueId();
 
-        Map<String, String> queryParams = new HashMap<>();
+        Map<String, String> queryParams = new LinkedHashMap<>();
         queryParams.put("app_name", "douyin_web");
         queryParams.put("version_code", getConfig().getVersionCode());
         queryParams.put("webcast_sdk_version", getConfig().getWebcastSdkVersion());
@@ -171,30 +169,37 @@ public class DouyinLiveChatClient extends BaseNettyClient<DouyinLiveChatClientCo
         queryParams.put("browser_version", getConfig().getBrowserVersion());
         queryParams.put("browser_online", "true");
         queryParams.put("tz_name", "Asia/Shanghai");
+        // cursor=r-1_d-1_u-1_fh-743192 5703690294282_t-1730380287061&
+        // cursor=t-1730378827676_r-1_d-1_u-1_fh-743192 0359546983464&
+//        queryParams.put("cursor", "t-" + System.currentTimeMillis() + "_r-1_d-1_u-1_h-1");
+        queryParams.put("cursor", "t-" + System.currentTimeMillis() + "_r-1_d-1_u-1_fh-743192" + RandomUtil.randomNumbers(13));
+        queryParams.put("internal_ext", "internal_src:dim|" +
+                        "wss_push_room_id:" + realRoomId + "|" +
+                        "wss_push_did:" + userUniqueId + "|" +
+                        "first_req_ms:" + System.currentTimeMillis() + "|" +
+                        "fetch_time:" + System.currentTimeMillis() + "|" +
+                        "seq:1|" +
+                        "wss_info:0-" + System.currentTimeMillis() + "-0-0|" +
+                        // wrds_v:743192 6738013141490&
+                        // wrds_v:743192 0463065920405&
+                        "wrds_v:743192" + RandomUtil.randomNumbers(13)
+//                "wrds_kvs:WebcastRoomStatsMessage-" + System.nanoTime() + "_WebcastRoomRankMessage-" + System.nanoTime() + "_LotteryInfoSyncData-" + System.nanoTime() + "_WebcastActivityEmojiGroupsMessage-" + System.nanoTime()
+        );
         queryParams.put("host", "https://live.douyin.com");
-        queryParams.put("im_path", "/webcast/im/fetch/");
-        queryParams.put("endpoint", "live_pc");
-        queryParams.put("identity", "audience");
-
-        queryParams.put("support_wrds", "1");
-        queryParams.put("heartbeatDuration ", "0");
+        queryParams.put("aid", "6383");
         queryParams.put("live_id", "1");
         queryParams.put("did_rule", "3");
-        queryParams.put("aid", "6383");
-
-        queryParams.put("room_id", Long.toString(realRoomId));
+        queryParams.put("endpoint", "live_pc");
+        queryParams.put("support_wrds", "1");
         queryParams.put("user_unique_id", userUniqueId);
+        queryParams.put("im_path", "/webcast/im/fetch/");
+        queryParams.put("identity", "audience");
+        queryParams.put("need_persist_msg_count", "15");
+        queryParams.put("insert_task_id", "");
+        queryParams.put("live_reason", "");
+        queryParams.put("room_id", Long.toString(realRoomId));
+        queryParams.put("heartbeatDuration ", "0");
         queryParams.put("signature", getSignature(getConfig().getUserAgent()));
-        queryParams.put("cursor", "t-" + System.currentTimeMillis() + "_r-1_d-1_u-1_h-1");
-        queryParams.put("internal_ext", "internal_src:dim|" +
-                "wss_push_room_id:" + realRoomId + "|" +
-                "wss_push_did:" + userUniqueId + "|" +
-                "dim_log_id:" + DateUtil.format(new Date(), "yyyy-MM-dd") + RandomUtil.randomNumbers(6) + RandomUtil.randomString("0123456789ABCDEF", 20) + "|" +
-                "first_req_ms:" + System.currentTimeMillis() + "|" +
-                "fetch_time:" + System.currentTimeMillis() + "|" +
-                "seq:1|" +
-                "wss_info:0-" + System.currentTimeMillis() + "-0-0|" +
-                "wrds_kvs:WebcastRoomStatsMessage-" + System.nanoTime() + "_WebcastRoomRankMessage-" + System.nanoTime() + "_LotteryInfoSyncData-" + System.nanoTime() + "_WebcastActivityEmojiGroupsMessage-" + System.nanoTime());
         return webSocketUriString + "?" + OrLiveChatHttpUtil.toParams(queryParams);
     }
 
@@ -216,11 +221,12 @@ public class DouyinLiveChatClient extends BaseNettyClient<DouyinLiveChatClientCo
         engineFactory.eval(JS_ENV + JS_SDK);
         String signPram = ("live_id=1,aid=6383," +
                 "version_code=$version_code$," +
-                "webcast_sdk_version=1.0.14-beta.0," +
+                "webcast_sdk_version=$webcast_sdk_version$," +
                 "room_id=$roomId$," +
                 "sub_room_id=,sub_channel_id=,did_rule=3," +
                 "user_unique_id=$userId$," +
                 "device_platform=web,device_type=,ac=,identity=audience")
+                .replace("$webcast_sdk_version$", getConfig().getWebcastSdkVersion())
                 .replace("$version_code$", getConfig().getVersionCode())
                 .replace("$roomId$", String.valueOf(roomInitResult.getRealRoomId()))
                 .replace("$userId$", roomInitResult.getUserUniqueId());
