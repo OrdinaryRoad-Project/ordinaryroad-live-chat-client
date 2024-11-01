@@ -42,6 +42,7 @@ import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCookieUtil;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatHttpUtil;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -65,7 +66,7 @@ public class DouyinApis {
      */
     private static final TimedCache<String, GiftMessage> DOUYIN_GIFT_MSG_CACHE = new TimedCache<>(300 * 1000L, new ConcurrentHashMap<>());
 
-    public static RoomInitResult roomInit(Object roomId, String cookie) {
+    public static RoomInitResult roomInit(Object roomId, String cookie, RoomInitResult roomInitResult) {
         Map<String, String> cookieMap = OrLiveChatCookieUtil.parseCookieString(cookie);
 
         @Cleanup HttpResponse response1 = OrLiveChatHttpUtil.createGet("https://live.douyin.com/").cookie(cookie).execute();
@@ -95,11 +96,26 @@ public class DouyinApis {
             throw new BaseException("获取" + roomId + "直播间状态失败");
         }
 
-        return RoomInitResult.builder().ttwid(ttwid).msToken(msToken).acNonce(__ac_nonce).realRoomId(realRoomId).userUniqueId(user_unique_id).roomStatus(DouyinRoomStatusEnum.getByCode(roomStatus)).build();
+        roomInitResult = Optional.ofNullable(roomInitResult).orElseGet(() -> RoomInitResult.builder().build());
+        roomInitResult.setTtwid(ttwid);
+        roomInitResult.setMsToken(msToken);
+        roomInitResult.setAcNonce(__ac_nonce);
+        roomInitResult.setRealRoomId(realRoomId);
+        roomInitResult.setUserUniqueId(user_unique_id);
+        roomInitResult.setRoomStatus(DouyinRoomStatusEnum.getByCode(roomStatus));
+        return roomInitResult;
+    }
+
+    public static RoomInitResult roomInit(Object roomId, String cookie) {
+        return roomInit(roomId, cookie, null);
     }
 
     public static RoomInitResult roomInit(Object roomId) {
-        return roomInit(roomId, null);
+        return roomInit(roomId, null, null);
+    }
+
+    public static RoomInitResult roomInit(Object roomId, RoomInitResult roomInitResult) {
+        return roomInit(roomId, null, roomInitResult);
     }
 
     /**

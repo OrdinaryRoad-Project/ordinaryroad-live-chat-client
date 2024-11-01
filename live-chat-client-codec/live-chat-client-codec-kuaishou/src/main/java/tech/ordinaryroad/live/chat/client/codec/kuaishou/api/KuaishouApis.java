@@ -30,9 +30,6 @@ import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
 import cn.hutool.http.*;
-import cn.hutool.json.JSONArray;
-import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -46,10 +43,7 @@ import tech.ordinaryroad.live.chat.client.commons.util.OrJacksonUtil;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCookieUtil;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatHttpUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -72,7 +66,7 @@ public class KuaishouApis {
      */
     private static final TimedCache<String, WebGiftFeedOuterClass.WebGiftFeed> WEB_GIFT_FEED_CACHE = new TimedCache<>(300 * 1000L, new ConcurrentHashMap<>());
 
-    public static RoomInitResult roomInitSetCookie(Object roomId, String cookie) {
+    public static RoomInitResult roomInitSetCookie(Object roomId, String cookie, RoomInitResult roomInitResult) {
         @Cleanup
         HttpResponse response = createGetRequest("https://live.kuaishou.com/u/" + roomId, cookie)
                 .execute();
@@ -92,13 +86,19 @@ public class KuaishouApis {
         for (JsonNode websocketUrl : websocketUrls) {
             websocketUrlList.add(websocketUrl.asText());
         }
-        return RoomInitResult.builder()
-                .token(websocketinfo.required("token").asText())
-                .websocketUrls(websocketUrlList)
-                .liveStreamId(liveStreamId)
-                .build();
+
+        roomInitResult = Optional.ofNullable(roomInitResult).orElseGet(() -> RoomInitResult.builder().build());
+        roomInitResult.setToken(websocketinfo.required("token").asText());
+        roomInitResult.setWebsocketUrls(websocketUrlList);
+        roomInitResult.setLiveStreamId(liveStreamId);
+        return roomInitResult;
     }
-    public static RoomInitResult roomInitGet(Object roomId) {
+
+    public static RoomInitResult roomInitSetCookie(Object roomId, String cookie) {
+        return roomInitSetCookie(roomId, cookie, null);
+    }
+
+    public static RoomInitResult roomInitGet(Object roomId, RoomInitResult roomInitResult) {
         @Cleanup
         HttpResponse response = createGetRequest("https://live.kuaishou.com/live_api/liveroom/livedetail?principalId=" + roomId, StrUtil.EMPTY)
                 .execute();
@@ -119,23 +119,43 @@ public class KuaishouApis {
         for (JsonNode tempJsonNode : webSocketAddressesNode) {
             websocketUrlList.add(tempJsonNode.asText());
         }
-        return RoomInitResult.builder()
-                .token(token)
-                .websocketUrls(websocketUrlList)
-                .liveStreamId(liveStreamId)
-                .build();
+
+        roomInitResult = Optional.ofNullable(roomInitResult).orElseGet(() -> RoomInitResult.builder().build());
+        roomInitResult.setToken(token);
+        roomInitResult.setWebsocketUrls(websocketUrlList);
+        roomInitResult.setLiveStreamId(liveStreamId);
+        return roomInitResult;
+    }
+
+    public static RoomInitResult roomInitGet(Object roomId) {
+        return roomInitGet(roomId, null);
+    }
+
+    public static RoomInitResult roomInit(Object roomId, RoomInfoGetTypeEnum roomInfoGetType, String cookie, RoomInitResult roomInitResult) {
+        switch (roomInfoGetType) {
+            case COOKIE: {
+                return roomInitSetCookie(roomId, cookie, roomInitResult);
+            }
+            case NOT_COOKIE: {
+                return roomInitGet(roomId, roomInitResult);
+            }
+            default: {
+                throwExceptionWithTip("错误获取类型");
+                return null;
+            }
+        }
     }
 
     public static RoomInitResult roomInit(Object roomId, RoomInfoGetTypeEnum roomInfoGetType, String cookie) {
-        switch (roomInfoGetType) {
-            case COOKIE: { return roomInitSetCookie(roomId, cookie); }
-            case NOT_COOKIE: { return roomInitGet(roomId); }
-            default: throwExceptionWithTip("错误获取类型"); return null;
-        }
+        return roomInit(roomId, roomInfoGetType, cookie, null);
     }
 
     public static RoomInitResult roomInit(Object roomId) {
         return roomInit(roomId, RoomInfoGetTypeEnum.NOT_COOKIE, null);
+    }
+
+    public static RoomInitResult roomInit(Object roomId, RoomInitResult roomInitResult) {
+        return roomInit(roomId, RoomInfoGetTypeEnum.NOT_COOKIE, null, roomInitResult);
     }
 
     public static JsonNode websocketinfo(Object roomId, String liveStreamId, String cookie) {

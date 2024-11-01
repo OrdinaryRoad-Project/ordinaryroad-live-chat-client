@@ -104,7 +104,6 @@ public class DouyinLiveChatClient extends BaseNettyClient<DouyinLiveChatClientCo
 
     @Override
     public void init() {
-        roomInitResult = DouyinApis.roomInit(getConfig().getRoomId(), getConfig().getCookie());
         if (StrUtil.isNotBlank(getConfig().getForwardWebsocketUri())) {
             DouyinForwardMsgListener forwardMsgListener = new DouyinForwardMsgListener(getConfig().getForwardWebsocketUri());
             addMsgListener(forwardMsgListener);
@@ -119,28 +118,33 @@ public class DouyinLiveChatClient extends BaseNettyClient<DouyinLiveChatClientCo
 
     @Override
     public DouyinConnectionHandler initConnectionHandler(IBaseConnectionListener<DouyinConnectionHandler> clientConnectionListener) {
-        DefaultHttpHeaders headers = new DefaultHttpHeaders();
-        headers.add(Header.COOKIE.name(), DouyinApis.KEY_COOKIE_TTWID + "=" + roomInitResult.getTtwid());
-        headers.add(Header.USER_AGENT.name(), getConfig().getUserAgent());
-        return new DouyinConnectionHandler(
-                () -> new WebSocketClientProtocolHandler(
-                        WebSocketClientProtocolConfig.newBuilder()
-                                .webSocketUri(getWebsocketUri())
-                                .version(WebSocketVersion.V13)
-                                .subprotocol(null)
-                                .allowExtensions(true)
-                                .customHeaders(headers)
-                                .maxFramePayloadLength(getConfig().getMaxFramePayloadLength())
-                                .handshakeTimeoutMillis(getConfig().getHandshakeTimeoutMillis())
-                                .build()
-                ),
-                DouyinLiveChatClient.this, clientConnectionListener
-        );
+        return new DouyinConnectionHandler(() -> {
+            DefaultHttpHeaders headers = new DefaultHttpHeaders();
+            headers.add(Header.COOKIE.name(), DouyinApis.KEY_COOKIE_TTWID + "=" + roomInitResult.getTtwid());
+            headers.add(Header.USER_AGENT.name(), getConfig().getUserAgent());
+            return new WebSocketClientProtocolHandler(
+                    WebSocketClientProtocolConfig.newBuilder()
+                            .webSocketUri(getWebsocketUri())
+                            .version(WebSocketVersion.V13)
+                            .subprotocol(null)
+                            .allowExtensions(true)
+                            .customHeaders(headers)
+                            .maxFramePayloadLength(getConfig().getMaxFramePayloadLength())
+                            .handshakeTimeoutMillis(getConfig().getHandshakeTimeoutMillis())
+                            .build()
+            );
+        }, DouyinLiveChatClient.this, clientConnectionListener);
     }
 
     @Override
     protected void initChannel(SocketChannel channel) {
         channel.pipeline().addLast(new DouyinLiveChatClientChannelInitializer(this));
+    }
+
+    @Override
+    public void connect() {
+        roomInitResult = DouyinApis.roomInit(getConfig().getRoomId(), getConfig().getCookie(), roomInitResult);
+        super.connect();
     }
 
     @Override
@@ -199,7 +203,7 @@ public class DouyinLiveChatClient extends BaseNettyClient<DouyinLiveChatClientCo
         queryParams.put("live_reason", "");
         queryParams.put("room_id", Long.toString(realRoomId));
         queryParams.put("heartbeatDuration ", "0");
-        queryParams.put("signature", getSignature(getConfig().getUserAgent()));
+        queryParams.put("signature", getSignature(getConfig().getUserAgent(), roomInitResult.getRealRoomId(), roomInitResult.getUserUniqueId()));
         return webSocketUriString + "?" + OrLiveChatHttpUtil.toParams(queryParams);
     }
 
@@ -215,7 +219,7 @@ public class DouyinLiveChatClient extends BaseNettyClient<DouyinLiveChatClientCo
     }
 
     @SneakyThrows
-    public String getSignature(String userAgent) {
+    public String getSignature(String userAgent, long roomId, String userUniqueId) {
         String JS_ENV = " document = {};\nwindow = {};\nnavigator = {\nuserAgent: '" + userAgent + "'\n};\n";
         ScriptEngine engineFactory = getConfig().getScriptEngine();
         engineFactory.eval(JS_ENV + JS_SDK);
@@ -228,8 +232,8 @@ public class DouyinLiveChatClient extends BaseNettyClient<DouyinLiveChatClientCo
                 "device_platform=web,device_type=,ac=,identity=audience")
                 .replace("$webcast_sdk_version$", getConfig().getWebcastSdkVersion())
                 .replace("$version_code$", getConfig().getVersionCode())
-                .replace("$roomId$", String.valueOf(roomInitResult.getRealRoomId()))
-                .replace("$userId$", roomInitResult.getUserUniqueId());
+                .replace("$roomId$", String.valueOf(roomId))
+                .replace("$userId$", userUniqueId);
         String md5Hex = DigestUtil.md5Hex(signPram.getBytes(StandardCharsets.UTF_8));
         try {
             Object eval = engineFactory.eval("get_sign('" + md5Hex + "')");
