@@ -104,7 +104,6 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
 
     @Override
     public void init() {
-        roomInitResult = BilibiliApis.roomInit(getConfig().getRoomId(), getConfig().getCookie());
         if (StrUtil.isNotBlank(getConfig().getForwardWebsocketUri())) {
             BilibiliForwardMsgListener forwardMsgListener = new BilibiliForwardMsgListener(getConfig().getForwardWebsocketUri());
             addMsgListener(forwardMsgListener);
@@ -120,6 +119,12 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
     @Override
     protected void initChannel(SocketChannel channel) {
         channel.pipeline().addLast(new BilibiliLiveChatClientChannelInitializer(this));
+    }
+
+    @Override
+    public void connect() {
+        roomInitResult = BilibiliApis.roomInit(getConfig().getRoomId(), getConfig().getCookie());
+        super.connect();
     }
 
     @Override
