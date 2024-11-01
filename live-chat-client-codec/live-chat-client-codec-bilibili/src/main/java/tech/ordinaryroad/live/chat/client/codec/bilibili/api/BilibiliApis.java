@@ -45,6 +45,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 
@@ -70,7 +71,7 @@ public class BilibiliApis {
     private static final String API_ROOM_PLAY_INFO = "https://api.live.bilibili.com/xlive/web-room/v2/index/getRoomPlayInfo";
 
     @SneakyThrows
-    public static RoomInitResult roomInit(long roomId, String cookie) {
+    public static RoomInitResult roomInit(long roomId, String cookie, RoomInitResult roomInitResult) {
         RoomPlayInfoResult roomPlayInfo = getRoomPlayInfo(roomId, cookie);
         long realRoomId = roomPlayInfo.room_id;
 
@@ -95,12 +96,18 @@ public class BilibiliApis {
         }
 
         DanmuinfoResult danmuInfo = getDanmuInfo(realRoomId, cookie);
-        return new RoomInitResult.RoomInitResultBuilder()
-                .buvid3(b_3)
-                .uid(uid)
-                .danmuinfoResult(danmuInfo)
-                .roomPlayInfoResult(roomPlayInfo)
-                .build();
+
+        roomInitResult = Optional.ofNullable(roomInitResult).orElseGet(() -> new RoomInitResult.RoomInitResultBuilder().build());
+        roomInitResult.setBuvid3(b_3);
+        roomInitResult.setUid(uid);
+        roomInitResult.setDanmuinfoResult(danmuInfo);
+        roomInitResult.setRoomPlayInfoResult(roomPlayInfo);
+        return roomInitResult;
+    }
+
+    @SneakyThrows
+    public static RoomInitResult roomInit(long roomId, String cookie) {
+        return roomInit(roomId, cookie, null);
     }
 
     public static JsonNode roomGiftConfig(long roomId, String cookie) {

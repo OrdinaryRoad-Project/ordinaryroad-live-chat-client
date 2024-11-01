@@ -123,33 +123,30 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
 
     @Override
     public void connect() {
-        roomInitResult = BilibiliApis.roomInit(getConfig().getRoomId(), getConfig().getCookie());
+        roomInitResult = BilibiliApis.roomInit(getConfig().getRoomId(), getConfig().getCookie(), roomInitResult);
         super.connect();
     }
 
     @Override
     public BilibiliConnectionHandler initConnectionHandler(IBaseConnectionListener<BilibiliConnectionHandler> clientConnectionListener) {
-        DefaultHttpHeaders headers = new DefaultHttpHeaders();
-        headers.add(Header.USER_AGENT.name(), GlobalHeaders.INSTANCE.header(Header.USER_AGENT));
-        headers.add(Header.ORIGIN.name(), "https://live.bilibili.com");
-        headers.add(Header.PRAGMA.name(), "no-cache");
-        return new BilibiliConnectionHandler(
-                () -> {
-                    headers.set(Header.HOST.name(), getWebsocketUri().getHost() + ":" + getWebsocketUri().getPort());
-                    return new WebSocketClientProtocolHandler(
-                            WebSocketClientProtocolConfig.newBuilder()
-                                    .webSocketUri(getWebsocketUri())
-                                    .version(WebSocketVersion.V13)
-                                    .subprotocol(null)
-                                    .allowExtensions(true)
-                                    .customHeaders(headers)
-                                    .maxFramePayloadLength(getConfig().getMaxFramePayloadLength())
-                                    .handshakeTimeoutMillis(getConfig().getHandshakeTimeoutMillis())
-                                    .build()
-                    );
-                },
-                BilibiliLiveChatClient.this, clientConnectionListener
-        );
+        return new BilibiliConnectionHandler(() -> {
+            DefaultHttpHeaders headers = new DefaultHttpHeaders();
+            headers.add(Header.USER_AGENT.name(), GlobalHeaders.INSTANCE.header(Header.USER_AGENT));
+            headers.add(Header.ORIGIN.name(), "https://live.bilibili.com");
+            headers.add(Header.PRAGMA.name(), "no-cache");
+            headers.set(Header.HOST.name(), getWebsocketUri().getHost() + ":" + getWebsocketUri().getPort());
+            return new WebSocketClientProtocolHandler(
+                    WebSocketClientProtocolConfig.newBuilder()
+                            .webSocketUri(getWebsocketUri())
+                            .version(WebSocketVersion.V13)
+                            .subprotocol(null)
+                            .allowExtensions(true)
+                            .customHeaders(headers)
+                            .maxFramePayloadLength(getConfig().getMaxFramePayloadLength())
+                            .handshakeTimeoutMillis(getConfig().getHandshakeTimeoutMillis())
+                            .build()
+            );
+        }, BilibiliLiveChatClient.this, clientConnectionListener);
     }
 
     @Override
