@@ -26,6 +26,7 @@ package tech.ordinaryroad.live.chat.client.commons.util;
 
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ReUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
 
 import java.util.function.Function;
@@ -50,6 +51,7 @@ public class OrLiveChatUrlUtil extends URLUtil {
     }
 
     public static int getPort(String location, Function<String, Integer> defaultPortSupplier) {
+        location = StrUtil.subBefore(location, "?", false);
         int port = -1;
         int i = NumberUtil.parseInt(ReUtil.getGroup1(PATTERN_URI_PORT, location));
         if (i > 0) {
