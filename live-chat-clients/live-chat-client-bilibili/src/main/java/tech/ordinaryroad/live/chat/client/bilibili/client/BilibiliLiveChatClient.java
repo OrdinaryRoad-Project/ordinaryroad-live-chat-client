@@ -122,9 +122,9 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
     }
 
     @Override
-    public void connect() {
+    public void connect(Runnable success, Consumer<Throwable> failed) {
         roomInitResult = BilibiliApis.roomInit(getConfig().getRoomId(), getConfig().getCookie(), roomInitResult);
-        super.connect();
+        super.connect(success, failed);
     }
 
     @Override
