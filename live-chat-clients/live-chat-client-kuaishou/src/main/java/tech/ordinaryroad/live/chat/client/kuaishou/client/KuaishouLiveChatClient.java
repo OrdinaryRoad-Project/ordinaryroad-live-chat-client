@@ -146,9 +146,9 @@ public class KuaishouLiveChatClient extends BaseNettyClient<
     }
 
     @Override
-    public void connect() {
+    public void connect(Runnable success, Consumer<Throwable> failed) {
         roomInitResult = KuaishouApis.roomInit(getConfig().getRoomId(), getConfig().getRoomInfoGetType(), getConfig().getCookie(), roomInitResult);
-        super.connect();
+        super.connect(success, failed);
     }
 
     @Override

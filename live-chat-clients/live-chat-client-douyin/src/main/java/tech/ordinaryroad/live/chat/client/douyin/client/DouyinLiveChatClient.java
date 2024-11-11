@@ -142,9 +142,9 @@ public class DouyinLiveChatClient extends BaseNettyClient<DouyinLiveChatClientCo
     }
 
     @Override
-    public void connect() {
+    public void connect(Runnable success, Consumer<Throwable> failed) {
         roomInitResult = DouyinApis.roomInit(getConfig().getRoomId(), getConfig().getCookie(), roomInitResult);
-        super.connect();
+        super.connect(success, failed);
     }
 
     @Override
