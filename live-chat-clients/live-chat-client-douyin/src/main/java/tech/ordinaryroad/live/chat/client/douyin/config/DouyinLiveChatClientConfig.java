@@ -96,40 +96,4 @@ public class DouyinLiveChatClientConfig extends BaseNettyClientConfig {
         Method getScriptEngine = nashornScriptEngineFactoryClass.getDeclaredMethod("getScriptEngine", String[].class);
         return (ScriptEngine) getScriptEngine.invoke(factory, (Object) new String[]{"--language=es6"});
     }
-
-    /**
-     * 示例
-     * wss://webcast5-ws-web-lf.douyin.com/webcast/im/push/v2/
-     * ?app_name=douyin_web
-     * &version_code=180800
-     * &webcast_sdk_version=1.0.12
-     * &update_version_code=1.0.12
-     * &compress=gzip
-     * &device_platform=web
-     * &cookie_enabled=true
-     * &screen_width=1512
-     * &screen_height=982
-     * &browser_language=zh-CN
-     * &browser_platform=MacIntel
-     * &browser_name=Mozilla
-     * &browser_version=5.0%20(Macintosh;%20Intel%20Mac%20OS%20X%2010_15_7)%20AppleWebKit/537.36%20(KHTML,%20like%20Gecko)%20Chrome/118.0.0.0%20Safari/537.36
-     * &browser_online=true
-     * &tz_name=Asia/Shanghai
-     * &cursor=u-1_h-1_t-1704202376885_r-1_d-1
-     * &internal_ext=internal_src:dim|wss_push_room_id:7319486720022301449|wss_push_did:7319492411867170356|dim_log_id:20240102213256AAA5B735ADBE992BEF6A|first_req_ms:1704202376757|fetch_time:1704202376885|seq:1|wss_info:0-1704202376885-0-0|wrds_kvs:WebcastActivityEmojiGroupsMessage-1704200830782138545_WebcastRoomRankMessage-1704202270876589607_WebcastRoomStatsMessage-1704202372842388781
-     * &host=https://live.douyin.com
-     * &aid=6383
-     * &live_id=1
-     * &did_rule=3
-     * &endpoint=live_pc
-     * &support_wrds=1
-     * &user_unique_id=7319492411867170356
-     * &im_path=/webcast/im/fetch/
-     * &identity=audience
-     * &need_persist_msg_count=15
-     * &room_id=7319486720022301449
-     * &heartbeatDuration=0
-     * &signature=Wk407jV1/WbnoIGk
-     */
-
 }
