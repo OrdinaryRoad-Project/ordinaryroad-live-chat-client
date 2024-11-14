@@ -60,7 +60,7 @@ public class DouyinApis {
     public static final int AC_NONCE_LENGTH = 21;
     public static final String PATTERN_USER_UNIQUE_ID = "\\\\\"user_unique_id\\\\\":\\\\\"(\\d+)\\\\\"";
     public static final String PATTERN_ROOM_ID = "\\\\\"roomId\\\\\":\\\\\"(\\d+)\\\\\"";
-    public static final String PATTERN_ROOM_STATUS = "\\\\\"roomInfo\\\\\".+\\\\\"status\\\\\":(\\d+)";
+    public static final String PATTERN_ROOM_STATUS = "\\\\\"status_str\\\\\":\\\\\"(\\d+)\\\\\"";
     /**
      * 礼物连击缓存
      */
