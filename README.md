@@ -366,9 +366,7 @@ B站示例，其他平台只需修改`bilibili`即可
 
 > 开源不易，您的认可与支持是我不断更新的最大动力！
 >
-> 扫码或者访问[https://dwz.tax/ucWb](https://dwz.tax/ucWb)进行捐赠
->
-> <img src="assets/donate.png" width="200px">
+> <img src="assets/donate_alipay.jpg" width="200px"><img src="assets/donate_vxpay.png" width="200px"><img src="assets/donate_qqpay.png" width="200px">
 
 | 日期         | 捐赠人 |    金额 | 留言   | 渠道  |
 |------------|----:|------:|:-----|-----|
@@ -377,6 +375,7 @@ B站示例，其他平台只需修改`bilibili`即可
 | 2024-03-25 | **波 | 188.8 | /    | ZFB |
 | 2024-04-02 | **豪 |    30 | /    | ZFB |
 | 2024-04-30 |  *h |   100 | 大佬牛逼 | WX  |
+| 2024-11-18 | *磊  |  200  |  /  |  WX  |
 | ...        | ... |   ... | ...  | ... |
 
 ## Star History
