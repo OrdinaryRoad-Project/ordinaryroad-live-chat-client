@@ -59,8 +59,9 @@ public class OrLiveChatCookieUtil {
             try {
                 String[] split = cookies.split("; ");
                 for (String s : split) {
-                    String[] split1 = StrUtil.splitToArray(s, "=");
-                    map.put(split1[0], ArrayUtil.get(split1, 1));
+                    String key = StrUtil.subBefore(s, '=', false);
+                    String value = StrUtil.subAfter(s, '=', false);
+                    map.put(key, value);
                 }
             } catch (Exception e) {
                 throw new RuntimeException("cookie解析失败 " + cookies, e);
