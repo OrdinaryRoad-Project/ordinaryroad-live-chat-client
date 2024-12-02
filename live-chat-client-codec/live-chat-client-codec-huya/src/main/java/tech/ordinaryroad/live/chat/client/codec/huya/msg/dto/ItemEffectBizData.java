@@ -48,13 +48,13 @@ public class ItemEffectBizData extends TarsStructBase {
     @Override
     public void writeTo(TarsOutputStream os) {
         os.write(this.iType, 0);
-        os.write(this.iType, 1);
+        os.write(this.vData, 1);
     }
 
     @Override
     public void readFrom(TarsInputStream is) {
         this.iType = is.read(this.iType, 0, false);
-        this.iType = is.read(this.iType, 1, false);
+        this.vData = is.read(this.vData, 1, false);
     }
 
     @Override
