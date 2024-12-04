@@ -27,6 +27,7 @@ package tech.ordinaryroad.live.chat.client.codec.bilibili.api;
 import cn.hutool.cache.impl.TimedCache;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.thread.ThreadUtil;
+import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -35,6 +36,8 @@ import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.api.request.BilibiliLikeReportV3Request;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.api.request.BilibiliSendMsgRequest;
+import tech.ordinaryroad.live.chat.client.codec.bilibili.api.response.RoomInfoRes;
+import tech.ordinaryroad.live.chat.client.codec.bilibili.api.response.RoomInitRes;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.constant.BilibiliLiveStatusEnum;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.util.OrJacksonUtil;
@@ -63,6 +66,7 @@ public class BilibiliApis {
     public static final String KEY_UID = "DedeUserID";
     public static final String KEY_BUVID3 = "buvid3";
     public static final String PATTERN_REAL_ROOM_ID = "\\\"roomInitRes\\\".+\\{\\\"room_id\\\":(\\d+)";
+    public static final String PATTERN_WINDOW_NEPTUNE_IS_MY_WAIFU = "<script>window.__NEPTUNE_IS_MY_WAIFU__=(.*?)</script>";
 
     private static final String API_FRONTEND_FINGER_SPI = "https://api.bilibili.com/x/frontend/finger/spi";
     private static final String API_V = "https://data.bilibili.com/v/";
@@ -72,6 +76,15 @@ public class BilibiliApis {
 
     @SneakyThrows
     public static RoomInitResult roomInit(long roomId, String cookie, RoomInitResult roomInitResult) {
+        @Cleanup
+        HttpResponse response = OrLiveChatHttpUtil.createGet("https://live.bilibili.com/" + roomId).execute();
+        String body = response.body();
+
+        String wnimwJsonString = ReUtil.getGroup1(PATTERN_WINDOW_NEPTUNE_IS_MY_WAIFU, body);
+        JsonNode wnimwJson = OrJacksonUtil.getInstance().readTree(wnimwJsonString);
+        RoomInitRes roomInitRes = OrJacksonUtil.getInstance().readValue(wnimwJson.get("roomInitRes").get("data").toString(), RoomInitRes.class);
+        RoomInfoRes roomInfoRes = OrJacksonUtil.getInstance().readValue(wnimwJson.get("roomInfoRes").get("data").toString(), RoomInfoRes.class);
+
         RoomPlayInfoResult roomPlayInfo = getRoomPlayInfo(roomId, cookie);
         long realRoomId = roomPlayInfo.room_id;
 
@@ -102,6 +115,8 @@ public class BilibiliApis {
         roomInitResult.setUid(uid);
         roomInitResult.setDanmuinfoResult(danmuInfo);
         roomInitResult.setRoomPlayInfoResult(roomPlayInfo);
+        roomInitResult.setRoomInitRes(roomInitRes);
+        roomInitResult.setRoomInfoRes(roomInfoRes);
         return roomInitResult;
     }
 
@@ -377,5 +392,15 @@ public class BilibiliApis {
 
         private DanmuinfoResult danmuinfoResult = new DanmuinfoResult();
         private RoomPlayInfoResult roomPlayInfoResult = new RoomPlayInfoResult();
+
+        private RoomInitRes roomInitRes = new RoomInitRes();
+        private RoomInfoRes roomInfoRes = new RoomInfoRes();
+
+        /**
+         * 直播间标题
+         */
+        public String getRoomTitle() {
+            return roomInfoRes.getRoom_info().getTitle();
+        }
     }
 }

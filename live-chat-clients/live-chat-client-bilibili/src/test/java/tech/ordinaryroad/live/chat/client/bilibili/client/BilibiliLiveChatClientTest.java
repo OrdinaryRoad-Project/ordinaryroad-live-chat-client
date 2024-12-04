@@ -151,6 +151,7 @@ class BilibiliLiveChatClientTest {
                 if (oldStatus == ClientStatusEnums.CONNECTING) {
                     // 0 未开播，1 直播中，2 投稿视频
                     log.error("开播状态: {}", client.getRoomInitResult().getRoomPlayInfoResult().getLive_status());
+                    log.error("直播间标题: {}", client.getRoomInitResult().getRoomTitle());
 //                ThreadUtil.execAsync(() -> {
 //                    ThreadUtil.sleep(5000);
 //                    client.clickLike(5, () -> {
