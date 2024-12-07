@@ -42,8 +42,9 @@
 | Huya 虎牙     | ✅              | ✅      | ✅      | ✅    | ❌     |
 | Douyin 抖音*  | ✅              | ☑️️    | ✅      | ☑️   | ☑️️   |
 | Kuaishou 快手 | ✅              | ✅      | ✅      | ✅    | ✅     |
+| Tiktok* | ✅              | ✅      | ✅      | ☑️    | ☑️     |
 
-> *暂未研究明白抖音平台的签名算法
+> *暂未完全支持，（Tiktok在测试中）
 
 ## 平台直播间消息适配情况表
 
@@ -52,8 +53,9 @@
 | Bilibili B站 | ✅  | ✅         | ✅    | ✅       | ✅       | ✅    | ✅（点赞数、当前人数、累计观看人数） |      |
 | Douyu 斗鱼    | ✅  | ✅         | ☑️   | ✅       | ❌       | ☑️   | ❌                  |      |
 | Huya 虎牙     | ✅  | ✅         | ❌    | ✅（高级用户） | ❌       | ☑️   | ❌                  |      |
-| Douyin 抖音   | ✅  | ✅         | ❌    | ✅       | ✅（点赞个数） | ✅    | ✅（点赞数、当前人数）        | ✅    |
+| Douyin 抖音   | ✅  | ✅         | ❌    | ✅       | ✅（点赞个数） | ✅    | ✅（点赞数、当前人数）        | ✅（分享、关注）    |
 | Kuaishou 快手 | ✅  | ✅（礼物信息不全） | ❌    | ❌       | ✅（首次点赞） | ❌    | ✅（点赞数、当前人数）        |      |
+| Tiktok      | ✅  | ✅         | ❌    | ✅       | ✅（点赞个数） | ✅    | ✅（点赞数、当前人数）        | ✅（分享、关注）    |
 
 消息接口内置的方法见 [https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/tree/main/live-chat-client-commons/live-chat-client-commons-base/src/main/java/tech/ordinaryroad/live/chat/client/commons/base/msg](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/tree/main/live-chat-client-commons/live-chat-client-commons-base/src/main/java/tech/ordinaryroad/live/chat/client/commons/base/msg)
 
