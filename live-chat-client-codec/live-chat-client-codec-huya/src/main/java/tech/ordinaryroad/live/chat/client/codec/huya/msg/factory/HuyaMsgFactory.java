@@ -28,7 +28,6 @@ import cn.hutool.cache.impl.TimedCache;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
-import com.fasterxml.jackson.databind.JsonNode;
 import tech.ordinaryroad.live.chat.client.codec.huya.api.HuyaApis;
 import tech.ordinaryroad.live.chat.client.codec.huya.constant.HuyaClientTemplateTypeEnum;
 import tech.ordinaryroad.live.chat.client.codec.huya.constant.HuyaLiveSource;
@@ -57,13 +56,11 @@ public class HuyaMsgFactory {
      * 浏览器地址中的房间id，支持短id
      */
     private final Object roomId;
-    private final JsonNode roomInfo;
     private volatile static byte[] heartbeatMsg;
     private volatile static byte[] giftListReqMsg;
 
     public HuyaMsgFactory(Object roomId) {
         this.roomId = roomId;
-        this.roomInfo = HuyaApis.roomInit(roomId);
     }
 
     public static HuyaMsgFactory getInstance(Object roomId) {
@@ -81,7 +78,7 @@ public class HuyaMsgFactory {
      * @param cookie Cookie
      * @return WebSocketCommand
      */
-    public WebSocketCommand createSendMessageReq(String msg, String ver, String cookie) {
+    public WebSocketCommand createSendMessageReq(HuyaApis.RoomInitResult roomInitResult, String msg, String ver, String cookie) {
         String yyuid = OrLiveChatCookieUtil.getCookieByName(cookie, KEY_COOKIE_YYUID, () -> {
             throw new BaseException("cookie中缺少参数" + KEY_COOKIE_YYUID);
         });
@@ -95,7 +92,7 @@ public class HuyaMsgFactory {
         sendMessageReq.getTUserId().setSCookie(cookie);
         sendMessageReq.getTUserId().setSDeviceInfo("chrome");
         sendMessageReq.setSContent(msg);
-        sendMessageReq.setLPid(roomInfo.get("lChannelId").asLong());
+        sendMessageReq.setLPid(roomInitResult.getLChannelId());
 
         WupReq wupReq = new WupReq();
         wupReq.getTarsServantRequest().setServantName("liveui");
@@ -145,14 +142,14 @@ public class HuyaMsgFactory {
         return createLiveLaunchReq(ver, cookie);
     }
 
-    public WebSocketCommand createGetLivingInfoReq(String ver, String cookie) {
+    public WebSocketCommand createGetLivingInfoReq(HuyaApis.RoomInitResult roomInitResult, String ver, String cookie) {
         GetLivingInfoReq getLivingInfoReq = new GetLivingInfoReq();
 //        getLivingInfoReq.getTId().setSGuid("0a7dca72a3ce1b654001dd2ade2ae857");
         getLivingInfoReq.getTId().setSHuYaUA("webh5&" + ver + "&websocket");
         getLivingInfoReq.getTId().setSDeviceInfo("chrome");
         getLivingInfoReq.getTId().setSCookie(StrUtil.nullToEmpty(cookie));
 //        getLivingInfoReq.getTId().setSCookie("vplayer_sbanner_1724691_1724691=1; SoundValue=0.50; alphaValue=0.80; game_did=R24J2g0mBzvdXJf7a9nheSl3zIci2BOp0-t; isInLiveRoom=true; guid=0a7dca72a3ce1b654001dd2ade2ae857; __yamid_tt1=0.8029935065011269; __yamid_new=CA75D4CD5C100001165B82B52140C900; guid=0a7dca72a3ce1b654001dd2ade2ae857; udb_guiddata=af5dbdbf76254a6e8a0a293ccae9b688; udb_deviceid=w_761623483861815296; udb_passdata=3; __yasmid=0.8029935065011269; _yasids=__rootsid%3DCA767045C1100001EC5A145C1E90FE00; Hm_lvt_51700b6c722f5bb4cf39906a596ea41f=1696473760,1696476745,1696483565,1696484212; Hm_lpvt_51700b6c722f5bb4cf39906a596ea41f=1696484212; huya_ua=webh5&0.0.1&activity; _rep_cnt=2; sdid=0UnHUgv0/qmfD4KAKlwzhqX98QrnPCcck6fN494iawS5Kmymgreu89o7gYta/QvQsBDeSeSRp4/grQ5fEuFAYrL59coAKuxuukiwgTLjfjEDWVkn9LtfFJw/Qo4kgKr8OZHDqNnuwg612sGyflFn1dkUeZYTToCzzl4GCHq7MUDahxGuPR8mUddfImFtjccs1; huya_flash_rep_cnt=74; huya_web_rep_cnt=125; rep_cnt=44");
-        getLivingInfoReq.setLPresenterUid(roomInfo.get("lChannelId").asLong());
+        getLivingInfoReq.setLPresenterUid(roomInitResult.getLChannelId());
 
         WupReq wupReq = new WupReq();
         wupReq.getTarsServantRequest().setServantName("huyaliveui");
@@ -185,8 +182,8 @@ public class HuyaMsgFactory {
         return webSocketCommand;
     }
 
-    public WebSocketCommand createRegisterGroupReq() {
-        String lYyid = roomInfo.get("lChannelId").asText();
+    public WebSocketCommand createRegisterGroupReq(HuyaApis.RoomInitResult roomInitResult) {
+        Long lYyid = roomInitResult.getLChannelId();
 
         WSRegisterGroupReq wsRegisterGroupReq = new WSRegisterGroupReq();
         wsRegisterGroupReq.setVGroupId(CollUtil.newArrayList("live:" + lYyid, "chat:" + lYyid));
@@ -213,24 +210,24 @@ public class HuyaMsgFactory {
      *
      * @return WebSocketCommand
      */
-    public WebSocketCommand createGiftListReq(String ver) {
+    public WebSocketCommand createGiftListReq(HuyaApis.RoomInitResult roomInitResult, String ver) {
         WebSocketCommand webSocketCommand = new WebSocketCommand();
         webSocketCommand.setOperation(HuyaOperationEnum.EWSCmd_WupReq.getCode());
-        webSocketCommand.setVData(this.getGiftListReqMsg(ver));
+        webSocketCommand.setVData(this.getGiftListReqMsg(roomInitResult, ver));
         return webSocketCommand;
     }
 
-    public WebSocketCommand createHeartbeat(String ver, String cookie) {
+    public WebSocketCommand createHeartbeat(HuyaApis.RoomInitResult roomInitResult, String ver, String cookie) {
         WebSocketCommand webSocketCommand = new WebSocketCommand();
         webSocketCommand.setOperation(HuyaOperationEnum.EWSCmdC2S_HeartBeatReq.getCode());
-        webSocketCommand.setVData(this.getHeartbeatMsg(ver, cookie));
+        webSocketCommand.setVData(this.getHeartbeatMsg(roomInitResult, ver, cookie));
         return webSocketCommand;
     }
 
     /**
      * 心跳包单例模式
      */
-    public byte[] getHeartbeatMsg(String ver, String cookie) {
+    public byte[] getHeartbeatMsg(HuyaApis.RoomInitResult roomInitResult, String ver, String cookie) {
         if (heartbeatMsg == null) {
             synchronized (HuyaMsgFactory.this) {
                 if (heartbeatMsg == null) {
@@ -240,7 +237,7 @@ public class HuyaMsgFactory {
                     userHeartBeatReq.getTId().setSDeviceInfo("chrome");
                     userHeartBeatReq.getTId().setSCookie(StrUtil.nullToEmpty(cookie));
 //                    userHeartBeatReq.setLSid(roomInfo.get("lSubChannelId").asLong());
-                    userHeartBeatReq.setLPid(roomInfo.get("lChannelId").asLong());
+                    userHeartBeatReq.setLPid(roomInitResult.getLChannelId());
 //                    userHeartBeatReq.setELineType(HuyaStreamLineTypeEnum.STREAM_LINE_WS.getCode());
                     userHeartBeatReq.setELineType(-1);
 
@@ -254,12 +251,12 @@ public class HuyaMsgFactory {
     /**
      * 礼物列表请求包单例模式
      */
-    public byte[] getGiftListReqMsg(String ver) {
+    public byte[] getGiftListReqMsg(HuyaApis.RoomInitResult roomInitResult, String ver) {
         if (giftListReqMsg == null) {
             synchronized (HuyaMsgFactory.this) {
                 if (giftListReqMsg == null) {
                     GetPropsListReq getPropsListReq = new GetPropsListReq();
-                    getPropsListReq.getTUserId().setLUid(roomInfo.get("lYyid").asLong());
+                    getPropsListReq.getTUserId().setLUid(roomInitResult.getLYyid());
                     getPropsListReq.getTUserId().setSHuYaUA("webh5&" + ver + "&websocket");
                     getPropsListReq.setITemplateType(HuyaClientTemplateTypeEnum.TPL_MIRROR.getCode());
 

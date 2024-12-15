@@ -104,7 +104,7 @@ public class HuyaBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<Hu
 //            if (log.isDebugEnabled()) {
 //                log.debug("获取礼物列表");
 //            }
-            channelHandlerContext.writeAndFlush(HuyaMsgFactory.getInstance(getRoomId()).createGiftListReq(getVer()));
+            channelHandlerContext.writeAndFlush(HuyaMsgFactory.getInstance(getRoomId()).createGiftListReq(getClient().getRoomInitResult(), getVer()));
         } else if (operationEnum == HuyaOperationEnum.EWSCmd_WupRsp) {
             WupRsp wupRsp = (WupRsp) msg;
             String functionName = wupRsp.getTarsServantRequest().getFunctionName();
@@ -120,7 +120,7 @@ public class HuyaBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<Hu
                 case doLaunch: {
 //                    LiveLaunchRsp liveLaunchRsp = new LiveLaunchRsp();
 //                    liveLaunchRsp = wupRsp.getUniAttribute().getByClass("tRsp", liveLaunchRsp);
-                    channelHandlerContext.writeAndFlush(HuyaMsgFactory.getInstance(getRoomId()).createRegisterGroupReq());
+                    channelHandlerContext.writeAndFlush(HuyaMsgFactory.getInstance(getRoomId()).createRegisterGroupReq(getClient().getRoomInitResult()));
                     break;
                 }
                 case getPropsList: {
