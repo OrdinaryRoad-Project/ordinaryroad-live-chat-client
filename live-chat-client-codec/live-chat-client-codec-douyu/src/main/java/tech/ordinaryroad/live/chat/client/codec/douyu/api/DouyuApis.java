@@ -38,6 +38,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
+import tech.ordinaryroad.live.chat.client.codec.douyu.api.response.BetardResponse;
 import tech.ordinaryroad.live.chat.client.codec.douyu.msg.dto.GiftListInfo;
 import tech.ordinaryroad.live.chat.client.codec.douyu.msg.dto.GiftPropSingle;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
@@ -49,6 +50,7 @@ import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatLocalDateTimeUt
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -87,6 +89,8 @@ public class DouyuApis {
     public static final String API_GIFT_LIST = "https://gift.douyucdn.cn/api/gift/v3/web/list?rid=";
     public static final String API_PROP_SINGLE = "https://gift.douyucdn.cn/api/prop/v1/web/single?pid=";
     public static final String API_SERVER_INFO = "https://www.douyu.com/lapi/live/gateway/web/";
+    // https://www.douyu.com/betard/${realRoomId}
+    public static final String API_BETARD = "https://www.douyu.com/betard/";
     public static final String API_AVATAR_PREFIX_SMALL = "_small.jpg";
     public static final String API_AVATAR_PREFIX_MIDDLE = "_middle.jpg";
     public static final String API_AVATAR_PREFIX_BIG = "_big.jpg";
@@ -105,11 +109,15 @@ public class DouyuApis {
     }
 
     public static long getRealRoomId(long roomId, String cookie) {
-        String realRoomIdString = null;
         @Cleanup
         HttpResponse execute = OrLiveChatHttpUtil.createGet("https://www.douyu.com/" + roomId)
                 .cookie(cookie)
                 .execute();
+        return getRealRoomIdByRoomPageResponse(roomId, execute);
+    }
+
+    private static long getRealRoomIdByRoomPageResponse(long roomId, HttpResponse execute) {
+        String realRoomIdString = null;
         if (execute.getStatus() == HttpStatus.HTTP_NOT_FOUND) {
             throw new BaseException("获取" + roomId + "真实房间ID失败");
         }
@@ -231,6 +239,29 @@ public class DouyuApis {
         }
     }
 
+    @SneakyThrows
+    public static RoomInitResult roomInit(Long roomId, String cookie, RoomInitResult roomInitResult) {
+        long realRoomId = getRealRoomId(roomId, cookie);
+
+        @Cleanup
+        HttpResponse response = OrLiveChatHttpUtil.createGet(API_BETARD + realRoomId).cookie(cookie).execute();
+        String body = response.body();
+        BetardResponse betardResponse = OrJacksonUtil.getInstance().readValue(body, BetardResponse.class);
+
+        roomInitResult = Optional.ofNullable(roomInitResult).orElse(RoomInitResult.builder().build());
+        roomInitResult.setRealRoomId(realRoomId);
+        roomInitResult.setBetardResponse(betardResponse);
+        return roomInitResult;
+    }
+
+    public static RoomInitResult roomInit(Long roomId, RoomInitResult roomInitResult) {
+        return roomInit(roomId, null, roomInitResult);
+    }
+
+    public static RoomInitResult roomInit(Long roomId) {
+        return roomInit(roomId, null, null);
+    }
+
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
@@ -267,4 +298,17 @@ public class DouyuApis {
         private int port;
     }
 
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class RoomInitResult {
+        private BetardResponse betardResponse;
+
+        private Long realRoomId;
+
+        public String getRoomTitle() {
+            return betardResponse.getRoom().getRoom_name();
+        }
+    }
 }

@@ -75,11 +75,11 @@ public class DouyuMsgFactory {
      * @param cookie 浏览器Cookie，发送弹幕时必传
      * @return AuthWebSocketFrame
      */
-    public ByteBuf createAuth(DouyuClientModeEnum mode, String ver, String aver, String cookie) {
+    public ByteBuf createAuth(DouyuApis.RoomInitResult roomInitResult, DouyuClientModeEnum mode, String ver, String aver, String cookie) {
         try {
             // type@=loginreq/roomid@=7750753/dfl@=/username@=visitor10424697/uid@=1168052601/ver@=20220825/aver@=218101901/ct@=0/
             LoginreqMsg loginreqMsg;
-            long realRoomId = DouyuApis.getRealRoomId(roomId);
+            long realRoomId = roomInitResult.getRealRoomId();
             long uid;
             String username;
             Map<String, String> cookieMap = OrLiveChatCookieUtil.parseCookieString(cookie);
@@ -126,8 +126,8 @@ public class DouyuMsgFactory {
         }
     }
 
-    public ByteBuf createAuth(DouyuClientModeEnum mode, String ver, String aver) {
-        return this.createAuth(mode, ver, aver, null);
+    public ByteBuf createAuth(DouyuApis.RoomInitResult roomInitResult, DouyuClientModeEnum mode, String ver, String aver) {
+        return this.createAuth(roomInitResult, mode, ver, aver, null);
     }
 
     public ByteBuf createHeartbeat() {
