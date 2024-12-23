@@ -11,6 +11,7 @@ import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.GiftMessage;
 import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.Message;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
+import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
 import tech.ordinaryroad.live.chat.client.douyin.config.DouyinLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.douyin.listener.IDouyinMsgListener;
 import tech.ordinaryroad.live.chat.client.douyin.netty.handler.DouyinBinaryFrameHandler;
@@ -157,6 +158,14 @@ class DouyinLiveChatClientTest {
                 log.info("{} 社交消息 {} {} {}({})", binaryFrameHandler.getRoomId(), msg.getSocialAction(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid());
             }
         });
+
+        client.addStatusChangeListener((evt, oldStatus, newStatus) -> {
+            if (newStatus == ClientStatusEnums.CONNECTED) {
+                log.warn("{} 已连接", client.getConfig().getRoomId());
+                log.warn("房间标题 {}", client.getRoomInitResult().getRoomTitle());
+            }
+        });
+
         client.connect();
 
         //        ThreadUtil.execAsync(() -> {
