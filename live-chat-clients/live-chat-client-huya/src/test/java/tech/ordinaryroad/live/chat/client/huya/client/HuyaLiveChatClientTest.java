@@ -161,7 +161,7 @@ class HuyaLiveChatClientTest {
         client.addStatusChangeListener((evt, oldStatus, newStatus) -> {
             if (newStatus == ClientStatusEnums.CONNECTED) {
                 log.warn("{} 已连接", client.getConfig().getRoomId());
-                log.warn("直播间描述：{}", client.getRoomInitResult().getRoomTitle());
+                log.warn("直播间标题：{}", client.getRoomInitResult().getRoomTitle());
             }
         });
 
