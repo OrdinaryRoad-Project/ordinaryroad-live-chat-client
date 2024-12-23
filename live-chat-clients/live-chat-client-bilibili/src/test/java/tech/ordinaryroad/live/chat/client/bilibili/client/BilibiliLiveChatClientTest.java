@@ -58,6 +58,7 @@ class BilibiliLiveChatClientTest {
                 // TODO 浏览器Cookie
                 .cookie(cookie)
                 .roomId(7777)
+                .roomId(21852)
                 .build();
 
         client = new BilibiliLiveChatClient(config, new IBilibiliMsgListener() {
