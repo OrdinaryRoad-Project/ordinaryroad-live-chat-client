@@ -27,17 +27,24 @@ package tech.ordinaryroad.live.chat.client.huya.client;
 import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
+import com.qq.tars.protocol.tars.TarsInputStream;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import tech.ordinaryroad.live.chat.client.codec.huya.constant.HuyaCmdEnum;
 import tech.ordinaryroad.live.chat.client.codec.huya.msg.MessageNoticeMsg;
 import tech.ordinaryroad.live.chat.client.codec.huya.msg.SendItemSubBroadcastPacketMsg;
 import tech.ordinaryroad.live.chat.client.codec.huya.msg.VipEnterBannerMsg;
+import tech.ordinaryroad.live.chat.client.codec.huya.msg.WSPushMessage;
+import tech.ordinaryroad.live.chat.client.codec.huya.msg.dto.WSMsgItem;
+import tech.ordinaryroad.live.chat.client.codec.huya.util.HuyaCodecUtil;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
+import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
 import tech.ordinaryroad.live.chat.client.huya.config.HuyaLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.huya.listener.IHuyaMsgListener;
 import tech.ordinaryroad.live.chat.client.huya.netty.handler.HuyaBinaryFrameHandler;
+
+import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -62,8 +69,7 @@ class HuyaLiveChatClientTest {
                 .roomId(527988)
                 .roomId(1995)
                 .roomId(116)
-                // bagea
-                .roomId(189201)
+
                 .roomId("bagea")
 
                 .roomId(333003)
@@ -71,8 +77,10 @@ class HuyaLiveChatClientTest {
 
                 .roomId(29785782)
 
-                .roomId("bagea")
                 .roomId(333003)
+                // bagea
+                .roomId(189201)
+                .roomId("bagea")
                 .build();
 
         client = new HuyaLiveChatClient(config, new IHuyaMsgListener() {
@@ -126,7 +134,23 @@ class HuyaLiveChatClientTest {
 
             @Override
             public void onOtherCmdMsg(HuyaBinaryFrameHandler binaryFrameHandler, HuyaCmdEnum cmd, ICmdMsg<HuyaCmdEnum> cmdMsg) {
+                byte[] dataBytes;
+                if (cmdMsg instanceof WSPushMessage) {
+                    WSPushMessage wsPushMessage = (WSPushMessage) cmdMsg;
+                    dataBytes = wsPushMessage.getDataBytes();
+                } else if (cmdMsg instanceof WSMsgItem) {
+                    WSMsgItem wsMsgItem = (WSMsgItem) cmdMsg;
+                    dataBytes = wsMsgItem.getSMsg();
+                } else {
+                    if (log.isDebugEnabled()) {
+                        log.debug("非HuyaCmdMsg {}", cmdMsg.getClass());
+                    }
+                    return;
+                }
+                TarsInputStream tarsInputStream = HuyaCodecUtil.newUtf8TarsInputStream(dataBytes);
+                String string = new String(tarsInputStream.getBs().array(), StandardCharsets.UTF_8);
                 log.debug("{} 收到其他CMD消息 {}", binaryFrameHandler.getRoomId(), cmd);
+                // log.debug("tars: {}", string);
             }
 
             @Override
@@ -134,6 +158,13 @@ class HuyaLiveChatClientTest {
                 log.debug("{} 收到未知CMD消息 {}", binaryFrameHandler.getRoomId(), cmdString);
             }
         });
+        client.addStatusChangeListener((evt, oldStatus, newStatus) -> {
+            if (newStatus == ClientStatusEnums.CONNECTED) {
+                log.warn("{} 已连接", client.getConfig().getRoomId());
+                log.warn("直播间标题：{}", client.getRoomInitResult().getRoomTitle());
+            }
+        });
+
         client.connect();
 
         // 防止测试时直接退出

@@ -131,7 +131,7 @@ public class DouyuConnectionHandler extends BaseNettyClientConnectionHandler<Bas
         if (log.isDebugEnabled()) {
             log.debug("发送认证包");
         }
-        channel.writeAndFlush(new BinaryWebSocketFrame(getMsgFactory(getRoomId()).createAuth(mode, getVer(), getAver(), getCookie())))
+        channel.writeAndFlush(new BinaryWebSocketFrame(getMsgFactory(getRoomId()).createAuth(getClient().getRoomInitResult(), mode, getVer(), getAver(), getCookie())))
                 .addListener(future -> {
                     if (future.isSuccess()) {
                         if (log.isDebugEnabled()) {

@@ -60,6 +60,7 @@ public class KuaishouApis {
     public static final TimedCache<String, Map<String, GiftInfo>> RESULT_CACHE = new TimedCache<>(TimeUnit.DAYS.toMillis(1));
     public static final String KEY_RESULT_CACHE_GIFT_ITEMS = "GIFT_ITEMS";
     public static final String PATTERN_LIVE_STREAM_ID = "\"liveStream\":\\{\"id\":\"([\\w\\d-_]+)\"";
+    public static final String PATTERN_ROOM_TITLE = "\"author\":\\{[^}]*\"name\":\"([^\"]+)\"";
     public static final String USER_AGENT = GlobalHeaders.INSTANCE.header(Header.USER_AGENT).replace("Hutool", "");
     /**
      * 礼物连击缓存
@@ -91,6 +92,7 @@ public class KuaishouApis {
         roomInitResult.setToken(websocketinfo.required("token").asText());
         roomInitResult.setWebsocketUrls(websocketUrlList);
         roomInitResult.setLiveStreamId(liveStreamId);
+        roomInitResult.set_roomTitle(ReUtil.getGroup1(PATTERN_ROOM_TITLE, body));
         return roomInitResult;
     }
 
@@ -103,14 +105,16 @@ public class KuaishouApis {
         HttpResponse response = createGetRequest("https://live.kuaishou.com/live_api/liveroom/livedetail?principalId=" + roomId, StrUtil.EMPTY)
                 .execute();
 
-        JsonNode bodyDataNode = responseInterceptor(response.body());
-        JsonNode websocketInfoNode = bodyDataNode.get("websocketInfo");
+        JsonNode livedetailJsonNode = responseInterceptor(response.body());
+        JsonNode websocketInfoNode = livedetailJsonNode.get("websocketInfo");
 
-        String liveStreamId = bodyDataNode.get("liveStream").required("id").asText(StrUtil.EMPTY);
+        JsonNode liveStreamJsonNode = livedetailJsonNode.get("liveStream");
+
+        String liveStreamId = OrJacksonUtil.getTextOrDefault(liveStreamJsonNode, "id", StrUtil.EMPTY);
         if (StrUtil.isBlankIfStr(liveStreamId)) {
             throwExceptionWithTip("主播未开播，liveStreamId为空");
         }
-        String token = websocketInfoNode.required("token").asText(StrUtil.EMPTY);
+        String token = OrJacksonUtil.getTextOrDefault(websocketInfoNode, "token", StrUtil.EMPTY);
         if (StrUtil.isBlankIfStr(token)) {
             throwExceptionWithTip("主播未开播，token获取失败");
         }
@@ -124,6 +128,7 @@ public class KuaishouApis {
         roomInitResult.setToken(token);
         roomInitResult.setWebsocketUrls(websocketUrlList);
         roomInitResult.setLiveStreamId(liveStreamId);
+        roomInitResult.setLivedetailJsonNode(livedetailJsonNode);
         return roomInitResult;
     }
 
@@ -232,12 +237,13 @@ public class KuaishouApis {
     }
 
     private static JsonNode responseInterceptor(String responseString) {
+        List<Integer> notLivingCode = CollUtil.newArrayList(671, 677);
         try {
             JsonNode jsonNode = OrJacksonUtil.getInstance().readTree(responseString);
             JsonNode data = jsonNode.required("data");
             if (data.has("result")) {
                 int result = data.get("result").asInt();
-                if (result != 1) {
+                if (result != 1 && !CollUtil.contains(notLivingCode, result)) {
                     String message = "";
                     switch (result) {
                         case 2: {
@@ -348,6 +354,18 @@ public class KuaishouApis {
         private String token;
         private String liveStreamId;
         private List<String> websocketUrls;
+        private JsonNode livedetailJsonNode;
+
+        // TODO REFACTOR THIS
+        private String _roomTitle;
+
+        public String getRoomTitle() {
+            if (StrUtil.isNotBlank(_roomTitle)) {
+                return _roomTitle;
+            } else {
+                return livedetailJsonNode.get("author").get("name").asText();
+            }
+        }
     }
 
     @Data

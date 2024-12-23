@@ -95,7 +95,7 @@ public class HuyaConnectionHandler extends BaseNettyClientConnectionHandler<Huya
         if (log.isDebugEnabled()) {
             log.debug("发送心跳包");
         }
-        channel.writeAndFlush(getWebSocketFrameFactory(getRoomId()).createHeartbeat(getVer(), getCookie()))
+        channel.writeAndFlush(getWebSocketFrameFactory(getRoomId()).createHeartbeat(getClient().getRoomInitResult(), getVer(), getCookie()))
                 .addListener((ChannelFutureListener) future -> {
                     if (future.isSuccess()) {
                         if (log.isDebugEnabled()) {

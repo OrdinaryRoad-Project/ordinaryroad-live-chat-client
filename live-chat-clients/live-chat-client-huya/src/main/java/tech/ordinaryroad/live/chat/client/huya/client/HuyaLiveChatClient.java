@@ -32,7 +32,9 @@ import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolConfig;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
 import io.netty.handler.codec.http.websocketx.WebSocketVersion;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import tech.ordinaryroad.live.chat.client.codec.huya.api.HuyaApis;
 import tech.ordinaryroad.live.chat.client.codec.huya.constant.HuyaCmdEnum;
 import tech.ordinaryroad.live.chat.client.codec.huya.msg.WebSocketCommand;
 import tech.ordinaryroad.live.chat.client.codec.huya.msg.base.IHuyaMsg;
@@ -65,6 +67,9 @@ public class HuyaLiveChatClient extends BaseNettyClient<
         IHuyaMsgListener,
         HuyaConnectionHandler,
         HuyaBinaryFrameHandler> {
+
+    @Getter
+    private HuyaApis.RoomInitResult roomInitResult = HuyaApis.RoomInitResult.builder().build();
 
     public HuyaLiveChatClient(HuyaLiveChatClientConfig config, List<IHuyaMsgListener> msgListeners, IHuyaConnectionListener connectionListener, EventLoopGroup workerGroup) {
         super(config, workerGroup, connectionListener);
@@ -109,6 +114,12 @@ public class HuyaLiveChatClient extends BaseNettyClient<
     }
 
     @Override
+    public void connect(Runnable success, Consumer<Throwable> failed) {
+        roomInitResult = HuyaApis.roomInit(getConfig().getRoomId(), roomInitResult);
+        super.connect(success, failed);
+    }
+
+    @Override
     public HuyaConnectionHandler initConnectionHandler(IBaseConnectionListener<HuyaConnectionHandler> clientConnectionListener) {
         return new HuyaConnectionHandler(
                 () -> new WebSocketClientProtocolHandler(
@@ -145,7 +156,7 @@ public class HuyaLiveChatClient extends BaseNettyClient<
 
             WebSocketCommand webSocketCommand = null;
             try {
-                webSocketCommand = HuyaMsgFactory.getInstance(getConfig().getRoomId()).createSendMessageReq(msg, getConfig().getVer(), getConfig().getCookie());
+                webSocketCommand = HuyaMsgFactory.getInstance(getConfig().getRoomId()).createSendMessageReq(roomInitResult, msg, getConfig().getVer(), getConfig().getCookie());
             } catch (Exception e) {
                 log.error("huya弹幕包创建失败", e);
                 if (failed != null) {

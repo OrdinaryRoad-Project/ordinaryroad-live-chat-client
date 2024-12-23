@@ -31,19 +31,24 @@ import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpStatus;
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.text.StringEscapeUtils;
 import tech.ordinaryroad.live.chat.client.codec.douyin.constant.DouyinGiftCountCalculationTimeEnum;
 import tech.ordinaryroad.live.chat.client.codec.douyin.constant.DouyinRoomStatusEnum;
 import tech.ordinaryroad.live.chat.client.codec.douyin.msg.DouyinGiftMsg;
 import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.GiftMessage;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
+import tech.ordinaryroad.live.chat.client.commons.util.OrJacksonUtil;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCookieUtil;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatHttpUtil;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Pattern;
 
 /**
  * @author mjz
@@ -61,11 +66,13 @@ public class DouyinApis {
     public static final String PATTERN_USER_UNIQUE_ID = "\\\\\"user_unique_id\\\\\":\\\\\"(\\d+)\\\\\"";
     public static final String PATTERN_ROOM_ID = "\\\\\"roomId\\\\\":\\\\\"(\\d+)\\\\\"";
     public static final String PATTERN_ROOM_STATUS = "\\\\\"status_str\\\\\":\\\\\"(\\d+)\\\\\"";
+    public static final String PATTERN_ROOM_INFO = "\\\\\"roomInfo\\\\\":(\\{.*?\\}),\\\\\"emojiList\\\\\"";
     /**
      * 礼物连击缓存
      */
     private static final TimedCache<String, GiftMessage> DOUYIN_GIFT_MSG_CACHE = new TimedCache<>(300 * 1000L, new ConcurrentHashMap<>());
 
+    @SneakyThrows
     public static RoomInitResult roomInit(Object roomId, String cookie, RoomInitResult roomInitResult) {
         Map<String, String> cookieMap = OrLiveChatCookieUtil.parseCookieString(cookie);
 
@@ -96,6 +103,21 @@ public class DouyinApis {
             throw new BaseException("获取" + roomId + "直播间状态失败");
         }
 
+        String roomInfoString = null;
+        List<String> allGroups = ReUtil.getAllGroups(Pattern.compile(PATTERN_ROOM_INFO), body2, false, true);
+        for (String allGroup : allGroups) {
+            if (!StrUtil.equals(allGroup, "{}")) {
+                roomInfoString = StringEscapeUtils.unescapeJson(allGroup);
+                ;
+                break;
+            }
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("roomInfoString: {}", roomInfoString);
+        }
+
+        JsonNode roomInfoJsonNode = OrJacksonUtil.getInstance().readTree(roomInfoString);
+
         roomInitResult = Optional.ofNullable(roomInitResult).orElseGet(() -> RoomInitResult.builder().build());
         roomInitResult.setTtwid(ttwid);
         roomInitResult.setMsToken(msToken);
@@ -103,6 +125,7 @@ public class DouyinApis {
         roomInitResult.setRealRoomId(realRoomId);
         roomInitResult.setUserUniqueId(user_unique_id);
         roomInitResult.setRoomStatus(DouyinRoomStatusEnum.getByCode(roomStatus));
+        roomInitResult.setRoomInfoJsonNode(roomInfoJsonNode);
         return roomInitResult;
     }
 
@@ -174,5 +197,18 @@ public class DouyinApis {
         private long realRoomId;
         private String userUniqueId;
         private DouyinRoomStatusEnum roomStatus;
+
+        // TODO REFACTOR THIS
+        private JsonNode roomInfoJsonNode;
+
+        public String getRoomTitle() {
+            String roomTitle = null;
+            try {
+                roomTitle = roomInfoJsonNode.get("room").get("title").asText();
+            } catch (Exception e) {
+                // ignored
+            }
+            return roomTitle;
+        }
     }
 }

@@ -52,6 +52,8 @@ public class KuaishouLiveChatClientConfig extends BaseNettyClientConfig {
      * <p>
      * {@link RoomInfoGetTypeEnum#NOT_COOKIE}：
      * 不使用Config中配置的Cookie初始化直播间信息
+     * <p>
+     * 默认：{@link RoomInfoGetTypeEnum#COOKIE}
      *
      * @see RoomInfoGetTypeEnum
      */

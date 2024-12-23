@@ -1,5 +1,6 @@
 package tech.ordinaryroad.live.chat.client.codec.douyu.api;
 
+import cn.hutool.core.lang.Assert;
 import org.junit.jupiter.api.Test;
 import tech.ordinaryroad.live.chat.client.codec.douyu.msg.dto.GiftPropSingle;
 
@@ -26,5 +27,13 @@ class DouyuApisTest {
     void getGiftInfo() {
         GiftPropSingle giftByPid = DouyuApis.getGiftPropSingleByPid("4");
         assertEquals("赞", giftByPid.getName());
+    }
+
+    @Test
+    void testRoomTitle() {
+        Assert.notBlank(DouyuApis.roomInit(74751L, null).getRoomTitle());
+        Assert.notBlank(DouyuApis.roomInit(22222L, null).getRoomTitle());
+        Assert.notBlank(DouyuApis.roomInit(6073358L, null).getRoomTitle());
+        Assert.notBlank(DouyuApis.roomInit(6525105L, null).getRoomTitle());
     }
 }
