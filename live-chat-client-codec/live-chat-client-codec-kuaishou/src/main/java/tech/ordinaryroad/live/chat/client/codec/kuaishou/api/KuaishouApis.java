@@ -60,7 +60,7 @@ public class KuaishouApis {
     public static final TimedCache<String, Map<String, GiftInfo>> RESULT_CACHE = new TimedCache<>(TimeUnit.DAYS.toMillis(1));
     public static final String KEY_RESULT_CACHE_GIFT_ITEMS = "GIFT_ITEMS";
     public static final String PATTERN_LIVE_STREAM_ID = "\"liveStream\":\\{\"id\":\"([\\w\\d-_]+)\"";
-    public static final String PATTERN_ROOM_TITLE = "\"author\".*?[\"name\"]{1}:(.*?),\"description\"";
+    public static final String PATTERN_ROOM_TITLE = "\"author\":\\{[^}]*\"name\":\"([^\"]+)\"";
     public static final String USER_AGENT = GlobalHeaders.INSTANCE.header(Header.USER_AGENT).replace("Hutool", "");
     /**
      * 礼物连击缓存
