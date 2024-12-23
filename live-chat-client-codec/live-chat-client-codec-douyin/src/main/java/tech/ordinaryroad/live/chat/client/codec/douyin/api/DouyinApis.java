@@ -108,7 +108,6 @@ public class DouyinApis {
         for (String allGroup : allGroups) {
             if (!StrUtil.equals(allGroup, "{}")) {
                 roomInfoString = StringEscapeUtils.unescapeJson(allGroup);
-                ;
                 break;
             }
         }
