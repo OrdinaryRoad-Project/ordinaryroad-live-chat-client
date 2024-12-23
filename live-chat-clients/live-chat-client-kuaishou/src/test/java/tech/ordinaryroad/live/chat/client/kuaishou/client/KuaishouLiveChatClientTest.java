@@ -148,6 +148,8 @@ class KuaishouLiveChatClientTest {
 
         client.addStatusChangeListener((evt, oldStatus, newStatus) -> {
             if (newStatus == ClientStatusEnums.CONNECTED) {
+                log.warn("{} 已连接", client.getConfig().getRoomId());
+                log.warn("房间标题 {}", client.getRoomInitResult().getRoomTitle());
                 // 连接成功10秒后发送弹幕
                 ThreadUtil.execAsync(() -> {
                     ThreadUtil.sleep(10000);

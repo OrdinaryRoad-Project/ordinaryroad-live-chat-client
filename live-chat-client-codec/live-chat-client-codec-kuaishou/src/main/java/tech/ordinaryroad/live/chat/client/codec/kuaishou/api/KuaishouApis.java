@@ -60,6 +60,7 @@ public class KuaishouApis {
     public static final TimedCache<String, Map<String, GiftInfo>> RESULT_CACHE = new TimedCache<>(TimeUnit.DAYS.toMillis(1));
     public static final String KEY_RESULT_CACHE_GIFT_ITEMS = "GIFT_ITEMS";
     public static final String PATTERN_LIVE_STREAM_ID = "\"liveStream\":\\{\"id\":\"([\\w\\d-_]+)\"";
+    public static final String PATTERN_ROOM_TITLE = "\"author\".*?[\"name\"]{1}:(.*?),\"description\"";
     public static final String USER_AGENT = GlobalHeaders.INSTANCE.header(Header.USER_AGENT).replace("Hutool", "");
     /**
      * 礼物连击缓存
@@ -91,6 +92,7 @@ public class KuaishouApis {
         roomInitResult.setToken(websocketinfo.required("token").asText());
         roomInitResult.setWebsocketUrls(websocketUrlList);
         roomInitResult.setLiveStreamId(liveStreamId);
+        roomInitResult.set_roomTitle(ReUtil.getGroup1(PATTERN_ROOM_TITLE, body));
         return roomInitResult;
     }
 
@@ -103,10 +105,10 @@ public class KuaishouApis {
         HttpResponse response = createGetRequest("https://live.kuaishou.com/live_api/liveroom/livedetail?principalId=" + roomId, StrUtil.EMPTY)
                 .execute();
 
-        JsonNode bodyDataNode = responseInterceptor(response.body());
-        JsonNode websocketInfoNode = bodyDataNode.get("websocketInfo");
+        JsonNode livedetailJsonNode = responseInterceptor(response.body());
+        JsonNode websocketInfoNode = livedetailJsonNode.get("websocketInfo");
 
-        String liveStreamId = bodyDataNode.get("liveStream").required("id").asText(StrUtil.EMPTY);
+        String liveStreamId = livedetailJsonNode.get("liveStream").required("id").asText(StrUtil.EMPTY);
         if (StrUtil.isBlankIfStr(liveStreamId)) {
             throwExceptionWithTip("主播未开播，liveStreamId为空");
         }
@@ -124,6 +126,7 @@ public class KuaishouApis {
         roomInitResult.setToken(token);
         roomInitResult.setWebsocketUrls(websocketUrlList);
         roomInitResult.setLiveStreamId(liveStreamId);
+        roomInitResult.setLivedetailJsonNode(livedetailJsonNode);
         return roomInitResult;
     }
 
@@ -348,6 +351,18 @@ public class KuaishouApis {
         private String token;
         private String liveStreamId;
         private List<String> websocketUrls;
+        private JsonNode livedetailJsonNode;
+
+        // TODO REFACTOR THIS
+        private String _roomTitle;
+
+        public String getRoomTitle() {
+            if (StrUtil.isNotBlank(_roomTitle)) {
+                return _roomTitle;
+            } else {
+                return livedetailJsonNode.get("author").get("name").asText();
+            }
+        }
     }
 
     @Data
