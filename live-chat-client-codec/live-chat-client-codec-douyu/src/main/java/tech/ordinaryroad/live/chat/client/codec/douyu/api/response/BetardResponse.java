@@ -40,16 +40,16 @@ public class BetardResponse {
 
     private JsonNode room_gg;
     private int is_newbie;
-    private String near_show_time;
+    private JsonNode near_show_time;
     private JsonNode launch_remind;
-    private long cache_time;
+    private Long cache_time;
     private List<String> black;
     private String can_send_gift;
     private Room room;
     private String page_url;
-    private int cate_id;
+    private Integer cate_id;
     private String share_swf_url;
-    private boolean qqLotterySwitch;
+    private Boolean qqLotterySwitch;
     private List<String> home_ad_info;
     private String VoddUploadUrl;
     private String faceList;
@@ -65,16 +65,16 @@ public class BetardResponse {
     private JsonNode qqgroup;
     private JsonNode post_list;
     private List<String> h5_guardJS;
-    private int h5_default;
+    private Integer h5_default;
     private Room_args room_args;
     private String bind_vodCateUrl;
     private List<Integer> yzpk_cate2_id_list;
-    private boolean var_is_yz;
+    private Boolean var_is_yz;
     private String var_yz_pk_name;
-    private int barrage_praise;
+    private Integer barrage_praise;
     private JsonNode serviceSwitch;
-    private int player_barrage;
+    private Integer player_barrage;
     private JsonNode staticWebconfHash;
-    private int barrage_timeout_downgrade;
+    private Integer barrage_timeout_downgrade;
 
 }

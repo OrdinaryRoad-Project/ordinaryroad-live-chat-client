@@ -108,11 +108,13 @@ public class KuaishouApis {
         JsonNode livedetailJsonNode = responseInterceptor(response.body());
         JsonNode websocketInfoNode = livedetailJsonNode.get("websocketInfo");
 
-        String liveStreamId = livedetailJsonNode.get("liveStream").required("id").asText(StrUtil.EMPTY);
+        JsonNode liveStreamJsonNode = livedetailJsonNode.get("liveStream");
+
+        String liveStreamId = OrJacksonUtil.getTextOrDefault(liveStreamJsonNode, "id", StrUtil.EMPTY);
         if (StrUtil.isBlankIfStr(liveStreamId)) {
             throwExceptionWithTip("主播未开播，liveStreamId为空");
         }
-        String token = websocketInfoNode.required("token").asText(StrUtil.EMPTY);
+        String token = OrJacksonUtil.getTextOrDefault(websocketInfoNode, "token", StrUtil.EMPTY);
         if (StrUtil.isBlankIfStr(token)) {
             throwExceptionWithTip("主播未开播，token获取失败");
         }
@@ -235,12 +237,13 @@ public class KuaishouApis {
     }
 
     private static JsonNode responseInterceptor(String responseString) {
+        List<Integer> notLivingCode = CollUtil.newArrayList(671, 677);
         try {
             JsonNode jsonNode = OrJacksonUtil.getInstance().readTree(responseString);
             JsonNode data = jsonNode.required("data");
             if (data.has("result")) {
                 int result = data.get("result").asInt();
-                if (result != 1) {
+                if (result != 1 && !CollUtil.contains(notLivingCode, result)) {
                     String message = "";
                     switch (result) {
                         case 2: {
