@@ -29,6 +29,12 @@ package tech.ordinaryroad.live.chat.client.commons.base.constant;
  * @date 2024/3/10
  */
 public enum LiveStatusAction {
+    /**
+     * 直播开始
+     */
     BEGIN,
+    /**
+     * 直播结束
+     */
     END
 }
