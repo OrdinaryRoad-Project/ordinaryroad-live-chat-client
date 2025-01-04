@@ -29,13 +29,13 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.codec.douyu.api.DouyuApis;
 import tech.ordinaryroad.live.chat.client.codec.douyu.constant.DouyuClientModeEnum;
 import tech.ordinaryroad.live.chat.client.codec.douyu.constant.DouyuCmdEnum;
 import tech.ordinaryroad.live.chat.client.codec.douyu.msg.base.IDouyuMsg;
 import tech.ordinaryroad.live.chat.client.codec.douyu.msg.factory.DouyuMsgFactory;
+import tech.ordinaryroad.live.chat.client.codec.douyu.room.DouyuRoomInitResult;
 import tech.ordinaryroad.live.chat.client.douyu.config.DouyuLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuConnectionListener;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuMsgListener;
@@ -53,15 +53,13 @@ import java.util.function.Consumer;
 @Slf4j
 public abstract class BaseDouyuLiveChatClient extends BaseNettyClient<
         DouyuLiveChatClientConfig,
+        DouyuRoomInitResult,
         DouyuCmdEnum,
         IDouyuMsg,
         IDouyuMsgListener,
         DouyuConnectionHandler,
         DouyuBinaryFrameHandler
         > {
-
-    @Getter
-    protected volatile DouyuApis.RoomInitResult roomInitResult;
 
     private final DouyuClientModeEnum mode;
 
@@ -96,15 +94,8 @@ public abstract class BaseDouyuLiveChatClient extends BaseNettyClient<
     }
 
     @Override
-    public void connect(Runnable success, Consumer<Throwable> failed) {
-        if (roomInitResult == null) {
-            synchronized (BaseDouyuLiveChatClient.class) {
-                if (roomInitResult == null) {
-                    roomInitResult = DouyuApis.roomInit(getConfig().getRoomId(), getConfig().getCookie(), roomInitResult);
-                }
-            }
-        }
-        super.connect(success, failed);
+    public DouyuRoomInitResult initRoom() {
+        return DouyuApis.roomInit(getConfig().getRoomId(), getConfig().getCookie(), roomInitResult);
     }
 
     @Override

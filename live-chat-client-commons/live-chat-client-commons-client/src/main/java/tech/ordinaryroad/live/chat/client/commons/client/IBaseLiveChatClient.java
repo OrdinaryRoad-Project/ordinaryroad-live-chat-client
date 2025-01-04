@@ -25,6 +25,7 @@
 package tech.ordinaryroad.live.chat.client.commons.client;
 
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener;
+import tech.ordinaryroad.live.chat.client.commons.base.room.IRoomInitResult;
 import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
 import tech.ordinaryroad.live.chat.client.commons.client.listener.IClientStatusChangeListener;
 
@@ -35,7 +36,9 @@ import java.util.function.Consumer;
  * @author mjz
  * @date 2023/9/5
  */
-public interface IBaseLiveChatClient<MsgListener extends IBaseMsgListener<?, ?>> {
+public interface IBaseLiveChatClient<
+        RoomInitResult extends IRoomInitResult,
+        MsgListener extends IBaseMsgListener<?, ?>> {
 
     void init();
 
@@ -54,6 +57,11 @@ public interface IBaseLiveChatClient<MsgListener extends IBaseMsgListener<?, ?>>
     void connect(Runnable success);
 
     void connect();
+
+    /**
+     * 获取房间信息
+     */
+    RoomInitResult initRoom();
 
     /**
      * 手动断开连接

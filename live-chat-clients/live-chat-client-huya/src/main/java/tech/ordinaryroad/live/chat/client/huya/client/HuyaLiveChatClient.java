@@ -32,13 +32,13 @@ import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolConfig;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
 import io.netty.handler.codec.http.websocketx.WebSocketVersion;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.codec.huya.api.HuyaApis;
 import tech.ordinaryroad.live.chat.client.codec.huya.constant.HuyaCmdEnum;
 import tech.ordinaryroad.live.chat.client.codec.huya.msg.WebSocketCommand;
 import tech.ordinaryroad.live.chat.client.codec.huya.msg.base.IHuyaMsg;
 import tech.ordinaryroad.live.chat.client.codec.huya.msg.factory.HuyaMsgFactory;
+import tech.ordinaryroad.live.chat.client.codec.huya.room.RoomInitResult;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
 import tech.ordinaryroad.live.chat.client.huya.config.HuyaLiveChatClientConfig;
@@ -62,14 +62,12 @@ import java.util.function.Consumer;
 @Slf4j
 public class HuyaLiveChatClient extends BaseNettyClient<
         HuyaLiveChatClientConfig,
+        RoomInitResult,
         HuyaCmdEnum,
         IHuyaMsg,
         IHuyaMsgListener,
         HuyaConnectionHandler,
         HuyaBinaryFrameHandler> {
-
-    @Getter
-    private HuyaApis.RoomInitResult roomInitResult = HuyaApis.RoomInitResult.builder().build();
 
     public HuyaLiveChatClient(HuyaLiveChatClientConfig config, List<IHuyaMsgListener> msgListeners, IHuyaConnectionListener connectionListener, EventLoopGroup workerGroup) {
         super(config, workerGroup, connectionListener);
@@ -114,9 +112,8 @@ public class HuyaLiveChatClient extends BaseNettyClient<
     }
 
     @Override
-    public void connect(Runnable success, Consumer<Throwable> failed) {
-        roomInitResult = HuyaApis.roomInit(getConfig().getRoomId(), roomInitResult);
-        super.connect(success, failed);
+    public RoomInitResult initRoom() {
+        return HuyaApis.roomInit(getConfig().getRoomId(), roomInitResult);
     }
 
     @Override

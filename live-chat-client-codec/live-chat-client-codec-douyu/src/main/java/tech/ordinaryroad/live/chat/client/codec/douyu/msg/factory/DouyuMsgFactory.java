@@ -34,6 +34,7 @@ import tech.ordinaryroad.live.chat.client.codec.douyu.api.DouyuApis;
 import tech.ordinaryroad.live.chat.client.codec.douyu.constant.DouyuClientModeEnum;
 import tech.ordinaryroad.live.chat.client.codec.douyu.msg.*;
 import tech.ordinaryroad.live.chat.client.codec.douyu.msg.base.BaseDouyuCmdMsg;
+import tech.ordinaryroad.live.chat.client.codec.douyu.room.DouyuRoomInitResult;
 import tech.ordinaryroad.live.chat.client.codec.douyu.util.DouyuCodecUtil;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCookieUtil;
@@ -75,7 +76,7 @@ public class DouyuMsgFactory {
      * @param cookie 浏览器Cookie，发送弹幕时必传
      * @return AuthWebSocketFrame
      */
-    public ByteBuf createAuth(DouyuApis.RoomInitResult roomInitResult, DouyuClientModeEnum mode, String ver, String aver, String cookie) {
+    public ByteBuf createAuth(DouyuRoomInitResult roomInitResult, DouyuClientModeEnum mode, String ver, String aver, String cookie) {
         try {
             // type@=loginreq/roomid@=7750753/dfl@=/username@=visitor10424697/uid@=1168052601/ver@=20220825/aver@=218101901/ct@=0/
             LoginreqMsg loginreqMsg;
@@ -126,7 +127,7 @@ public class DouyuMsgFactory {
         }
     }
 
-    public ByteBuf createAuth(DouyuApis.RoomInitResult roomInitResult, DouyuClientModeEnum mode, String ver, String aver) {
+    public ByteBuf createAuth(DouyuRoomInitResult roomInitResult, DouyuClientModeEnum mode, String ver, String aver) {
         return this.createAuth(roomInitResult, mode, ver, aver, null);
     }
 

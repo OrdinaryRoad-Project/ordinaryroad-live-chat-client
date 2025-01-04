@@ -76,6 +76,7 @@ class KuaishouLiveChatClientTest {
 
 
                 .roomId("KPL704668133")
+                // .roomInfoGetType(RoomInfoGetTypeEnum.NOT_COOKIE)
                 .build();
 
         client = new KuaishouLiveChatClient(config, new IKuaishouMsgListener() {

@@ -41,6 +41,7 @@ import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
+import tech.ordinaryroad.live.chat.client.commons.base.room.IRoomInitResult;
 import tech.ordinaryroad.live.chat.client.commons.client.BaseLiveChatClient;
 import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatUrlUtil;
@@ -61,13 +62,14 @@ import java.util.function.Consumer;
 @Slf4j
 public abstract class BaseNettyClient
         <Config extends BaseNettyClientConfig,
+                RoomInitResult extends IRoomInitResult,
                 CmdEnum extends Enum<CmdEnum>,
                 Msg extends IMsg,
                 MsgListener extends IBaseMsgListener<BinaryFrameHandler, CmdEnum>,
                 ConnectionHandler extends BaseConnectionHandler<ConnectionHandler>,
                 BinaryFrameHandler extends BaseBinaryFrameHandler<BinaryFrameHandler, CmdEnum, Msg, MsgListener>
                 >
-        extends BaseLiveChatClient<Config, MsgListener>
+        extends BaseLiveChatClient<Config, RoomInitResult, MsgListener>
         implements IBaseConnectionListener<ConnectionHandler> {
 
     @Getter
@@ -143,6 +145,7 @@ public abstract class BaseNettyClient
 
     @Override
     public void connect(Runnable success, Consumer<Throwable> failed) {
+        super.connect(success, failed);
         if (this.cancelReconnect) {
             this.cancelReconnect = false;
         }

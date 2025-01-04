@@ -22,23 +22,37 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.servers.netty.client.handler;
+package tech.ordinaryroad.live.chat.client.codec.kuaishou.room;
 
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.socket.SocketChannel;
-import lombok.Getter;
-import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
+import cn.hutool.core.util.StrUtil;
+import com.fasterxml.jackson.databind.JsonNode;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import tech.ordinaryroad.live.chat.client.commons.base.room.IRoomInitResult;
 
-/**
- * @author mjz
- * @date 2024/3/22
- */
-public abstract class BaseNettyClientChannelInitializer<CLIENT extends BaseNettyClient<?, ?, ?, ?, ?, ?, ?>> extends ChannelInitializer<SocketChannel> {
+import java.util.List;
 
-    @Getter
-    protected final CLIENT client;
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class RoomInitResult implements IRoomInitResult {
+    private String token;
+    private String liveStreamId;
+    private List<String> websocketUrls;
+    private JsonNode livedetailJsonNode;
 
-    public BaseNettyClientChannelInitializer(CLIENT client) {
-        this.client = client;
+    // TODO REFACTOR THIS
+    private String _roomTitle;
+
+    @Override
+    public String getRoomTitle() {
+        if (StrUtil.isNotBlank(_roomTitle)) {
+            return _roomTitle;
+        } else {
+            return livedetailJsonNode.get("author").get("name").asText();
+        }
     }
 }

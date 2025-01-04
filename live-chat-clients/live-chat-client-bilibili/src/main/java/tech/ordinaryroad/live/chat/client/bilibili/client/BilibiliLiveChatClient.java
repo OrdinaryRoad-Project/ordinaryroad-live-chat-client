@@ -34,7 +34,6 @@ import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolConfig;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
 import io.netty.handler.codec.http.websocketx.WebSocketVersion;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.bilibili.config.BilibiliLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliConnectionListener;
@@ -46,6 +45,7 @@ import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliLiveCha
 import tech.ordinaryroad.live.chat.client.codec.bilibili.api.BilibiliApis;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.constant.BilibiliCmdEnum;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.base.IBilibiliMsg;
+import tech.ordinaryroad.live.chat.client.codec.bilibili.room.BilibiliRoomInitResult;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
@@ -64,15 +64,13 @@ import java.util.function.Consumer;
 @Slf4j
 public class BilibiliLiveChatClient extends BaseNettyClient<
         BilibiliLiveChatClientConfig,
+        BilibiliRoomInitResult,
         BilibiliCmdEnum,
         IBilibiliMsg,
         IBilibiliMsgListener,
         BilibiliConnectionHandler,
         BilibiliBinaryFrameHandler
         > {
-
-    @Getter
-    private BilibiliApis.RoomInitResult roomInitResult = new BilibiliApis.RoomInitResult();
 
     public BilibiliLiveChatClient(BilibiliLiveChatClientConfig config, List<IBilibiliMsgListener> msgListeners, IBilibiliConnectionListener connectionListener, EventLoopGroup workerGroup) {
         super(config, workerGroup, connectionListener);
@@ -122,9 +120,8 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
     }
 
     @Override
-    public void connect(Runnable success, Consumer<Throwable> failed) {
-        roomInitResult = BilibiliApis.roomInit(getConfig().getRoomId(), getConfig().getCookie(), roomInitResult);
-        super.connect(success, failed);
+    public BilibiliRoomInitResult initRoom() {
+        return BilibiliApis.roomInit(getConfig().getRoomId(), getConfig().getCookie(), roomInitResult);
     }
 
     @Override

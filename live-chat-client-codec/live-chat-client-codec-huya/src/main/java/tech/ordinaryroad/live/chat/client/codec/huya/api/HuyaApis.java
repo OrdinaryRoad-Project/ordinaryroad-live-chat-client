@@ -30,13 +30,14 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpStatus;
-import lombok.*;
+import lombok.Cleanup;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.codec.huya.api.response.TtPlayerCfg;
 import tech.ordinaryroad.live.chat.client.codec.huya.api.response.TtPlayerConf;
 import tech.ordinaryroad.live.chat.client.codec.huya.api.response.TtProfileInfo;
 import tech.ordinaryroad.live.chat.client.codec.huya.api.response.TtRoomData;
 import tech.ordinaryroad.live.chat.client.codec.huya.msg.dto.PropsItem;
+import tech.ordinaryroad.live.chat.client.codec.huya.room.RoomInitResult;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.util.OrJacksonUtil;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatHttpUtil;
@@ -114,25 +115,5 @@ public class HuyaApis {
     public static HttpRequest createGetRequest(String url, String cookies) {
         return OrLiveChatHttpUtil.createGet(url)
                 .cookie(cookies);
-    }
-
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Builder
-    public static class RoomInitResult {
-
-        private String lSubChannelId;
-        private Long lChannelId;
-        private Long lYyid;
-
-        private TtRoomData ttRoomData;
-        private TtProfileInfo ttProfileInfo;
-        private TtPlayerCfg ttPlayerCfg;
-        private TtPlayerConf ttPlayerConf;
-
-        public String getRoomTitle() {
-            return ttRoomData.getIntroduction();
-        }
     }
 }

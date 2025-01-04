@@ -22,23 +22,40 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.servers.netty.client.handler;
+package tech.ordinaryroad.live.chat.client.codec.bilibili.api.response;
 
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.socket.SocketChannel;
-import lombok.Getter;
-import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
+import com.fasterxml.jackson.databind.JsonNode;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import tech.ordinaryroad.live.chat.client.codec.bilibili.constant.BilibiliLiveStatusEnum;
 
-/**
- * @author mjz
- * @date 2024/3/22
- */
-public abstract class BaseNettyClientChannelInitializer<CLIENT extends BaseNettyClient<?, ?, ?, ?, ?, ?, ?>> extends ChannelInitializer<SocketChannel> {
+import java.util.List;
 
-    @Getter
-    protected final CLIENT client;
-
-    public BaseNettyClientChannelInitializer(CLIENT client) {
-        this.client = client;
-    }
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class RoomPlayInfoResult {
+    private long room_id;
+    private int short_id;
+    private long uid;
+    private boolean is_hidden;
+    private boolean is_locked;
+    private boolean is_portrait;
+    private BilibiliLiveStatusEnum live_status;
+    private int hidden_till;
+    private int lock_till;
+    private boolean encrypted;
+    private boolean pwd_verified;
+    private long live_time;
+    private int room_shield;
+    private List<Integer> all_special_types;
+    private JsonNode playurl_info;
+    private int official_type;
+    private int official_room_id;
+    private int risk_with_delay;
+    private JsonNode pure_control_function;
+    private JsonNode degraded_playurl;
 }

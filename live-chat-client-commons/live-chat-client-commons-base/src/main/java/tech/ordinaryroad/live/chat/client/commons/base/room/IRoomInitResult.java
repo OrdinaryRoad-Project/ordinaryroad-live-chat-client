@@ -22,23 +22,23 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.servers.netty.client.handler;
-
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.socket.SocketChannel;
-import lombok.Getter;
-import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
+package tech.ordinaryroad.live.chat.client.commons.base.room;
 
 /**
  * @author mjz
- * @date 2024/3/22
+ * @date 2025/1/4
  */
-public abstract class BaseNettyClientChannelInitializer<CLIENT extends BaseNettyClient<?, ?, ?, ?, ?, ?, ?>> extends ChannelInitializer<SocketChannel> {
+public interface IRoomInitResult {
 
-    @Getter
-    protected final CLIENT client;
+    /**
+     * 获取房间标题
+     */
+    String getRoomTitle();
 
-    public BaseNettyClientChannelInitializer(CLIENT client) {
-        this.client = client;
+    /**
+     * 获取房间描述
+     */
+    default String getRoomDescription() {
+        return "";
     }
 }

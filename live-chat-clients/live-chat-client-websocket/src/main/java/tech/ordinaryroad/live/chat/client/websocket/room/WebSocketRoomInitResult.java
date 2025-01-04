@@ -22,23 +22,23 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.servers.netty.client.handler;
+package tech.ordinaryroad.live.chat.client.websocket.room;
 
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.socket.SocketChannel;
-import lombok.Getter;
-import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
+import lombok.Builder;
+import lombok.Data;
+import tech.ordinaryroad.live.chat.client.commons.base.room.IRoomInitResult;
 
 /**
  * @author mjz
- * @date 2024/3/22
+ * @date 2025/1/4
  */
-public abstract class BaseNettyClientChannelInitializer<CLIENT extends BaseNettyClient<?, ?, ?, ?, ?, ?, ?>> extends ChannelInitializer<SocketChannel> {
-
-    @Getter
-    protected final CLIENT client;
-
-    public BaseNettyClientChannelInitializer(CLIENT client) {
-        this.client = client;
+@Data
+//@AllArgsConstructor
+//@NoArgsConstructor
+@Builder
+public class WebSocketRoomInitResult implements IRoomInitResult {
+    @Override
+    public String getRoomTitle() {
+        return "";
     }
 }

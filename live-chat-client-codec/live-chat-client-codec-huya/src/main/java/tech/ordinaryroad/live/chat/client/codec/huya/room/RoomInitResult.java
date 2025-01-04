@@ -21,36 +21,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package tech.ordinaryroad.live.chat.client.codec.bilibili.api.response;
+
+package tech.ordinaryroad.live.chat.client.codec.huya.room;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import tech.ordinaryroad.live.chat.client.codec.bilibili.api.dto.Playurl_info;
-
-import java.util.List;
+import tech.ordinaryroad.live.chat.client.codec.huya.api.response.TtPlayerCfg;
+import tech.ordinaryroad.live.chat.client.codec.huya.api.response.TtPlayerConf;
+import tech.ordinaryroad.live.chat.client.codec.huya.api.response.TtProfileInfo;
+import tech.ordinaryroad.live.chat.client.codec.huya.api.response.TtRoomData;
+import tech.ordinaryroad.live.chat.client.commons.base.room.IRoomInitResult;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoomInitRes {
-    private long room_id;
-    private int short_id;
-    private long uid;
-    private boolean is_hidden;
-    private boolean is_locked;
-    private boolean is_portrait;
-    private int live_status;
-    private int hidden_till;
-    private int lock_till;
-    private boolean encrypted;
-    private boolean pwd_verified;
-    private long live_time;
-    private int room_shield;
-    private List<Integer> all_special_types;
-    private Playurl_info playurl_info;
-    private int official_type;
-    private int official_room_id;
-    private int risk_with_delay;
-    private String multi_screen_info;
+@Builder
+public class RoomInitResult implements IRoomInitResult {
+
+    private String lSubChannelId;
+    private Long lChannelId;
+    private Long lYyid;
+
+    private TtRoomData ttRoomData;
+    private TtProfileInfo ttProfileInfo;
+    private TtPlayerCfg ttPlayerCfg;
+    private TtPlayerConf ttPlayerConf;
+
+    @Override
+    public String getRoomTitle() {
+        return ttRoomData.getIntroduction();
+    }
 }

@@ -31,6 +31,7 @@ import tech.ordinaryroad.live.chat.client.bilibili.config.BilibiliLiveChatClient
 import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliMsgListener;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.api.BilibiliApis;
+import tech.ordinaryroad.live.chat.client.codec.bilibili.api.response.RoomPlayInfoResult;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.constant.BilibiliCmdEnum;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.constant.BilibiliLiveStatusEnum;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.*;
@@ -160,7 +161,7 @@ class BilibiliLiveChatClientTest {
 //                    });
 //                });
                 } else if (oldStatus == ClientStatusEnums.RECONNECTING) {
-                    BilibiliApis.RoomPlayInfoResult roomPlayInfo = BilibiliApis.getRoomPlayInfo(client.getConfig().getRoomId(), client.getConfig().getCookie());
+                    RoomPlayInfoResult roomPlayInfo = BilibiliApis.getRoomPlayInfo(client.getConfig().getRoomId(), client.getConfig().getCookie());
                     BilibiliLiveStatusEnum liveStatus = roomPlayInfo.getLive_status();
                     log.error("重连后的开播状态: {}", liveStatus);
                 }

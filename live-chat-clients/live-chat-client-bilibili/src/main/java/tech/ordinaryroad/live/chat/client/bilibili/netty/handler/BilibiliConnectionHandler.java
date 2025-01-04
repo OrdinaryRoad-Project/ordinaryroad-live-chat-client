@@ -30,9 +30,9 @@ import io.netty.channel.ChannelHandler;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.bilibili.client.BilibiliLiveChatClient;
-import tech.ordinaryroad.live.chat.client.codec.bilibili.api.BilibiliApis;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.constant.ProtoverEnum;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.factory.BilibiliMsgFactory;
+import tech.ordinaryroad.live.chat.client.codec.bilibili.room.BilibiliRoomInitResult;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientConnectionHandler;
 
@@ -66,7 +66,7 @@ public class BilibiliConnectionHandler extends BaseNettyClientConnectionHandler<
      * 发送认证包需要
      * 以ClientConfig为主
      */
-    private final BilibiliApis.RoomInitResult roomInitResult;
+    private final BilibiliRoomInitResult roomInitResult;
 
     public BilibiliConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, BilibiliLiveChatClient client, IBaseConnectionListener<BilibiliConnectionHandler> listener) {
         super(webSocketProtocolHandler, client, listener);
@@ -80,7 +80,7 @@ public class BilibiliConnectionHandler extends BaseNettyClientConnectionHandler<
         this(webSocketProtocolHandler, client, null);
     }
 
-    public BilibiliConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, BilibiliApis.RoomInitResult roomInitResult, long roomId, ProtoverEnum protover, IBaseConnectionListener<BilibiliConnectionHandler> listener, String cookie) {
+    public BilibiliConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, BilibiliRoomInitResult roomInitResult, long roomId, ProtoverEnum protover, IBaseConnectionListener<BilibiliConnectionHandler> listener, String cookie) {
         super(webSocketProtocolHandler, listener);
         this.roomInitResult = roomInitResult;
         this.roomId = roomId;
@@ -88,15 +88,15 @@ public class BilibiliConnectionHandler extends BaseNettyClientConnectionHandler<
         this.cookie = cookie;
     }
 
-    public BilibiliConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, BilibiliApis.RoomInitResult roomInitResult, long roomId, ProtoverEnum protover, IBaseConnectionListener<BilibiliConnectionHandler> listener) {
+    public BilibiliConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, BilibiliRoomInitResult roomInitResult, long roomId, ProtoverEnum protover, IBaseConnectionListener<BilibiliConnectionHandler> listener) {
         this(webSocketProtocolHandler, roomInitResult, roomId, protover, listener, null);
     }
 
-    public BilibiliConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, BilibiliApis.RoomInitResult roomInitResult, long roomId, ProtoverEnum protover, String cookie) {
+    public BilibiliConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, BilibiliRoomInitResult roomInitResult, long roomId, ProtoverEnum protover, String cookie) {
         this(webSocketProtocolHandler, roomInitResult, roomId, protover, null, cookie);
     }
 
-    public BilibiliConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, BilibiliApis.RoomInitResult roomInitResult, long roomId, ProtoverEnum protover) {
+    public BilibiliConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, BilibiliRoomInitResult roomInitResult, long roomId, ProtoverEnum protover) {
         this(webSocketProtocolHandler, roomInitResult, roomId, protover, null, null);
     }
 
@@ -127,7 +127,7 @@ public class BilibiliConnectionHandler extends BaseNettyClientConnectionHandler<
         if (log.isDebugEnabled()) {
             log.debug("发送认证包");
         }
-        channel.writeAndFlush(getWebSocketFrameFactory(getRoomId()).createAuth(ProtoverEnum.HEARTBEAT_AUTH_NO_COMPRESSION, roomInitResult))
+        channel.writeAndFlush(getWebSocketFrameFactory(getRoomId()).createAuth(ProtoverEnum.HEARTBEAT_AUTH_NO_COMPRESSION, this.getRoomInitResult()))
                 .addListener(future -> {
                     if (future.isSuccess()) {
                         if (log.isDebugEnabled()) {
@@ -149,5 +149,9 @@ public class BilibiliConnectionHandler extends BaseNettyClientConnectionHandler<
 
     private String getCookie() {
         return client != null ? client.getConfig().getCookie() : cookie;
+    }
+
+    public BilibiliRoomInitResult getRoomInitResult() {
+        return client != null ? client.getRoomInitResult() : roomInitResult;
     }
 }

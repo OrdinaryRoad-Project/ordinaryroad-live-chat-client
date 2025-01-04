@@ -26,9 +26,11 @@ package tech.ordinaryroad.live.chat.client.codec.bilibili.api;
 
 import cn.hutool.cache.impl.TimedCache;
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.lang.Pair;
 import cn.hutool.core.thread.ThreadUtil;
-import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.crypto.digest.MD5;
 import cn.hutool.http.HttpResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -36,20 +38,19 @@ import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.api.request.BilibiliLikeReportV3Request;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.api.request.BilibiliSendMsgRequest;
-import tech.ordinaryroad.live.chat.client.codec.bilibili.api.response.RoomInfoRes;
-import tech.ordinaryroad.live.chat.client.codec.bilibili.api.response.RoomInitRes;
-import tech.ordinaryroad.live.chat.client.codec.bilibili.constant.BilibiliLiveStatusEnum;
+import tech.ordinaryroad.live.chat.client.codec.bilibili.api.response.RoomPlayInfoResult;
+import tech.ordinaryroad.live.chat.client.codec.bilibili.room.BilibiliRoomInitResult;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.util.OrJacksonUtil;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCookieUtil;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatHttpUtil;
 
+import java.nio.charset.StandardCharsets;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 
 /**
@@ -71,22 +72,39 @@ public class BilibiliApis {
     private static final String API_FRONTEND_FINGER_SPI = "https://api.bilibili.com/x/frontend/finger/spi";
     private static final String API_V = "https://data.bilibili.com/v/";
     private static final String API_WEB_INTERFACE_NAV = "https://api.bilibili.com/x/web-interface/nav";
-    private static final String API_DANMU_INFO = "https://api.live.bilibili.com/xlive/web-room/v1/index/getDanmuInfo";
+
+    // https://api.live.bilibili.com/room/v2/Room/get_by_ids?ids[]=545068
+    private static final String API_ROOM_GET_BY_IDS = "https://api.live.bilibili.com/room/v2/Room/get_by_ids";
     private static final String API_ROOM_PLAY_INFO = "https://api.live.bilibili.com/xlive/web-room/v2/index/getRoomPlayInfo";
+    // https://api.live.bilibili.com/xlive/web-room/v1/index/getInfoByRoom?room_id=545068&web_location=444.8&w_rid=c1d9bd0905ede21b6a5398d73a475179&wts=1735972204
+    // https://api.live.bilibili.com/xlive/web-room/v1/index/getInfoByRoom?room_id=545068&web_location=444.8&w_rid=bf3c3e54df97078fb7b777759d0d1f3f&wts=1735974591
+    private static final String API_INFO_BY_ROOM = "https://api.live.bilibili.com/xlive/web-room/v1/index/getInfoByRoom";
+    private static final String API_DANMU_INFO = "https://api.live.bilibili.com/xlive/web-room/v1/index/getDanmuInfo";
 
     @SneakyThrows
-    public static RoomInitResult roomInit(long roomId, String cookie, RoomInitResult roomInitResult) {
+    public static BilibiliRoomInitResult roomInit(long roomId, String cookie, BilibiliRoomInitResult roomInitResult) {
         @Cleanup
         HttpResponse response = OrLiveChatHttpUtil.createGet("https://live.bilibili.com/" + roomId).execute();
         String body = response.body();
 
-        String wnimwJsonString = ReUtil.getGroup1(PATTERN_WINDOW_NEPTUNE_IS_MY_WAIFU, body);
-        JsonNode wnimwJson = OrJacksonUtil.getInstance().readTree(wnimwJsonString);
-        RoomInitRes roomInitRes = OrJacksonUtil.getInstance().readValue(wnimwJson.get("roomInitRes").get("data").toString(), RoomInitRes.class);
-        RoomInfoRes roomInfoRes = OrJacksonUtil.getInstance().readValue(wnimwJson.get("roomInfoRes").get("data").toString(), RoomInfoRes.class);
+        RoomPlayInfoResult roomPlayInfo = getRoomPlayInfo(roomId, 0, cookie);
+        long realRoomId = roomPlayInfo.getRoom_id();
 
-        RoomPlayInfoResult roomPlayInfo = getRoomPlayInfo(roomId, cookie);
-        long realRoomId = roomPlayInfo.room_id;
+        @Cleanup
+        HttpResponse roomGetByIdResponse = OrLiveChatHttpUtil.createGet(API_ROOM_GET_BY_IDS + "?ids[]=" + realRoomId).execute();
+        JsonNode roomGetByIdData = responseInterceptor(roomGetByIdResponse.body());
+        RoomByIds roomByIds = OrJacksonUtil.getInstance().readValue(roomGetByIdData.get(realRoomId + "").toString(), RoomByIds.class);
+
+        /**
+         Map<String, String> wbiSign = getWbiSign(StrUtil.format(API_INFO_BY_ROOM + "?room_id={}&web_location=444.8", realRoomId));
+         @Cleanup HttpResponse roomInfoResponse = OrLiveChatHttpUtil.createGet(API_INFO_BY_ROOM + "?" + OrLiveChatHttpUtil.toParams(wbiSign))
+         .cookie(cookie)
+         .header(Header.HOST, "api.live.bilibili.com")
+         .header(Header.REFERER, "https://live.bilibili.com/")
+         .execute();
+         String roomInfoResJson = roomInfoResponse.body();
+         RoomInfoRes roomInfoRes = OrJacksonUtil.getInstance().readValue(roomInfoResJson, RoomInfoRes.class);
+         **/
 
         String b_3;
         String uid;
@@ -110,18 +128,18 @@ public class BilibiliApis {
 
         DanmuinfoResult danmuInfo = getDanmuInfo(realRoomId, cookie);
 
-        roomInitResult = Optional.ofNullable(roomInitResult).orElseGet(() -> new RoomInitResult.RoomInitResultBuilder().build());
+        roomInitResult = Optional.ofNullable(roomInitResult).orElseGet(() -> BilibiliRoomInitResult.builder().build());
         roomInitResult.setBuvid3(b_3);
         roomInitResult.setUid(uid);
         roomInitResult.setDanmuinfoResult(danmuInfo);
         roomInitResult.setRoomPlayInfoResult(roomPlayInfo);
-        roomInitResult.setRoomInitRes(roomInitRes);
-        roomInitResult.setRoomInfoRes(roomInfoRes);
+        // roomInitResult.setRoomInfoRes(roomInfoRes);
+        roomInitResult.setRoomByIds(roomByIds);
         return roomInitResult;
     }
 
     @SneakyThrows
-    public static RoomInitResult roomInit(long roomId, String cookie) {
+    public static BilibiliRoomInitResult roomInit(long roomId, String cookie) {
         return roomInit(roomId, cookie, null);
     }
 
@@ -160,12 +178,56 @@ public class BilibiliApis {
         return response.getCookieValue("buvid3");
     }
 
+    private static Pair<String, String> wbiKeys = null;
+    private static final List<Integer> mixinKeyEncTab = CollUtil.newArrayList(46, 47, 18, 2, 53, 8, 23, 32, 15, 50, 10, 31, 58, 3, 45, 35, 27, 43, 5, 49, 33, 9, 42, 19, 29, 28, 14, 39, 12, 38, 41, 13, 37, 48, 7, 16, 24, 55, 40, 61, 26, 17, 0, 1, 60, 51, 30, 4, 22, 25, 54, 21, 56, 59, 6, 63, 57, 62, 11, 36, 20, 34, 44, 52);
+
     @SneakyThrows
     public static void webInterfaceNav(String cookie) {
         @Cleanup
         HttpResponse response = OrLiveChatHttpUtil.createGet(API_WEB_INTERFACE_NAV)
                 .cookie(cookie)
                 .execute();
+        JsonNode data = OrJacksonUtil.getInstance().readTree(response.body()).get("data");
+        String imgUrl = data.get("wbi_img").get("img_url").asText();
+        String subUrl = data.get("wbi_img").get("sub_url").asText();
+
+        String imgKey = StrUtil.split(imgUrl.substring(imgUrl.lastIndexOf('/') + 1), '.').get(0);
+        String subKey = StrUtil.split(subUrl.substring(imgUrl.lastIndexOf('/') + 1), '.').get(0);
+        wbiKeys = Pair.of(imgKey, subKey);
+    }
+
+    /**
+     * 对 imgKey 和 subKey 进行字符顺序打乱编码
+     */
+    public static String getMixinKey(String origin) {
+        StringBuilder result = new StringBuilder();
+        for (int i : mixinKeyEncTab) {
+            result.append(origin.charAt(i));
+        }
+        return result.substring(0, Math.min(result.length(), 32));
+    }
+
+    public static Map<String, String> getWbiSign(String url) {
+        if (wbiKeys == null) {
+            webInterfaceNav(null);
+        }
+
+        String mixinKey = getMixinKey(wbiKeys.getKey() + wbiKeys.getValue());
+        long currentTime = System.currentTimeMillis() / 1000;
+
+        Map<String, String> paramMap = OrLiveChatHttpUtil.decodeParamMap(url, StandardCharsets.UTF_8);
+        paramMap.put("wts", currentTime + "");
+        paramMap = CollUtil.sort(paramMap, Comparator.naturalOrder());
+
+        Map<String, String> paramMapNew = new HashMap<>();
+        paramMap.forEach((k, v) -> {
+            paramMapNew.put(k, v.chars().mapToObj(ch -> String.valueOf((char) ch))
+                    .filter(c -> !"!'()*".contains(c))
+                    .collect(Collectors.joining()));
+        });
+        String webSign = MD5.create().digestHex(StrUtil.format("{}{}", OrLiveChatHttpUtil.toParams(paramMapNew), mixinKey), StandardCharsets.UTF_8);
+        paramMapNew.put("w_rid", webSign);
+        return paramMapNew;
     }
 
     /**
@@ -215,7 +277,7 @@ public class BilibiliApis {
     @SneakyThrows
     public static RoomPlayInfoResult getRoomPlayInfo(long roomId, int no_playurl, String cookie) {
         @Cleanup
-        HttpResponse response = OrLiveChatHttpUtil.createGet(API_ROOM_PLAY_INFO + "?room_id=" + roomId + "&no_playurl=" + no_playurl + "&mask=1&qn=0&platform=web&protocol=0,1&format=0,1,2&codec=0,1,2&dolby=5&panorama=1")
+        HttpResponse response = OrLiveChatHttpUtil.createGet(API_ROOM_PLAY_INFO + "?room_id=" + roomId + "&no_playurl=" + no_playurl + "&mask=1&qn=0&platform=web&protocol=0,1&format=0,1,2&codec=0,1,2&dolby=5&panorama=1&hdr_type=0,1")
                 .cookie(cookie)
                 .execute();
         return OrJacksonUtil.getInstance().readValue(responseInterceptor(response.body()).toString(), RoomPlayInfoResult.class);
@@ -302,8 +364,8 @@ public class BilibiliApis {
     /**
      * 为主播点赞
      *
-     * @param anchor_id  主播Uid {@link RoomPlayInfoResult#uid}
-     * @param realRoomId 真实房间Id {@link RoomPlayInfoResult#room_id}
+     * @param anchor_id  主播Uid {@link RoomPlayInfoResult#getUid()}
+     * @param realRoomId 真实房间Id {@link RoomPlayInfoResult#getRoom_id()}
      * @param cookie     Cookie
      */
     public static void likeReportV3(long anchor_id, long realRoomId, String cookie) {
@@ -361,46 +423,36 @@ public class BilibiliApis {
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class RoomPlayInfoResult {
-        private long room_id;
-        private int short_id;
+    public static class RoomByIds {
+        private long roomid;
         private long uid;
-        private boolean is_hidden;
-        private boolean is_locked;
-        private boolean is_portrait;
-        private BilibiliLiveStatusEnum live_status;
-        private int hidden_till;
-        private int lock_till;
-        private boolean encrypted;
-        private boolean pwd_verified;
-        private long live_time;
+        private String uname;
+        private String verify;
+        private int virtual;
+        private String cover;
+        private String live_time;
+        private int round_status;
+        private int on_flag;
+        private String title;
+        private String tags;
+        private String lock_status;
+        private String hidden_status;
+        private String user_cover;
+        private int short_id;
+        private int online;
+        private int area;
+        private int area_v2_id;
+        private int area_v2_parent_id;
+        private int attentions;
+        private String background;
+        private int room_silent;
         private int room_shield;
-        private List<Integer> all_special_types;
-        private JsonNode playurl_info;
-        private int official_type;
-        private int official_room_id;
-        private int risk_with_delay;
-    }
-
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Builder
-    public static class RoomInitResult {
-        private String buvid3;
-        private String uid;
-
-        private DanmuinfoResult danmuinfoResult = new DanmuinfoResult();
-        private RoomPlayInfoResult roomPlayInfoResult = new RoomPlayInfoResult();
-
-        private RoomInitRes roomInitRes = new RoomInitRes();
-        private RoomInfoRes roomInfoRes = new RoomInfoRes();
-
-        /**
-         * 直播间标题
-         */
-        public String getRoomTitle() {
-            return roomInfoRes.getRoom_info().getTitle();
-        }
+        private String try_time;
+        private String area_v2_name;
+        private String first_live_time;
+        private long live_id;
+        private int live_status;
+        private String area_v2_parent_name;
+        private String link;
     }
 }
