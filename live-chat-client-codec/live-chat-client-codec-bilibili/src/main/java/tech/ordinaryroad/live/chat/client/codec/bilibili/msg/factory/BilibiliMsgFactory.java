@@ -26,10 +26,10 @@ package tech.ordinaryroad.live.chat.client.codec.bilibili.msg.factory;
 
 import cn.hutool.cache.impl.TimedCache;
 import cn.hutool.core.util.NumberUtil;
-import tech.ordinaryroad.live.chat.client.codec.bilibili.api.BilibiliApis;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.constant.ProtoverEnum;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.HeartbeatMsg;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.UserAuthenticationMsg;
+import tech.ordinaryroad.live.chat.client.codec.bilibili.room.BilibiliRoomInitResult;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -66,7 +66,7 @@ public class BilibiliMsgFactory {
      * @param protover {@link ProtoverEnum}
      * @return AuthWebSocketFrame
      */
-    public UserAuthenticationMsg createAuth(ProtoverEnum protover, BilibiliApis.RoomInitResult roomInitResult) {
+    public UserAuthenticationMsg createAuth(ProtoverEnum protover, BilibiliRoomInitResult roomInitResult) {
         try {
             String buvid3 = roomInitResult.getBuvid3();
             long realRoomId = roomInitResult.getRoomPlayInfoResult().getRoom_id();

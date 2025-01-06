@@ -38,6 +38,7 @@ import tech.ordinaryroad.live.chat.client.codec.kuaishou.constant.RoomInfoGetTyp
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.KuaishouGiftMsg;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf.LiveAudienceStateOuterClass;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf.WebGiftFeedOuterClass;
+import tech.ordinaryroad.live.chat.client.codec.kuaishou.room.RoomInitResult;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.util.OrJacksonUtil;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCookieUtil;
@@ -344,28 +345,6 @@ public class KuaishouApis {
         private String liveStreamId;
         private String content;
         private String color;
-    }
-
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Builder
-    public static class RoomInitResult {
-        private String token;
-        private String liveStreamId;
-        private List<String> websocketUrls;
-        private JsonNode livedetailJsonNode;
-
-        // TODO REFACTOR THIS
-        private String _roomTitle;
-
-        public String getRoomTitle() {
-            if (StrUtil.isNotBlank(_roomTitle)) {
-                return _roomTitle;
-            } else {
-                return livedetailJsonNode.get("author").get("name").asText();
-            }
-        }
     }
 
     @Data

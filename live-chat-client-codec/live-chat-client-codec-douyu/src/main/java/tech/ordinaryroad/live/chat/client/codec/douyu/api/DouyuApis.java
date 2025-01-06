@@ -41,6 +41,7 @@ import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.codec.douyu.api.response.BetardResponse;
 import tech.ordinaryroad.live.chat.client.codec.douyu.msg.dto.GiftListInfo;
 import tech.ordinaryroad.live.chat.client.codec.douyu.msg.dto.GiftPropSingle;
+import tech.ordinaryroad.live.chat.client.codec.douyu.room.DouyuRoomInitResult;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.util.OrJacksonUtil;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCollUtil;
@@ -240,7 +241,7 @@ public class DouyuApis {
     }
 
     @SneakyThrows
-    public static RoomInitResult roomInit(Long roomId, String cookie, RoomInitResult roomInitResult) {
+    public static DouyuRoomInitResult roomInit(Long roomId, String cookie, DouyuRoomInitResult roomInitResult) {
         long realRoomId = getRealRoomId(roomId, cookie);
 
         @Cleanup
@@ -248,17 +249,17 @@ public class DouyuApis {
         String body = response.body();
         BetardResponse betardResponse = OrJacksonUtil.getInstance().readValue(body, BetardResponse.class);
 
-        roomInitResult = Optional.ofNullable(roomInitResult).orElse(RoomInitResult.builder().build());
+        roomInitResult = Optional.ofNullable(roomInitResult).orElse(DouyuRoomInitResult.builder().build());
         roomInitResult.setRealRoomId(realRoomId);
         roomInitResult.setBetardResponse(betardResponse);
         return roomInitResult;
     }
 
-    public static RoomInitResult roomInit(Long roomId, RoomInitResult roomInitResult) {
+    public static DouyuRoomInitResult roomInit(Long roomId, DouyuRoomInitResult roomInitResult) {
         return roomInit(roomId, null, roomInitResult);
     }
 
-    public static RoomInitResult roomInit(Long roomId) {
+    public static DouyuRoomInitResult roomInit(Long roomId) {
         return roomInit(roomId, null, null);
     }
 
@@ -296,19 +297,5 @@ public class DouyuApis {
     public static class Wss {
         private String domain;
         private int port;
-    }
-
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Builder
-    public static class RoomInitResult {
-        private BetardResponse betardResponse;
-
-        private Long realRoomId;
-
-        public String getRoomTitle() {
-            return betardResponse.getRoom().getRoom_name();
-        }
     }
 }

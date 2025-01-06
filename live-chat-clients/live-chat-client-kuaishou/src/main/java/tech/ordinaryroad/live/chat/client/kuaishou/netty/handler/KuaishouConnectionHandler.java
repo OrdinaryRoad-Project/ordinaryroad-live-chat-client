@@ -30,12 +30,12 @@ import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandler;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
 import lombok.extern.slf4j.Slf4j;
-import tech.ordinaryroad.live.chat.client.codec.kuaishou.api.KuaishouApis;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.KuaishouCmdMsg;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf.CSHeartbeatOuterClass;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf.CSWebEnterRoomOuterClass;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf.PayloadTypeOuterClass;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf.SocketMessageOuterClass;
+import tech.ordinaryroad.live.chat.client.codec.kuaishou.room.RoomInitResult;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.kuaishou.client.KuaishouLiveChatClient;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.handler.BaseNettyClientConnectionHandler;
@@ -58,7 +58,7 @@ public class KuaishouConnectionHandler extends BaseNettyClientConnectionHandler<
      * 以ClientConfig为主
      */
     private String cookie;
-    private final KuaishouApis.RoomInitResult roomInitResult;
+    private final RoomInitResult roomInitResult;
 
     public KuaishouConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, KuaishouLiveChatClient client, IBaseConnectionListener<KuaishouConnectionHandler> listener) {
         super(webSocketProtocolHandler, client, listener);
@@ -71,22 +71,22 @@ public class KuaishouConnectionHandler extends BaseNettyClientConnectionHandler<
         this(webSocketProtocolHandler, client, null);
     }
 
-    public KuaishouConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, long roomId, KuaishouApis.RoomInitResult roomInitResult, IBaseConnectionListener<KuaishouConnectionHandler> listener, String cookie) {
+    public KuaishouConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, long roomId, RoomInitResult roomInitResult, IBaseConnectionListener<KuaishouConnectionHandler> listener, String cookie) {
         super(webSocketProtocolHandler, listener);
         this.roomId = roomId;
         this.cookie = cookie;
         this.roomInitResult = roomInitResult;
     }
 
-    public KuaishouConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, long roomId, KuaishouApis.RoomInitResult roomInitResult, IBaseConnectionListener<KuaishouConnectionHandler> listener) {
+    public KuaishouConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, long roomId, RoomInitResult roomInitResult, IBaseConnectionListener<KuaishouConnectionHandler> listener) {
         this(webSocketProtocolHandler, roomId, roomInitResult, listener, null);
     }
 
-    public KuaishouConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, long roomId, KuaishouApis.RoomInitResult roomInitResult, String cookie) {
+    public KuaishouConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, long roomId, RoomInitResult roomInitResult, String cookie) {
         this(webSocketProtocolHandler, roomId, roomInitResult, null, cookie);
     }
 
-    public KuaishouConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, KuaishouApis.RoomInitResult roomInitResult, long roomId) {
+    public KuaishouConnectionHandler(Supplier<WebSocketClientProtocolHandler> webSocketProtocolHandler, RoomInitResult roomInitResult, long roomId) {
         this(webSocketProtocolHandler, roomId, roomInitResult, null, null);
     }
 
@@ -126,8 +126,8 @@ public class KuaishouConnectionHandler extends BaseNettyClientConnectionHandler<
                                 .setPayloadType(PayloadTypeOuterClass.PayloadType.CS_ENTER_ROOM)
                                 .setPayload(
                                         CSWebEnterRoomOuterClass.CSWebEnterRoom.newBuilder()
-                                                .setToken(roomInitResult.getToken())
-                                                .setLiveStreamId(roomInitResult.getLiveStreamId())
+                                                .setToken(getRoomInitResult().getToken())
+                                                .setLiveStreamId(getRoomInitResult().getLiveStreamId())
                                                 .setPageId(RandomUtil.randomString(16) + System.currentTimeMillis())
                                                 .build()
                                                 .toByteString()
@@ -143,5 +143,9 @@ public class KuaishouConnectionHandler extends BaseNettyClientConnectionHandler<
 
     private String getCookie() {
         return client != null ? client.getConfig().getCookie() : cookie;
+    }
+
+    public RoomInitResult getRoomInitResult() {
+        return client != null ? client.getRoomInitResult() : roomInitResult;
     }
 }

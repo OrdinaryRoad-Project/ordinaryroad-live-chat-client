@@ -34,11 +34,11 @@ import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolConfig;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
 import io.netty.handler.codec.http.websocketx.WebSocketVersion;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.api.KuaishouApis;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.base.IKuaishouMsg;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf.PayloadTypeOuterClass;
+import tech.ordinaryroad.live.chat.client.codec.kuaishou.room.RoomInitResult;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
@@ -62,14 +62,12 @@ import java.util.function.Consumer;
 @Slf4j
 public class KuaishouLiveChatClient extends BaseNettyClient<
         KuaishouLiveChatClientConfig,
+        RoomInitResult,
         PayloadTypeOuterClass.PayloadType,
         IKuaishouMsg,
         IKuaishouMsgListener,
         KuaishouConnectionHandler,
         KuaishouBinaryFrameHandler> {
-
-    @Getter
-    KuaishouApis.RoomInitResult roomInitResult = new KuaishouApis.RoomInitResult();
 
     public KuaishouLiveChatClient(KuaishouLiveChatClientConfig config, List<IKuaishouMsgListener> msgListeners, IKuaishouConnectionListener connectionListener, EventLoopGroup workerGroup) {
         super(config, workerGroup, connectionListener);
@@ -146,9 +144,8 @@ public class KuaishouLiveChatClient extends BaseNettyClient<
     }
 
     @Override
-    public void connect(Runnable success, Consumer<Throwable> failed) {
-        roomInitResult = KuaishouApis.roomInit(getConfig().getRoomId(), getConfig().getRoomInfoGetType(), getConfig().getCookie(), roomInitResult);
-        super.connect(success, failed);
+    public RoomInitResult initRoom() {
+        return KuaishouApis.roomInit(getConfig().getRoomId(), getConfig().getRoomInfoGetType(), getConfig().getCookie(), roomInitResult);
     }
 
     @Override

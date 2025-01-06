@@ -22,23 +22,37 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.servers.netty.client.handler;
+package tech.ordinaryroad.live.chat.client.codec.douyin.room;
 
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.socket.SocketChannel;
-import lombok.Getter;
-import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
+import com.fasterxml.jackson.databind.JsonNode;
+import lombok.*;
+import tech.ordinaryroad.live.chat.client.codec.douyin.constant.DouyinRoomStatusEnum;
+import tech.ordinaryroad.live.chat.client.commons.base.room.IRoomInitResult;
 
-/**
- * @author mjz
- * @date 2024/3/22
- */
-public abstract class BaseNettyClientChannelInitializer<CLIENT extends BaseNettyClient<?, ?, ?, ?, ?, ?, ?>> extends ChannelInitializer<SocketChannel> {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class DouyinRoomInitResult implements IRoomInitResult {
+    private String ttwid;
+    private String msToken;
+    private String acNonce;
+    private long realRoomId;
+    private String userUniqueId;
+    private DouyinRoomStatusEnum roomStatus;
 
-    @Getter
-    protected final CLIENT client;
+    // TODO REFACTOR THIS
+    private JsonNode roomInfoJsonNode;
 
-    public BaseNettyClientChannelInitializer(CLIENT client) {
-        this.client = client;
+    @Override
+    public String getRoomTitle() {
+        String roomTitle = null;
+        try {
+            roomTitle = roomInfoJsonNode.get("room").get("title").asText();
+        } catch (Exception e) {
+            // ignored
+        }
+        return roomTitle;
     }
 }

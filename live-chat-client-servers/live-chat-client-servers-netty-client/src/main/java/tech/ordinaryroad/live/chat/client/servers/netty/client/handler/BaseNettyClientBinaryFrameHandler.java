@@ -39,7 +39,7 @@ import java.util.List;
  * @date 2023/8/30
  */
 public abstract class BaseNettyClientBinaryFrameHandler<
-        Client extends BaseNettyClient<?, ?, ?, ?, ?, ?>,
+        Client extends BaseNettyClient<?, ?, ?, ?, ?, ?, ?>,
         BinaryFrameHandler extends BaseBinaryFrameHandler<BinaryFrameHandler, CmdEnum, Msg, MsgListener>,
         CmdEnum extends Enum<CmdEnum>,
         Msg extends IMsg,

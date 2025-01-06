@@ -49,6 +49,7 @@ import tech.ordinaryroad.live.chat.client.websocket.msg.base.IWebSocketMsg;
 import tech.ordinaryroad.live.chat.client.websocket.netty.handler.WebSocketBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.websocket.netty.handler.WebSocketChannelInitializer;
 import tech.ordinaryroad.live.chat.client.websocket.netty.handler.WebSocketConnectionHandler;
+import tech.ordinaryroad.live.chat.client.websocket.room.WebSocketRoomInitResult;
 
 import java.nio.charset.StandardCharsets;
 import java.util.function.Consumer;
@@ -60,6 +61,7 @@ import java.util.function.Consumer;
 @Slf4j
 public class WebSocketLiveChatClient extends BaseNettyClient<
         WebSocketLiveChatClientConfig,
+        WebSocketRoomInitResult,
         WebSocketCmdEnum,
         IWebSocketMsg,
         IWebSocketMsgListener,
@@ -136,6 +138,11 @@ public class WebSocketLiveChatClient extends BaseNettyClient<
             });
         }
         super.init();
+    }
+
+    @Override
+    public WebSocketRoomInitResult initRoom() {
+        return WebSocketRoomInitResult.builder().build();
     }
 
     @Override

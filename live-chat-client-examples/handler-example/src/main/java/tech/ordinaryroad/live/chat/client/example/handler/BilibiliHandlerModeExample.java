@@ -51,6 +51,7 @@ import tech.ordinaryroad.live.chat.client.codec.bilibili.api.BilibiliApis;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.constant.BilibiliCmdEnum;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.constant.ProtoverEnum;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.*;
+import tech.ordinaryroad.live.chat.client.codec.bilibili.room.BilibiliRoomInitResult;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
@@ -73,7 +74,7 @@ public class BilibiliHandlerModeExample {
     static String cookie = System.getenv("cookie");
     // TODO 修改版本
     static ProtoverEnum protover = ProtoverEnum.NORMAL_BROTLI;
-    static BilibiliApis.RoomInitResult roomInitResult = BilibiliApis.roomInit(roomId, cookie);
+    static BilibiliRoomInitResult roomInitResult = BilibiliApis.roomInit(roomId, cookie);
 
     public static void main(String[] args) {
         log.error("cookie: {}", cookie);

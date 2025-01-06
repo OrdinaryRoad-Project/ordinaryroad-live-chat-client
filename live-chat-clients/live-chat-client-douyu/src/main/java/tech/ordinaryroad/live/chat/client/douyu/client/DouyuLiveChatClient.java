@@ -37,6 +37,7 @@ import tech.ordinaryroad.live.chat.client.codec.douyu.msg.ChatmsgMsg;
 import tech.ordinaryroad.live.chat.client.codec.douyu.msg.DgbMsg;
 import tech.ordinaryroad.live.chat.client.codec.douyu.msg.MsgrepeaterproxylistMsg;
 import tech.ordinaryroad.live.chat.client.codec.douyu.msg.UenterMsg;
+import tech.ordinaryroad.live.chat.client.codec.douyu.room.DouyuRoomInitResult;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
@@ -185,7 +186,12 @@ public class DouyuLiveChatClient extends DouyuWsLiveChatClient implements IDouyu
                             connectionListener.onDisconnected(connectionHandler);
                         }
                     }
-                });
+                }) {
+                    @Override
+                    public DouyuRoomInitResult initRoom() {
+                        return DouyuLiveChatClient.this.getRoomInitResult();
+                    }
+                };
                 this.danmuClient.addStatusChangeListener((evt, oldStatus, newStatus) -> {
                     switch (newStatus) {
                         case CONNECTED:

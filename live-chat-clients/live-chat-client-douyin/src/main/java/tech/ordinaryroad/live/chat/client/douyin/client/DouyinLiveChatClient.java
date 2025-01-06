@@ -36,12 +36,12 @@ import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolConfig;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
 import io.netty.handler.codec.http.websocketx.WebSocketVersion;
-import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.codec.douyin.api.DouyinApis;
 import tech.ordinaryroad.live.chat.client.codec.douyin.constant.DouyinCmdEnum;
 import tech.ordinaryroad.live.chat.client.codec.douyin.msg.base.IDouyinMsg;
+import tech.ordinaryroad.live.chat.client.codec.douyin.room.DouyinRoomInitResult;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
@@ -69,10 +69,7 @@ import java.util.function.Consumer;
  * @date 2024/1/2
  */
 @Slf4j
-public class DouyinLiveChatClient extends BaseNettyClient<DouyinLiveChatClientConfig, DouyinCmdEnum, IDouyinMsg, IDouyinMsgListener, DouyinConnectionHandler, DouyinBinaryFrameHandler> {
-
-    @Getter
-    private DouyinApis.RoomInitResult roomInitResult = new DouyinApis.RoomInitResult();
+public class DouyinLiveChatClient extends BaseNettyClient<DouyinLiveChatClientConfig, DouyinRoomInitResult, DouyinCmdEnum, IDouyinMsg, IDouyinMsgListener, DouyinConnectionHandler, DouyinBinaryFrameHandler> {
 
     public DouyinLiveChatClient(DouyinLiveChatClientConfig config, List<IDouyinMsgListener> msgListeners, IDouyinConnectionListener connectionListener, EventLoopGroup workerGroup) {
         super(config, workerGroup, connectionListener);
@@ -142,9 +139,8 @@ public class DouyinLiveChatClient extends BaseNettyClient<DouyinLiveChatClientCo
     }
 
     @Override
-    public void connect(Runnable success, Consumer<Throwable> failed) {
-        roomInitResult = DouyinApis.roomInit(getConfig().getRoomId(), getConfig().getCookie(), roomInitResult);
-        super.connect(success, failed);
+    public DouyinRoomInitResult initRoom() {
+        return DouyinApis.roomInit(getConfig().getRoomId(), getConfig().getCookie(), roomInitResult);
     }
 
     @Override

@@ -37,6 +37,7 @@ import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.HeartbeatMsg;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.UserAuthenticationMsg;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.base.IBilibiliMsg;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.factory.BilibiliMsgFactory;
+import tech.ordinaryroad.live.chat.client.codec.bilibili.room.BilibiliRoomInitResult;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.util.BilibiliCodecUtil;
 
 import java.net.URI;
@@ -51,7 +52,7 @@ import java.util.concurrent.TimeUnit;
 public class BilibiliCodecExampleJavaWebSocketClient {
     static long roomId = 7777;
     static ProtoverEnum protoverEnum = ProtoverEnum.NORMAL_BROTLI;
-    static BilibiliApis.RoomInitResult roomInitResult = BilibiliApis.roomInit(roomId, null);
+    static BilibiliRoomInitResult roomInitResult = BilibiliApis.roomInit(roomId, null);
 
     static WebSocketClient webSocketClient;
 

@@ -22,23 +22,26 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.servers.netty.client.handler;
+package tech.ordinaryroad.live.chat.client.codec.douyu.room;
 
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.socket.SocketChannel;
-import lombok.Getter;
-import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import tech.ordinaryroad.live.chat.client.codec.douyu.api.response.BetardResponse;
+import tech.ordinaryroad.live.chat.client.commons.base.room.IRoomInitResult;
 
-/**
- * @author mjz
- * @date 2024/3/22
- */
-public abstract class BaseNettyClientChannelInitializer<CLIENT extends BaseNettyClient<?, ?, ?, ?, ?, ?, ?>> extends ChannelInitializer<SocketChannel> {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class DouyuRoomInitResult implements IRoomInitResult {
+    private BetardResponse betardResponse;
 
-    @Getter
-    protected final CLIENT client;
+    private Long realRoomId;
 
-    public BaseNettyClientChannelInitializer(CLIENT client) {
-        this.client = client;
+    @Override
+    public String getRoomTitle() {
+        return betardResponse.getRoom().getRoom_name();
     }
 }

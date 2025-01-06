@@ -26,6 +26,7 @@ package tech.ordinaryroad.live.chat.client.commons.client;
 
 import lombok.Getter;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener;
+import tech.ordinaryroad.live.chat.client.commons.base.room.IRoomInitResult;
 import tech.ordinaryroad.live.chat.client.commons.client.config.BaseLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
 import tech.ordinaryroad.live.chat.client.commons.client.listener.IClientStatusChangeListener;
@@ -44,9 +45,13 @@ import java.util.function.Consumer;
  */
 public abstract class BaseLiveChatClient<
         Config extends BaseLiveChatClientConfig,
+        RoomInitResult extends IRoomInitResult,
         MsgListener extends IBaseMsgListener<?, ?>
-        > implements IBaseLiveChatClient<MsgListener> {
+        > implements IBaseLiveChatClient<RoomInitResult, MsgListener> {
 
+    @Getter
+    protected RoomInitResult roomInitResult;
+    @Getter
     private final Config config;
     private volatile ClientStatusEnums status = ClientStatusEnums.NEW;
     protected PropertyChangeSupport statusChangeSupport = new PropertyChangeSupport(status);
@@ -64,8 +69,10 @@ public abstract class BaseLiveChatClient<
         this.config.setSocks5ProxyPassword(this.config.getSocks5ProxyPassword());
     }
 
-    public Config getConfig() {
-        return config;
+    @Override
+    public void connect(Runnable success, Consumer<Throwable> failed) {
+        // 开始连接前先初始化房间信息
+        roomInitResult = this.initRoom();
     }
 
     @Override

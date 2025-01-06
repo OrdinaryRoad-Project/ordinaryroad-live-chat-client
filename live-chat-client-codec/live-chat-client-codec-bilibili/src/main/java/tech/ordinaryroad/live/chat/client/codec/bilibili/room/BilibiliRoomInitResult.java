@@ -22,23 +22,34 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.servers.netty.client.handler;
+package tech.ordinaryroad.live.chat.client.codec.bilibili.room;
 
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.socket.SocketChannel;
-import lombok.Getter;
-import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
+import lombok.*;
+import tech.ordinaryroad.live.chat.client.codec.bilibili.api.BilibiliApis;
+import tech.ordinaryroad.live.chat.client.codec.bilibili.api.response.RoomInfoRes;
+import tech.ordinaryroad.live.chat.client.codec.bilibili.api.response.RoomPlayInfoResult;
+import tech.ordinaryroad.live.chat.client.commons.base.room.IRoomInitResult;
 
-/**
- * @author mjz
- * @date 2024/3/22
- */
-public abstract class BaseNettyClientChannelInitializer<CLIENT extends BaseNettyClient<?, ?, ?, ?, ?, ?, ?>> extends ChannelInitializer<SocketChannel> {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class BilibiliRoomInitResult implements IRoomInitResult {
+    private String buvid3;
+    private String uid;
 
-    @Getter
-    protected final CLIENT client;
+    private BilibiliApis.RoomByIds roomByIds;
+    private BilibiliApis.DanmuinfoResult danmuinfoResult = new BilibiliApis.DanmuinfoResult();
+    private RoomPlayInfoResult roomPlayInfoResult = new RoomPlayInfoResult();
 
-    public BaseNettyClientChannelInitializer(CLIENT client) {
-        this.client = client;
+    private RoomInfoRes roomInfoRes = new RoomInfoRes();
+
+    /**
+     * 直播间标题
+     */
+    @Override
+    public String getRoomTitle() {
+        return roomByIds.getTitle();
     }
 }

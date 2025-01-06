@@ -32,13 +32,15 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpStatus;
 import com.fasterxml.jackson.databind.JsonNode;
-import lombok.*;
+import lombok.Cleanup;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.text.StringEscapeUtils;
 import tech.ordinaryroad.live.chat.client.codec.douyin.constant.DouyinGiftCountCalculationTimeEnum;
 import tech.ordinaryroad.live.chat.client.codec.douyin.constant.DouyinRoomStatusEnum;
 import tech.ordinaryroad.live.chat.client.codec.douyin.msg.DouyinGiftMsg;
 import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.GiftMessage;
+import tech.ordinaryroad.live.chat.client.codec.douyin.room.DouyinRoomInitResult;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.util.OrJacksonUtil;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCookieUtil;
@@ -73,7 +75,7 @@ public class DouyinApis {
     private static final TimedCache<String, GiftMessage> DOUYIN_GIFT_MSG_CACHE = new TimedCache<>(300 * 1000L, new ConcurrentHashMap<>());
 
     @SneakyThrows
-    public static RoomInitResult roomInit(Object roomId, String cookie, RoomInitResult roomInitResult) {
+    public static DouyinRoomInitResult roomInit(Object roomId, String cookie, DouyinRoomInitResult roomInitResult) {
         Map<String, String> cookieMap = OrLiveChatCookieUtil.parseCookieString(cookie);
 
         @Cleanup HttpResponse response1 = OrLiveChatHttpUtil.createGet("https://live.douyin.com/").cookie(cookie).execute();
@@ -117,7 +119,7 @@ public class DouyinApis {
 
         JsonNode roomInfoJsonNode = OrJacksonUtil.getInstance().readTree(roomInfoString);
 
-        roomInitResult = Optional.ofNullable(roomInitResult).orElseGet(() -> RoomInitResult.builder().build());
+        roomInitResult = Optional.ofNullable(roomInitResult).orElseGet(() -> DouyinRoomInitResult.builder().build());
         roomInitResult.setTtwid(ttwid);
         roomInitResult.setMsToken(msToken);
         roomInitResult.setAcNonce(__ac_nonce);
@@ -128,15 +130,15 @@ public class DouyinApis {
         return roomInitResult;
     }
 
-    public static RoomInitResult roomInit(Object roomId, String cookie) {
+    public static DouyinRoomInitResult roomInit(Object roomId, String cookie) {
         return roomInit(roomId, cookie, null);
     }
 
-    public static RoomInitResult roomInit(Object roomId) {
+    public static DouyinRoomInitResult roomInit(Object roomId) {
         return roomInit(roomId, null, null);
     }
 
-    public static RoomInitResult roomInit(Object roomId, RoomInitResult roomInitResult) {
+    public static DouyinRoomInitResult roomInit(Object roomId, DouyinRoomInitResult roomInitResult) {
         return roomInit(roomId, null, roomInitResult);
     }
 
@@ -182,32 +184,5 @@ public class DouyinApis {
 
         msg.setCalculatedGiftCount((int) giftCount);
         return (int) giftCount;
-    }
-
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Builder
-    public static class RoomInitResult {
-        private String ttwid;
-        private String msToken;
-        private String acNonce;
-        private long realRoomId;
-        private String userUniqueId;
-        private DouyinRoomStatusEnum roomStatus;
-
-        // TODO REFACTOR THIS
-        private JsonNode roomInfoJsonNode;
-
-        public String getRoomTitle() {
-            String roomTitle = null;
-            try {
-                roomTitle = roomInfoJsonNode.get("room").get("title").asText();
-            } catch (Exception e) {
-                // ignored
-            }
-            return roomTitle;
-        }
     }
 }
