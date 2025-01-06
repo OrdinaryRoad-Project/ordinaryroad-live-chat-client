@@ -28,5 +28,8 @@ class BilibiliApisTest {
         Assert.notBlank(BilibiliApis.roomInit(7777, null).getRoomTitle());
         Assert.notBlank(BilibiliApis.roomInit(6, null).getRoomTitle());
         Assert.notBlank(BilibiliApis.roomInit(666, null).getRoomTitle());
+        Assert.notBlank(BilibiliApis.roomInit(30951561, null).getRoomTitle());
+        Assert.notBlank(BilibiliApis.roomInit(1964561642, null).getRoomTitle());
+        Assert.notBlank(BilibiliApis.roomInit(26103248, null).getRoomTitle());
     }
 }
