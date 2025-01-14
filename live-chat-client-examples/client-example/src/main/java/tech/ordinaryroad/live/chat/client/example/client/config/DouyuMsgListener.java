@@ -52,7 +52,7 @@ public class DouyuMsgListener implements IDouyuMsgListener {
     public void onGiftMsg(DouyuBinaryFrameHandler binaryFrameHandler, DgbMsg msg) {
         IDouyuMsgListener.super.onGiftMsg(binaryFrameHandler, msg);
 
-        log.info("{} 收到礼物 {}({}) {} {}({})x{}({})", binaryFrameHandler.getRoomId(), msg.getUsername(), msg.getUid(), "赠送", "`礼物名未知`", msg.getGiftId(), msg.getGiftCount(), msg.getGiftPrice());
+        log.info("{} 收到礼物 {}({}) {} {}({})x{}({})", binaryFrameHandler.getRoomId(), msg.getUsername(), msg.getUid(), "赠送", msg.getGiftName(), msg.getGiftId(), msg.getGiftCount(), msg.getGiftPrice());
     }
 
 }
