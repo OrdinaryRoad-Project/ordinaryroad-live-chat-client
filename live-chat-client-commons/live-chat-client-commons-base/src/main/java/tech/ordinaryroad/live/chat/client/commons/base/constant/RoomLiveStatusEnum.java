@@ -22,22 +22,21 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.commons.util;
-
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.RandomUtil;
-
-import java.util.List;
+package tech.ordinaryroad.live.chat.client.commons.base.constant;
 
 /**
+ * 房间直播状态枚举类
+ *
  * @author mjz
- * @date 2024/3/25
+ * @date 2025/1/15
  */
-public class OrLiveChatCollUtil extends CollUtil {
-    public static <T> T getRandom(List<T> list) {
-        if (CollUtil.isEmpty(list)) {
-            return null;
-        }
-        return CollUtil.get(list, RandomUtil.randomInt(CollUtil.size(list)));
-    }
+public enum RoomLiveStatusEnum {
+    /**
+     * 未开播
+     */
+    STOPPED,
+    /**
+     * 直播中
+     */
+    LIVING,
 }

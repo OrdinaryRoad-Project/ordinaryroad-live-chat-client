@@ -36,18 +36,26 @@
 
 ## 平台适配情况表
 
-| 平台          | LiveChatClient | Cookie | 短直播间id | 发送弹幕 | 为主播点赞 | 直播间信息* |
-|-------------|----------------|--------|--------|------|-------|-------|
-| Bilibili B站 | ✅              | ✅      | ✅      | ✅    | ✅     | ✅ |✅|
-| Douyu 斗鱼    | ✅              | ✅      | ✅      | ✅    | ❌     |✅|
-| Huya 虎牙     | ✅              | ✅      | ✅      | ✅    | ❌     |✅|
-| Douyin 抖音*  | ✅              | ☑️️    | ✅      | ☑️   | ☑️️   |✅|
-| Kuaishou 快手 | ✅              | ✅      | ✅      | ✅    | ✅     |✅|
-| Tiktok* | ✅              | ✅      | ✅      | ☑️    | ☑️     |✅|
+| 平台          | LiveChatClient | Cookie | 短直播间id | 发送弹幕 | 为主播点赞 |
+|-------------|----------------|--------|--------|------|-------|
+| Bilibili B站 | ✅              | ✅      | ✅      | ✅    | ✅     |
+| Douyu 斗鱼    | ✅              | ✅      | ✅      | ✅    | ❌     |
+| Huya 虎牙     | ✅              | ✅      | ✅      | ✅    | ❌     |
+| Douyin 抖音*  | ✅              | ☑️️    | ✅      | ☑️   | ☑️️   |
+| Kuaishou 快手 | ✅              | ✅      | ✅      | ✅    | ✅     |
+| Tiktok*     | ✅              | ✅      | ✅      | ☑️   | ☑️    |
 
-> *暂未完全支持，（Tiktok在测试中）
-> 
-> *直播间信息目前仅支持获取直播间标题
+> *暂未完全支持（Tiktok在测试中）
+
+## 平台直播间信息适配情况表
+
+| 平台          | 房间标题 | 房间描述 | 房间直播状态 |
+|-------------|------|------|--------|
+| Bilibili B站 | ✅    |      | ✅      |
+| Douyu 斗鱼    | ✅    |      | ✅      |
+| Huya 虎牙     | ✅    |      | ✅      |
+| Douyin 抖音*  | ✅    |      | ✅      |
+| Kuaishou 快手 | ✅    | ✅    | ✅      |
 
 ## 平台直播间消息适配情况表
 
@@ -293,41 +301,54 @@ public class ClientModeExample {
 #### 2.1.1 Client相关API
 
 - 连接
-    - `void connect(Runnable success, Consumer<Throwable> failed)`
-    - `void connect(Runnable success)`
-    - `void connect()`
+  - `void connect(Runnable success, Consumer<Throwable> failed)`
+  - `void connect(Runnable success)`
+  - `void connect()`
 - 断开连接
-    - `void disconnect(boolean cancelReconnect)`
-    - `void disconnect()`
+  - `void disconnect(boolean cancelReconnect)`
+  - `void disconnect()`
 - 销毁
-    - `void destroy()`
+  - `void destroy()`
 - 发送消息
-    - `void send(Object msg, Runnable success, Consumer<Throwable> failed)`
-    - `void send(Object msg, Runnable success)`
-    - `void send(Object msg, Consumer<Throwable> failed)`
-    - `void send(Object msg)`
+  - `void send(Object msg, Runnable success, Consumer<Throwable> failed)`
+  - `void send(Object msg, Runnable success)`
+  - `void send(Object msg, Consumer<Throwable> failed)`
+  - `void send(Object msg)`
 - 发送弹幕
-    - `void sendDanmu(Object danmu, Runnable success, Consumer<Throwable> failed)`
-    - `void sendDanmu(Object danmu, Runnable success)`
-    - `void sendDanmu(Object danmu, Consumer<Throwable> failed)`
-    - `void sendDanmu(Object danmu)`
+  - `void sendDanmu(Object danmu, Runnable success, Consumer<Throwable> failed)`
+  - `void sendDanmu(Object danmu, Runnable success)`
+  - `void sendDanmu(Object danmu, Consumer<Throwable> failed)`
+  - `void sendDanmu(Object danmu)`
 - 为主播点赞
-    - `void clickLike(int count, Runnable success, Consumer<Throwable> failed)`
-    - `void clickLike(int count, Runnable success)`
-    - `void clickLike(int count, Consumer<Throwable> failed)`
-    - `void clickLike(int count)`
+  - `void clickLike(int count, Runnable success, Consumer<Throwable> failed)`
+  - `void clickLike(int count, Runnable success)`
+  - `void clickLike(int count, Consumer<Throwable> failed)`
+  - `void clickLike(int count)`
 - 添加消息监听器
-    - `boolean addMsgListener(MsgListener msgListener)`
-    - `boolean addMsgListeners(List<MsgListener> msgListeners)`
+  - `boolean addMsgListener(MsgListener msgListener)`
+  - `boolean addMsgListeners(List<MsgListener> msgListeners)`
 - 移除消息监听器
-    - `boolean removeMsgListener(MsgListener msgListener)`
-    - `boolean removeMsgListeners(List<MsgListener> msgListeners)`
+  - `boolean removeMsgListener(MsgListener msgListener)`
+  - `boolean removeMsgListeners(List<MsgListener> msgListeners)`
 - 获取当前状态
-    - `ClientStatusEnums getStatus()`
+  - `ClientStatusEnums getStatus()`
 - 添加状态变化监听器
-    - `void addStatusChangeListener(IClientStatusChangeListener listener)`
+  - `void addStatusChangeListener(IClientStatusChangeListener listener)`
 - 移除状态变化监听器
-    - `void removeStatusChangeListener(IClientStatusChangeListener listener)`
+  - `void removeStatusChangeListener(IClientStatusChangeListener listener)`
+- 获取 Client 配置信息
+  - `BaseLiveChatClientConfig getConfig()`
+- 获取房间信息
+  - `IRoomInitResult getRoomInitResult()`
+
+#### 2.1.2 房间信息 IRoomInitResult 相关 API
+
+- 获取房间标题
+  - `String getTitle()`
+- 获取房间描述
+  - `String getDescription()`
+- 获取房间直播状态
+  - `RoomLiveStatusEnum getRoomLiveStatus()`
 
 ### 2.2 高级模式
 

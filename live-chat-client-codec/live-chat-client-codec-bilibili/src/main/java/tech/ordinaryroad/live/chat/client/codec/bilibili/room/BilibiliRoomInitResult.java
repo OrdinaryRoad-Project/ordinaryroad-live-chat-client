@@ -28,6 +28,7 @@ import lombok.*;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.api.BilibiliApis;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.api.response.RoomInfoRes;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.api.response.RoomPlayInfoResult;
+import tech.ordinaryroad.live.chat.client.commons.base.constant.RoomLiveStatusEnum;
 import tech.ordinaryroad.live.chat.client.commons.base.room.IRoomInitResult;
 
 @Getter
@@ -51,5 +52,20 @@ public class BilibiliRoomInitResult implements IRoomInitResult {
     @Override
     public String getRoomTitle() {
         return roomByIds.getTitle();
+    }
+
+    @Override
+    public RoomLiveStatusEnum getRoomLiveStatus() {
+        RoomLiveStatusEnum roomLiveStatus = null;
+        switch (roomPlayInfoResult.getLive_status()) {
+            case LIVING:
+                roomLiveStatus = RoomLiveStatusEnum.LIVING;
+                break;
+            case STOPPED:
+                roomLiveStatus = RoomLiveStatusEnum.STOPPED;
+                break;
+            default:
+        }
+        return roomLiveStatus;
     }
 }

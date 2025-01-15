@@ -81,6 +81,8 @@ class HuyaLiveChatClientTest {
                 // bagea
                 .roomId(189201)
                 .roomId("bagea")
+                // 小超梦
+                .roomId("257085")
                 .build();
 
         client = new HuyaLiveChatClient(config, new IHuyaMsgListener() {
@@ -162,6 +164,7 @@ class HuyaLiveChatClientTest {
             if (newStatus == ClientStatusEnums.CONNECTED) {
                 log.warn("{} 已连接", client.getConfig().getRoomId());
                 log.warn("直播间标题：{}", client.getRoomInitResult().getRoomTitle());
+                log.warn("房间直播状态: {}", client.getRoomInitResult().getRoomLiveStatus());
             }
         });
 

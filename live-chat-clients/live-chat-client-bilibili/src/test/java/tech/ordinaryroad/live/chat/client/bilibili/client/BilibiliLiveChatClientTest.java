@@ -151,6 +151,7 @@ class BilibiliLiveChatClientTest {
 
         client.addStatusChangeListener((evt, oldStatus, newStatus) -> {
             if (newStatus == ClientStatusEnums.CONNECTED) {
+                log.warn("房间直播状态: {}", client.getRoomInitResult().getRoomLiveStatus());
                 if (oldStatus == ClientStatusEnums.CONNECTING) {
                     // 0 未开播，1 直播中，2 投稿视频
                     log.error("开播状态: {}", client.getRoomInitResult().getRoomPlayInfoResult().getLive_status());

@@ -26,6 +26,7 @@ package tech.ordinaryroad.live.chat.client.codec.kuaishou.api;
 
 import cn.hutool.cache.impl.TimedCache;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
@@ -60,9 +61,7 @@ public class KuaishouApis {
      */
     public static final TimedCache<String, Map<String, GiftInfo>> RESULT_CACHE = new TimedCache<>(TimeUnit.DAYS.toMillis(1));
     public static final String KEY_RESULT_CACHE_GIFT_ITEMS = "GIFT_ITEMS";
-    public static final String PATTERN_LIVE_STREAM_ID = "\"liveStream\":\\{\"id\":\"([\\w\\d-_]+)\"";
-    public static final String PATTERN_ROOM_TITLE = "\"author\":\\{[^}]*\"name\":\"([^\"]+)\"";
-    public static final String USER_AGENT = GlobalHeaders.INSTANCE.header(Header.USER_AGENT).replace("Hutool", "");
+    public static final String PATTERN_LIVE_ROOM_DETAIL = "\"playList\":\\s*\\[([\\s\\S]*?)\\](?=,\\s*\"loading\"|$)";
     /**
      * 礼物连击缓存
      */
@@ -78,22 +77,37 @@ public class KuaishouApis {
         }
 
         String body = response.body();
-        String liveStreamId = ReUtil.getGroup1(PATTERN_LIVE_STREAM_ID, body);
-        JsonNode websocketinfo = websocketinfo(roomId, liveStreamId, cookie);
-        if (!websocketinfo.has("token")) {
-            throwExceptionWithTip("主播未开播，token获取失败 " + websocketinfo);
+
+        JsonNode livedetailJsonNode = null;
+        String liveRoomDetailJsonString = ReUtil.getGroup1(PATTERN_LIVE_ROOM_DETAIL, body);
+        liveRoomDetailJsonString = liveRoomDetailJsonString.replace("undefined", "null");
+        try {
+            livedetailJsonNode = OrJacksonUtil.getInstance().readTree(liveRoomDetailJsonString);
+        } catch (Exception e) {
+            throwExceptionWithTip(ExceptionUtil.getSimpleMessage(e));
         }
-        ArrayNode websocketUrls = websocketinfo.withArray("websocketUrls");
+
+        String token = null;
         ArrayList<String> websocketUrlList = CollUtil.newArrayList();
-        for (JsonNode websocketUrl : websocketUrls) {
-            websocketUrlList.add(websocketUrl.asText());
+        String liveStreamId = null;
+        if (livedetailJsonNode.has("liveStream") && livedetailJsonNode.get("liveStream").has("id")) {
+            liveStreamId = livedetailJsonNode.get("liveStream").get("id").asText();
+            JsonNode websocketinfo = websocketinfo(roomId, liveStreamId, cookie);
+            if (websocketinfo.has("token")) {
+                token = websocketinfo.get("token").asText();
+            }
+
+            ArrayNode websocketUrls = websocketinfo.withArray("websocketUrls");
+            for (JsonNode websocketUrl : websocketUrls) {
+                websocketUrlList.add(websocketUrl.asText());
+            }
         }
 
         roomInitResult = Optional.ofNullable(roomInitResult).orElseGet(() -> RoomInitResult.builder().build());
-        roomInitResult.setToken(websocketinfo.required("token").asText());
+        roomInitResult.setToken(token);
         roomInitResult.setWebsocketUrls(websocketUrlList);
         roomInitResult.setLiveStreamId(liveStreamId);
-        roomInitResult.set_roomTitle(ReUtil.getGroup1(PATTERN_ROOM_TITLE, body));
+        roomInitResult.setLivedetailJsonNode(livedetailJsonNode);
         return roomInitResult;
     }
 
@@ -108,21 +122,18 @@ public class KuaishouApis {
 
         JsonNode livedetailJsonNode = responseInterceptor(response.body());
         JsonNode websocketInfoNode = livedetailJsonNode.get("websocketInfo");
-
         JsonNode liveStreamJsonNode = livedetailJsonNode.get("liveStream");
 
         String liveStreamId = OrJacksonUtil.getTextOrDefault(liveStreamJsonNode, "id", StrUtil.EMPTY);
-        if (StrUtil.isBlankIfStr(liveStreamId)) {
-            throwExceptionWithTip("主播未开播，liveStreamId为空");
-        }
         String token = OrJacksonUtil.getTextOrDefault(websocketInfoNode, "token", StrUtil.EMPTY);
-        if (StrUtil.isBlankIfStr(token)) {
-            throwExceptionWithTip("主播未开播，token获取失败");
-        }
-        JsonNode webSocketAddressesNode = websocketInfoNode.get("webSocketAddresses");
-        List<String> websocketUrlList = new ArrayList<>(webSocketAddressesNode.size());
-        for (JsonNode tempJsonNode : webSocketAddressesNode) {
-            websocketUrlList.add(tempJsonNode.asText());
+
+        List<String> websocketUrlList = null;
+        if (websocketInfoNode.has("webSocketAddresses")) {
+            JsonNode webSocketAddressesNode = websocketInfoNode.get("webSocketAddresses");
+            websocketUrlList = new ArrayList<>(webSocketAddressesNode.size());
+            for (JsonNode tempJsonNode : webSocketAddressesNode) {
+                websocketUrlList.add(tempJsonNode.asText());
+            }
         }
 
         roomInitResult = Optional.ofNullable(roomInitResult).orElseGet(() -> RoomInitResult.builder().build());
@@ -225,8 +236,7 @@ public class KuaishouApis {
     public static HttpRequest createRequest(Method method, String url, String cookie) {
         return OrLiveChatHttpUtil.createRequest(method, url)
                 .cookie(cookie)
-                .header(Header.HOST, URLUtil.url(url).getHost())
-                .header(Header.USER_AGENT, USER_AGENT);
+                .header(Header.HOST, URLUtil.url(url).getHost());
     }
 
     public static HttpRequest createGetRequest(String url, String cookie) {

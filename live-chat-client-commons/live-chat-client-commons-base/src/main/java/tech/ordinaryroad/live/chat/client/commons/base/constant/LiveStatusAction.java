@@ -25,6 +25,8 @@
 package tech.ordinaryroad.live.chat.client.commons.base.constant;
 
 /**
+ * 直播间状态变化枚举类
+ *
  * @author mjz
  * @date 2024/3/10
  */

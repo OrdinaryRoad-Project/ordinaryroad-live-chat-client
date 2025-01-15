@@ -60,6 +60,7 @@ class DouyuLiveChatClientTest implements IDouyuConnectionListener, IDouyuMsgList
                 // TODO 修改房间id（支持短id）
                 .roomId(74751)
                 .roomId(22222)
+                .roomId(6073358)
                 .build();
 
         client = new DouyuLiveChatClient(config, new IDouyuMsgListener() {
@@ -130,6 +131,7 @@ class DouyuLiveChatClientTest implements IDouyuConnectionListener, IDouyuMsgList
             if (newStatus == ClientStatusEnums.CONNECTED) {
                 log.warn("{} 已连接", client.getConfig().getRoomId());
                 log.warn("直播间标题 {}", client.getRoomInitResult().getRoomTitle());
+                log.warn("房间直播状态: {}", client.getRoomInitResult().getRoomLiveStatus());
             }
         });
 

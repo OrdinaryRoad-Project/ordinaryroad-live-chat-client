@@ -51,7 +51,6 @@ import tech.ordinaryroad.live.chat.client.servers.netty.handler.base.BaseConnect
 
 import java.net.InetSocketAddress;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
@@ -160,12 +159,15 @@ public abstract class BaseNettyClient
         }
 
         String webSocketUriString = getWebSocketUriString();
+        if (StrUtil.isEmpty(webSocketUriString)) {
+            _connectFailed(failed, new BaseException("WebSocket地址为空"));
+            return;
+        }
         int port = OrLiveChatUrlUtil.getWebSocketUriPort(webSocketUriString);
         try {
             this.websocketUri = new URI(webSocketUriString);
-        } catch (URISyntaxException e) {
-            log.error("WebSocket地址解析失败 " + webSocketUriString, e);
-            failed.accept(e);
+        } catch (Exception e) {
+            _connectFailed(failed, e);
             return;
         }
 
@@ -231,11 +233,7 @@ public abstract class BaseNettyClient
                             }
                         });
                     } else {
-                        log.error("连接建立失败", connectFuture.cause());
-                        this.onConnectFailed(this.connectionHandler);
-                        if (failed != null) {
-                            failed.accept(connectFuture.cause());
-                        }
+                        _connectFailed(failed, connectFuture.cause());
                     }
                 });
     }
@@ -358,6 +356,17 @@ public abstract class BaseNettyClient
         this.lastSendDanmuTimeInMillis = System.currentTimeMillis();
         if (log.isDebugEnabled()) {
             log.debug("弹幕发送完成");
+        }
+    }
+
+    /**
+     * 建立连接失败后调用
+     */
+    private void _connectFailed(Consumer<Throwable> failed, Throwable e) {
+        log.error("连接建立失败", e);
+        this.onConnectFailed(this.connectionHandler);
+        if (failed != null) {
+            failed.accept(e);
         }
     }
 }

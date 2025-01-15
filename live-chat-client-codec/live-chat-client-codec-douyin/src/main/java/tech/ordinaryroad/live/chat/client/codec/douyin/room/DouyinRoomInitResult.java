@@ -27,6 +27,7 @@ package tech.ordinaryroad.live.chat.client.codec.douyin.room;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.*;
 import tech.ordinaryroad.live.chat.client.codec.douyin.constant.DouyinRoomStatusEnum;
+import tech.ordinaryroad.live.chat.client.commons.base.constant.RoomLiveStatusEnum;
 import tech.ordinaryroad.live.chat.client.commons.base.room.IRoomInitResult;
 
 @Getter
@@ -54,5 +55,20 @@ public class DouyinRoomInitResult implements IRoomInitResult {
             // ignored
         }
         return roomTitle;
+    }
+
+    @Override
+    public RoomLiveStatusEnum getRoomLiveStatus() {
+        RoomLiveStatusEnum roomLiveStatus = null;
+        switch (roomStatus) {
+            case STOPPED:
+                roomLiveStatus = RoomLiveStatusEnum.STOPPED;
+                break;
+            case LIVING:
+                roomLiveStatus = RoomLiveStatusEnum.LIVING;
+                break;
+            default:
+        }
+        return roomLiveStatus;
     }
 }

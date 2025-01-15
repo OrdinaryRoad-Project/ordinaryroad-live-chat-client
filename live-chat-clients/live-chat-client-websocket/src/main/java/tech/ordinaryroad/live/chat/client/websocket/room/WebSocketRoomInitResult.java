@@ -26,6 +26,7 @@ package tech.ordinaryroad.live.chat.client.websocket.room;
 
 import lombok.Builder;
 import lombok.Data;
+import tech.ordinaryroad.live.chat.client.commons.base.constant.RoomLiveStatusEnum;
 import tech.ordinaryroad.live.chat.client.commons.base.room.IRoomInitResult;
 
 /**
@@ -40,5 +41,10 @@ public class WebSocketRoomInitResult implements IRoomInitResult {
     @Override
     public String getRoomTitle() {
         return "";
+    }
+
+    @Override
+    public RoomLiveStatusEnum getRoomLiveStatus() {
+        return null;
     }
 }
