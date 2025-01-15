@@ -27,10 +27,7 @@ package tech.ordinaryroad.live.chat.client.douyu.netty.handler;
 import io.netty.channel.ChannelHandler;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.codec.douyu.constant.DouyuCmdEnum;
-import tech.ordinaryroad.live.chat.client.codec.douyu.msg.ChatmsgMsg;
-import tech.ordinaryroad.live.chat.client.codec.douyu.msg.DgbMsg;
-import tech.ordinaryroad.live.chat.client.codec.douyu.msg.DouyuCmdMsg;
-import tech.ordinaryroad.live.chat.client.codec.douyu.msg.UenterMsg;
+import tech.ordinaryroad.live.chat.client.codec.douyu.msg.*;
 import tech.ordinaryroad.live.chat.client.codec.douyu.msg.base.IDouyuMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.douyu.client.base.BaseDouyuLiveChatClient;
@@ -75,6 +72,10 @@ public class DouyuBinaryFrameHandler extends BaseNettyClientBinaryFrameHandler<B
             }
             case uenter: {
                 iteratorMsgListeners(msgListener -> msgListener.onEnterRoomMsg(DouyuBinaryFrameHandler.this, (UenterMsg) cmdMsg));
+                break;
+            }
+            case comm_chatmsg: {
+                iteratorMsgListeners(msgListener -> msgListener.onSuperChatMsg(DouyuBinaryFrameHandler.this, (CommChatmsgMsg) cmdMsg));
                 break;
             }
             default: {
