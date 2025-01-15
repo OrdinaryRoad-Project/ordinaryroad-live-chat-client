@@ -31,6 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import tech.ordinaryroad.live.chat.client.codec.douyu.constant.DouyuCmdEnum;
 import tech.ordinaryroad.live.chat.client.codec.douyu.msg.ChatmsgMsg;
+import tech.ordinaryroad.live.chat.client.codec.douyu.msg.CommChatmsgMsg;
 import tech.ordinaryroad.live.chat.client.codec.douyu.msg.DgbMsg;
 import tech.ordinaryroad.live.chat.client.codec.douyu.msg.UenterMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
@@ -60,7 +61,9 @@ class DouyuLiveChatClientTest implements IDouyuConnectionListener, IDouyuMsgList
                 // TODO 修改房间id（支持短id）
                 .roomId(74751)
                 .roomId(22222)
-                .roomId(6073358)
+                .roomId(1126960)
+                .roomId(8834570)
+                .roomId(4767111)
                 .build();
 
         client = new DouyuLiveChatClient(config, new IDouyuMsgListener() {
@@ -88,6 +91,11 @@ class DouyuLiveChatClientTest implements IDouyuConnectionListener, IDouyuMsgList
             @Override
             public void onEnterRoomMsg(UenterMsg msg) {
                 log.info("{} {}({}) 进入直播间", msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid());
+            }
+
+            @Override
+            public void onSuperChatMsg(DouyuBinaryFrameHandler binaryFrameHandler, CommChatmsgMsg msg) {
+                log.info("{} 收到醒目留言 {}({})：{}", binaryFrameHandler.getRoomId(), msg.getUsername(), msg.getUid(), msg.getContent());
             }
 
             @Override

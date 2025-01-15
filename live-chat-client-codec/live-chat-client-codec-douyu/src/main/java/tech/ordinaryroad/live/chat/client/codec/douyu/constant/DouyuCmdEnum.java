@@ -185,6 +185,11 @@ public enum DouyuCmdEnum {
     h5gkcreq(H5gkcreqMsg.class),
     h5cs(H5csMsg.class),
     msgrepeaterproxylist(MsgrepeaterproxylistMsg.class),
+    /**
+     * 高能弹幕
+     * {"type":"comm_chatmsg","tick":null,"res":null,"cmdEnum":null,"cmd":"comm_chatmsg","vrid":"1856171486511906816","btype":"voiceDanmu","chatmsg":{"nn":"King彡吖西","level":"14","type":"chatmsg","rid":"1126960","gag":"0","uid":"16751345","txt":"c桑又在赞elo了，上分给你玩明白了","hidenick":"0","nc":"0","ic":["avatar","016","75","13","45_avatar"],"nl":"0","tbid":"0","tbl":"0","tbvip":"0"},"range":"2","cprice":"3000","cmgType":"1","rid":"1126960","gbtemp":"2","uid":"16751345","crealPrice":"3000","cet":"60","now":"1731380814042","csuperScreen":"0","danmucr":"1"}
+     */
+    comm_chatmsg(CommChatmsgMsg.class),
     ;
 
     private Class<?> tClass;
