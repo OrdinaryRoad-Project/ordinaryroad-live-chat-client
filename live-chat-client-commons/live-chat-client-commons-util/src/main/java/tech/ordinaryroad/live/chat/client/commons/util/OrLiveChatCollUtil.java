@@ -35,6 +35,9 @@ import java.util.List;
  */
 public class OrLiveChatCollUtil extends CollUtil {
     public static <T> T getRandom(List<T> list) {
+        if (CollUtil.isEmpty(list)) {
+            return null;
+        }
         return CollUtil.get(list, RandomUtil.randomInt(CollUtil.size(list)));
     }
 }
