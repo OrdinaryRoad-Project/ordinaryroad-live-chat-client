@@ -31,6 +31,7 @@ import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.KuaishouDanmuMsg;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.KuaishouGiftMsg;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.KuaishouLikeMsg;
+import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.KuaishouRoomStatsMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 import tech.ordinaryroad.live.chat.client.kuaishou.listener.IKuaishouMsgListener;
@@ -72,6 +73,11 @@ public class KuaishouForwardMsgListener implements IKuaishouMsgListener {
 
     @Override
     public void onLikeMsg(KuaishouLikeMsg msg) {
+        forward(msg);
+    }
+
+    @Override
+    public void onRoomStatsMsg(KuaishouRoomStatsMsg msg) {
         forward(msg);
     }
 
