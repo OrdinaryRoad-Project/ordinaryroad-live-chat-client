@@ -59,14 +59,14 @@
 
 ## 平台直播间消息适配情况表
 
-| 平台          | 弹幕 | 礼物        | 醒目留言 | 进入房间    | 点赞      | 状态变化 | 统计信息               | 社交消息 |
-|-------------|----|-----------|------|---------|---------|------|--------------------|------|
-| Bilibili B站 | ✅  | ✅         | ✅    | ✅       | ✅       | ✅    | ✅（点赞数、当前人数、累计观看人数） |      |
-| Douyu 斗鱼    | ✅  | ✅         | ☑️   | ✅       | ❌       | ☑️   | ❌                  |      |
-| Huya 虎牙     | ✅  | ✅         | ❌    | ✅（高级用户） | ❌       | ☑️   | ❌                  |      |
-| Douyin 抖音   | ✅  | ✅         | ❌    | ✅       | ✅（点赞个数） | ✅    | ✅（点赞数、当前人数）        | ✅（分享、关注）    |
-| Kuaishou 快手 | ✅  | ✅（礼物信息不全） | ❌    | ❌       | ✅（首次点赞） | ❌    | ✅（点赞数、当前人数）        |      |
-| Tiktok      | ✅  | ✅         | ❌    | ✅       | ✅（点赞个数） | ✅    | ✅（点赞数、当前人数）        | ✅（分享、关注）    |
+| 平台          | 弹幕 | 礼物        | 醒目留言 | 进入房间    | 点赞      | 状态变化 | 统计信息               | 社交消息     |
+|-------------|----|-----------|------|---------|---------|------|--------------------|----------|
+| Bilibili B站 | ✅  | ✅         | ✅    | ✅       | ✅       | ✅    | ✅（点赞数、当前人数、累计观看人数） |          |
+| Douyu 斗鱼    | ✅  | ✅         | ✅    | ✅       | ❌       | ☑️   | ❌                  |          |
+| Huya 虎牙     | ✅  | ✅         | ❌    | ✅（高级用户） | ❌       | ☑️   | ❌                  |          |
+| Douyin 抖音   | ✅  | ✅         | ❌    | ✅       | ✅（点赞个数） | ✅    | ✅（点赞数、当前人数）        | ✅（分享、关注） |
+| Kuaishou 快手 | ✅  | ✅（礼物信息不全） | ❌    | ❌       | ✅（首次点赞） | ❌    | ✅（点赞数、当前人数）        |          |
+| Tiktok      | ✅  | ✅         | ❌    | ✅       | ✅（点赞个数） | ✅    | ✅（点赞数、当前人数）        | ✅（分享、关注） |
 
 消息接口内置的方法见 [https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/tree/main/live-chat-client-commons/live-chat-client-commons-base/src/main/java/tech/ordinaryroad/live/chat/client/commons/base/msg](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/tree/main/live-chat-client-commons/live-chat-client-commons-base/src/main/java/tech/ordinaryroad/live/chat/client/commons/base/msg)
 
@@ -155,6 +155,8 @@ implementation("com.aayushatharva.brotli4j:native-osx-x86_64:$liveChatClientBrot
     <version>${ordinaryroad-live-chat-client.version}</version>
 </dependency>
 ```
+
+> 注意，如果`StringEscapeUtils.unescapeJson`出现报错，尝试手动引入`"org.apache.commons:commons-lang3:3.14.0"`
 
 ### 快手
 
