@@ -3,6 +3,7 @@ package tech.ordinaryroad.live.chat.client.codec.kuaishou.api;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.constant.RoomInfoGetTypeEnum;
+import tech.ordinaryroad.live.chat.client.commons.base.constant.RoomLiveStatusEnum;
 
 import java.util.Map;
 
@@ -49,5 +50,11 @@ class KuaishouApisTest {
         KuaishouApis.roomInit("3x3gjx4jfca4zfs", RoomInfoGetTypeEnum.NOT_COOKIE, null, null).getRoomTitle();
         KuaishouApis.roomInit("3xkz5pb2kx3q4u6", RoomInfoGetTypeEnum.NOT_COOKIE, null, null).getRoomTitle();
         KuaishouApis.roomInit("kslibai66", RoomInfoGetTypeEnum.NOT_COOKIE, null, null).getRoomTitle();
+    }
+
+    @Test
+    void testRoomLiveStatus() {
+        assertEquals(KuaishouApis.roomInit("KPL704668133", RoomInfoGetTypeEnum.NOT_COOKIE, null, null).getRoomLiveStatus(), RoomLiveStatusEnum.LIVING);
+        assertEquals(KuaishouApis.roomInit("t8888888", RoomInfoGetTypeEnum.NOT_COOKIE, null, null).getRoomLiveStatus(), RoomLiveStatusEnum.STOPPED);
     }
 }
