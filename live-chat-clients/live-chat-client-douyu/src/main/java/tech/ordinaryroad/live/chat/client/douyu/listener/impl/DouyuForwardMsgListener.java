@@ -29,6 +29,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import tech.ordinaryroad.live.chat.client.codec.douyu.msg.ChatmsgMsg;
+import tech.ordinaryroad.live.chat.client.codec.douyu.msg.CommChatmsgMsg;
 import tech.ordinaryroad.live.chat.client.codec.douyu.msg.DgbMsg;
 import tech.ordinaryroad.live.chat.client.codec.douyu.msg.UenterMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
@@ -72,6 +73,11 @@ public class DouyuForwardMsgListener implements IDouyuMsgListener {
 
     @Override
     public void onEnterRoomMsg(UenterMsg msg) {
+        forward(msg);
+    }
+
+    @Override
+    public void onSuperChatMsg(CommChatmsgMsg msg) {
         forward(msg);
     }
 

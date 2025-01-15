@@ -93,6 +93,11 @@ public class BilibiliForwardMsgListener implements IBilibiliMsgListener {
         forward(msg);
     }
 
+    @Override
+    public void onRoomStatsMsg(BilibiliRoomStatsMsg msg) {
+        forward(msg);
+    }
+
     private void forward(IMsg msg) {
         if (webSocketLiveChatClient == null) {
             return;
