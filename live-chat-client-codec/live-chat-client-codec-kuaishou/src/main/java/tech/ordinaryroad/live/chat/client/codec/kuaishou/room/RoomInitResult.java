@@ -24,12 +24,12 @@
 
 package tech.ordinaryroad.live.chat.client.codec.kuaishou.room;
 
-import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import tech.ordinaryroad.live.chat.client.commons.base.constant.RoomLiveStatusEnum;
 import tech.ordinaryroad.live.chat.client.commons.base.room.IRoomInitResult;
 
 import java.util.List;
@@ -44,15 +44,22 @@ public class RoomInitResult implements IRoomInitResult {
     private List<String> websocketUrls;
     private JsonNode livedetailJsonNode;
 
-    // TODO REFACTOR THIS
-    private String _roomTitle;
-
     @Override
     public String getRoomTitle() {
-        if (StrUtil.isNotBlank(_roomTitle)) {
-            return _roomTitle;
+        return livedetailJsonNode.get("author").get("name").asText();
+    }
+
+    @Override
+    public String getRoomDescription() {
+        return livedetailJsonNode.get("author").get("description").asText();
+    }
+
+    @Override
+    public RoomLiveStatusEnum getRoomLiveStatus() {
+        if (livedetailJsonNode.has("liveStream") && livedetailJsonNode.get("liveStream").has("id")) {
+            return RoomLiveStatusEnum.LIVING;
         } else {
-            return livedetailJsonNode.get("author").get("name").asText();
+            return RoomLiveStatusEnum.STOPPED;
         }
     }
 }

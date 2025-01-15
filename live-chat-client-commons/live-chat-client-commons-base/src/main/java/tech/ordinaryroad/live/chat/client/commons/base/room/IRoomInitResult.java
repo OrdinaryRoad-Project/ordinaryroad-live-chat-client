@@ -24,6 +24,9 @@
 
 package tech.ordinaryroad.live.chat.client.commons.base.room;
 
+
+import tech.ordinaryroad.live.chat.client.commons.base.constant.RoomLiveStatusEnum;
+
 /**
  * @author mjz
  * @date 2025/1/4
@@ -41,4 +44,9 @@ public interface IRoomInitResult {
     default String getRoomDescription() {
         return "";
     }
+
+    /**
+     * 获取房间直播状态
+     */
+    RoomLiveStatusEnum getRoomLiveStatus();
 }

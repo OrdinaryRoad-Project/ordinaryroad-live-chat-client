@@ -72,11 +72,11 @@ class KuaishouLiveChatClientTest {
 
 
                 .roomId("Ouluo52134")
+
+
                 .roomId("cutgirl325")
-
-
                 .roomId("KPL704668133")
-                // .roomInfoGetType(RoomInfoGetTypeEnum.NOT_COOKIE)
+                .roomInfoGetType(RoomInfoGetTypeEnum.NOT_COOKIE)
                 .build();
 
         client = new KuaishouLiveChatClient(config, new IKuaishouMsgListener() {
@@ -151,6 +151,7 @@ class KuaishouLiveChatClientTest {
             if (newStatus == ClientStatusEnums.CONNECTED) {
                 log.warn("{} 已连接", client.getConfig().getRoomId());
                 log.warn("直播间标题 {}", client.getRoomInitResult().getRoomTitle());
+                log.warn("房间直播状态: {}", client.getRoomInitResult().getRoomLiveStatus());
                 // 连接成功10秒后发送弹幕
                 ThreadUtil.execAsync(() -> {
                     ThreadUtil.sleep(10000);
@@ -286,11 +287,10 @@ class KuaishouLiveChatClientTest {
 //
 //
 //    public static void main(String[] args) throws UnsupportedEncodingException {
-////        chineseToCode();
+
+    /// /        chineseToCode();
 //        codeToChinese();
 //    }
-
-
     @Test
     void notCookie() throws InterruptedException {
         KuaishouLiveChatClientConfig config = KuaishouLiveChatClientConfig.builder()

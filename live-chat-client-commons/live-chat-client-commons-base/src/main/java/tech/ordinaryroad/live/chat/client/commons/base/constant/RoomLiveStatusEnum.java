@@ -25,18 +25,18 @@
 package tech.ordinaryroad.live.chat.client.commons.base.constant;
 
 /**
- * 直播间状态变化枚举类
+ * 房间直播状态枚举类
  *
  * @author mjz
- * @date 2024/3/10
+ * @date 2025/1/15
  */
-public enum LiveStatusAction {
+public enum RoomLiveStatusEnum {
     /**
-     * 直播开始
+     * 未开播
      */
-    BEGIN,
+    STOPPED,
     /**
-     * 直播结束
+     * 直播中
      */
-    END
+    LIVING,
 }

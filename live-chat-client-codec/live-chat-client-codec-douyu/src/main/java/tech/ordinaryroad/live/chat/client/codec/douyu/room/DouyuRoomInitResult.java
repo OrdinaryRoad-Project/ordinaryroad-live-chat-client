@@ -29,6 +29,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import tech.ordinaryroad.live.chat.client.codec.douyu.api.response.BetardResponse;
+import tech.ordinaryroad.live.chat.client.commons.base.constant.RoomLiveStatusEnum;
 import tech.ordinaryroad.live.chat.client.commons.base.room.IRoomInitResult;
 
 @Data
@@ -43,5 +44,20 @@ public class DouyuRoomInitResult implements IRoomInitResult {
     @Override
     public String getRoomTitle() {
         return betardResponse.getRoom().getRoom_name();
+    }
+
+    @Override
+    public RoomLiveStatusEnum getRoomLiveStatus() {
+        RoomLiveStatusEnum roomLiveStatus = null;
+        switch (betardResponse.getRoom().getShow_status()) {
+            case 1:
+                roomLiveStatus = RoomLiveStatusEnum.LIVING;
+                break;
+            case 2:
+                roomLiveStatus = RoomLiveStatusEnum.STOPPED;
+                break;
+            default:
+        }
+        return roomLiveStatus;
     }
 }

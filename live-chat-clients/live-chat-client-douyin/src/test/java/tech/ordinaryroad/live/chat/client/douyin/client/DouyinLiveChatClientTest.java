@@ -80,6 +80,7 @@ class DouyinLiveChatClientTest {
                 .roomId("646454278948")
                 // 测试连麦
                 .roomId("335835086616")
+                .roomId("723583785905")
                 .build();
 
         client = new DouyinLiveChatClient(config, new IDouyinMsgListener() {
@@ -165,6 +166,7 @@ class DouyinLiveChatClientTest {
             if (newStatus == ClientStatusEnums.CONNECTED) {
                 log.warn("{} 已连接", client.getConfig().getRoomId());
                 log.warn("直播间标题 {}", client.getRoomInitResult().getRoomTitle());
+                log.warn("房间直播状态: {}", client.getRoomInitResult().getRoomLiveStatus());
             }
         });
 

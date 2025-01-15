@@ -32,6 +32,7 @@ import tech.ordinaryroad.live.chat.client.codec.huya.api.response.TtPlayerCfg;
 import tech.ordinaryroad.live.chat.client.codec.huya.api.response.TtPlayerConf;
 import tech.ordinaryroad.live.chat.client.codec.huya.api.response.TtProfileInfo;
 import tech.ordinaryroad.live.chat.client.codec.huya.api.response.TtRoomData;
+import tech.ordinaryroad.live.chat.client.commons.base.constant.RoomLiveStatusEnum;
 import tech.ordinaryroad.live.chat.client.commons.base.room.IRoomInitResult;
 
 @Data
@@ -52,5 +53,20 @@ public class RoomInitResult implements IRoomInitResult {
     @Override
     public String getRoomTitle() {
         return ttRoomData.getIntroduction();
+    }
+
+    @Override
+    public RoomLiveStatusEnum getRoomLiveStatus() {
+        RoomLiveStatusEnum roomLiveStatus = null;
+        switch (ttRoomData.getState()) {
+            case "OFF":
+                roomLiveStatus = RoomLiveStatusEnum.STOPPED;
+                break;
+            case "ON":
+                roomLiveStatus = RoomLiveStatusEnum.LIVING;
+                break;
+            default:
+        }
+        return roomLiveStatus;
     }
 }
