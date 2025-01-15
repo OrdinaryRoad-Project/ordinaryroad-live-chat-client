@@ -54,7 +54,7 @@
 | Bilibili B站 | ✅    |      | ✅      |
 | Douyu 斗鱼    | ✅    |      | ✅      |
 | Huya 虎牙     | ✅    |      | ✅      |
-| Douyin 抖音*  | ✅    |      | ✅      |
+| Douyin 抖音   | ✅    |      | ✅      |
 | Kuaishou 快手 | ✅    | ✅    | ✅      |
 
 ## 平台直播间消息适配情况表
