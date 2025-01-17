@@ -74,8 +74,8 @@ class KuaishouLiveChatClientTest {
                 .roomId("Ouluo52134")
 
 
-                .roomId("cutgirl325")
                 .roomId("KPL704668133")
+                .roomId("cutgirl325")
                 .roomInfoGetType(RoomInfoGetTypeEnum.NOT_COOKIE)
                 .build();
 
@@ -162,6 +162,9 @@ class KuaishouLiveChatClientTest {
                         }
                     });
                 });
+            }
+            if (newStatus == ClientStatusEnums.CONNECT_FAILED) {
+                log.error("连接失败, 房间直播状态: {}", client.getRoomInitResult().getRoomLiveStatus());
             }
         });
 

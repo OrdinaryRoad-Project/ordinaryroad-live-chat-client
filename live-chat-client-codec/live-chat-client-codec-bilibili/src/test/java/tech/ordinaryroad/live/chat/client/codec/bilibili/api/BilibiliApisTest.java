@@ -2,6 +2,7 @@ package tech.ordinaryroad.live.chat.client.codec.bilibili.api;
 
 import cn.hutool.core.lang.Assert;
 import org.junit.jupiter.api.Test;
+import tech.ordinaryroad.live.chat.client.commons.base.constant.RoomLiveStatusEnum;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -31,5 +32,10 @@ class BilibiliApisTest {
         Assert.notBlank(BilibiliApis.roomInit(30951561, null).getRoomTitle());
         Assert.notBlank(BilibiliApis.roomInit(1964561642, null).getRoomTitle());
         Assert.notBlank(BilibiliApis.roomInit(26103248, null).getRoomTitle());
+    }
+
+    @Test
+    void testRoomLiveStatus() {
+        assertEquals(RoomLiveStatusEnum.LIVING, BilibiliApis.roomInit(6, null).getRoomLiveStatus());
     }
 }

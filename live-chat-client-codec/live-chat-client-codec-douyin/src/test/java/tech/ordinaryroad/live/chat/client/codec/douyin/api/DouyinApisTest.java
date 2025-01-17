@@ -22,4 +22,9 @@ class DouyinApisTest {
         Assert.notBlank(DouyinApis.roomInit("47761745807").getRoomTitle());
         Assert.notBlank(DouyinApis.roomInit("646454278948").getRoomTitle());
     }
+
+    @Test
+    void testRoomLiveStatus() {
+        System.out.println(DouyinApis.roomInit("renyixu1989").getRoomLiveStatus());
+    }
 }

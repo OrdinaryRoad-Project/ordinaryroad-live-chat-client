@@ -27,4 +27,9 @@ class HuyaApisTest {
         Assert.notBlank(HuyaApis.roomInit(1995, null).getRoomTitle());
         Assert.notBlank(HuyaApis.roomInit(116, null).getRoomTitle());
     }
+
+    @Test
+    void testRoomLiveStatus() {
+        System.out.println(HuyaApis.roomInit("bagea", null).getRoomLiveStatus());
+    }
 }

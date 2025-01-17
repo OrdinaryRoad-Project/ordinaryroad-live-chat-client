@@ -3,6 +3,7 @@ package tech.ordinaryroad.live.chat.client.codec.douyu.api;
 import cn.hutool.core.lang.Assert;
 import org.junit.jupiter.api.Test;
 import tech.ordinaryroad.live.chat.client.codec.douyu.msg.dto.GiftPropSingle;
+import tech.ordinaryroad.live.chat.client.commons.base.constant.RoomLiveStatusEnum;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -35,5 +36,10 @@ class DouyuApisTest {
         Assert.notBlank(DouyuApis.roomInit(22222L, null).getRoomTitle());
         Assert.notBlank(DouyuApis.roomInit(6073358L, null).getRoomTitle());
         Assert.notBlank(DouyuApis.roomInit(6525105L, null).getRoomTitle());
+    }
+
+    @Test
+    void testRoomLiveStatus() {
+        assertEquals(RoomLiveStatusEnum.STOPPED, DouyuApis.roomInit(22222L, null).getRoomLiveStatus());
     }
 }
