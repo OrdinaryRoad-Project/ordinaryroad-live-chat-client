@@ -22,38 +22,25 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.commons.base.room;
-
-
-import tech.ordinaryroad.live.chat.client.commons.base.constant.RoomLiveStatusEnum;
-
-import java.util.List;
+package tech.ordinaryroad.live.chat.client.commons.base.constant;
 
 /**
+ * 直播流清晰度
+ *
  * @author mjz
- * @date 2025/1/4
+ * @date 2025/1/17
  */
-public interface IRoomInitResult {
-
-    /**
-     * 获取房间标题
-     */
-    String getRoomTitle();
-
-    /**
-     * 获取房间描述
-     */
-    default String getRoomDescription() {
-        return "";
-    }
-
-    /**
-     * 获取房间直播状态
-     */
-    RoomLiveStatusEnum getRoomLiveStatus();
-
-    /**
-     * 获取直播流地址
-     */
-    List<IRoomLiveStreamInfo> getRoomLiveStreamUrls();
+public enum RoomLiveStreamQualityEnum {
+    Q_DOLBY,
+    Q_4K,
+    Q_4K_HDR,
+    Q_ORIGIN,
+    Q_ORIGIN_HDR,
+    Q_BLUE_RAY,
+    Q_BLUE_RAY_HDR,
+    Q_SUPER,
+    Q_HIGH,
+    Q_FLUENT,
+    Q_UNKNOWN,
+    ;
 }
