@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import tech.ordinaryroad.live.chat.client.commons.base.constant.RoomLiveStatusEnum;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 /**
  * @author mjz
@@ -37,5 +38,10 @@ class BilibiliApisTest {
     @Test
     void testRoomLiveStatus() {
         assertEquals(RoomLiveStatusEnum.LIVING, BilibiliApis.roomInit(6, null).getRoomLiveStatus());
+    }
+
+    @Test
+    void testRoomLivePlayUrl() {
+        assertNotEquals(0, BilibiliApis.roomInit(6, null).getRoomLiveStreamUrls().size());
     }
 }

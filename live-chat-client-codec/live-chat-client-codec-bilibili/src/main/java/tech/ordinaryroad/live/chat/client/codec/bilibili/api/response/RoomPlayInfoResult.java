@@ -29,6 +29,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import tech.ordinaryroad.live.chat.client.codec.bilibili.api.dto.Playurl_info;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.constant.BilibiliLiveStatusEnum;
 
 import java.util.List;
@@ -52,7 +53,7 @@ public class RoomPlayInfoResult {
     private long live_time;
     private int room_shield;
     private List<Integer> all_special_types;
-    private JsonNode playurl_info;
+    private Playurl_info playurl_info;
     private int official_type;
     private int official_room_id;
     private int risk_with_delay;

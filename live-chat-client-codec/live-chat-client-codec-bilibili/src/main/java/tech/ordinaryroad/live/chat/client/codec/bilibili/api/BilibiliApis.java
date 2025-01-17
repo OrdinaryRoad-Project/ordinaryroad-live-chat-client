@@ -39,6 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.api.request.BilibiliLikeReportV3Request;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.api.request.BilibiliSendMsgRequest;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.api.response.RoomPlayInfoResult;
+import tech.ordinaryroad.live.chat.client.codec.bilibili.constant.BilibiliQnEnum;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.room.BilibiliRoomInitResult;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.util.OrJacksonUtil;
@@ -275,12 +276,16 @@ public class BilibiliApis {
     }
 
     @SneakyThrows
-    public static RoomPlayInfoResult getRoomPlayInfo(long roomId, int no_playurl, String cookie) {
+    public static RoomPlayInfoResult getRoomPlayInfo(long roomId, int no_playurl, BilibiliQnEnum qnEnum, String cookie) {
         @Cleanup
-        HttpResponse response = OrLiveChatHttpUtil.createGet(API_ROOM_PLAY_INFO + "?room_id=" + roomId + "&no_playurl=" + no_playurl + "&mask=1&qn=0&platform=web&protocol=0,1&format=0,1,2&codec=0,1,2&dolby=5&panorama=1&hdr_type=0,1")
+        HttpResponse response = OrLiveChatHttpUtil.createGet(API_ROOM_PLAY_INFO + "?room_id=" + roomId + "&no_playurl=" + no_playurl + "&mask=1&qn=" + qnEnum.getQn() + "&platform=web&protocol=0,1&format=0,1,2&codec=0,1,2&dolby=5&panorama=1&hdr_type=0,1")
                 .cookie(cookie)
                 .execute();
         return OrJacksonUtil.getInstance().readValue(responseInterceptor(response.body()).toString(), RoomPlayInfoResult.class);
+    }
+
+    public static RoomPlayInfoResult getRoomPlayInfo(long roomId, int no_playurl, String cookie) {
+        return getRoomPlayInfo(roomId, no_playurl, BilibiliQnEnum.QN_DOLBY, cookie);
     }
 
     @SneakyThrows

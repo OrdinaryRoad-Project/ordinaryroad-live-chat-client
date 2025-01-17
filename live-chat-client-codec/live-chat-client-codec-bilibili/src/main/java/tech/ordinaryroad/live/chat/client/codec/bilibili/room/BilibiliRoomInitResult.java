@@ -24,12 +24,19 @@
 
 package tech.ordinaryroad.live.chat.client.codec.bilibili.room;
 
+import cn.hutool.core.util.StrUtil;
 import lombok.*;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.api.BilibiliApis;
-import tech.ordinaryroad.live.chat.client.codec.bilibili.api.response.RoomInfoRes;
+import tech.ordinaryroad.live.chat.client.codec.bilibili.api.dto.*;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.api.response.RoomPlayInfoResult;
+import tech.ordinaryroad.live.chat.client.codec.bilibili.constant.BilibiliQnEnum;
 import tech.ordinaryroad.live.chat.client.commons.base.constant.RoomLiveStatusEnum;
 import tech.ordinaryroad.live.chat.client.commons.base.room.IRoomInitResult;
+import tech.ordinaryroad.live.chat.client.commons.base.room.IRoomLiveStreamInfo;
+import tech.ordinaryroad.live.chat.client.commons.base.room.RoomLiveStreamInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -43,8 +50,6 @@ public class BilibiliRoomInitResult implements IRoomInitResult {
     private BilibiliApis.RoomByIds roomByIds;
     private BilibiliApis.DanmuinfoResult danmuinfoResult = new BilibiliApis.DanmuinfoResult();
     private RoomPlayInfoResult roomPlayInfoResult = new RoomPlayInfoResult();
-
-    private RoomInfoRes roomInfoRes = new RoomInfoRes();
 
     /**
      * 直播间标题
@@ -67,5 +72,38 @@ public class BilibiliRoomInitResult implements IRoomInitResult {
             default:
         }
         return roomLiveStatus;
+    }
+
+    @Override
+    public List<IRoomLiveStreamInfo> getRoomLiveStreamUrls() {
+        List<IRoomLiveStreamInfo> roomStreamInfoList = new ArrayList<>();
+        Playurl_info playurlInfo = roomPlayInfoResult.getPlayurl_info();
+        if (playurlInfo == null || playurlInfo.getPlayurl() == null || playurlInfo.getPlayurl().getStream() == null) {
+            return roomStreamInfoList;
+        }
+        for (Stream stream : playurlInfo.getPlayurl().getStream()) {
+            if (stream.getFormat() == null) {
+                continue;
+            }
+            for (Format format : stream.getFormat()) {
+                if (format.getCodec() == null) {
+                    continue;
+                }
+                for (Codec codec : format.getCodec()) {
+                    if (StrUtil.isEmpty(codec.getBase_url()) || codec.getUrl_info() == null) {
+                        continue;
+                    }
+                    List<String> urls = new ArrayList<>();
+                    RoomLiveStreamInfo.RoomLiveStreamInfoBuilder builder = RoomLiveStreamInfo.builder()
+                            .quality(BilibiliQnEnum.toRoomLiveStreamQualityEnum(BilibiliQnEnum.getByQn(codec.getCurrent_qn())))
+                            .urls(urls);
+                    for (Url_info urlInfo : codec.getUrl_info()) {
+                        urls.add(urlInfo.getHost() + codec.getBase_url() + urlInfo.getExtra());
+                    }
+                    roomStreamInfoList.add(builder.build());
+                }
+            }
+        }
+        return roomStreamInfoList;
     }
 }
