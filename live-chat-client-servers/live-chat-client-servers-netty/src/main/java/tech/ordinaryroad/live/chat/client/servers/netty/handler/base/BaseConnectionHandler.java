@@ -163,6 +163,12 @@ public abstract class BaseConnectionHandler<ConnectionHandler extends BaseConnec
         if (!this.handshakePromise.isDone()) {
             this.handshakePromise.setFailure(cause);
         }
-        ctx.close();
+        try {
+            if (ctx.channel().isActive()) {
+                ctx.close();
+            }
+        } catch (Exception e) {
+            log.warn("Failed to close channel", e);
+        }
     }
 }
