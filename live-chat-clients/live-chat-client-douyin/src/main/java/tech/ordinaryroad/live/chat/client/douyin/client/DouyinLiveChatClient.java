@@ -45,6 +45,7 @@ import tech.ordinaryroad.live.chat.client.codec.douyin.room.DouyinRoomInitResult
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
+import tech.ordinaryroad.live.chat.client.commons.util.OrJavaScriptUtil;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCollUtil;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatHttpUtil;
 import tech.ordinaryroad.live.chat.client.douyin.config.DouyinLiveChatClientConfig;
@@ -217,7 +218,7 @@ public class DouyinLiveChatClient extends BaseNettyClient<DouyinLiveChatClientCo
     @SneakyThrows
     public String getSignature(String userAgent, long roomId, String userUniqueId) {
         String JS_ENV = " document = {};\nwindow = {};\nnavigator = {\nuserAgent: '" + userAgent + "'\n};\n";
-        ScriptEngine engineFactory = getConfig().getScriptEngine();
+        ScriptEngine engineFactory = OrJavaScriptUtil.createScriptEngine();
         engineFactory.eval(JS_ENV + JS_SDK);
         String signPram = ("live_id=1,aid=6383," +
                 "version_code=$version_code$," +
