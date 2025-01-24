@@ -24,6 +24,7 @@
 
 package tech.ordinaryroad.live.chat.client.codec.kuaishou.constant;
 
+import cn.hutool.core.util.StrUtil;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import tech.ordinaryroad.live.chat.client.commons.base.constant.RoomLiveStreamQualityEnum;
@@ -35,17 +36,18 @@ import tech.ordinaryroad.live.chat.client.commons.base.constant.RoomLiveStreamQu
 @Getter
 @RequiredArgsConstructor
 public enum KuaishouQualityEnum {
-    Q_STANDARD(1000, "高清"),
-    Q_HIGH(2000, "超清"),
-    Q_SUPER(4000, "蓝光 4M"),
-    Q_BLUE_RAY(8000, "蓝光 质臻"),
+    Q_STANDARD(1000, "STANDARD", "高清"),
+    Q_HIGH(2000, "HIGH", "超清"),
+    Q_SUPER(4000, "SUPER", "蓝光 4M"),
+    Q_BLUE_RAY(8000, "BLUE_RAY", "蓝光 质臻"),
     ;
     private final int bitrate;
+    private final String qualityType;
     private final String name;
 
-    public static KuaishouQualityEnum getByBitrate(int bitrate) {
+    public static KuaishouQualityEnum getByBitrateOrQualityType(int bitrate, String qualityType) {
         for (KuaishouQualityEnum value : values()) {
-            if (value.getBitrate() == bitrate) {
+            if (value.getBitrate() == bitrate || StrUtil.equalsIgnoreCase(value.getQualityType(), qualityType)) {
                 return value;
             }
         }
