@@ -24,15 +24,23 @@
 
 package tech.ordinaryroad.live.chat.client.codec.kuaishou.room;
 
+import cn.hutool.core.collection.CollUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import tech.ordinaryroad.live.chat.client.codec.kuaishou.constant.KuaishouQualityEnum;
 import tech.ordinaryroad.live.chat.client.commons.base.constant.RoomLiveStatusEnum;
+import tech.ordinaryroad.live.chat.client.commons.base.constant.RoomLiveStreamQualityEnum;
 import tech.ordinaryroad.live.chat.client.commons.base.room.IRoomInitResult;
+import tech.ordinaryroad.live.chat.client.commons.base.room.IRoomLiveStreamInfo;
+import tech.ordinaryroad.live.chat.client.commons.base.room.RoomLiveStreamInfo;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @AllArgsConstructor
@@ -61,5 +69,49 @@ public class RoomInitResult implements IRoomInitResult {
         } else {
             return RoomLiveStatusEnum.STOPPED;
         }
+    }
+
+    @Override
+    public List<IRoomLiveStreamInfo> getRoomLiveStreamUrls() {
+        List<IRoomLiveStreamInfo> roomLiveStreamInfos = CollUtil.newArrayList();
+
+        if (!livedetailJsonNode.has("liveStream") || !livedetailJsonNode.get("liveStream").has("playUrls")) {
+            return roomLiveStreamInfos;
+        }
+
+        JsonNode playUrlsJsonNode = livedetailJsonNode.get("liveStream").get("playUrls");
+
+        Map<KuaishouQualityEnum, List<JsonNode>> map = new HashMap<>();
+        for (JsonNode playUrl : playUrlsJsonNode) {
+            if (!playUrl.has("adaptationSet") || !playUrl.get("adaptationSet").has("representation")) {
+                continue;
+            }
+
+            JsonNode representationArray = playUrl.get("adaptationSet").withArray("representation");
+            for (JsonNode representation : representationArray) {
+                if (!representation.has("bitrate")) {
+                    continue;
+                }
+
+                int bitrate = representation.get("bitrate").asInt();
+                KuaishouQualityEnum kuaishouQualityEnum = KuaishouQualityEnum.getByBitrate(bitrate);
+                map.computeIfAbsent(kuaishouQualityEnum, k -> CollUtil.newArrayList()).add(representation);
+            }
+        }
+
+        map.forEach(((kuaishouQualityEnum, representations) -> {
+            RoomLiveStreamQualityEnum roomLiveStreamQualityEnum = KuaishouQualityEnum.toRoomLiveStreamQualityEnum(kuaishouQualityEnum);
+            ArrayList<String> urls = CollUtil.newArrayList();
+            for (JsonNode representation : representations) {
+                if (!representation.has("url")) {
+                    continue;
+                }
+
+                urls.add(representation.get("url").asText());
+            }
+            roomLiveStreamInfos.add(RoomLiveStreamInfo.builder().quality(roomLiveStreamQualityEnum).urls(urls).build());
+        }));
+
+        return roomLiveStreamInfos;
     }
 }
