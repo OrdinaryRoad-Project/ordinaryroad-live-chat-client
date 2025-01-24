@@ -94,7 +94,8 @@ public class RoomInitResult implements IRoomInitResult {
                 }
 
                 int bitrate = representation.get("bitrate").asInt();
-                KuaishouQualityEnum kuaishouQualityEnum = KuaishouQualityEnum.getByBitrate(bitrate);
+                String qualityType = representation.get("qualityType").asText();
+                KuaishouQualityEnum kuaishouQualityEnum = KuaishouQualityEnum.getByBitrateOrQualityType(bitrate, qualityType);
                 map.computeIfAbsent(kuaishouQualityEnum, k -> CollUtil.newArrayList()).add(representation);
             }
         }
