@@ -41,7 +41,7 @@ class BilibiliApisTest {
     }
 
     @Test
-    void testRoomLivePlayUrl() {
+    void testRoomLiveStreamUrls() {
         assertNotEquals(0, BilibiliApis.roomInit(6, null).getRoomLiveStreamUrls().size());
     }
 }
