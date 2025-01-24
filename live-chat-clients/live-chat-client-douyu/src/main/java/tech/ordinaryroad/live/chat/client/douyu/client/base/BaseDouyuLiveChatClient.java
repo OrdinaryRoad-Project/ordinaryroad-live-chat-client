@@ -111,7 +111,7 @@ public abstract class BaseDouyuLiveChatClient extends BaseNettyClient<
 
             WebSocketFrame webSocketFrame = null;
             try {
-                webSocketFrame = new BinaryWebSocketFrame(getMsgFactory(getConfig().getRoomId()).createDanmu(msg, getConfig().getCookie()));
+                webSocketFrame = new BinaryWebSocketFrame(getMsgFactory(getConfig().getRoomId()).createDanmu(msg, roomInitResult));
             } catch (Exception e) {
                 log.error("douyu弹幕包创建失败", e);
                 if (failed != null) {
