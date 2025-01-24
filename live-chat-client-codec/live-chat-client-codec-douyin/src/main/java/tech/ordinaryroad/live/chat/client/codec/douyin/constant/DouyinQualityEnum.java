@@ -47,7 +47,7 @@ public enum DouyinQualityEnum {
 
     public static DouyinQualityEnum getByBitrateOrSdkKey(int bitrate, String sdkKey) {
         for (DouyinQualityEnum value : DouyinQualityEnum.values()) {
-            if (value.bitrate == bitrate || StrUtil.equalsIgnoreCase(value.sdkKey, sdkKey)) {
+            if (value.bitrate == bitrate || StrUtil.equalsIgnoreCase(value.getSdkKey(), sdkKey)) {
                 return value;
             }
         }
