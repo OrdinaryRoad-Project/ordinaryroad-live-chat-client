@@ -26,9 +26,12 @@ package tech.ordinaryroad.live.chat.client.codec.douyu.api;
 
 import cn.hutool.cache.impl.TimedCache;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.NumberUtil;
+import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.crypto.digest.DigestUtil;
 import cn.hutool.crypto.digest.MD5;
 import cn.hutool.http.Header;
 import cn.hutool.http.HttpResponse;
@@ -38,16 +41,17 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
+import org.openjdk.nashorn.api.scripting.ScriptObjectMirror;
 import tech.ordinaryroad.live.chat.client.codec.douyu.api.response.BetardResponse;
 import tech.ordinaryroad.live.chat.client.codec.douyu.msg.dto.GiftListInfo;
 import tech.ordinaryroad.live.chat.client.codec.douyu.msg.dto.GiftPropSingle;
 import tech.ordinaryroad.live.chat.client.codec.douyu.room.DouyuRoomInitResult;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
-import tech.ordinaryroad.live.chat.client.commons.util.OrJacksonUtil;
-import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCollUtil;
-import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatHttpUtil;
-import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatLocalDateTimeUtil;
+import tech.ordinaryroad.live.chat.client.commons.util.*;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -225,7 +229,7 @@ public class DouyuApis {
         return map;
     }
 
-    private static JsonNode responseInterceptor(String responseString) {
+    public static JsonNode responseInterceptor(String responseString) {
         try {
             JsonNode jsonNode = OBJECT_MAPPER.readTree(responseString);
             int code = jsonNode.get("error").asInt();
@@ -240,9 +244,58 @@ public class DouyuApis {
         }
     }
 
+    /**
+     * 获取斗鱼直播流地址请求参数
+     */
+    public static Map<String, String> getStreamUrlRequestSignParams(String signJavaScriptsString, long roomId, String did) {
+        Map<String, String> paramMap;
+        try {
+            ScriptEngine scriptEngine = OrJavaScriptUtil.createScriptEngine();
+            ScriptObjectMirror eval = (ScriptObjectMirror) scriptEngine.eval(signJavaScriptsString);
+
+            String signFunc = eval.get("0").toString();
+            while (StrUtil.endWith(signFunc, ";")) {
+                signFunc = StrUtil.sub(signFunc, 0, signFunc.length() - 1);
+            }
+            String v = eval.get("1").toString();
+
+            long timeSeconds = System.currentTimeMillis() / 1000;
+            String cb = DigestUtil.md5Hex(roomId + did + timeSeconds + v);
+            signFunc = StrUtil.replace(signFunc, "CryptoJS.MD5(cb).toString()", StrUtil.format("\"{}\"", cb));
+
+            String paramString = scriptEngine.eval(signFunc + StrUtil.format("(\"{}\",\"{}\",\"{}\");", roomId, did, timeSeconds)).toString();
+            paramMap = OrLiveChatHttpUtil.decodeParamMap(paramString, StandardCharsets.UTF_8);
+        } catch (ScriptException e) {
+            log.error("斗鱼签名异常", e);
+            throw new BaseException("斗鱼签名异常", e);
+        }
+        return paramMap;
+    }
+
     @SneakyThrows
     public static DouyuRoomInitResult roomInit(Long roomId, String cookie, DouyuRoomInitResult roomInitResult) {
-        long realRoomId = getRealRoomId(roomId, cookie);
+        Map<String, String> cookieMap = OrLiveChatCookieUtil.parseCookieString(cookie);
+
+        long uid;
+        String did;
+        if (cookieMap.isEmpty()) {
+            uid = RandomUtil.randomInt(10000, 19999);
+            did = UUID.fastUUID().toString(true);
+        } else {
+            uid = NumberUtil.parseLong(OrLiveChatCookieUtil.getCookieByName(cookieMap, DouyuApis.KEY_COOKIE_ACF_UID, () -> {
+                throw new BaseException("Cookie中缺少字段" + DouyuApis.KEY_COOKIE_ACF_UID);
+            }));
+            did = OrLiveChatCookieUtil.getCookieByName(cookieMap, DouyuApis.KEY_COOKIE_DY_DID, () -> {
+                throw new BaseException("Cookie中缺少字段" + DouyuApis.KEY_COOKIE_DY_DID);
+            });
+        }
+
+        @Cleanup
+        HttpResponse execute = OrLiveChatHttpUtil.createGet("https://www.douyu.com/" + roomId).cookie(cookie).execute();
+        String liveRoomPageBody = execute.body();
+        long realRoomId = getRealRoomIdByRoomPageResponse(roomId, execute);
+        String streamUrlRequestVer = getVerFromLiveRoomPageBody(cookie, liveRoomPageBody);
+        String signJavaScriptsString = getSignJavaScriptsFromLiveRoomPageBody(liveRoomPageBody);
 
         @Cleanup
         HttpResponse response = OrLiveChatHttpUtil.createGet(API_BETARD + realRoomId).cookie(cookie).execute();
@@ -251,8 +304,30 @@ public class DouyuApis {
 
         roomInitResult = Optional.ofNullable(roomInitResult).orElse(DouyuRoomInitResult.builder().build());
         roomInitResult.setRealRoomId(realRoomId);
+        roomInitResult.setUid(uid);
+        roomInitResult.setDid(did);
+        roomInitResult.setCookie(cookie);
+        roomInitResult.setStreamUrlRequestVer(streamUrlRequestVer);
+        roomInitResult.setSignJavaScriptsString(signJavaScriptsString);
         roomInitResult.setBetardResponse(betardResponse);
         return roomInitResult;
+    }
+
+    private static String getSignJavaScriptsFromLiveRoomPageBody(String liveRoomPageString) {
+        String group1 = ReUtil.getGroup1("(var vdwdae325w_64we[\\s\\S]*?)</script>", liveRoomPageString);
+        group1 = StrUtil.replace(group1, "return eval", "return [strc, vdwdae325w_64we];");
+        return group1 + ";ub98484234();";
+    }
+
+    private static String getVerFromLiveRoomPageBody(String cookie, String liveRoomPageString) {
+        String h5VideoJSUrl = ReUtil.getGroup1("<link\\s+rel=\"preload\"\\s+href=\"(https://shark2\\.douyucdn\\.cn/front-publish/live-master/js/player_first/h5_video_[^\"]+\\.js)\"\\s+as=\"script\">", liveRoomPageString);
+        @Cleanup
+        HttpResponse h5VideoJSResponse = OrLiveChatHttpUtil.createGet(h5VideoJSUrl).cookie(cookie)
+                .header(Header.REFERER, "https://www.douyu.com/")
+                .execute();
+        String h5VideoJSBody = h5VideoJSResponse.body();
+        String ver = ReUtil.getGroup1("V\\s*=\\s*\"([^\"]+)\"", h5VideoJSBody);
+        return ver;
     }
 
     public static DouyuRoomInitResult roomInit(Long roomId, DouyuRoomInitResult roomInitResult) {
