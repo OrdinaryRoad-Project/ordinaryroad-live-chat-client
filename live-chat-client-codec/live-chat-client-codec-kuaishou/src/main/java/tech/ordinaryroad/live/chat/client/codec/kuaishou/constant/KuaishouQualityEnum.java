@@ -53,27 +53,21 @@ public enum KuaishouQualityEnum {
     }
 
     public static RoomLiveStreamQualityEnum toRoomLiveStreamQualityEnum(KuaishouQualityEnum kuaishouQualityEnum) {
-        RoomLiveStreamQualityEnum qualityEnum;
         if (kuaishouQualityEnum == null) {
-            qualityEnum = RoomLiveStreamQualityEnum.Q_UNKNOWN;
+            return RoomLiveStreamQualityEnum.Q_UNKNOWN;
         } else {
             switch (kuaishouQualityEnum) {
                 case Q_STANDARD:
-                    qualityEnum = RoomLiveStreamQualityEnum.Q_FLUENT;
-                    break;
+                    return RoomLiveStreamQualityEnum.Q_FLUENT;
                 case Q_HIGH:
-                    qualityEnum = RoomLiveStreamQualityEnum.Q_HIGH;
-                    break;
+                    return RoomLiveStreamQualityEnum.Q_HIGH;
                 case Q_SUPER:
-                    qualityEnum = RoomLiveStreamQualityEnum.Q_SUPER;
-                    break;
+                    return RoomLiveStreamQualityEnum.Q_SUPER;
                 case Q_BLUE_RAY:
-                    qualityEnum = RoomLiveStreamQualityEnum.Q_BLUE_RAY;
-                    break;
+                    return RoomLiveStreamQualityEnum.Q_BLUE_RAY;
                 default:
-                    qualityEnum = RoomLiveStreamQualityEnum.Q_UNKNOWN;
+                    return RoomLiveStreamQualityEnum.Q_UNKNOWN;
             }
         }
-        return qualityEnum;
     }
 }

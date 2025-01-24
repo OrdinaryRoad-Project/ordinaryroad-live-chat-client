@@ -61,45 +61,33 @@ public enum BilibiliQnEnum {
     }
 
     public static RoomLiveStreamQualityEnum toRoomLiveStreamQualityEnum(BilibiliQnEnum qnEnum) {
-        RoomLiveStreamQualityEnum qualityEnum;
         if (qnEnum == null) {
-            qualityEnum = RoomLiveStreamQualityEnum.Q_UNKNOWN;
+            return RoomLiveStreamQualityEnum.Q_UNKNOWN;
         } else {
             switch (qnEnum) {
                 case QN_DOLBY:
-                    qualityEnum = RoomLiveStreamQualityEnum.Q_DOLBY;
-                    break;
+                    return RoomLiveStreamQualityEnum.Q_DOLBY;
                 case QN_4K:
-                    qualityEnum = RoomLiveStreamQualityEnum.Q_4K;
-                    break;
+                    return RoomLiveStreamQualityEnum.Q_4K;
                 case QN_4K_HDR:
-                    qualityEnum = RoomLiveStreamQualityEnum.Q_4K_HDR;
-                    break;
+                    return RoomLiveStreamQualityEnum.Q_4K_HDR;
                 case QN_ORIGIN:
-                    qualityEnum = RoomLiveStreamQualityEnum.Q_ORIGIN;
-                    break;
+                    return RoomLiveStreamQualityEnum.Q_ORIGIN;
                 case QN_ORIGIN_HDR:
-                    qualityEnum = RoomLiveStreamQualityEnum.Q_ORIGIN_HDR;
-                    break;
+                    return RoomLiveStreamQualityEnum.Q_ORIGIN_HDR;
                 case QN_BLUE_RAY:
-                    qualityEnum = RoomLiveStreamQualityEnum.Q_BLUE_RAY;
-                    break;
+                    return RoomLiveStreamQualityEnum.Q_BLUE_RAY;
                 case QN_BLUE_RAY_HDR:
-                    qualityEnum = RoomLiveStreamQualityEnum.Q_BLUE_RAY_HDR;
-                    break;
+                    return RoomLiveStreamQualityEnum.Q_BLUE_RAY_HDR;
                 case QN_SUPER:
-                    qualityEnum = RoomLiveStreamQualityEnum.Q_SUPER;
-                    break;
+                    return RoomLiveStreamQualityEnum.Q_SUPER;
                 case QN_HIGH:
-                    qualityEnum = RoomLiveStreamQualityEnum.Q_HIGH;
-                    break;
+                    return RoomLiveStreamQualityEnum.Q_HIGH;
                 case QN_FLUENT:
-                    qualityEnum = RoomLiveStreamQualityEnum.Q_FLUENT;
-                    break;
+                    return RoomLiveStreamQualityEnum.Q_FLUENT;
                 default:
-                    qualityEnum = RoomLiveStreamQualityEnum.Q_UNKNOWN;
+                    return RoomLiveStreamQualityEnum.Q_UNKNOWN;
             }
         }
-        return qualityEnum;
     }
 }
