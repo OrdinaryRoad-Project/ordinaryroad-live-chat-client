@@ -24,42 +24,22 @@
 
 package tech.ordinaryroad.live.chat.client.commons.base.room;
 
-
-import tech.ordinaryroad.live.chat.client.commons.base.constant.RoomLiveStatusEnum;
 import tech.ordinaryroad.live.chat.client.commons.base.constant.RoomLiveStreamQualityEnum;
 
 import java.util.List;
 
 /**
  * @author mjz
- * @date 2025/1/4
+ * @date 2025/1/17
  */
-public interface IRoomInitResult {
+public interface IRoomLiveStreamInfo {
+    /**
+     * 获取直播流质量
+     */
+    RoomLiveStreamQualityEnum getQuality();
 
     /**
-     * 获取房间标题
+     * 获取直播流地址
      */
-    String getRoomTitle();
-
-    /**
-     * 获取房间描述
-     */
-    default String getRoomDescription() {
-        return null;
-    }
-
-    /**
-     * 获取房间直播状态
-     */
-    RoomLiveStatusEnum getRoomLiveStatus();
-
-    /**
-     * 获取房间直播流地址
-     *
-     * @param qualities 直播流质量
-     * @see RoomLiveStreamQualityEnum
-     */
-    default List<IRoomLiveStreamInfo> getRoomLiveStreamUrls(RoomLiveStreamQualityEnum... qualities) {
-        return null;
-    }
+    List<String> getUrls();
 }

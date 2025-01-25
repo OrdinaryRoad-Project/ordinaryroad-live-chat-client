@@ -3,8 +3,12 @@ package tech.ordinaryroad.live.chat.client.codec.bilibili.api;
 import cn.hutool.core.lang.Assert;
 import org.junit.jupiter.api.Test;
 import tech.ordinaryroad.live.chat.client.commons.base.constant.RoomLiveStatusEnum;
+import tech.ordinaryroad.live.chat.client.commons.base.room.IRoomLiveStreamInfo;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 /**
  * @author mjz
@@ -37,5 +41,11 @@ class BilibiliApisTest {
     @Test
     void testRoomLiveStatus() {
         assertEquals(RoomLiveStatusEnum.LIVING, BilibiliApis.roomInit(6, null).getRoomLiveStatus());
+    }
+
+    @Test
+    void testRoomLiveStreamUrls() {
+        List<IRoomLiveStreamInfo> roomLiveStreamUrls = BilibiliApis.roomInit(6, null).getRoomLiveStreamUrls();
+        assertNotEquals(0, roomLiveStreamUrls.size());
     }
 }

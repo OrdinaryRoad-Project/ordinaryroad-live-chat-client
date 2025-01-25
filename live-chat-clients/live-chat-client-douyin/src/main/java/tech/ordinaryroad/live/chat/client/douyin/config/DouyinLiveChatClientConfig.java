@@ -26,15 +26,15 @@ package tech.ordinaryroad.live.chat.client.douyin.config;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.system.JavaInfo;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import tech.ordinaryroad.live.chat.client.codec.douyin.constant.DouyinGiftCountCalculationTimeEnum;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatHttpUtil;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.config.BaseNettyClientConfig;
 
-import javax.script.ScriptEngine;
-import java.lang.reflect.Method;
 import java.util.List;
 
 /**
@@ -46,7 +46,6 @@ import java.util.List;
 @AllArgsConstructor
 @SuperBuilder(toBuilder = true)
 public class DouyinLiveChatClientConfig extends BaseNettyClientConfig {
-    private static final ScriptEngine DEFAULT_ENGINE = createScriptEngine();
 
     public static final List<String> WEB_SOCKET_URIS = CollUtil.newArrayList("wss://webcast5-ws-web-lq.douyin.com/webcast/im/push/v2/", "wss://webcast5-ws-web-lf.douyin.com/webcast/im/push/v2/", "wss://webcast5-ws-web-hl.douyin.com/webcast/im/push/v2/");
 
@@ -78,22 +77,5 @@ public class DouyinLiveChatClientConfig extends BaseNettyClientConfig {
     }
 
     @Builder.Default
-    private ScriptEngine scriptEngine = DEFAULT_ENGINE;
-
-    @Builder.Default
     private DouyinGiftCountCalculationTimeEnum giftCountCalculationTime = DouyinGiftCountCalculationTimeEnum.IMMEDIATELY;
-
-    @SneakyThrows
-    public static ScriptEngine createScriptEngine() {
-        JavaInfo javaInfo = new JavaInfo();
-        Class<?> nashornScriptEngineFactoryClass;
-        if (javaInfo.getVersionFloat() >= 11) {
-            nashornScriptEngineFactoryClass = Class.forName("org.openjdk.nashorn.api.scripting.NashornScriptEngineFactory");
-        } else {
-            nashornScriptEngineFactoryClass = Class.forName("jdk.nashorn.api.scripting.NashornScriptEngineFactory");
-        }
-        Object factory = nashornScriptEngineFactoryClass.getConstructor().newInstance();
-        Method getScriptEngine = nashornScriptEngineFactoryClass.getDeclaredMethod("getScriptEngine", String[].class);
-        return (ScriptEngine) getScriptEngine.invoke(factory, (Object) new String[]{"--language=es6"});
-    }
 }

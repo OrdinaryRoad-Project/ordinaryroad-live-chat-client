@@ -22,44 +22,23 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.codec.kuaishou.room;
+package tech.ordinaryroad.live.chat.client.commons.base.room;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import tech.ordinaryroad.live.chat.client.commons.base.constant.RoomLiveStatusEnum;
-import tech.ordinaryroad.live.chat.client.commons.base.room.IRoomInitResult;
+import lombok.*;
+import tech.ordinaryroad.live.chat.client.commons.base.constant.RoomLiveStreamQualityEnum;
 
 import java.util.List;
 
-@Data
+/**
+ * @author mjz
+ * @date 2025/1/17
+ */
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RoomInitResult implements IRoomInitResult {
-    private String token;
-    private String liveStreamId;
-    private List<String> websocketUrls;
-    private JsonNode livedetailJsonNode;
-
-    @Override
-    public String getRoomTitle() {
-        return livedetailJsonNode.get("author").get("name").asText();
-    }
-
-    @Override
-    public String getRoomDescription() {
-        return livedetailJsonNode.get("author").get("description").asText();
-    }
-
-    @Override
-    public RoomLiveStatusEnum getRoomLiveStatus() {
-        if (livedetailJsonNode.has("liveStream") && livedetailJsonNode.get("liveStream").has("id")) {
-            return RoomLiveStatusEnum.LIVING;
-        } else {
-            return RoomLiveStatusEnum.STOPPED;
-        }
-    }
+public class RoomLiveStreamInfo implements IRoomLiveStreamInfo {
+    private RoomLiveStreamQualityEnum quality;
+    private List<String> urls;
 }

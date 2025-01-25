@@ -45,9 +45,5 @@
             <version>2.10</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.openjdk.nashorn</groupId>
-            <artifactId>nashorn-core</artifactId>
-        </dependency>
     </dependencies>
 </project>

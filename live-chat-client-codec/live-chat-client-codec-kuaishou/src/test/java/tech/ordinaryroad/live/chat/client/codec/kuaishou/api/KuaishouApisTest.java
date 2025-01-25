@@ -3,8 +3,11 @@ package tech.ordinaryroad.live.chat.client.codec.kuaishou.api;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.constant.RoomInfoGetTypeEnum;
+import tech.ordinaryroad.live.chat.client.codec.kuaishou.room.KuaishouRoomInitResult;
 import tech.ordinaryroad.live.chat.client.commons.base.constant.RoomLiveStatusEnum;
+import tech.ordinaryroad.live.chat.client.commons.base.room.IRoomLiveStreamInfo;
 
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -54,7 +57,14 @@ class KuaishouApisTest {
 
     @Test
     void testRoomLiveStatus() {
-        assertEquals(KuaishouApis.roomInit("KPL704668133", RoomInfoGetTypeEnum.NOT_COOKIE, null, null).getRoomLiveStatus(), RoomLiveStatusEnum.LIVING);
-        assertEquals(KuaishouApis.roomInit("t8888888", RoomInfoGetTypeEnum.NOT_COOKIE, null, null).getRoomLiveStatus(), RoomLiveStatusEnum.STOPPED);
+        assertEquals(RoomLiveStatusEnum.LIVING, KuaishouApis.roomInit("KPL704668133", RoomInfoGetTypeEnum.NOT_COOKIE, null, null).getRoomLiveStatus());
+        assertEquals(RoomLiveStatusEnum.STOPPED, KuaishouApis.roomInit("t8888888", RoomInfoGetTypeEnum.NOT_COOKIE, null, null).getRoomLiveStatus());
+    }
+
+    @Test
+    void testRoomLiveStreamUrls() {
+        KuaishouRoomInitResult roomInitResult = KuaishouApis.roomInit("KPL704668133", RoomInfoGetTypeEnum.NOT_COOKIE, null, null);
+        List<IRoomLiveStreamInfo> roomLiveStreamUrls = roomInitResult.getRoomLiveStreamUrls();
+        assertNotEquals(0, roomLiveStreamUrls.size());
     }
 }

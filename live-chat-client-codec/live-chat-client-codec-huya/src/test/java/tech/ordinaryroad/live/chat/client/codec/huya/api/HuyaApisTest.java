@@ -3,6 +3,9 @@ package tech.ordinaryroad.live.chat.client.codec.huya.api;
 import cn.hutool.core.lang.Assert;
 import org.junit.jupiter.api.Test;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
+import tech.ordinaryroad.live.chat.client.commons.base.room.IRoomLiveStreamInfo;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -31,5 +34,11 @@ class HuyaApisTest {
     @Test
     void testRoomLiveStatus() {
         System.out.println(HuyaApis.roomInit("bagea", null).getRoomLiveStatus());
+    }
+
+    @Test
+    void testRoomLiveStreamUrls() {
+        List<IRoomLiveStreamInfo> roomLiveStreamUrls = HuyaApis.roomInit("lpl", null).getRoomLiveStreamUrls();
+        Assert.notEmpty(roomLiveStreamUrls);
     }
 }

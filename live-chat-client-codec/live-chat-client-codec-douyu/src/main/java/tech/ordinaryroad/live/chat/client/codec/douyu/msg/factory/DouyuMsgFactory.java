@@ -25,7 +25,6 @@
 package tech.ordinaryroad.live.chat.client.codec.douyu.msg.factory;
 
 import cn.hutool.cache.impl.TimedCache;
-import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
@@ -81,29 +80,25 @@ public class DouyuMsgFactory {
             // type@=loginreq/roomid@=7750753/dfl@=/username@=visitor10424697/uid@=1168052601/ver@=20220825/aver@=218101901/ct@=0/
             LoginreqMsg loginreqMsg;
             long realRoomId = roomInitResult.getRealRoomId();
-            long uid;
+            long uid = roomInitResult.getUid();
+            String dyDid = roomInitResult.getDid();
             String username;
             Map<String, String> cookieMap = OrLiveChatCookieUtil.parseCookieString(cookie);
 
             if (cookieMap.isEmpty()) {
                 // 视为未登录
                 if (mode == DouyuClientModeEnum.DANMU) {
-                    uid = RandomUtil.randomInt(10000, 19999);
                     username = "visitor" + RandomUtil.randomInt(1000000000, 1999999999);
                     loginreqMsg = new LoginreqMsg(realRoomId, "", username, uid, ver, aver);
                     return DouyuCodecUtil.encode(loginreqMsg, LoginreqMsg.SHOULD_IGNORE_PROPERTIES_WHEN_NOT_LOGGED_IN);
                 } else {
-                    loginreqMsg = new LoginreqMsg(realRoomId, "", "", ver, aver, "", "", "", UUID.fastUUID().toString(true));
+                    loginreqMsg = new LoginreqMsg(realRoomId, "", "", ver, aver, "", "", "", dyDid);
                     return DouyuCodecUtil.encode(loginreqMsg, LoginreqMsg.SHOULD_IGNORE_PROPERTIES_WHEN_LOGGED_IN);
                 }
             }
             // 视为登录
             else {
-                String acfUid = OrLiveChatCookieUtil.getCookieByName(cookieMap, DouyuApis.KEY_COOKIE_ACF_UID, () -> {
-                    throw new BaseException("Cookie中缺少字段" + DouyuApis.KEY_COOKIE_ACF_UID);
-                });
-                uid = NumberUtil.parseLong(acfUid);
-                username = acfUid;
+                username = NumberUtil.toStr(uid);
                 String dfl = "sn@A=105@Sss@A=1";
                 if (mode == DouyuClientModeEnum.DANMU) {
                     loginreqMsg = new LoginreqMsg(realRoomId, dfl, username, uid, ver, aver);
@@ -114,9 +109,6 @@ public class DouyuMsgFactory {
                     });
                     String acfStk = OrLiveChatCookieUtil.getCookieByName(cookieMap, DouyuApis.KEY_COOKIE_ACF_STK, () -> {
                         throw new BaseException("Cookie中缺少字段" + DouyuApis.KEY_COOKIE_ACF_STK);
-                    });
-                    String dyDid = OrLiveChatCookieUtil.getCookieByName(cookieMap, DouyuApis.KEY_COOKIE_DY_DID, () -> {
-                        throw new BaseException("Cookie中缺少字段" + DouyuApis.KEY_COOKIE_DY_DID);
                     });
                     loginreqMsg = new LoginreqMsg(realRoomId, dfl, username, ver, aver, acfLtkid, "1", acfStk, dyDid);
                     return DouyuCodecUtil.encode(loginreqMsg, LoginreqMsg.SHOULD_IGNORE_PROPERTIES_WHEN_LOGGED_IN);
@@ -169,14 +161,8 @@ public class DouyuMsgFactory {
         return DouyuCodecUtil.encode(new SubMsg());
     }
 
-    public ByteBuf createDanmu(String msg, String cookie) {
-        String dyDid = OrLiveChatCookieUtil.getCookieByName(cookie, DouyuApis.KEY_COOKIE_DY_DID, () -> {
-            throw new BaseException("cookie中缺少参数" + DouyuApis.KEY_COOKIE_DY_DID);
-        });
-        String acfUid = OrLiveChatCookieUtil.getCookieByName(cookie, DouyuApis.KEY_COOKIE_ACF_UID, () -> {
-            throw new BaseException("cookie中缺少参数" + DouyuApis.KEY_COOKIE_ACF_UID);
-        });
-        ChatmessageMsg chatmessageMsg = new ChatmessageMsg(msg, dyDid, acfUid);
+    public ByteBuf createDanmu(String msg, DouyuRoomInitResult roomInitResult) {
+        ChatmessageMsg chatmessageMsg = new ChatmessageMsg(msg, roomInitResult.getDid(), NumberUtil.toStr(roomInitResult.getUid()));
         return DouyuCodecUtil.encode(chatmessageMsg);
     }
 }

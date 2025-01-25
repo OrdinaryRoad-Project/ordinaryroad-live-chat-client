@@ -2,6 +2,9 @@ package tech.ordinaryroad.live.chat.client.codec.douyin.api;
 
 import cn.hutool.core.lang.Assert;
 import org.junit.jupiter.api.Test;
+import tech.ordinaryroad.live.chat.client.commons.base.room.IRoomLiveStreamInfo;
+
+import java.util.List;
 
 /**
  * @author mjz
@@ -26,5 +29,11 @@ class DouyinApisTest {
     @Test
     void testRoomLiveStatus() {
         System.out.println(DouyinApis.roomInit("renyixu1989").getRoomLiveStatus());
+    }
+
+    @Test
+    void testRoomLiveStreamUrls() {
+        List<IRoomLiveStreamInfo> roomLiveStreamUrls = DouyinApis.roomInit("646454278948").getRoomLiveStreamUrls();
+        Assert.notEmpty(roomLiveStreamUrls);
     }
 }

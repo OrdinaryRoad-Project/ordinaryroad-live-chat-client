@@ -30,6 +30,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpStatus;
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Cleanup;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.codec.huya.api.response.TtPlayerCfg;
@@ -37,7 +38,7 @@ import tech.ordinaryroad.live.chat.client.codec.huya.api.response.TtPlayerConf;
 import tech.ordinaryroad.live.chat.client.codec.huya.api.response.TtProfileInfo;
 import tech.ordinaryroad.live.chat.client.codec.huya.api.response.TtRoomData;
 import tech.ordinaryroad.live.chat.client.codec.huya.msg.dto.PropsItem;
-import tech.ordinaryroad.live.chat.client.codec.huya.room.RoomInitResult;
+import tech.ordinaryroad.live.chat.client.codec.huya.room.HuyaRoomInitResult;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.util.OrJacksonUtil;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatHttpUtil;
@@ -66,14 +67,19 @@ public class HuyaApis {
     private static final String PATTERN_TT_PROFILE_INFO = "TT_PROFILE_INFO = (\\{.*\\}?);";
     private static final String PATTERN_TT_PLAYER_CFG = "TT_PLAYER_CFG = (\\{.*?\\});";
     private static final String PATTERN_TT_PLAYER_CONF = "TT_PLAYER_CONF = (\\{.*?\\});";
+    private static final String PATTERN_HY_PLAYER_CONFIG_STREAM = "hyPlayerConfig\\s*=\\s*\\{[\\s\\S]*?stream:\\s*(\\{[\\s\\S]*?\\})\\s*\\}";
 
-    public static RoomInitResult roomInit(Object roomId) {
+    public static HuyaRoomInitResult roomInit(Object roomId) {
         return roomInit(roomId, null);
     }
 
-    public static RoomInitResult roomInit(Object roomId, RoomInitResult roomInitResult) {
+    public static HuyaRoomInitResult roomInit(Object roomId, String cookie) {
+        return roomInit(roomId, cookie, null);
+    }
+
+    public static HuyaRoomInitResult roomInit(Object roomId, String cookie, HuyaRoomInitResult roomInitResult) {
         @Cleanup
-        HttpResponse response = createGetRequest("https://www.huya.com/" + roomId, null).execute();
+        HttpResponse response = createGetRequest("https://www.huya.com/" + roomId, cookie).execute();
         if (response.getStatus() != HttpStatus.HTTP_OK) {
             throw new BaseException("获取" + roomId + "真实房间ID失败");
         }
@@ -86,22 +92,25 @@ public class HuyaApis {
         String ttProfileInfoJsonString = ReUtil.getGroup1(PATTERN_TT_PROFILE_INFO, body);
         String ttPlayerCfgJsonString = ReUtil.getGroup1(PATTERN_TT_PLAYER_CFG, body);
         String ttPlayerConfJsonString = ReUtil.getGroup1(PATTERN_TT_PLAYER_CONF, body);
+        String hyPlayerConfigStreamJsonString = ReUtil.getGroup1(PATTERN_HY_PLAYER_CONFIG_STREAM, body);
         TtRoomData ttRoomData = null;
         TtProfileInfo ttProfileInfo = null;
         TtPlayerCfg ttPlayerCfg = null;
         TtPlayerConf ttPlayerConf = null;
+        JsonNode hyPlayerConfigStream = null;
         try {
             ttRoomData = OrJacksonUtil.getInstance().readValue(ttRoomDataJsonString, TtRoomData.class);
             ttProfileInfo = OrJacksonUtil.getInstance().readValue(ttProfileInfoJsonString, TtProfileInfo.class);
             ttPlayerCfg = OrJacksonUtil.getInstance().readValue(ttPlayerCfgJsonString, TtPlayerCfg.class);
             ttPlayerConf = OrJacksonUtil.getInstance().readValue(ttPlayerConfJsonString, TtPlayerConf.class);
+            hyPlayerConfigStream = OrJacksonUtil.getInstance().readTree(hyPlayerConfigStreamJsonString);
         } catch (Exception e) {
             if (log.isWarnEnabled()) {
                 log.warn("直播间信息解析失败", e);
             }
         }
 
-        roomInitResult = Optional.ofNullable(roomInitResult).orElse(RoomInitResult.builder().build());
+        roomInitResult = Optional.ofNullable(roomInitResult).orElse(HuyaRoomInitResult.builder().build());
         roomInitResult.setLSubChannelId(StrUtil.emptyToDefault(lSubChannelId, "0"));
         roomInitResult.setLChannelId(NumberUtil.parseLong(lChannelId, 0L));
         roomInitResult.setLYyid(NumberUtil.parseLong(lYyid, 0L));
@@ -109,6 +118,7 @@ public class HuyaApis {
         roomInitResult.setTtProfileInfo(ttProfileInfo);
         roomInitResult.setTtPlayerCfg(ttPlayerCfg);
         roomInitResult.setTtPlayerConf(ttPlayerConf);
+        roomInitResult.setHyPlayerConfigStream(hyPlayerConfigStream);
         return roomInitResult;
     }
 
