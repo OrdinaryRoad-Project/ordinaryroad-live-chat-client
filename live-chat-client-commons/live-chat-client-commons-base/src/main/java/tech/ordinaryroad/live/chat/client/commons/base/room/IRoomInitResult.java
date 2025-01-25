@@ -26,6 +26,7 @@ package tech.ordinaryroad.live.chat.client.commons.base.room;
 
 
 import tech.ordinaryroad.live.chat.client.commons.base.constant.RoomLiveStatusEnum;
+import tech.ordinaryroad.live.chat.client.commons.base.constant.RoomLiveStreamQualityEnum;
 
 import java.util.List;
 
@@ -44,7 +45,7 @@ public interface IRoomInitResult {
      * 获取房间描述
      */
     default String getRoomDescription() {
-        return "";
+        return null;
     }
 
     /**
@@ -53,7 +54,12 @@ public interface IRoomInitResult {
     RoomLiveStatusEnum getRoomLiveStatus();
 
     /**
-     * 获取直播流地址
+     * 获取房间直播流地址
+     *
+     * @param qualities 直播流质量
+     * @see RoomLiveStreamQualityEnum
      */
-    List<IRoomLiveStreamInfo> getRoomLiveStreamUrls();
+    default List<IRoomLiveStreamInfo> getRoomLiveStreamUrls(RoomLiveStreamQualityEnum... qualities) {
+        return null;
+    }
 }
