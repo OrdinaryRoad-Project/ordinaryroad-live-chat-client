@@ -89,7 +89,7 @@ public class HuyaRoomInitResult implements IRoomInitResult {
     }
 
     @Override
-    public List<IRoomLiveStreamInfo> getRoomLiveStreamUrls(RoomLiveStreamQualityEnum ...qualities) {
+    public List<IRoomLiveStreamInfo> getRoomLiveStreamUrls(RoomLiveStreamQualityEnum... qualities) {
         List<IRoomLiveStreamInfo> liveStreamInfos = new ArrayList<>();
         if (!hyPlayerConfigStream.has("data") || hyPlayerConfigStream.withArray("data").isEmpty()) {
             return liveStreamInfos;
@@ -108,6 +108,7 @@ public class HuyaRoomInitResult implements IRoomInitResult {
                     .build()
             );
         }
+        RoomLiveStreamQualityEnum.filterQualities(liveStreamInfos, qualities);
         return liveStreamInfos;
     }
 

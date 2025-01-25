@@ -112,18 +112,7 @@ public class BilibiliRoomInitResult implements IRoomInitResult {
                 }
             }
         }
-
-        if (qualities.length != 0) {
-            CollUtil.filter(roomStreamInfoList, roomLiveStreamInfo -> {
-                for (RoomLiveStreamQualityEnum quality : qualities) {
-                    if (roomLiveStreamInfo.getQuality() == quality) {
-                        return true;
-                    }
-                }
-                return false;
-            });
-        }
-
+        RoomLiveStreamQualityEnum.filterQualities(roomStreamInfoList, qualities);
         return roomStreamInfoList;
     }
 }

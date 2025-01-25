@@ -28,6 +28,9 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import tech.ordinaryroad.live.chat.client.commons.base.constant.RoomLiveStreamQualityEnum;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author mjz
  * @date 2025/1/24
@@ -45,6 +48,21 @@ public enum DouyuQualityEnum {
     private final int bit;
     private final String name;
 
+    private static final Map<DouyuQualityEnum, RoomLiveStreamQualityEnum> QUALITY_MAP_FROM_DOUYU = new HashMap<DouyuQualityEnum, RoomLiveStreamQualityEnum>() {{
+        put(DouyuQualityEnum.Q_ORIGIN, RoomLiveStreamQualityEnum.Q_ORIGIN);
+        put(DouyuQualityEnum.Q_BLUE_RAY_8, RoomLiveStreamQualityEnum.Q_BLUE_RAY);
+        put(DouyuQualityEnum.Q_BLUE_RAY_4, RoomLiveStreamQualityEnum.Q_SUPER);
+        put(DouyuQualityEnum.Q_SD, RoomLiveStreamQualityEnum.Q_HIGH);
+        put(DouyuQualityEnum.Q_HD, RoomLiveStreamQualityEnum.Q_FLUENT);
+    }};
+    private static final Map<RoomLiveStreamQualityEnum, DouyuQualityEnum> QUALITY_MAP_TO_DOUYU = new HashMap<RoomLiveStreamQualityEnum, DouyuQualityEnum>() {{
+        put(RoomLiveStreamQualityEnum.Q_ORIGIN, DouyuQualityEnum.Q_ORIGIN);
+        put(RoomLiveStreamQualityEnum.Q_BLUE_RAY, DouyuQualityEnum.Q_BLUE_RAY_8);
+        put(RoomLiveStreamQualityEnum.Q_SUPER, DouyuQualityEnum.Q_BLUE_RAY_4);
+        put(RoomLiveStreamQualityEnum.Q_HIGH, DouyuQualityEnum.Q_SD);
+        put(RoomLiveStreamQualityEnum.Q_FLUENT, DouyuQualityEnum.Q_HD);
+    }};
+
     public static DouyuQualityEnum getByRateOrBit(int rate, int bit) {
         for (DouyuQualityEnum value : DouyuQualityEnum.values()) {
             if (value.rate == rate || value.bit == bit) {
@@ -55,22 +73,11 @@ public enum DouyuQualityEnum {
     }
 
     public static RoomLiveStreamQualityEnum toRoomLiveStreamQualityEnum(DouyuQualityEnum douyuQualityEnum) {
-        if (douyuQualityEnum == null) {
-            return RoomLiveStreamQualityEnum.Q_UNKNOWN;
-        }
-        switch (douyuQualityEnum) {
-            case Q_ORIGIN:
-                return RoomLiveStreamQualityEnum.Q_ORIGIN;
-            case Q_BLUE_RAY_8:
-                return RoomLiveStreamQualityEnum.Q_BLUE_RAY;
-            case Q_BLUE_RAY_4:
-                return RoomLiveStreamQualityEnum.Q_SUPER;
-            case Q_SD:
-                return RoomLiveStreamQualityEnum.Q_HIGH;
-            case Q_HD:
-                return RoomLiveStreamQualityEnum.Q_FLUENT;
-            default:
-                return RoomLiveStreamQualityEnum.Q_UNKNOWN;
-        }
+        return QUALITY_MAP_FROM_DOUYU.getOrDefault(douyuQualityEnum, RoomLiveStreamQualityEnum.Q_UNKNOWN);
     }
+
+    public static DouyuQualityEnum fromRoomLiveStreamQualityEnum(RoomLiveStreamQualityEnum qualityEnum) {
+        return QUALITY_MAP_TO_DOUYU.getOrDefault(qualityEnum, DouyuQualityEnum.Q_ORIGIN);
+    }
+
 }

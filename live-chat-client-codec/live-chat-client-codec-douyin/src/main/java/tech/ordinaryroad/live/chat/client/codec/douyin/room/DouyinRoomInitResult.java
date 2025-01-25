@@ -24,9 +24,9 @@
 
 package tech.ordinaryroad.live.chat.client.codec.douyin.room;
 
-import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.codec.douyin.constant.DouyinQualityEnum;
 import tech.ordinaryroad.live.chat.client.codec.douyin.constant.DouyinRoomStatusEnum;
 import tech.ordinaryroad.live.chat.client.commons.base.constant.RoomLiveStatusEnum;
@@ -37,6 +37,7 @@ import tech.ordinaryroad.live.chat.client.commons.base.room.RoomLiveStreamInfo;
 
 import java.util.*;
 
+@Slf4j
 @Getter
 @Setter
 @AllArgsConstructor
@@ -78,7 +79,7 @@ public class DouyinRoomInitResult implements IRoomInitResult {
     }
 
     @Override
-    public List<IRoomLiveStreamInfo> getRoomLiveStreamUrls() {
+    public List<IRoomLiveStreamInfo> getRoomLiveStreamUrls(RoomLiveStreamQualityEnum... qualities) {
         List<IRoomLiveStreamInfo> roomLiveStreamInfos = new ArrayList<>();
 
         Map<RoomLiveStreamQualityEnum, List<String>> qualityUrlListMap = new HashMap<>();
@@ -96,6 +97,7 @@ public class DouyinRoomInitResult implements IRoomInitResult {
                     .urls(v)
                     .build());
         });
+        RoomLiveStreamQualityEnum.filterQualities(roomLiveStreamInfos, qualities);
         return roomLiveStreamInfos;
     }
 
@@ -132,16 +134,9 @@ public class DouyinRoomInitResult implements IRoomInitResult {
         for (Map.Entry<String, JsonNode> property : pullUrlMap.properties()) {
             String key = property.getKey();
             String value = property.getValue().asText();
-            DouyinQualityEnum douyinQualityEnum;
-            if (StrUtil.equalsIgnoreCase(key, "FULL_HD1")) {
-                douyinQualityEnum = DouyinQualityEnum.Q_ORIGIN;
-            } else if (StrUtil.equalsIgnoreCase(key, "HD1")) {
-                douyinQualityEnum = DouyinQualityEnum.Q_HD;
-            } else if (StrUtil.equalsIgnoreCase(key, "SD1")) {
-                douyinQualityEnum = DouyinQualityEnum.Q_LD;
-            } else if (StrUtil.equalsIgnoreCase(key, "SD2")) {
-                douyinQualityEnum = DouyinQualityEnum.Q_SD;
-            } else {
+            DouyinQualityEnum douyinQualityEnum = DouyinQualityEnum.getByPullUrlMapKey(key);
+            if (douyinQualityEnum == null) {
+                log.warn("未知的抖音直播流质量 {}", key);
                 continue;
             }
             map.computeIfAbsent(douyinQualityEnum, k -> new ArrayList<>()).add(value);

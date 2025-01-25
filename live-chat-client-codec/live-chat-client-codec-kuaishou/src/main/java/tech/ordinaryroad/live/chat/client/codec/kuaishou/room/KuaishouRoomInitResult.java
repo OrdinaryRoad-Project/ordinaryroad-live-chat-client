@@ -72,7 +72,7 @@ public class KuaishouRoomInitResult implements IRoomInitResult {
     }
 
     @Override
-    public List<IRoomLiveStreamInfo> getRoomLiveStreamUrls() {
+    public List<IRoomLiveStreamInfo> getRoomLiveStreamUrls(RoomLiveStreamQualityEnum... qualities) {
         List<IRoomLiveStreamInfo> roomLiveStreamInfos = CollUtil.newArrayList();
 
         if (!livedetailJsonNode.has("liveStream") || !livedetailJsonNode.get("liveStream").has("playUrls")) {
@@ -112,7 +112,7 @@ public class KuaishouRoomInitResult implements IRoomInitResult {
             }
             roomLiveStreamInfos.add(RoomLiveStreamInfo.builder().quality(roomLiveStreamQualityEnum).urls(urls).build());
         }));
-
+        RoomLiveStreamQualityEnum.filterQualities(roomLiveStreamInfos, qualities);
         return roomLiveStreamInfos;
     }
 }

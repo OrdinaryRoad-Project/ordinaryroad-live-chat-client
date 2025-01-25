@@ -24,6 +24,11 @@
 
 package tech.ordinaryroad.live.chat.client.commons.base.constant;
 
+import tech.ordinaryroad.live.chat.client.commons.base.room.IRoomLiveStreamInfo;
+
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * 直播流清晰度
  *
@@ -43,4 +48,26 @@ public enum RoomLiveStreamQualityEnum {
     Q_FLUENT,
     Q_UNKNOWN,
     ;
+
+    /**
+     * 过滤直播流清晰度，直接在原列表上修改
+     *
+     * @param roomStreamInfoList 直播流信息列表
+     * @param qualities          要保留的清晰度，为空则不过滤
+     */
+    public static void filterQualities(List<IRoomLiveStreamInfo> roomStreamInfoList, RoomLiveStreamQualityEnum... qualities) {
+        if (qualities == null || qualities.length == 0) {
+            return;
+        }
+        Iterator<IRoomLiveStreamInfo> iterator = roomStreamInfoList.iterator();
+        while (iterator.hasNext()) {
+            IRoomLiveStreamInfo roomLiveStreamInfo = iterator.next();
+            for (RoomLiveStreamQualityEnum quality : qualities) {
+                if (roomLiveStreamInfo.getQuality() == quality) {
+                    break;
+                }
+                iterator.remove();
+            }
+        }
+    }
 }

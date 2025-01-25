@@ -29,6 +29,9 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import tech.ordinaryroad.live.chat.client.commons.base.constant.RoomLiveStreamQualityEnum;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author mjz
  * @date 2025/1/24
@@ -45,6 +48,20 @@ public enum KuaishouQualityEnum {
     private final String qualityType;
     private final String name;
 
+    private static final Map<KuaishouQualityEnum, RoomLiveStreamQualityEnum> QUALITY_MAP_FROM_KUAISHOU = new HashMap<KuaishouQualityEnum, RoomLiveStreamQualityEnum>() {{
+        put(KuaishouQualityEnum.Q_STANDARD, RoomLiveStreamQualityEnum.Q_FLUENT);
+        put(KuaishouQualityEnum.Q_HIGH, RoomLiveStreamQualityEnum.Q_HIGH);
+        put(KuaishouQualityEnum.Q_SUPER, RoomLiveStreamQualityEnum.Q_SUPER);
+        put(KuaishouQualityEnum.Q_BLUE_RAY, RoomLiveStreamQualityEnum.Q_BLUE_RAY);
+    }};
+
+    private static final Map<RoomLiveStreamQualityEnum, KuaishouQualityEnum> QUALITY_MAP_TO_KUAISHOU = new HashMap<RoomLiveStreamQualityEnum, KuaishouQualityEnum>() {{
+        put(RoomLiveStreamQualityEnum.Q_FLUENT, KuaishouQualityEnum.Q_STANDARD);
+        put(RoomLiveStreamQualityEnum.Q_HIGH, KuaishouQualityEnum.Q_HIGH);
+        put(RoomLiveStreamQualityEnum.Q_SUPER, KuaishouQualityEnum.Q_SUPER);
+        put(RoomLiveStreamQualityEnum.Q_BLUE_RAY, KuaishouQualityEnum.Q_BLUE_RAY);
+    }};
+
     public static KuaishouQualityEnum getByBitrateOrQualityType(int bitrate, String qualityType) {
         for (KuaishouQualityEnum value : values()) {
             if (value.getBitrate() == bitrate || StrUtil.equalsIgnoreCase(value.getQualityType(), qualityType)) {
@@ -55,21 +72,10 @@ public enum KuaishouQualityEnum {
     }
 
     public static RoomLiveStreamQualityEnum toRoomLiveStreamQualityEnum(KuaishouQualityEnum kuaishouQualityEnum) {
-        if (kuaishouQualityEnum == null) {
-            return RoomLiveStreamQualityEnum.Q_UNKNOWN;
-        } else {
-            switch (kuaishouQualityEnum) {
-                case Q_STANDARD:
-                    return RoomLiveStreamQualityEnum.Q_FLUENT;
-                case Q_HIGH:
-                    return RoomLiveStreamQualityEnum.Q_HIGH;
-                case Q_SUPER:
-                    return RoomLiveStreamQualityEnum.Q_SUPER;
-                case Q_BLUE_RAY:
-                    return RoomLiveStreamQualityEnum.Q_BLUE_RAY;
-                default:
-                    return RoomLiveStreamQualityEnum.Q_UNKNOWN;
-            }
-        }
+        return QUALITY_MAP_FROM_KUAISHOU.getOrDefault(kuaishouQualityEnum, RoomLiveStreamQualityEnum.Q_UNKNOWN);
+    }
+
+    public static KuaishouQualityEnum fromRoomLiveStreamQualityEnum(RoomLiveStreamQualityEnum qualityEnum) {
+        return QUALITY_MAP_TO_KUAISHOU.getOrDefault(qualityEnum, KuaishouQualityEnum.Q_BLUE_RAY);
     }
 }
