@@ -62,10 +62,14 @@ public enum RoomLiveStreamQualityEnum {
         Iterator<IRoomLiveStreamInfo> iterator = roomStreamInfoList.iterator();
         while (iterator.hasNext()) {
             IRoomLiveStreamInfo roomLiveStreamInfo = iterator.next();
+            boolean needRemove = false;
             for (RoomLiveStreamQualityEnum quality : qualities) {
                 if (roomLiveStreamInfo.getQuality() == quality) {
+                    needRemove = true;
                     break;
                 }
+            }
+            if (needRemove) {
                 iterator.remove();
             }
         }
