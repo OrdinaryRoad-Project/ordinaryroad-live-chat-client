@@ -49,13 +49,13 @@
 
 ## 平台直播间信息适配情况表
 
-| 平台          | 房间标题 | 房间描述 | 房间直播状态 |
-|-------------|------|------|--------|
-| Bilibili B站 | ✅    |      | ✅      |
-| Douyu 斗鱼    | ✅    |      | ✅      |
-| Huya 虎牙     | ✅    |      | ✅      |
-| Douyin 抖音   | ✅    |      | ✅      |
-| Kuaishou 快手 | ✅    | ✅    | ✅      |
+| 平台          | 房间标题 | 房间描述 | 房间直播状态 | 房间直播流地址 |
+|-------------|------|------|--------|---------|
+| Bilibili B站 | ✅    |      | ✅      | ✅       |
+| Douyu 斗鱼    | ✅    |      | ✅      | ✅       |
+| Huya 虎牙     | ✅    |      | ✅      | ✅       |
+| Douyin 抖音   | ✅    |      | ✅      | ✅       |
+| Kuaishou 快手 | ✅    | ✅    | ✅      | ✅       |
 
 ## 平台直播间消息适配情况表
 
@@ -351,6 +351,9 @@ public class ClientModeExample {
   - `String getDescription()`
 - 获取房间直播状态
   - `RoomLiveStatusEnum getRoomLiveStatus()`
+- 获取房间直播流地址
+  - `List<IRoomLiveStreamInfo> getRoomLiveStreamUrls(RoomLiveStreamQualityEnum... qualities)`
+  - `Map<RoomLiveStreamQualityEnum, List<String>> getRoomLiveStreamUrlMap(RoomLiveStreamQualityEnum... qualities)`
 
 ### 2.2 高级模式
 
