@@ -140,6 +140,7 @@ class DouyuLiveChatClientTest implements IDouyuConnectionListener, IDouyuMsgList
                 log.warn("{} 已连接", client.getConfig().getRoomId());
                 log.warn("直播间标题 {}", client.getRoomInitResult().getRoomTitle());
                 log.warn("房间直播状态: {}", client.getRoomInitResult().getRoomLiveStatus());
+                log.warn("房间直播流地址: {}", client.getRoomInitResult().getRoomLiveStreamUrls());
             }
         });
 
