@@ -70,7 +70,7 @@ public class HuyaApis {
     private static final String PATTERN_HY_PLAYER_CONFIG_STREAM = "hyPlayerConfig\\s*=\\s*\\{[\\s\\S]*?stream:\\s*(\\{[\\s\\S]*?\\})\\s*\\}";
 
     public static RoomInitResult roomInit(Object roomId) {
-        return roomInit(roomId);
+        return roomInit(roomId, null);
     }
 
     public static RoomInitResult roomInit(Object roomId, String cookie) {
