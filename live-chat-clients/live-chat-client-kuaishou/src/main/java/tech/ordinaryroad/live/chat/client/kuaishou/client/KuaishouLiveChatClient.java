@@ -38,7 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.api.KuaishouApis;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.base.IKuaishouMsg;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf.PayloadTypeOuterClass;
-import tech.ordinaryroad.live.chat.client.codec.kuaishou.room.RoomInitResult;
+import tech.ordinaryroad.live.chat.client.codec.kuaishou.room.KuaishouRoomInitResult;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
@@ -62,7 +62,7 @@ import java.util.function.Consumer;
 @Slf4j
 public class KuaishouLiveChatClient extends BaseNettyClient<
         KuaishouLiveChatClientConfig,
-        RoomInitResult,
+        KuaishouRoomInitResult,
         PayloadTypeOuterClass.PayloadType,
         IKuaishouMsg,
         IKuaishouMsgListener,
@@ -144,7 +144,7 @@ public class KuaishouLiveChatClient extends BaseNettyClient<
     }
 
     @Override
-    public RoomInitResult initRoom() {
+    public KuaishouRoomInitResult initRoom() {
         return KuaishouApis.roomInit(getConfig().getRoomId(), getConfig().getRoomInfoGetType(), getConfig().getCookie(), roomInitResult);
     }
 

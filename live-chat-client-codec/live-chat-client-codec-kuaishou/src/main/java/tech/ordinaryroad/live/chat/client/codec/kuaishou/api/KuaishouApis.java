@@ -39,7 +39,7 @@ import tech.ordinaryroad.live.chat.client.codec.kuaishou.constant.RoomInfoGetTyp
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.KuaishouGiftMsg;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf.LiveAudienceStateOuterClass;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf.WebGiftFeedOuterClass;
-import tech.ordinaryroad.live.chat.client.codec.kuaishou.room.RoomInitResult;
+import tech.ordinaryroad.live.chat.client.codec.kuaishou.room.KuaishouRoomInitResult;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.util.OrJacksonUtil;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCookieUtil;
@@ -67,7 +67,7 @@ public class KuaishouApis {
      */
     private static final TimedCache<String, WebGiftFeedOuterClass.WebGiftFeed> WEB_GIFT_FEED_CACHE = new TimedCache<>(300 * 1000L, new ConcurrentHashMap<>());
 
-    public static RoomInitResult roomInitSetCookie(Object roomId, String cookie, RoomInitResult roomInitResult) {
+    public static KuaishouRoomInitResult roomInitSetCookie(Object roomId, String cookie, KuaishouRoomInitResult roomInitResult) {
         @Cleanup
         HttpResponse response = createGetRequest("https://live.kuaishou.com/u/" + roomId, cookie)
                 .execute();
@@ -103,7 +103,7 @@ public class KuaishouApis {
             }
         }
 
-        roomInitResult = Optional.ofNullable(roomInitResult).orElseGet(() -> RoomInitResult.builder().build());
+        roomInitResult = Optional.ofNullable(roomInitResult).orElseGet(() -> KuaishouRoomInitResult.builder().build());
         roomInitResult.setToken(token);
         roomInitResult.setWebsocketUrls(websocketUrlList);
         roomInitResult.setLiveStreamId(liveStreamId);
@@ -111,11 +111,11 @@ public class KuaishouApis {
         return roomInitResult;
     }
 
-    public static RoomInitResult roomInitSetCookie(Object roomId, String cookie) {
+    public static KuaishouRoomInitResult roomInitSetCookie(Object roomId, String cookie) {
         return roomInitSetCookie(roomId, cookie, null);
     }
 
-    public static RoomInitResult roomInitGet(Object roomId, RoomInitResult roomInitResult) {
+    public static KuaishouRoomInitResult roomInitGet(Object roomId, KuaishouRoomInitResult roomInitResult) {
         @Cleanup
         HttpResponse response = createGetRequest("https://live.kuaishou.com/live_api/liveroom/livedetail?principalId=" + roomId, StrUtil.EMPTY)
                 .execute();
@@ -136,7 +136,7 @@ public class KuaishouApis {
             }
         }
 
-        roomInitResult = Optional.ofNullable(roomInitResult).orElseGet(() -> RoomInitResult.builder().build());
+        roomInitResult = Optional.ofNullable(roomInitResult).orElseGet(() -> KuaishouRoomInitResult.builder().build());
         roomInitResult.setToken(token);
         roomInitResult.setWebsocketUrls(websocketUrlList);
         roomInitResult.setLiveStreamId(liveStreamId);
@@ -144,11 +144,11 @@ public class KuaishouApis {
         return roomInitResult;
     }
 
-    public static RoomInitResult roomInitGet(Object roomId) {
+    public static KuaishouRoomInitResult roomInitGet(Object roomId) {
         return roomInitGet(roomId, null);
     }
 
-    public static RoomInitResult roomInit(Object roomId, RoomInfoGetTypeEnum roomInfoGetType, String cookie, RoomInitResult roomInitResult) {
+    public static KuaishouRoomInitResult roomInit(Object roomId, RoomInfoGetTypeEnum roomInfoGetType, String cookie, KuaishouRoomInitResult roomInitResult) {
         switch (roomInfoGetType) {
             case COOKIE: {
                 return roomInitSetCookie(roomId, cookie, roomInitResult);
@@ -163,15 +163,15 @@ public class KuaishouApis {
         }
     }
 
-    public static RoomInitResult roomInit(Object roomId, RoomInfoGetTypeEnum roomInfoGetType, String cookie) {
+    public static KuaishouRoomInitResult roomInit(Object roomId, RoomInfoGetTypeEnum roomInfoGetType, String cookie) {
         return roomInit(roomId, roomInfoGetType, cookie, null);
     }
 
-    public static RoomInitResult roomInit(Object roomId) {
+    public static KuaishouRoomInitResult roomInit(Object roomId) {
         return roomInit(roomId, RoomInfoGetTypeEnum.NOT_COOKIE, null);
     }
 
-    public static RoomInitResult roomInit(Object roomId, RoomInitResult roomInitResult) {
+    public static KuaishouRoomInitResult roomInit(Object roomId, KuaishouRoomInitResult roomInitResult) {
         return roomInit(roomId, RoomInfoGetTypeEnum.NOT_COOKIE, null, roomInitResult);
     }
 

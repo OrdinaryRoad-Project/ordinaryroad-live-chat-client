@@ -3,7 +3,7 @@ package tech.ordinaryroad.live.chat.client.codec.kuaishou.api;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.constant.RoomInfoGetTypeEnum;
-import tech.ordinaryroad.live.chat.client.codec.kuaishou.room.RoomInitResult;
+import tech.ordinaryroad.live.chat.client.codec.kuaishou.room.KuaishouRoomInitResult;
 import tech.ordinaryroad.live.chat.client.commons.base.constant.RoomLiveStatusEnum;
 import tech.ordinaryroad.live.chat.client.commons.base.room.IRoomLiveStreamInfo;
 
@@ -63,7 +63,7 @@ class KuaishouApisTest {
 
     @Test
     void testRoomLiveStreamUrls() {
-        RoomInitResult roomInitResult = KuaishouApis.roomInit("KPL704668133", RoomInfoGetTypeEnum.NOT_COOKIE, null, null);
+        KuaishouRoomInitResult roomInitResult = KuaishouApis.roomInit("KPL704668133", RoomInfoGetTypeEnum.NOT_COOKIE, null, null);
         List<IRoomLiveStreamInfo> roomLiveStreamUrls = roomInitResult.getRoomLiveStreamUrls();
         assertNotEquals(0, roomLiveStreamUrls.size());
     }

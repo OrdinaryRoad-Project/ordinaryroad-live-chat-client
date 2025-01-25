@@ -46,7 +46,7 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RoomInitResult implements IRoomInitResult {
+public class KuaishouRoomInitResult implements IRoomInitResult {
     private String token;
     private String liveStreamId;
     private List<String> websocketUrls;
