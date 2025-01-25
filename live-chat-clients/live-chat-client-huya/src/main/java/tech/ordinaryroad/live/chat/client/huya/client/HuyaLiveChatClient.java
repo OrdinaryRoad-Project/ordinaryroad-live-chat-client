@@ -38,7 +38,7 @@ import tech.ordinaryroad.live.chat.client.codec.huya.constant.HuyaCmdEnum;
 import tech.ordinaryroad.live.chat.client.codec.huya.msg.WebSocketCommand;
 import tech.ordinaryroad.live.chat.client.codec.huya.msg.base.IHuyaMsg;
 import tech.ordinaryroad.live.chat.client.codec.huya.msg.factory.HuyaMsgFactory;
-import tech.ordinaryroad.live.chat.client.codec.huya.room.RoomInitResult;
+import tech.ordinaryroad.live.chat.client.codec.huya.room.HuyaRoomInitResult;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
 import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
 import tech.ordinaryroad.live.chat.client.huya.config.HuyaLiveChatClientConfig;
@@ -62,7 +62,7 @@ import java.util.function.Consumer;
 @Slf4j
 public class HuyaLiveChatClient extends BaseNettyClient<
         HuyaLiveChatClientConfig,
-        RoomInitResult,
+        HuyaRoomInitResult,
         HuyaCmdEnum,
         IHuyaMsg,
         IHuyaMsgListener,
@@ -112,8 +112,8 @@ public class HuyaLiveChatClient extends BaseNettyClient<
     }
 
     @Override
-    public RoomInitResult initRoom() {
-        return HuyaApis.roomInit(getConfig().getRoomId(), roomInitResult);
+    public HuyaRoomInitResult initRoom() {
+        return HuyaApis.roomInit(getConfig().getRoomId(), getConfig().getCookie(), roomInitResult);
     }
 
     @Override

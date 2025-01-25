@@ -38,7 +38,7 @@ import tech.ordinaryroad.live.chat.client.codec.huya.api.response.TtPlayerConf;
 import tech.ordinaryroad.live.chat.client.codec.huya.api.response.TtProfileInfo;
 import tech.ordinaryroad.live.chat.client.codec.huya.api.response.TtRoomData;
 import tech.ordinaryroad.live.chat.client.codec.huya.msg.dto.PropsItem;
-import tech.ordinaryroad.live.chat.client.codec.huya.room.RoomInitResult;
+import tech.ordinaryroad.live.chat.client.codec.huya.room.HuyaRoomInitResult;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.util.OrJacksonUtil;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatHttpUtil;
@@ -69,15 +69,15 @@ public class HuyaApis {
     private static final String PATTERN_TT_PLAYER_CONF = "TT_PLAYER_CONF = (\\{.*?\\});";
     private static final String PATTERN_HY_PLAYER_CONFIG_STREAM = "hyPlayerConfig\\s*=\\s*\\{[\\s\\S]*?stream:\\s*(\\{[\\s\\S]*?\\})\\s*\\}";
 
-    public static RoomInitResult roomInit(Object roomId) {
+    public static HuyaRoomInitResult roomInit(Object roomId) {
         return roomInit(roomId, null);
     }
 
-    public static RoomInitResult roomInit(Object roomId, String cookie) {
+    public static HuyaRoomInitResult roomInit(Object roomId, String cookie) {
         return roomInit(roomId, cookie, null);
     }
 
-    public static RoomInitResult roomInit(Object roomId, String cookie, RoomInitResult roomInitResult) {
+    public static HuyaRoomInitResult roomInit(Object roomId, String cookie, HuyaRoomInitResult roomInitResult) {
         @Cleanup
         HttpResponse response = createGetRequest("https://www.huya.com/" + roomId, cookie).execute();
         if (response.getStatus() != HttpStatus.HTTP_OK) {
@@ -110,7 +110,7 @@ public class HuyaApis {
             }
         }
 
-        roomInitResult = Optional.ofNullable(roomInitResult).orElse(RoomInitResult.builder().build());
+        roomInitResult = Optional.ofNullable(roomInitResult).orElse(HuyaRoomInitResult.builder().build());
         roomInitResult.setLSubChannelId(StrUtil.emptyToDefault(lSubChannelId, "0"));
         roomInitResult.setLChannelId(NumberUtil.parseLong(lChannelId, 0L));
         roomInitResult.setLYyid(NumberUtil.parseLong(lYyid, 0L));

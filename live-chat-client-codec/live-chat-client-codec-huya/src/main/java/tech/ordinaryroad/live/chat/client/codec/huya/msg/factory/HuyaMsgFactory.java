@@ -34,7 +34,7 @@ import tech.ordinaryroad.live.chat.client.codec.huya.constant.HuyaOperationEnum;
 import tech.ordinaryroad.live.chat.client.codec.huya.constant.HuyaWupFunctionEnum;
 import tech.ordinaryroad.live.chat.client.codec.huya.msg.WebSocketCommand;
 import tech.ordinaryroad.live.chat.client.codec.huya.msg.req.*;
-import tech.ordinaryroad.live.chat.client.codec.huya.room.RoomInitResult;
+import tech.ordinaryroad.live.chat.client.codec.huya.room.HuyaRoomInitResult;
 import tech.ordinaryroad.live.chat.client.codec.huya.util.HuyaCodecUtil;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCookieUtil;
@@ -78,7 +78,7 @@ public class HuyaMsgFactory {
      * @param cookie Cookie
      * @return WebSocketCommand
      */
-    public WebSocketCommand createSendMessageReq(RoomInitResult roomInitResult, String msg, String ver, String cookie) {
+    public WebSocketCommand createSendMessageReq(HuyaRoomInitResult roomInitResult, String msg, String ver, String cookie) {
         String yyuid = OrLiveChatCookieUtil.getCookieByName(cookie, KEY_COOKIE_YYUID, () -> {
             throw new BaseException("cookie中缺少参数" + KEY_COOKIE_YYUID);
         });
@@ -142,7 +142,7 @@ public class HuyaMsgFactory {
         return createLiveLaunchReq(ver, cookie);
     }
 
-    public WebSocketCommand createGetLivingInfoReq(RoomInitResult roomInitResult, String ver, String cookie) {
+    public WebSocketCommand createGetLivingInfoReq(HuyaRoomInitResult roomInitResult, String ver, String cookie) {
         GetLivingInfoReq getLivingInfoReq = new GetLivingInfoReq();
 //        getLivingInfoReq.getTId().setSGuid("0a7dca72a3ce1b654001dd2ade2ae857");
         getLivingInfoReq.getTId().setSHuYaUA("webh5&" + ver + "&websocket");
@@ -182,7 +182,7 @@ public class HuyaMsgFactory {
         return webSocketCommand;
     }
 
-    public WebSocketCommand createRegisterGroupReq(RoomInitResult roomInitResult) {
+    public WebSocketCommand createRegisterGroupReq(HuyaRoomInitResult roomInitResult) {
         Long lYyid = roomInitResult.getLChannelId();
 
         WSRegisterGroupReq wsRegisterGroupReq = new WSRegisterGroupReq();
@@ -210,14 +210,14 @@ public class HuyaMsgFactory {
      *
      * @return WebSocketCommand
      */
-    public WebSocketCommand createGiftListReq(RoomInitResult roomInitResult, String ver) {
+    public WebSocketCommand createGiftListReq(HuyaRoomInitResult roomInitResult, String ver) {
         WebSocketCommand webSocketCommand = new WebSocketCommand();
         webSocketCommand.setOperation(HuyaOperationEnum.EWSCmd_WupReq.getCode());
         webSocketCommand.setVData(this.getGiftListReqMsg(roomInitResult, ver));
         return webSocketCommand;
     }
 
-    public WebSocketCommand createHeartbeat(RoomInitResult roomInitResult, String ver, String cookie) {
+    public WebSocketCommand createHeartbeat(HuyaRoomInitResult roomInitResult, String ver, String cookie) {
         WebSocketCommand webSocketCommand = new WebSocketCommand();
         webSocketCommand.setOperation(HuyaOperationEnum.EWSCmdC2S_HeartBeatReq.getCode());
         webSocketCommand.setVData(this.getHeartbeatMsg(roomInitResult, ver, cookie));
@@ -227,7 +227,7 @@ public class HuyaMsgFactory {
     /**
      * 心跳包单例模式
      */
-    public byte[] getHeartbeatMsg(RoomInitResult roomInitResult, String ver, String cookie) {
+    public byte[] getHeartbeatMsg(HuyaRoomInitResult roomInitResult, String ver, String cookie) {
         if (heartbeatMsg == null) {
             synchronized (HuyaMsgFactory.this) {
                 if (heartbeatMsg == null) {
@@ -251,7 +251,7 @@ public class HuyaMsgFactory {
     /**
      * 礼物列表请求包单例模式
      */
-    public byte[] getGiftListReqMsg(RoomInitResult roomInitResult, String ver) {
+    public byte[] getGiftListReqMsg(HuyaRoomInitResult roomInitResult, String ver) {
         if (giftListReqMsg == null) {
             synchronized (HuyaMsgFactory.this) {
                 if (giftListReqMsg == null) {

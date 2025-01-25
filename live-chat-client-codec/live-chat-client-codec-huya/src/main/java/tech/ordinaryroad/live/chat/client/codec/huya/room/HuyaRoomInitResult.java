@@ -56,7 +56,7 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RoomInitResult implements IRoomInitResult {
+public class HuyaRoomInitResult implements IRoomInitResult {
 
     private String lSubChannelId;
     private Long lChannelId;
@@ -89,7 +89,7 @@ public class RoomInitResult implements IRoomInitResult {
     }
 
     @Override
-    public List<IRoomLiveStreamInfo> getRoomLiveStreamUrls() {
+    public List<IRoomLiveStreamInfo> getRoomLiveStreamUrls(RoomLiveStreamQualityEnum ...qualities) {
         List<IRoomLiveStreamInfo> liveStreamInfos = new ArrayList<>();
         if (!hyPlayerConfigStream.has("data") || hyPlayerConfigStream.withArray("data").isEmpty()) {
             return liveStreamInfos;
