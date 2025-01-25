@@ -28,7 +28,9 @@ package tech.ordinaryroad.live.chat.client.commons.base.room;
 import tech.ordinaryroad.live.chat.client.commons.base.constant.RoomLiveStatusEnum;
 import tech.ordinaryroad.live.chat.client.commons.base.constant.RoomLiveStreamQualityEnum;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author mjz
@@ -61,5 +63,16 @@ public interface IRoomInitResult {
      */
     default List<IRoomLiveStreamInfo> getRoomLiveStreamUrls(RoomLiveStreamQualityEnum... qualities) {
         return null;
+    }
+
+    default Map<RoomLiveStreamQualityEnum, List<String>> getRoomLiveStreamUrlMap(RoomLiveStreamQualityEnum... qualities) {
+        List<IRoomLiveStreamInfo> roomLiveStreamUrls = getRoomLiveStreamUrls(qualities);
+        Map<RoomLiveStreamQualityEnum, List<String>> map = new HashMap<>();
+        if (roomLiveStreamUrls != null && !roomLiveStreamUrls.isEmpty()) {
+            for (IRoomLiveStreamInfo roomLiveStreamUrl : roomLiveStreamUrls) {
+                map.put(roomLiveStreamUrl.getQuality(), roomLiveStreamUrl.getUrls());
+            }
+        }
+        return map;
     }
 }
