@@ -24,13 +24,15 @@
 
 package tech.ordinaryroad.live.chat.client.codec.bilibili.room;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.*;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.api.BilibiliApis;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.api.dto.*;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.api.response.RoomPlayInfoResult;
-import tech.ordinaryroad.live.chat.client.codec.bilibili.constant.BilibiliQnEnum;
+import tech.ordinaryroad.live.chat.client.codec.bilibili.constant.BilibiliQualityEnum;
 import tech.ordinaryroad.live.chat.client.commons.base.constant.RoomLiveStatusEnum;
+import tech.ordinaryroad.live.chat.client.commons.base.constant.RoomLiveStreamQualityEnum;
 import tech.ordinaryroad.live.chat.client.commons.base.room.IRoomInitResult;
 import tech.ordinaryroad.live.chat.client.commons.base.room.IRoomLiveStreamInfo;
 import tech.ordinaryroad.live.chat.client.commons.base.room.RoomLiveStreamInfo;
@@ -75,7 +77,7 @@ public class BilibiliRoomInitResult implements IRoomInitResult {
     }
 
     @Override
-    public List<IRoomLiveStreamInfo> getRoomLiveStreamUrls() {
+    public List<IRoomLiveStreamInfo> getRoomLiveStreamUrls(RoomLiveStreamQualityEnum... qualities) {
         List<IRoomLiveStreamInfo> roomStreamInfoList = new ArrayList<>();
         Playurl_info playurlInfo = roomPlayInfoResult.getPlayurl_info();
         if (playurlInfo == null || playurlInfo.getPlayurl() == null || playurlInfo.getPlayurl().getStream() == null) {
@@ -93,17 +95,35 @@ public class BilibiliRoomInitResult implements IRoomInitResult {
                     if (StrUtil.isEmpty(codec.getBase_url()) || codec.getUrl_info() == null) {
                         continue;
                     }
-                    List<String> urls = new ArrayList<>();
-                    RoomLiveStreamInfo.RoomLiveStreamInfoBuilder builder = RoomLiveStreamInfo.builder()
-                            .quality(BilibiliQnEnum.toRoomLiveStreamQualityEnum(BilibiliQnEnum.getByQn(codec.getCurrent_qn())))
-                            .urls(urls);
+
                     for (Url_info urlInfo : codec.getUrl_info()) {
-                        urls.add(urlInfo.getHost() + codec.getBase_url() + urlInfo.getExtra());
+                        String url = urlInfo.getHost() + codec.getBase_url() + urlInfo.getExtra();
+                        RoomLiveStreamQualityEnum roomLiveStreamQualityEnum = BilibiliQualityEnum.toRoomLiveStreamQualityEnum(BilibiliQualityEnum.getByQn(codec.getCurrent_qn()));
+                        IRoomLiveStreamInfo roomLiveStreamInfoByQuality = CollUtil.findOneByField(roomStreamInfoList, "quality", roomLiveStreamQualityEnum);
+                        if (roomLiveStreamInfoByQuality == null) {
+                            roomStreamInfoList.add(RoomLiveStreamInfo.builder()
+                                    .quality(roomLiveStreamQualityEnum)
+                                    .urls(CollUtil.newArrayList(url))
+                                    .build());
+                        } else {
+                            roomLiveStreamInfoByQuality.getUrls().add(url);
+                        }
                     }
-                    roomStreamInfoList.add(builder.build());
                 }
             }
         }
+
+        if (qualities.length != 0) {
+            CollUtil.filter(roomStreamInfoList, roomLiveStreamInfo -> {
+                for (RoomLiveStreamQualityEnum quality : qualities) {
+                    if (roomLiveStreamInfo.getQuality() == quality) {
+                        return true;
+                    }
+                }
+                return false;
+            });
+        }
+
         return roomStreamInfoList;
     }
 }
