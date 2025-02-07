@@ -291,7 +291,7 @@ public class DouyuApis {
         }
 
         @Cleanup
-        HttpResponse execute = OrLiveChatHttpUtil.createGet("https://www.douyu.com/" + roomId).cookie(cookie).execute();
+        HttpResponse execute = OrLiveChatHttpUtil.createGet("https://www.douyu.com/" + roomId, true).cookie(cookie).execute();
         String liveRoomPageBody = execute.body();
         long realRoomId = getRealRoomIdByRoomPageResponse(roomId, execute);
         String streamUrlRequestVer = getVerFromLiveRoomPageBody(cookie, liveRoomPageBody);
