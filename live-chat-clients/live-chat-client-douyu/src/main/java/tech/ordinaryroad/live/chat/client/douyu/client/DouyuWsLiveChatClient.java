@@ -81,7 +81,7 @@ public class DouyuWsLiveChatClient extends BaseDouyuLiveChatClient implements ID
 
     @Override
     protected String getWebSocketUriString() {
-        return DouyuApis.getRandomWssUri(getConfig().getRoomId());
+        return DouyuApis.getRandomWssUri(getRoomInitResult().getRealRoomId());
     }
 
     @Override

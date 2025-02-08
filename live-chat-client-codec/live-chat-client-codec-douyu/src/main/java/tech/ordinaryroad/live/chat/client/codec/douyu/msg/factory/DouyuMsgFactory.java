@@ -48,18 +48,18 @@ import java.util.concurrent.TimeUnit;
  */
 public class DouyuMsgFactory {
 
-    private static final TimedCache<Long, DouyuMsgFactory> FACTORY_CACHE = new TimedCache<>(TimeUnit.DAYS.toMillis(1), new ConcurrentHashMap<>());
+    private static final TimedCache<Object, DouyuMsgFactory> FACTORY_CACHE = new TimedCache<>(TimeUnit.DAYS.toMillis(1), new ConcurrentHashMap<>());
     /**
-     * 浏览器地址中的房间id，暂不支持短id
+     * 浏览器地址中的房间id，支持短id，例如：`lpl`
      */
-    private final long roomId;
+    private final Object roomId;
     private volatile static HeartbeatMsg heartbeatMsg;
 
-    public DouyuMsgFactory(long roomId) {
+    public DouyuMsgFactory(Object roomId) {
         this.roomId = roomId;
     }
 
-    public static DouyuMsgFactory getInstance(long roomId) {
+    public static DouyuMsgFactory getInstance(Object roomId) {
         if (!FACTORY_CACHE.containsKey(roomId)) {
             FACTORY_CACHE.put(roomId, new DouyuMsgFactory(roomId));
         }
@@ -151,9 +151,9 @@ public class DouyuMsgFactory {
         return new KeepliveMsg(cnd);
     }
 
-    public ByteBuf createJoingroup() {
+    public ByteBuf createJoingroup(DouyuRoomInitResult roomInitResult) {
         JoingroupMsg joingroupMsg = new JoingroupMsg();
-        joingroupMsg.setRid(roomId);
+        joingroupMsg.setRid(roomInitResult.getRealRoomId());
         return DouyuCodecUtil.encode(joingroupMsg);
     }
 

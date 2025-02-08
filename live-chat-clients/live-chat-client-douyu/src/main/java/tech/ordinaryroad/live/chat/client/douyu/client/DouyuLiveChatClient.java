@@ -102,7 +102,13 @@ public class DouyuLiveChatClient extends DouyuWsLiveChatClient implements IDouyu
             });
         }
         super.init();
-        DouyuApis.updateRoomGiftMapCache(getConfig().getRoomId());
+    }
+
+    @Override
+    public DouyuRoomInitResult initRoom() {
+        DouyuRoomInitResult douyuRoomInitResult = super.initRoom();
+        DouyuApis.updateRoomGiftMapCache(douyuRoomInitResult.getRealRoomId());
+        return douyuRoomInitResult;
     }
 
     @Override

@@ -141,7 +141,7 @@ public abstract class BaseDouyuLiveChatClient extends BaseNettyClient<
         }
     }
 
-    protected static DouyuMsgFactory getMsgFactory(long roomId) {
+    protected static DouyuMsgFactory getMsgFactory(Object roomId) {
         return DouyuMsgFactory.getInstance(roomId);
     }
 

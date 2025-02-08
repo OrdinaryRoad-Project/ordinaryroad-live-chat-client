@@ -64,6 +64,8 @@ class DouyuLiveChatClientTest implements IDouyuConnectionListener, IDouyuMsgList
                 .roomId(1126960)
                 .roomId(8834570)
                 .roomId(4767111)
+                .roomId(3168536)
+                .roomId("lpl")
                 .build();
 
         client = new DouyuLiveChatClient(config, new IDouyuMsgListener() {

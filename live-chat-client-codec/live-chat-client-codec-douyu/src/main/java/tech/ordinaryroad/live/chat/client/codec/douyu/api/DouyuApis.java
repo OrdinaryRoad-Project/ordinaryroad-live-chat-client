@@ -113,7 +113,7 @@ public class DouyuApis {
         return getAvatarUrl(list, API_AVATAR_PREFIX_SMALL);
     }
 
-    public static long getRealRoomId(long roomId, String cookie) {
+    public static long getRealRoomId(Object roomId, String cookie) {
         @Cleanup
         HttpResponse execute = OrLiveChatHttpUtil.createGet("https://www.douyu.com/" + roomId)
                 .cookie(cookie)
@@ -121,7 +121,7 @@ public class DouyuApis {
         return getRealRoomIdByRoomPageResponse(roomId, execute);
     }
 
-    private static long getRealRoomIdByRoomPageResponse(long roomId, HttpResponse execute) {
+    private static long getRealRoomIdByRoomPageResponse(Object roomId, HttpResponse execute) {
         String realRoomIdString = null;
         if (execute.getStatus() == HttpStatus.HTTP_NOT_FOUND) {
             throw new BaseException("获取" + roomId + "真实房间ID失败");
@@ -140,18 +140,17 @@ public class DouyuApis {
                 realRoomIdString = matchString;
             }
         }
-        long realRoomId = roomId;
-        if (!StrUtil.isBlank(realRoomIdString)) {
-            try {
-                realRoomId = NumberUtil.parseLong(realRoomIdString);
-            } catch (Exception e) {
-                throw new BaseException("获取" + roomId + "真实房间ID失败");
-            }
+        long realRoomId;
+        try {
+            // 正则或者传入的参数
+            realRoomId = NumberUtil.parseLong(StrUtil.blankToDefault(realRoomIdString, StrUtil.toString(roomId)));
+        } catch (Exception e) {
+            throw new BaseException("获取" + roomId + "真实房间ID失败");
         }
         return realRoomId;
     }
 
-    public static long getRealRoomId(long roomId) {
+    public static long getRealRoomId(Object roomId) {
         return getRealRoomId(roomId, null);
     }
 
@@ -273,7 +272,7 @@ public class DouyuApis {
     }
 
     @SneakyThrows
-    public static DouyuRoomInitResult roomInit(Long roomId, String cookie, DouyuRoomInitResult roomInitResult) {
+    public static DouyuRoomInitResult roomInit(Object roomId, String cookie, DouyuRoomInitResult roomInitResult) {
         Map<String, String> cookieMap = OrLiveChatCookieUtil.parseCookieString(cookie);
 
         long uid;

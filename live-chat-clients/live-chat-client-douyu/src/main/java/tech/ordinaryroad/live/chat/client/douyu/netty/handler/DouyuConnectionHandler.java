@@ -56,7 +56,7 @@ public class DouyuConnectionHandler extends BaseNettyClientConnectionHandler<Bas
     /**
      * 以ClientConfig为主
      */
-    private final long roomId;
+    private final Object roomId;
     /**
      * 以ClientConfig为主
      */
@@ -143,11 +143,11 @@ public class DouyuConnectionHandler extends BaseNettyClientConnectionHandler<Bas
                 });
     }
 
-    private DouyuMsgFactory getMsgFactory(long roomId) {
+    private DouyuMsgFactory getMsgFactory(Object roomId) {
         return DouyuMsgFactory.getInstance(roomId);
     }
 
-    public long getRoomId() {
+    public Object getRoomId() {
         return client != null ? client.getConfig().getRoomId() : roomId;
     }
 

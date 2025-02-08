@@ -105,7 +105,7 @@ public class DouyuDanmuLiveChatClient extends BaseDouyuLiveChatClient implements
     public void onMsg(DouyuBinaryFrameHandler binaryFrameHandler, IMsg msg) {
         if (msg instanceof LoginresMsg) {
             // 1 type@=joingroup/rid@=4615502/gid@=1/
-            send(new BinaryWebSocketFrame(getMsgFactory(getConfig().getRoomId()).createJoingroup()), () -> {
+            send(new BinaryWebSocketFrame(getMsgFactory(getConfig().getRoomId()).createJoingroup(getRoomInitResult())), () -> {
                 // 2 type@=mrkl/
                 send(new BinaryWebSocketFrame(getMsgFactory(getConfig().getRoomId()).createHeartbeat()), () -> {
                     // 3 type@=sub/mt@=dayrk/
