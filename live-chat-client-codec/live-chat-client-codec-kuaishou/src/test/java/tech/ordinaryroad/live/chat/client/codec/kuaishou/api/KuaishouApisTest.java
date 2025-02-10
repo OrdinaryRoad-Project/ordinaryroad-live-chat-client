@@ -35,12 +35,15 @@ class KuaishouApisTest {
 
     @Test
     void sendComment() {
+        String roomId = "KPL704668133";
+        KuaishouRoomInitResult roomInitResult = KuaishouApis.roomInit(roomId);
+
         System.out.println(KuaishouApis.sendComment(System.getenv("cookie"),
-                "3x3gjx4jfca4zfs",
+                roomId,
                 KuaishouApis.SendCommentRequest
                         .builder()
-                        .liveStreamId("53SZUUkYtqQ")
-                        .content("12222222")
+                        .liveStreamId(roomInitResult.getLiveStreamId())
+                        .content("66666a")
                         .build()
         ));
     }
