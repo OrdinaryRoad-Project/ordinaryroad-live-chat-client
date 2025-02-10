@@ -213,6 +213,7 @@ public class KuaishouApis {
         @Cleanup
         HttpResponse response = createPostRequest("https://live.kuaishou.com/live_api/liveroom/sendComment", cookie)
                 .body(OrJacksonUtil.getInstance().writeValueAsString(request), ContentType.JSON.getValue())
+                .header(Header.ORIGIN,"https://live.kuaishou.com")
                 .header(Header.REFERER, "https://live.kuaishou.com/u/" + roomId)
                 .execute();
         return responseInterceptor(response.body());
