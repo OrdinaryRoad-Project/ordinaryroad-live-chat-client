@@ -57,6 +57,7 @@
         <module>live-chat-client-commons</module>
         <module>live-chat-client-servers</module>
         <module>live-chat-client-codec</module>
+        <module>live-chat-client-plugins</module>
         <module>live-chat-clients</module>
     </modules>
 
@@ -180,6 +181,12 @@
             <dependency>
                 <groupId>tech.ordinaryroad</groupId>
                 <artifactId>live-chat-client-codec-kuaishou</artifactId>
+                <version>1.4.0-b2</version>
+            </dependency>
+
+            <dependency>
+                <groupId>tech.ordinaryroad</groupId>
+                <artifactId>live-chat-client-plugin-forward</artifactId>
                 <version>1.4.0-b2</version>
             </dependency>
 
