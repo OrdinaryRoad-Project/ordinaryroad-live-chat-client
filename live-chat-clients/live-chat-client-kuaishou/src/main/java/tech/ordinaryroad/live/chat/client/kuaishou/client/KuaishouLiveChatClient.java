@@ -41,15 +41,14 @@ import tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf.PayloadTypeOut
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.room.KuaishouRoomInitResult;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
-import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCollUtil;
 import tech.ordinaryroad.live.chat.client.kuaishou.config.KuaishouLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.kuaishou.listener.IKuaishouConnectionListener;
 import tech.ordinaryroad.live.chat.client.kuaishou.listener.IKuaishouMsgListener;
-import tech.ordinaryroad.live.chat.client.kuaishou.listener.impl.KuaishouForwardMsgListener;
 import tech.ordinaryroad.live.chat.client.kuaishou.netty.handler.KuaishouBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.kuaishou.netty.handler.KuaishouConnectionHandler;
 import tech.ordinaryroad.live.chat.client.kuaishou.netty.handler.KuaishouLiveChatClientChannelInitializer;
+import tech.ordinaryroad.live.chat.client.plugin.forward.ForwardMsgPlugin;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
 
 import java.util.List;
@@ -70,7 +69,7 @@ public class KuaishouLiveChatClient extends BaseNettyClient<
         KuaishouBinaryFrameHandler> {
 
     public KuaishouLiveChatClient(KuaishouLiveChatClientConfig config, List<IKuaishouMsgListener> msgListeners, IKuaishouConnectionListener connectionListener, EventLoopGroup workerGroup) {
-        super(config, workerGroup, connectionListener);
+        super(config, workerGroup, connectionListener, IKuaishouMsgListener.class);
         addMsgListeners(msgListeners);
 
         // 初始化
@@ -78,7 +77,7 @@ public class KuaishouLiveChatClient extends BaseNettyClient<
     }
 
     public KuaishouLiveChatClient(KuaishouLiveChatClientConfig config, IKuaishouMsgListener msgListener, IKuaishouConnectionListener connectionListener, EventLoopGroup workerGroup) {
-        super(config, workerGroup, connectionListener);
+        super(config, workerGroup, connectionListener, IKuaishouMsgListener.class);
         addMsgListener(msgListener);
 
         // 初始化
@@ -99,15 +98,8 @@ public class KuaishouLiveChatClient extends BaseNettyClient<
 
     @Override
     public void init() {
-        if (StrUtil.isNotBlank(getConfig().getForwardWebsocketUri())) {
-            KuaishouForwardMsgListener forwardMsgListener = new KuaishouForwardMsgListener(getConfig().getForwardWebsocketUri());
-            addMsgListener(forwardMsgListener);
-            addStatusChangeListener((evt, oldStatus, newStatus) -> {
-                if (newStatus == ClientStatusEnums.DESTROYED) {
-                    forwardMsgListener.destroyForwardClient();
-                }
-            });
-        }
+        // TODO remove this
+        addPlugin(new ForwardMsgPlugin(getConfig().getForwardWebsocketUri()));
         super.init();
     }
 

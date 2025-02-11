@@ -64,7 +64,7 @@ public abstract class BaseDouyuLiveChatClient extends BaseNettyClient<
     private final DouyuClientModeEnum mode;
 
     public BaseDouyuLiveChatClient(DouyuClientModeEnum mode, DouyuLiveChatClientConfig config, List<IDouyuMsgListener> msgListeners, IDouyuConnectionListener connectionListener, EventLoopGroup workerGroup) {
-        super(config, workerGroup, connectionListener);
+        super(config, workerGroup, connectionListener, IDouyuMsgListener.class);
         this.mode = mode;
         addMsgListeners(msgListeners);
 
@@ -73,7 +73,7 @@ public abstract class BaseDouyuLiveChatClient extends BaseNettyClient<
     }
 
     public BaseDouyuLiveChatClient(DouyuClientModeEnum mode, DouyuLiveChatClientConfig config, IDouyuMsgListener msgListener, IDouyuConnectionListener connectionListener, EventLoopGroup workerGroup) {
-        super(config, workerGroup, connectionListener);
+        super(config, workerGroup, connectionListener, IDouyuMsgListener.class);
         this.mode = mode;
         addMsgListener(msgListener);
 
@@ -91,6 +91,10 @@ public abstract class BaseDouyuLiveChatClient extends BaseNettyClient<
 
     public BaseDouyuLiveChatClient(DouyuClientModeEnum mode, DouyuLiveChatClientConfig config) {
         this(mode, config, CollUtil.newArrayList(), null, new NioEventLoopGroup());
+    }
+
+    protected static DouyuMsgFactory getMsgFactory(Object roomId) {
+        return DouyuMsgFactory.getInstance(roomId);
     }
 
     @Override
@@ -139,10 +143,6 @@ public abstract class BaseDouyuLiveChatClient extends BaseNettyClient<
         } else {
             super.sendDanmu(danmu);
         }
-    }
-
-    protected static DouyuMsgFactory getMsgFactory(Object roomId) {
-        return DouyuMsgFactory.getInstance(roomId);
     }
 
 }

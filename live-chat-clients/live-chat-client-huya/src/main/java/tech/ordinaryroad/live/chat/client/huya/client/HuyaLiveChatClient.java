@@ -24,7 +24,6 @@
 
 package tech.ordinaryroad.live.chat.client.huya.client;
 
-import cn.hutool.core.util.StrUtil;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
@@ -40,14 +39,13 @@ import tech.ordinaryroad.live.chat.client.codec.huya.msg.base.IHuyaMsg;
 import tech.ordinaryroad.live.chat.client.codec.huya.msg.factory.HuyaMsgFactory;
 import tech.ordinaryroad.live.chat.client.codec.huya.room.HuyaRoomInitResult;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
-import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
 import tech.ordinaryroad.live.chat.client.huya.config.HuyaLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.huya.listener.IHuyaConnectionListener;
 import tech.ordinaryroad.live.chat.client.huya.listener.IHuyaMsgListener;
-import tech.ordinaryroad.live.chat.client.huya.listener.impl.HuyaForwardMsgListener;
 import tech.ordinaryroad.live.chat.client.huya.netty.handler.HuyaBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.huya.netty.handler.HuyaConnectionHandler;
 import tech.ordinaryroad.live.chat.client.huya.netty.handler.HuyaLiveChatClientChannelInitializer;
+import tech.ordinaryroad.live.chat.client.plugin.forward.ForwardMsgPlugin;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
 
 import java.util.List;
@@ -70,7 +68,7 @@ public class HuyaLiveChatClient extends BaseNettyClient<
         HuyaBinaryFrameHandler> {
 
     public HuyaLiveChatClient(HuyaLiveChatClientConfig config, List<IHuyaMsgListener> msgListeners, IHuyaConnectionListener connectionListener, EventLoopGroup workerGroup) {
-        super(config, workerGroup, connectionListener);
+        super(config, workerGroup, connectionListener, IHuyaMsgListener.class);
         addMsgListeners(msgListeners);
 
         // 初始化
@@ -78,7 +76,7 @@ public class HuyaLiveChatClient extends BaseNettyClient<
     }
 
     public HuyaLiveChatClient(HuyaLiveChatClientConfig config, IHuyaMsgListener msgListener, IHuyaConnectionListener connectionListener, EventLoopGroup workerGroup) {
-        super(config, workerGroup, connectionListener);
+        super(config, workerGroup, connectionListener, IHuyaMsgListener.class);
         addMsgListener(msgListener);
 
         // 初始化
@@ -99,15 +97,8 @@ public class HuyaLiveChatClient extends BaseNettyClient<
 
     @Override
     public void init() {
-        if (StrUtil.isNotBlank(getConfig().getForwardWebsocketUri())) {
-            HuyaForwardMsgListener forwardMsgListener = new HuyaForwardMsgListener(getConfig().getForwardWebsocketUri());
-            addMsgListener(forwardMsgListener);
-            addStatusChangeListener((evt, oldStatus, newStatus) -> {
-                if (newStatus == ClientStatusEnums.DESTROYED) {
-                    forwardMsgListener.destroyForwardClient();
-                }
-            });
-        }
+        // TODO remove this
+        addPlugin(new ForwardMsgPlugin(getConfig().getForwardWebsocketUri()));
         super.init();
     }
 
