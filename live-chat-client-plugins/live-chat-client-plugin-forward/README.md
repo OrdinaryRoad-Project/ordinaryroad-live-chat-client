@@ -1,5 +1,7 @@
 ### LiveChatClient 「消息转发」插件
 
+> 更多代码可参考B站LiveChatClient测试样例中的`BilibiliLiveChatClientTest#forwardMsgTest`
+
 #### 创建插件
 
 1. 基础用法
@@ -29,38 +31,38 @@ IPlugin plugin = new ForwardMsgPlugin(forwardWebsocketUri, forwardMsgHandler);
 ```java
 // 自定义插件，实现「消息转发插件」的功能
 IPlugin plugin = new IPlugin() {
-    WebSocketLiveChatClient webSocketLiveChatClient;
-    final IBilibiliMsgListener msgListener = new IBilibiliMsgListener() {
-        @Override
-        public void onDanmuMsg(DanmuMsgMsg msg) {
-            webSocketLiveChatClient.send(new BinaryWebSocketFrame(ByteBufAllocator.DEFAULT.buffer().writeBytes(("弹幕：" + msg.getContent()).getBytes(StandardCharsets.UTF_8))));
-        }
-    };
+            WebSocketLiveChatClient webSocketLiveChatClient;
+            final IBilibiliMsgListener msgListener = new IBilibiliMsgListener() {
+                @Override
+                public void onDanmuMsg(DanmuMsgMsg msg) {
+                    webSocketLiveChatClient.send(new BinaryWebSocketFrame(ByteBufAllocator.DEFAULT.buffer().writeBytes(("弹幕：" + msg.getContent()).getBytes(StandardCharsets.UTF_8))));
+                }
+            };
 
-    @Override
-    public <LiveChatClient extends IBaseLiveChatClient<?, MsgListener>,MsgListener extends IBaseMsgListener<?, ?>>
-    void register (LiveChatClient liveChatClient, Class < MsgListener > msgListenerClass){
-        webSocketLiveChatClient = new WebSocketLiveChatClient(WebSocketLiveChatClientConfig
-                .builder()
-                .websocketUri("ws://localhost:8080/websocket")
-                .build());
-        webSocketLiveChatClient.addStatusChangeListener((evt, oldStatus, newStatus) -> {
-            if (newStatus == ClientStatusEnums.CONNECTED) {
-                // TODO 自定义操作，例如发送认证包
-                webSocketLiveChatClient.send(new BinaryWebSocketFrame(ByteBufAllocator.DEFAULT.buffer().writeBytes("认证包".getBytes(StandardCharsets.UTF_8))));
+            @Override
+            public <LiveChatClient extends IBaseLiveChatClient<?, MsgListener>, MsgListener extends IBaseMsgListener<?, ?>>
+            void register(LiveChatClient liveChatClient, Class<MsgListener> msgListenerClass) {
+                webSocketLiveChatClient = new WebSocketLiveChatClient(WebSocketLiveChatClientConfig
+                        .builder()
+                        .websocketUri("ws://localhost:8080/websocket")
+                        .build());
+                webSocketLiveChatClient.addStatusChangeListener((evt, oldStatus, newStatus) -> {
+                    if (newStatus == ClientStatusEnums.CONNECTED) {
+                        // TODO 自定义操作，例如发送认证包
+                        webSocketLiveChatClient.send(new BinaryWebSocketFrame(ByteBufAllocator.DEFAULT.buffer().writeBytes("认证包".getBytes(StandardCharsets.UTF_8))));
+                    }
+                });
+                webSocketLiveChatClient.connect();
+                liveChatClient.addMsgListener((MsgListener) msgListener);
             }
-        });
-        webSocketLiveChatClient.connect();
-        liveChatClient.addMsgListener((MsgListener) msgListener);
-    }
 
-    @Override
-    public <LiveChatClient extends IBaseLiveChatClient<?, MsgListener>,MsgListener extends IBaseMsgListener<?, ?>>
-    void unregister (LiveChatClient liveChatClient, Class < MsgListener > msgListenerClass){
-        webSocketLiveChatClient.destroy();
-        liveChatClient.removeMsgListener((MsgListener) msgListener);
-    }
-};
+            @Override
+            public <LiveChatClient extends IBaseLiveChatClient<?, MsgListener>, MsgListener extends IBaseMsgListener<?, ?>>
+            void unregister(LiveChatClient liveChatClient, Class<MsgListener> msgListenerClass) {
+                webSocketLiveChatClient.destroy();
+                liveChatClient.removeMsgListener((MsgListener) msgListener);
+            }
+        };
 ```
 
 #### 添加插件
