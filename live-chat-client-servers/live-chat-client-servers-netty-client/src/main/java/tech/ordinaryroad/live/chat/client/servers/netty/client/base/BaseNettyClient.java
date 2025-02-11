@@ -90,6 +90,14 @@ public abstract class BaseNettyClient
         super(config);
         this.workerGroup = workerGroup;
         this.connectionListener = connectionListener;
+        this.msgListenerClass = null;
+    }
+
+    protected BaseNettyClient(Config config, EventLoopGroup workerGroup, IBaseConnectionListener<ConnectionHandler> connectionListener, Class<MsgListener> msgListenerClass) {
+        super(config);
+        this.workerGroup = workerGroup;
+        this.connectionListener = connectionListener;
+        this.msgListenerClass = msgListenerClass;
     }
 
     /**
