@@ -22,37 +22,11 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.codec.douyin.msg;
-
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import tech.ordinaryroad.live.chat.client.codec.douyin.msg.base.BaseDouyinMsg;
-import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.ControlMessage;
-import tech.ordinaryroad.live.chat.client.commons.base.constant.LiveStatusAction;
-import tech.ordinaryroad.live.chat.client.commons.base.msg.ILiveStatusChangeMsg;
-import tech.ordinaryroad.live.chat.client.commons.util.jackson.serializer.ProtobufToBase64Serializer;
+package tech.ordinaryroad.live.chat.client.codec.douyin.msg.base;
 
 /**
  * @author mjz
- * @date 2024/3/10
+ * @date 2025/2/11
  */
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class DouyinControlMsg extends BaseDouyinMsg implements ILiveStatusChangeMsg {
-
-    @JsonSerialize(using = ProtobufToBase64Serializer.class)
-    private ControlMessage msg;
-
-    @Override
-    public LiveStatusAction getLiveStatusAction() {
-        if (msg.getStatus() == 3) {
-            return LiveStatusAction.END;
-        }
-        return null;
-    }
+public abstract class BaseDouyinCmdMsg extends BaseDouyinMsg implements IDouyinCmdMsg {
 }

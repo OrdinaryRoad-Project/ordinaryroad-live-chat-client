@@ -25,13 +25,15 @@
 package tech.ordinaryroad.live.chat.client.codec.douyin.msg;
 
 import cn.hutool.core.collection.CollUtil;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tech.ordinaryroad.live.chat.client.codec.douyin.msg.base.IDouyinMsg;
+import tech.ordinaryroad.live.chat.client.codec.douyin.msg.base.BaseDouyinMsg;
 import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.LikeMessage;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ILikeMsg;
+import tech.ordinaryroad.live.chat.client.commons.util.jackson.serializer.ProtobufToBase64Serializer;
 
 /**
  * @author mjz
@@ -41,8 +43,9 @@ import tech.ordinaryroad.live.chat.client.commons.base.msg.ILikeMsg;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DouyinLikeMsg implements IDouyinMsg, ILikeMsg {
+public class DouyinLikeMsg extends BaseDouyinMsg implements ILikeMsg {
 
+    @JsonSerialize(using = ProtobufToBase64Serializer.class)
     private LikeMessage msg;
 
     @Override
@@ -73,10 +76,5 @@ public class DouyinLikeMsg implements IDouyinMsg, ILikeMsg {
     @Override
     public int getClickCount() {
         return (int) msg.getCount();
-    }
-
-    @Override
-    public String toString() {
-        return msg.toString();
     }
 }

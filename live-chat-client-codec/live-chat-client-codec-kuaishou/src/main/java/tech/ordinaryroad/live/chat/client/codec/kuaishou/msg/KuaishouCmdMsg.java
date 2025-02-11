@@ -24,13 +24,15 @@
 
 package tech.ordinaryroad.live.chat.client.codec.kuaishou.msg;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.base.IKuaishouCmdMsg;
+import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.base.BaseKuaishouCmdMsg;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf.PayloadTypeOuterClass;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf.SocketMessageOuterClass;
+import tech.ordinaryroad.live.chat.client.commons.util.jackson.serializer.ProtobufToBase64Serializer;
 
 /**
  * @author mjz
@@ -40,8 +42,9 @@ import tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf.SocketMessageO
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class KuaishouCmdMsg implements IKuaishouCmdMsg {
+public class KuaishouCmdMsg extends BaseKuaishouCmdMsg {
 
+    @JsonSerialize(using = ProtobufToBase64Serializer.class)
     private SocketMessageOuterClass.SocketMessage msg;
 
     @Override

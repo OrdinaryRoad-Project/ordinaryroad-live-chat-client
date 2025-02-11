@@ -22,50 +22,23 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.codec.douyin.msg;
+package tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.base;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import tech.ordinaryroad.live.chat.client.codec.douyin.constant.DouyinCmdEnum;
-import tech.ordinaryroad.live.chat.client.codec.douyin.msg.base.BaseDouyinCmdMsg;
-import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.Message;
-import tech.ordinaryroad.live.chat.client.commons.util.jackson.serializer.ProtobufToBase64Serializer;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
+import tech.ordinaryroad.live.chat.client.commons.util.OrJacksonUtil;
 
 /**
  * @author mjz
- * @date 2024/4/26
+ * @date 2025/2/11
  */
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class DouyinCmdMsg extends BaseDouyinCmdMsg {
-
-    @JsonSerialize(using = ProtobufToBase64Serializer.class)
-    private Message msg;
-
+public abstract class BaseKuaishouMsg implements IKuaishouMsg {
     @Override
-    public String getCmd() {
-        if (msg == null) {
-            return null;
+    public String toString() {
+        try {
+            return OrJacksonUtil.getInstance().writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            throw new BaseException(e);
         }
-        return msg.getMethod();
-    }
-
-    @Override
-    public void setCmd(String cmd) {
-        // ignore
-        // method_ = cmd;
-    }
-
-    @Override
-    public DouyinCmdEnum getCmdEnum() {
-        if (msg == null) {
-            return null;
-        }
-        return DouyinCmdEnum.getByName(msg.getMethod());
     }
 }

@@ -25,13 +25,15 @@
 package tech.ordinaryroad.live.chat.client.codec.douyin.msg;
 
 import cn.hutool.core.collection.CollUtil;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tech.ordinaryroad.live.chat.client.codec.douyin.msg.base.IDouyinMsg;
+import tech.ordinaryroad.live.chat.client.codec.douyin.msg.base.BaseDouyinMsg;
 import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.GiftMessage;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IGiftMsg;
+import tech.ordinaryroad.live.chat.client.commons.util.jackson.serializer.ProtobufToBase64Serializer;
 
 /**
  * @author mjz
@@ -41,8 +43,9 @@ import tech.ordinaryroad.live.chat.client.commons.base.msg.IGiftMsg;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DouyinGiftMsg implements IDouyinMsg, IGiftMsg {
+public class DouyinGiftMsg extends BaseDouyinMsg implements IGiftMsg {
 
+    @JsonSerialize(using = ProtobufToBase64Serializer.class)
     private GiftMessage msg;
     /**
      * 计算后得到的礼物个数
@@ -111,10 +114,5 @@ public class DouyinGiftMsg implements IDouyinMsg, IGiftMsg {
     @Override
     public String getReceiveUsername() {
         return msg.getToUser().getNickName();
-    }
-
-    @Override
-    public String toString() {
-        return msg.toString();
     }
 }
