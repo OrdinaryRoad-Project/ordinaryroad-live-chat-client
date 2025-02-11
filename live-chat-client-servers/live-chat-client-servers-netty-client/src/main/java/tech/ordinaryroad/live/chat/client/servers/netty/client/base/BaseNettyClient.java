@@ -215,7 +215,8 @@ public abstract class BaseNettyClient
                 .connect(this.websocketUri.getHost(), port).addListener((ChannelFutureListener) connectFuture -> {
                     if (connectFuture.isSuccess()) {
                         if (log.isDebugEnabled()) {
-                            log.debug("连接建立成功！");
+                            Object roomId = getConfig().getRoomId();
+                            log.debug("连接建立成功！ {}", roomId == null ? getConfig().getWebsocketUri() : roomId);
                         }
                         this.channel = connectFuture.channel();
                         // 监听是否握手成功
