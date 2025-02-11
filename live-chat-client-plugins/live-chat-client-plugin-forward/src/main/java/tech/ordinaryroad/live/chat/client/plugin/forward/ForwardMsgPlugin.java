@@ -33,6 +33,7 @@ import tech.ordinaryroad.live.chat.client.commons.client.IBaseLiveChatClient;
 import tech.ordinaryroad.live.chat.client.commons.client.plugin.IPlugin;
 import tech.ordinaryroad.live.chat.client.plugin.forward.base.AbstractForwardMsgListener;
 import tech.ordinaryroad.live.chat.client.plugin.forward.base.IForwardMsgHandler;
+import tech.ordinaryroad.live.chat.client.websocket.client.WebSocketLiveChatClient;
 
 /**
  * @author mjz
@@ -42,7 +43,7 @@ import tech.ordinaryroad.live.chat.client.plugin.forward.base.IForwardMsgHandler
 public class ForwardMsgPlugin implements IPlugin {
     private final String forwardWebSocketUri;
     private final IForwardMsgHandler forwardMsgHandler;
-    private AbstractForwardMsgListener forwardMsgPluginProxy;
+    private AbstractForwardMsgListener forwardMsgListenerProxy;
 
     public ForwardMsgPlugin(String forwardWebSocketUri) {
         this(forwardWebSocketUri, new DefaultForwardMsgHandler());
@@ -71,13 +72,13 @@ public class ForwardMsgPlugin implements IPlugin {
                 .getLoaded();
         try {
             // 创建转发消息监听器，继承自抽象类，实现了对应平台的接口
-            forwardMsgPluginProxy = (AbstractForwardMsgListener) dynamicType.getDeclaredConstructor(String.class, IForwardMsgHandler.class).newInstance(this.forwardWebSocketUri, this.forwardMsgHandler);
+            forwardMsgListenerProxy = (AbstractForwardMsgListener) dynamicType.getDeclaredConstructor(String.class, IForwardMsgHandler.class).newInstance(this.forwardWebSocketUri, this.forwardMsgHandler);
 
             // 添加消息监听器
-            liveChatClient.addMsgListener((MsgListener) forwardMsgPluginProxy);
+            liveChatClient.addMsgListener((MsgListener) forwardMsgListenerProxy);
 
             if (log.isDebugEnabled()) {
-                log.debug("插件注册成功：消息转发，转发地址: {}", this.forwardMsgPluginProxy);
+                log.debug("插件注册成功：消息转发，转发地址: {}", this.forwardMsgListenerProxy);
             }
         } catch (Exception e) {
             log.error("插件注册失败：消息转发", e);
@@ -90,10 +91,17 @@ public class ForwardMsgPlugin implements IPlugin {
         log.debug("插件销毁中：消息转发");
 
         // 销毁用于转发消息的WebSocket LiveChatClient
-        forwardMsgPluginProxy.destroyForwardClient();
+        forwardMsgListenerProxy.destroyForwardClient();
         // 移除消息监听器
-        liveChatClient.removeMsgListener((MsgListener) this.forwardMsgPluginProxy);
+        liveChatClient.removeMsgListener((MsgListener) this.forwardMsgListenerProxy);
 
         log.debug("插件销毁完成：消息转发");
+    }
+
+    /**
+     * 获取用于转发的WebSocket Client
+     */
+    public WebSocketLiveChatClient getWebSocketLiveChatClient() {
+        return this.forwardMsgListenerProxy.getWebSocketLiveChatClient();
     }
 }

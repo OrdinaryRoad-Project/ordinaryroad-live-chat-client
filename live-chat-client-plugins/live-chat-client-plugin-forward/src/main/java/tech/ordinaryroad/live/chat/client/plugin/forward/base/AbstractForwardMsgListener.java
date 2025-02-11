@@ -24,6 +24,7 @@
 
 package tech.ordinaryroad.live.chat.client.plugin.forward.base;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.*;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.*;
@@ -48,6 +49,7 @@ public abstract class AbstractForwardMsgListener implements
         ISocialMsgListener<BaseBinaryFrameHandler<?, ?, ?, ?>, ISocialMsg> {
 
     private final IForwardMsgHandler forwardMsgHandler;
+    @Getter
     private WebSocketLiveChatClient webSocketLiveChatClient;
 
     public AbstractForwardMsgListener(String webSocketUri) {
