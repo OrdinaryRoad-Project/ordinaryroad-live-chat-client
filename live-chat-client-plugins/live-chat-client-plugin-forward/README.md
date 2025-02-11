@@ -5,6 +5,7 @@
 #### 引入插件
 
 ```xml
+
 <dependency>
     <groupId>tech.ordinaryroad</groupId>
     <artifactId>live-chat-client-plugin-forward</artifactId>
@@ -79,11 +80,11 @@ IPlugin plugin = new IPlugin() {
 #### 添加插件
 
 ```java
-void addPlugin(IPlugin... plugins);
+LiveChatClient.addPlugin(plugin);
 ```
 
 #### 移除插件
 
 ```java
-void removePlugin(IPlugin... plugins);
+LiveChatClient.addPlugin(plugin);
 ```
