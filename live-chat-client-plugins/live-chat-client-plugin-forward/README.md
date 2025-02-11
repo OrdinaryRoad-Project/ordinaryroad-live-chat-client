@@ -86,5 +86,5 @@ LiveChatClient.addPlugin(plugin);
 #### 移除插件
 
 ```java
-LiveChatClient.addPlugin(plugin);
+LiveChatClient.removePlugin(plugin);
 ```
