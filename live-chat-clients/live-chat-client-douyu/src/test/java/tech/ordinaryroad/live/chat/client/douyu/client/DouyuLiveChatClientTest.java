@@ -42,6 +42,7 @@ import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuConnectionListene
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuMsgListener;
 import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuConnectionHandler;
+import tech.ordinaryroad.live.chat.client.plugin.forward.ForwardMsgPlugin;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -365,6 +366,23 @@ class DouyuLiveChatClientTest implements IDouyuConnectionListener, IDouyuMsgList
             synchronized (lock) {
                 lock.wait();
             }
+        }
+    }
+
+    @Test
+    void forwardMsgTest() throws Exception {
+        String forwardWebsocketUri = "ws://localhost:8080/websocket";
+        DouyuLiveChatClient liveChatClient = new DouyuLiveChatClient(DouyuLiveChatClientConfig.builder()
+                .forwardWebsocketUri(forwardWebsocketUri)
+                .roomId("lpl")
+                .build());
+
+        liveChatClient.addPlugin(new ForwardMsgPlugin(forwardWebsocketUri));
+
+        liveChatClient.connect();
+
+        while (true) {
+            System.in.read();
         }
     }
 

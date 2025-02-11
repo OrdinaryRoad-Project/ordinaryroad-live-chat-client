@@ -44,17 +44,16 @@ import tech.ordinaryroad.live.chat.client.codec.douyin.msg.base.IDouyinMsg;
 import tech.ordinaryroad.live.chat.client.codec.douyin.room.DouyinRoomInitResult;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
-import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
 import tech.ordinaryroad.live.chat.client.commons.util.OrJavaScriptUtil;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCollUtil;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatHttpUtil;
 import tech.ordinaryroad.live.chat.client.douyin.config.DouyinLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.douyin.listener.IDouyinConnectionListener;
 import tech.ordinaryroad.live.chat.client.douyin.listener.IDouyinMsgListener;
-import tech.ordinaryroad.live.chat.client.douyin.listener.impl.DouyinForwardMsgListener;
 import tech.ordinaryroad.live.chat.client.douyin.netty.handler.DouyinBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.douyin.netty.handler.DouyinConnectionHandler;
 import tech.ordinaryroad.live.chat.client.douyin.netty.handler.DouyinLiveChatClientChannelInitializer;
+import tech.ordinaryroad.live.chat.client.plugin.forward.ForwardMsgPlugin;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
 
 import javax.script.ScriptEngine;
@@ -72,8 +71,15 @@ import java.util.function.Consumer;
 @Slf4j
 public class DouyinLiveChatClient extends BaseNettyClient<DouyinLiveChatClientConfig, DouyinRoomInitResult, DouyinCmdEnum, IDouyinMsg, IDouyinMsgListener, DouyinConnectionHandler, DouyinBinaryFrameHandler> {
 
+    public static String JS_SDK;
+
+    static {
+        InputStream resourceAsStream = DouyinLiveChatClient.class.getResourceAsStream("/js/douyin-webmssdk.js");
+        JS_SDK = IoUtil.readUtf8(resourceAsStream);
+    }
+
     public DouyinLiveChatClient(DouyinLiveChatClientConfig config, List<IDouyinMsgListener> msgListeners, IDouyinConnectionListener connectionListener, EventLoopGroup workerGroup) {
-        super(config, workerGroup, connectionListener);
+        super(config, workerGroup, connectionListener, IDouyinMsgListener.class);
         addMsgListeners(msgListeners);
 
         // 初始化
@@ -81,7 +87,7 @@ public class DouyinLiveChatClient extends BaseNettyClient<DouyinLiveChatClientCo
     }
 
     public DouyinLiveChatClient(DouyinLiveChatClientConfig config, IDouyinMsgListener msgListener, IDouyinConnectionListener connectionListener, EventLoopGroup workerGroup) {
-        super(config, workerGroup, connectionListener);
+        super(config, workerGroup, connectionListener, IDouyinMsgListener.class);
         addMsgListener(msgListener);
 
         // 初始化
@@ -102,15 +108,8 @@ public class DouyinLiveChatClient extends BaseNettyClient<DouyinLiveChatClientCo
 
     @Override
     public void init() {
-        if (StrUtil.isNotBlank(getConfig().getForwardWebsocketUri())) {
-            DouyinForwardMsgListener forwardMsgListener = new DouyinForwardMsgListener(getConfig().getForwardWebsocketUri());
-            addMsgListener(forwardMsgListener);
-            addStatusChangeListener((evt, oldStatus, newStatus) -> {
-                if (newStatus == ClientStatusEnums.DESTROYED) {
-                    forwardMsgListener.destroyForwardClient();
-                }
-            });
-        }
+        // TODO remove this
+        addPlugin(new ForwardMsgPlugin(getConfig().getForwardWebsocketUri()));
         super.init();
     }
 
@@ -206,13 +205,6 @@ public class DouyinLiveChatClient extends BaseNettyClient<DouyinLiveChatClientCo
 
     public void sendDanmu(Object danmu, Runnable success, Consumer<Throwable> failed) {
         super.sendDanmu(danmu, success, failed);
-    }
-
-    public static String JS_SDK;
-
-    static {
-        InputStream resourceAsStream = DouyinLiveChatClient.class.getResourceAsStream("/js/douyin-webmssdk.js");
-        JS_SDK = IoUtil.readUtf8(resourceAsStream);
     }
 
     @SneakyThrows

@@ -24,14 +24,16 @@
 
 package tech.ordinaryroad.live.chat.client.codec.kuaishou.msg;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.api.KuaishouApis;
-import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.base.IKuaishouMsg;
+import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.base.BaseKuaishouMsg;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf.WebCommentFeedOuterClass;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IDanmuMsg;
+import tech.ordinaryroad.live.chat.client.commons.util.jackson.serializer.ProtobufToBase64Serializer;
 
 /**
  * @author mjz
@@ -41,8 +43,9 @@ import tech.ordinaryroad.live.chat.client.commons.base.msg.IDanmuMsg;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class KuaishouDanmuMsg implements IKuaishouMsg, IDanmuMsg {
+public class KuaishouDanmuMsg extends BaseKuaishouMsg implements IDanmuMsg {
 
+    @JsonSerialize(using = ProtobufToBase64Serializer.class)
     private WebCommentFeedOuterClass.WebCommentFeed msg;
 
     @Override
@@ -73,10 +76,5 @@ public class KuaishouDanmuMsg implements IKuaishouMsg, IDanmuMsg {
     @Override
     public String getContent() {
         return msg.getContent();
-    }
-
-    @Override
-    public String toString() {
-        return msg.toString();
     }
 }

@@ -24,7 +24,12 @@
 
 package tech.ordinaryroad.live.chat.client.bilibili.client;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.thread.ThreadUtil;
 import com.fasterxml.jackson.databind.JsonNode;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
+import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import tech.ordinaryroad.live.chat.client.bilibili.config.BilibiliLiveChatClientConfig;
@@ -35,11 +40,19 @@ import tech.ordinaryroad.live.chat.client.codec.bilibili.api.response.RoomPlayIn
 import tech.ordinaryroad.live.chat.client.codec.bilibili.constant.BilibiliCmdEnum;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.constant.BilibiliLiveStatusEnum;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.*;
+import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
+import tech.ordinaryroad.live.chat.client.commons.client.IBaseLiveChatClient;
 import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
+import tech.ordinaryroad.live.chat.client.commons.client.plugin.IPlugin;
+import tech.ordinaryroad.live.chat.client.plugin.forward.ForwardMsgPlugin;
+import tech.ordinaryroad.live.chat.client.websocket.client.WebSocketLiveChatClient;
+import tech.ordinaryroad.live.chat.client.websocket.config.WebSocketLiveChatClientConfig;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 /**
  * @author mjz
@@ -198,4 +211,78 @@ class BilibiliLiveChatClientTest {
         }
     }
 
+    @Test
+    void forwardMsgTest() throws Exception {
+        String forwardWebsocketUri = "ws://localhost:8080/websocket";
+        BilibiliLiveChatClient liveChatClient = new BilibiliLiveChatClient(BilibiliLiveChatClientConfig.builder()
+                // TODO 以后的版本将被弃用
+                .forwardWebsocketUri(forwardWebsocketUri)
+                .roomId(7777)
+                .build());
+
+        // 「消息转发插件」，默认用法
+        liveChatClient.addPlugin(new ForwardMsgPlugin(forwardWebsocketUri));
+
+        // 「消息转发插件」，自定义消息转发
+        liveChatClient.addPlugin(new ForwardMsgPlugin(forwardWebsocketUri, (webSocketLiveChatClient, msg) -> {
+            ByteBuf byteBuf = ByteBufAllocator.DEFAULT.buffer();
+            byteBuf.writeCharSequence("自定义消息转发：" + msg.toString(), StandardCharsets.UTF_8);
+            webSocketLiveChatClient.send(new BinaryWebSocketFrame(byteBuf));
+        }));
+
+        // 自定义插件，实现「消息转发插件」的功能
+        liveChatClient.addPlugin(new IPlugin() {
+            WebSocketLiveChatClient webSocketLiveChatClient;
+            final IBilibiliMsgListener msgListener = new IBilibiliMsgListener() {
+                @Override
+                public void onDanmuMsg(DanmuMsgMsg msg) {
+                    webSocketLiveChatClient.send(new BinaryWebSocketFrame(ByteBufAllocator.DEFAULT.buffer().writeBytes(("弹幕：" + msg.getContent()).getBytes(StandardCharsets.UTF_8))));
+                }
+            };
+
+            @Override
+            public <LiveChatClient extends IBaseLiveChatClient<?, MsgListener>, MsgListener extends IBaseMsgListener<?, ?>> void register(LiveChatClient liveChatClient, Class<MsgListener> msgListenerClass) {
+                webSocketLiveChatClient = new WebSocketLiveChatClient(WebSocketLiveChatClientConfig
+                        .builder()
+                        .websocketUri("ws://localhost:8080/websocket")
+                        .build());
+                webSocketLiveChatClient.addStatusChangeListener((evt, oldStatus, newStatus) -> {
+                    if (newStatus == ClientStatusEnums.CONNECTED) {
+                        // TODO 自定义操作，例如发送认证包
+                        webSocketLiveChatClient.send(new BinaryWebSocketFrame(ByteBufAllocator.DEFAULT.buffer().writeBytes("认证包".getBytes(StandardCharsets.UTF_8))));
+                    }
+                });
+                webSocketLiveChatClient.connect();
+                liveChatClient.addMsgListener((MsgListener) msgListener);
+            }
+
+            @Override
+            public <LiveChatClient extends IBaseLiveChatClient<?, MsgListener>, MsgListener extends IBaseMsgListener<?, ?>> void unregister(LiveChatClient liveChatClient, Class<MsgListener> msgListenerClass) {
+                webSocketLiveChatClient.destroy();
+                liveChatClient.removeMsgListener((MsgListener) msgListener);
+            }
+        });
+
+        // 15秒钟后移除所有插件
+        ThreadUtil.execAsync(() -> {
+            ThreadUtil.sleep(15000);
+
+            List<IPlugin> plugins = liveChatClient.getPlugins();
+            for (IPlugin iPlugin : CollUtil.newArrayList(plugins)) {
+                liveChatClient.removePlugin(iPlugin);
+            }
+
+            System.out.println("plugins.size(): " + liveChatClient.getPlugins().size());
+            System.out.println("msgListeners.size(): " + liveChatClient.getMsgListeners().size());
+        });
+
+        System.out.println("plugins.size(): " + liveChatClient.getPlugins().size());
+        System.out.println("msgListeners.size(): " + liveChatClient.getMsgListeners().size());
+
+        liveChatClient.connect();
+
+        while (true) {
+            System.in.read();
+        }
+    }
 }

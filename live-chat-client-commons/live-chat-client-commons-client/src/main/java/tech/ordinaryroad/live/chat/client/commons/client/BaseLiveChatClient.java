@@ -24,12 +24,14 @@
 
 package tech.ordinaryroad.live.chat.client.commons.client;
 
+import cn.hutool.core.util.ArrayUtil;
 import lombok.Getter;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener;
 import tech.ordinaryroad.live.chat.client.commons.base.room.IRoomInitResult;
 import tech.ordinaryroad.live.chat.client.commons.client.config.BaseLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
 import tech.ordinaryroad.live.chat.client.commons.client.listener.IClientStatusChangeListener;
+import tech.ordinaryroad.live.chat.client.commons.client.plugin.IPlugin;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -50,17 +52,32 @@ public abstract class BaseLiveChatClient<
         > implements IBaseLiveChatClient<RoomInitResult, MsgListener> {
 
     @Getter
-    protected RoomInitResult roomInitResult;
-    @Getter
     private final Config config;
-    private volatile ClientStatusEnums status = ClientStatusEnums.NEW;
-    protected PropertyChangeSupport statusChangeSupport = new PropertyChangeSupport(status);
-    protected volatile boolean cancelReconnect = false;
     @Getter
     private final List<MsgListener> msgListeners = Collections.synchronizedList(new ArrayList<>());
+    @Getter
+    private final List<IPlugin> plugins = Collections.synchronizedList(new ArrayList<>());
+    protected Class<MsgListener> msgListenerClass;
+    @Getter
+    protected RoomInitResult roomInitResult;
+    protected volatile boolean cancelReconnect = false;
+    private volatile ClientStatusEnums status = ClientStatusEnums.NEW;
+    protected PropertyChangeSupport statusChangeSupport = new PropertyChangeSupport(status);
 
     protected BaseLiveChatClient(Config config) {
         this.config = config;
+        this.msgListenerClass = null;
+
+        // 触发setter
+        this.config.setSocks5ProxyHost(this.config.getSocks5ProxyHost());
+        this.config.setSocks5ProxyPort(this.config.getSocks5ProxyPort());
+        this.config.setSocks5ProxyUsername(this.config.getSocks5ProxyUsername());
+        this.config.setSocks5ProxyPassword(this.config.getSocks5ProxyPassword());
+    }
+
+    protected BaseLiveChatClient(Config config, Class<MsgListener> msgListenerClass) {
+        this.config = config;
+        this.msgListenerClass = msgListenerClass;
 
         // 触发setter
         this.config.setSocks5ProxyHost(this.config.getSocks5ProxyHost());
@@ -150,17 +167,17 @@ public abstract class BaseLiveChatClient<
         return this.status.getCode() >= Objects.requireNonNull(status).getCode();
     }
 
+    @Override
+    public ClientStatusEnums getStatus() {
+        return this.status;
+    }
+
     protected void setStatus(ClientStatusEnums status) {
         ClientStatusEnums oldStatus = this.status;
         if (oldStatus != status) {
             this.status = status;
             this.statusChangeSupport.firePropertyChange("status", oldStatus, status);
         }
-    }
-
-    @Override
-    public ClientStatusEnums getStatus() {
-        return this.status;
     }
 
     @Override
@@ -175,10 +192,19 @@ public abstract class BaseLiveChatClient<
 
     @Override
     public void destroy() {
+        // 移除状态监听器
         for (PropertyChangeListener propertyChangeListener : this.statusChangeSupport.getPropertyChangeListeners()) {
             this.statusChangeSupport.removePropertyChangeListener(propertyChangeListener);
         }
+
+        // 移除消息监听器
         this.msgListeners.clear();
+
+        // 移除插件
+        for (IPlugin plugin : this.plugins) {
+            plugin.unregister(this, msgListenerClass);
+        }
+        this.plugins.clear();
     }
 
     @Override
@@ -225,6 +251,28 @@ public abstract class BaseLiveChatClient<
         }
         for (int i = 0; i < msgListeners.size(); i++) {
             consumer.accept(msgListeners.get(i));
+        }
+    }
+
+    @Override
+    public void addPlugin(IPlugin... plugins) {
+        if (ArrayUtil.isEmpty(plugins)) {
+            return;
+        }
+        for (IPlugin plugin : plugins) {
+            plugin.register(this, msgListenerClass);
+            this.plugins.add(plugin);
+        }
+    }
+
+    @Override
+    public void removePlugin(IPlugin... plugins) {
+        if (ArrayUtil.isEmpty(plugins)) {
+            return;
+        }
+        for (IPlugin plugin : plugins) {
+            plugin.unregister(this, msgListenerClass);
+            this.plugins.remove(plugin);
         }
     }
 }

@@ -24,14 +24,16 @@
 
 package tech.ordinaryroad.live.chat.client.codec.kuaishou.msg;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.api.KuaishouApis;
-import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.base.IKuaishouMsg;
+import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.base.BaseKuaishouMsg;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf.WebGiftFeedOuterClass;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IGiftMsg;
+import tech.ordinaryroad.live.chat.client.commons.util.jackson.serializer.ProtobufToBase64Serializer;
 
 /**
  * @author mjz
@@ -41,8 +43,9 @@ import tech.ordinaryroad.live.chat.client.commons.base.msg.IGiftMsg;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class KuaishouGiftMsg implements IKuaishouMsg, IGiftMsg {
+public class KuaishouGiftMsg extends BaseKuaishouMsg implements IGiftMsg {
 
+    @JsonSerialize(using = ProtobufToBase64Serializer.class)
     private WebGiftFeedOuterClass.WebGiftFeed msg;
     /**
      * 计算后得到的礼物个数
@@ -111,10 +114,5 @@ public class KuaishouGiftMsg implements IKuaishouMsg, IGiftMsg {
     @Override
     public String getReceiveUsername() {
         return null;
-    }
-
-    @Override
-    public String toString() {
-        return msg.toString();
     }
 }

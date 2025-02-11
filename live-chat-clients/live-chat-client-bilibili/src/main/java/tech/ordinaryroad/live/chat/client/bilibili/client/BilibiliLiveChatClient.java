@@ -38,7 +38,6 @@ import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.bilibili.config.BilibiliLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliConnectionListener;
 import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliMsgListener;
-import tech.ordinaryroad.live.chat.client.bilibili.listener.impl.BilibiliForwardMsgListener;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliConnectionHandler;
 import tech.ordinaryroad.live.chat.client.bilibili.netty.handler.BilibiliLiveChatClientChannelInitializer;
@@ -48,8 +47,8 @@ import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.base.IBilibiliMsg;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.room.BilibiliRoomInitResult;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
-import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCollUtil;
+import tech.ordinaryroad.live.chat.client.plugin.forward.ForwardMsgPlugin;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
 
 import java.util.List;
@@ -73,7 +72,7 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
         > {
 
     public BilibiliLiveChatClient(BilibiliLiveChatClientConfig config, List<IBilibiliMsgListener> msgListeners, IBilibiliConnectionListener connectionListener, EventLoopGroup workerGroup) {
-        super(config, workerGroup, connectionListener);
+        super(config, workerGroup, connectionListener, IBilibiliMsgListener.class);
         addMsgListeners(msgListeners);
 
         // 初始化
@@ -81,7 +80,7 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
     }
 
     public BilibiliLiveChatClient(BilibiliLiveChatClientConfig config, IBilibiliMsgListener msgListener, IBilibiliConnectionListener connectionListener, EventLoopGroup workerGroup) {
-        super(config, workerGroup, connectionListener);
+        super(config, workerGroup, connectionListener, IBilibiliMsgListener.class);
         addMsgListener(msgListener);
 
         // 初始化
@@ -102,15 +101,8 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
 
     @Override
     public void init() {
-        if (StrUtil.isNotBlank(getConfig().getForwardWebsocketUri())) {
-            BilibiliForwardMsgListener forwardMsgListener = new BilibiliForwardMsgListener(getConfig().getForwardWebsocketUri());
-            addMsgListener(forwardMsgListener);
-            addStatusChangeListener((evt, oldStatus, newStatus) -> {
-                if (newStatus == ClientStatusEnums.DESTROYED) {
-                    forwardMsgListener.destroyForwardClient();
-                }
-            });
-        }
+        // TODO remove this
+        addPlugin(new ForwardMsgPlugin(getConfig().getForwardWebsocketUri()));
         super.init();
     }
 

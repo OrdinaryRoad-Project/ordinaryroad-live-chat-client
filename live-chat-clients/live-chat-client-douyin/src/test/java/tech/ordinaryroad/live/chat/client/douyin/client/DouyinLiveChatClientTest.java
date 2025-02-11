@@ -3,6 +3,7 @@ package tech.ordinaryroad.live.chat.client.douyin.client;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.UnknownFieldSet;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import tech.ordinaryroad.live.chat.client.codec.douyin.constant.DouyinCmdEnum;
@@ -15,6 +16,7 @@ import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums
 import tech.ordinaryroad.live.chat.client.douyin.config.DouyinLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.douyin.listener.IDouyinMsgListener;
 import tech.ordinaryroad.live.chat.client.douyin.netty.handler.DouyinBinaryFrameHandler;
+import tech.ordinaryroad.live.chat.client.plugin.forward.ForwardMsgPlugin;
 
 import java.util.Map;
 
@@ -213,6 +215,22 @@ class DouyinLiveChatClientTest {
 
         douyinLiveChatClientTest.connect();
 
+        while (true) {
+            System.in.read();
+        }
+    }
+
+    @SneakyThrows
+    @Test
+    void forwardMsgTest() {
+        String forwardWebsocketUri = "ws://localhost:8080/websocket";
+        DouyinLiveChatClient liveChatClient = new DouyinLiveChatClient(DouyinLiveChatClientConfig.builder()
+                .forwardWebsocketUri(forwardWebsocketUri)
+                .roomId(646454278948L)
+                .build()
+        );
+        liveChatClient.addPlugin(new ForwardMsgPlugin(forwardWebsocketUri));
+        liveChatClient.connect();
         while (true) {
             System.in.read();
         }

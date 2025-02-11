@@ -27,7 +27,6 @@ package tech.ordinaryroad.live.chat.client.douyu.client;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.util.RandomUtil;
-import cn.hutool.core.util.StrUtil;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import lombok.extern.slf4j.Slf4j;
@@ -45,9 +44,9 @@ import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums
 import tech.ordinaryroad.live.chat.client.douyu.config.DouyuLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuConnectionListener;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuMsgListener;
-import tech.ordinaryroad.live.chat.client.douyu.listener.impl.DouyuForwardMsgListener;
 import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.douyu.netty.handler.DouyuConnectionHandler;
+import tech.ordinaryroad.live.chat.client.plugin.forward.ForwardMsgPlugin;
 
 import java.util.List;
 import java.util.Map;
@@ -61,12 +60,12 @@ import java.util.Map;
 @Slf4j
 public class DouyuLiveChatClient extends DouyuWsLiveChatClient implements IDouyuMsgListener {
     private final DouyuWsLiveChatClient proxyClient = this;
-    private DouyuDanmuLiveChatClient danmuClient = null;
-    private DouyuConnectionHandler connectionHandler;
     /**
      * 统一管理Ws、Danmu的连接状态
      */
     private final IDouyuConnectionListener connectionListener;
+    private DouyuDanmuLiveChatClient danmuClient = null;
+    private DouyuConnectionHandler connectionHandler;
 
     public DouyuLiveChatClient(DouyuLiveChatClientConfig config, List<IDouyuMsgListener> msgListeners, IDouyuConnectionListener connectionListener, EventLoopGroup workerGroup) {
         super(config, msgListeners, null, workerGroup);
@@ -92,15 +91,8 @@ public class DouyuLiveChatClient extends DouyuWsLiveChatClient implements IDouyu
 
     @Override
     public void init() {
-        if (StrUtil.isNotBlank(getConfig().getForwardWebsocketUri())) {
-            DouyuForwardMsgListener forwardMsgListener = new DouyuForwardMsgListener(getConfig().getForwardWebsocketUri());
-            addMsgListener(forwardMsgListener);
-            addStatusChangeListener((evt, oldStatus, newStatus) -> {
-                if (newStatus == ClientStatusEnums.DESTROYED) {
-                    forwardMsgListener.destroyForwardClient();
-                }
-            });
-        }
+        // TODO remove this
+        addPlugin(new ForwardMsgPlugin(getConfig().getForwardWebsocketUri()));
         super.init();
     }
 

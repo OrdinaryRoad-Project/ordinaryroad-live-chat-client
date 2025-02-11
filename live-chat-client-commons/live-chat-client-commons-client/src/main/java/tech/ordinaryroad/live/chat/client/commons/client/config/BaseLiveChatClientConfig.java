@@ -31,6 +31,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
+import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener;
+import tech.ordinaryroad.live.chat.client.commons.client.IBaseLiveChatClient;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatHttpUtil;
 
 import java.beans.PropertyChangeListener;
@@ -48,20 +50,23 @@ import java.beans.PropertyChangeSupport;
 @SuperBuilder(toBuilder = true)
 public abstract class BaseLiveChatClientConfig {
 
-    protected final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     public static final long DEFAULT_HEARTBEAT_INITIAL_DELAY = 15;
     public static final long DEFAULT_HEARTBEAT_PERIOD = 25;
     public static final long DEFAULT_MIN_SEND_DANMU_PERIOD = 3000L;
+    public static final long DEFAULT_HANDSHAKE_TIMEOUT_MILLIS = 5 * 1000L;
     /**
      * 默认WebSocket握手超时时间
      */
-    public static final long DEFAULT_HANDSHAKE_TIMEOUT_MILLIS = 5 * 1000L;
-
+    protected final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     private String websocketUri;
 
     /**
      * 消息转发地址，WebSocket Server地址
+     *
+     * @deprecated Will be removed soon, please use `tech.ordinaryroad:live-chat-client-plugin-forward-{platform}:{version}`,
+     * add the forward msg listener by {@link IBaseLiveChatClient#addMsgListener(IBaseMsgListener)}
      */
+    @Deprecated
     private String forwardWebsocketUri;
 
     /**

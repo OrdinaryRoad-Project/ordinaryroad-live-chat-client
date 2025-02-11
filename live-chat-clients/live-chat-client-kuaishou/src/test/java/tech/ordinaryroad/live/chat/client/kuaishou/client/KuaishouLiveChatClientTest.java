@@ -17,6 +17,7 @@ import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums
 import tech.ordinaryroad.live.chat.client.kuaishou.config.KuaishouLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.kuaishou.listener.IKuaishouMsgListener;
 import tech.ordinaryroad.live.chat.client.kuaishou.netty.handler.KuaishouBinaryFrameHandler;
+import tech.ordinaryroad.live.chat.client.plugin.forward.ForwardMsgPlugin;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,9 +31,8 @@ import java.util.Map;
 @Slf4j
 class KuaishouLiveChatClientTest {
 
-    Map<String, List<WebGiftFeedOuterClass.WebGiftFeed>> map = new HashMap<>();
-
     static Object lock = new Object();
+    Map<String, List<WebGiftFeedOuterClass.WebGiftFeed>> map = new HashMap<>();
     KuaishouLiveChatClient client;
 
     @Test
@@ -394,4 +394,22 @@ class KuaishouLiveChatClientTest {
         }
     }
 
+
+    @Test
+    void forwardMsgTest() throws Exception {
+        String forwardWebsocketUri = "ws://localhost:8080/websocket";
+        KuaishouLiveChatClient liveChatClient = new KuaishouLiveChatClient(KuaishouLiveChatClientConfig.builder()
+                .forwardWebsocketUri(forwardWebsocketUri)
+                .roomId("KPL704668133")
+                .roomInfoGetType(RoomInfoGetTypeEnum.NOT_COOKIE)
+                .build());
+
+        liveChatClient.addPlugin(new ForwardMsgPlugin(forwardWebsocketUri));
+
+        liveChatClient.connect();
+
+        while (true) {
+            System.in.read();
+        }
+    }
 }

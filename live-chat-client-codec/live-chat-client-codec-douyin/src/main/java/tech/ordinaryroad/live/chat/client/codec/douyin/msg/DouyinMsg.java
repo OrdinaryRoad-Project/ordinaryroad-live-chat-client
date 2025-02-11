@@ -24,12 +24,14 @@
 
 package tech.ordinaryroad.live.chat.client.codec.douyin.msg;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tech.ordinaryroad.live.chat.client.codec.douyin.msg.base.IDouyinMsg;
+import tech.ordinaryroad.live.chat.client.codec.douyin.msg.base.BaseDouyinMsg;
 import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.PushFrame;
+import tech.ordinaryroad.live.chat.client.commons.util.jackson.serializer.ProtobufToBase64Serializer;
 
 /**
  * @author mjz
@@ -39,8 +41,9 @@ import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.PushFrame;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DouyinMsg implements IDouyinMsg {
+public class DouyinMsg extends BaseDouyinMsg {
 
+    @JsonSerialize(using = ProtobufToBase64Serializer.class)
     private PushFrame msg;
 
 }

@@ -22,69 +22,26 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.huya.listener.impl;
+package tech.ordinaryroad.live.chat.client.plugin.forward;
 
-import cn.hutool.core.util.StrUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
-import tech.ordinaryroad.live.chat.client.codec.huya.msg.MessageNoticeMsg;
-import tech.ordinaryroad.live.chat.client.codec.huya.msg.SendItemSubBroadcastPacketMsg;
-import tech.ordinaryroad.live.chat.client.codec.huya.msg.VipEnterBannerMsg;
-import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
-import tech.ordinaryroad.live.chat.client.huya.listener.IHuyaMsgListener;
+import tech.ordinaryroad.live.chat.client.plugin.forward.base.IForwardMsgHandler;
 import tech.ordinaryroad.live.chat.client.websocket.client.WebSocketLiveChatClient;
-import tech.ordinaryroad.live.chat.client.websocket.config.WebSocketLiveChatClientConfig;
 
 import java.nio.charset.StandardCharsets;
 
 /**
  * @author mjz
- * @date 2024/3/8
- * @since 0.3.0
+ * @date 2025/2/11
  */
-public class HuyaForwardMsgListener implements IHuyaMsgListener {
-
-    private final WebSocketLiveChatClient webSocketLiveChatClient;
-
-    public HuyaForwardMsgListener(String webSocketUri) {
-        if (StrUtil.isBlank(webSocketUri)) {
-            throw new BaseException("转发地址不能为空");
-        }
-        webSocketLiveChatClient = new WebSocketLiveChatClient(
-                WebSocketLiveChatClientConfig.builder()
-                        .websocketUri(webSocketUri)
-                        .build()
-        );
-        webSocketLiveChatClient.connect();
-    }
-
+public class DefaultForwardMsgHandler implements IForwardMsgHandler {
     @Override
-    public void onDanmuMsg(MessageNoticeMsg msg) {
-        forward(msg);
-    }
-
-    @Override
-    public void onGiftMsg(SendItemSubBroadcastPacketMsg msg) {
-        forward(msg);
-    }
-
-    @Override
-    public void onEnterRoomMsg(VipEnterBannerMsg msg) {
-        forward(msg);
-    }
-
-    private void forward(IMsg msg) {
-        if (webSocketLiveChatClient == null) {
-            return;
-        }
+    public void doForward(WebSocketLiveChatClient webSocketLiveChatClient, IMsg msg) {
         ByteBuf byteBuf = ByteBufAllocator.DEFAULT.buffer();
         byteBuf.writeCharSequence(msg.toString(), StandardCharsets.UTF_8);
         webSocketLiveChatClient.send(new BinaryWebSocketFrame(byteBuf));
-    }
-
-    public void destroyForwardClient() {
-        webSocketLiveChatClient.destroy();
     }
 }

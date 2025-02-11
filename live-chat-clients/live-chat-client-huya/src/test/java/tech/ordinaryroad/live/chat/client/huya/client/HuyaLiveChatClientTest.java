@@ -43,6 +43,7 @@ import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums
 import tech.ordinaryroad.live.chat.client.huya.config.HuyaLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.huya.listener.IHuyaMsgListener;
 import tech.ordinaryroad.live.chat.client.huya.netty.handler.HuyaBinaryFrameHandler;
+import tech.ordinaryroad.live.chat.client.plugin.forward.ForwardMsgPlugin;
 
 import java.nio.charset.StandardCharsets;
 
@@ -213,6 +214,23 @@ class HuyaLiveChatClientTest {
             synchronized (lock) {
                 lock.wait();
             }
+        }
+    }
+
+    @Test
+    void forwardMsgTest() throws Exception {
+        String forwardWebsocketUri = "ws://localhost:8080/websocket";
+        HuyaLiveChatClient liveChatClient = new HuyaLiveChatClient(HuyaLiveChatClientConfig.builder()
+                .forwardWebsocketUri(forwardWebsocketUri)
+                .roomId("lpl")
+                .build());
+
+        liveChatClient.addPlugin(new ForwardMsgPlugin(forwardWebsocketUri));
+
+        liveChatClient.connect();
+
+        while (true) {
+            System.in.read();
         }
     }
 

@@ -28,7 +28,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.base.IKuaishouMsg;
+import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.base.BaseKuaishouMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IRoomStatsMsg;
 
 /**
@@ -39,7 +39,7 @@ import tech.ordinaryroad.live.chat.client.commons.base.msg.IRoomStatsMsg;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class KuaishouRoomStatsMsg implements IKuaishouMsg, IRoomStatsMsg {
+public class KuaishouRoomStatsMsg extends BaseKuaishouMsg implements IRoomStatsMsg {
 
     private String likedCount;
     private String watchingCount;
