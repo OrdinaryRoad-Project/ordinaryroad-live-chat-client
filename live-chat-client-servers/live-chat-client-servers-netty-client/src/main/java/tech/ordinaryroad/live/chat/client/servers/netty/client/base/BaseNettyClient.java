@@ -75,16 +75,22 @@ public abstract class BaseNettyClient
     private final EventLoopGroup workerGroup;
     @Getter
     private final Bootstrap bootstrap = new Bootstrap();
+    protected IBaseConnectionListener<ConnectionHandler> clientConnectionListener = this;
     private ConnectionHandler connectionHandler;
     private IBaseConnectionListener<ConnectionHandler> connectionListener;
     private Channel channel;
     @Getter
     private URI websocketUri;
-    protected IBaseConnectionListener<ConnectionHandler> clientConnectionListener = this;
     /**
      * 控制弹幕发送频率
      */
     private volatile long lastSendDanmuTimeInMillis;
+
+    protected BaseNettyClient(Config config, EventLoopGroup workerGroup, IBaseConnectionListener<ConnectionHandler> connectionListener) {
+        super(config);
+        this.workerGroup = workerGroup;
+        this.connectionListener = connectionListener;
+    }
 
     /**
      * 初始化Channel，添加自己的Handler
@@ -94,12 +100,6 @@ public abstract class BaseNettyClient
     }
 
     public abstract ConnectionHandler initConnectionHandler(IBaseConnectionListener<ConnectionHandler> clientConnectionListener);
-
-    protected BaseNettyClient(Config config, EventLoopGroup workerGroup, IBaseConnectionListener<ConnectionHandler> connectionListener) {
-        super(config);
-        this.workerGroup = workerGroup;
-        this.connectionListener = connectionListener;
-    }
 
     @Override
     public void onConnected(ConnectionHandler connectionHandler) {
