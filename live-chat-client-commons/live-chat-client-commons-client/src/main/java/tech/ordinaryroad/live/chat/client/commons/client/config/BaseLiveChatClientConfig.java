@@ -32,6 +32,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener;
+import tech.ordinaryroad.live.chat.client.commons.client.IBaseLiveChatClient;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatHttpUtil;
 
 import java.beans.PropertyChangeListener;
@@ -62,7 +63,8 @@ public abstract class BaseLiveChatClientConfig {
     /**
      * 消息转发地址，WebSocket Server地址
      *
-     * @deprecated Will be removed soon, please use `plugin-forward`, add the forward msg listener by {@link tech.ordinaryroad.live.chat.client.commons.client.IBaseLiveChatClient#addMsgListener(IBaseMsgListener)}
+     * @deprecated Will be removed soon, please use `tech.ordinaryroad:live-chat-client-plugin-forward-{platform}:{version}`,
+     * add the forward msg listener by {@link IBaseLiveChatClient#addMsgListener(IBaseMsgListener)}
      */
     @Deprecated
     private String forwardWebsocketUri;
