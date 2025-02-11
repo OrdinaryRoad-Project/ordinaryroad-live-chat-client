@@ -59,7 +59,7 @@ public class ForwardMsgPlugin implements IPlugin {
         log.debug("插件注册中：消息转发");
 
         if (StrUtil.isBlank(this.forwardWebSocketUri)) {
-            log.warn("消息转发地址为空，取消注册「消息转发」插件");
+            log.debug("消息转发地址为空，取消注册「消息转发」插件");
             return;
         }
 
@@ -90,10 +90,12 @@ public class ForwardMsgPlugin implements IPlugin {
     public <LiveCharClient extends IBaseLiveChatClient<?, MsgListener>, MsgListener extends IBaseMsgListener<?, ?>> void unregister(LiveCharClient liveChatClient, Class<MsgListener> msgListenerClass) {
         log.debug("插件销毁中：消息转发");
 
-        // 销毁用于转发消息的WebSocket LiveChatClient
-        forwardMsgListenerProxy.destroyForwardClient();
-        // 移除消息监听器
-        liveChatClient.removeMsgListener((MsgListener) this.forwardMsgListenerProxy);
+        if (forwardMsgListenerProxy != null) {
+            // 销毁用于转发消息的WebSocket LiveChatClient
+            forwardMsgListenerProxy.destroyForwardClient();
+            // 移除消息监听器
+            liveChatClient.removeMsgListener((MsgListener) this.forwardMsgListenerProxy);
+        }
 
         log.debug("插件销毁完成：消息转发");
     }
