@@ -263,9 +263,9 @@ class BilibiliLiveChatClientTest {
             }
         });
 
-        // 5秒钟后移除所有插件
+        // 15秒钟后移除所有插件
         ThreadUtil.execAsync(() -> {
-            ThreadUtil.sleep(5000);
+            ThreadUtil.sleep(15000);
 
             List<IPlugin> plugins = liveChatClient.getPlugins();
             for (IPlugin iPlugin : CollUtil.newArrayList(plugins)) {
