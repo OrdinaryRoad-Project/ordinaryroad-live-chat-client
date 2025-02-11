@@ -24,6 +24,7 @@
 
 package tech.ordinaryroad.live.chat.client.plugin.forward.base;
 
+import cn.hutool.core.util.StrUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
@@ -148,6 +149,12 @@ public abstract class BaseForwardMsgPlugin extends BasePlugin
     @Override
     public <LiveCharClient extends IBaseLiveChatClient<?, MsgListener>, MsgListener extends IBaseMsgListener<?, ?>> void register(LiveCharClient liveChatClient, Class<MsgListener> msgListenerClass) {
         log.debug("插件注册中：消息转发");
+
+        if (StrUtil.isBlank(webSocketUri)) {
+            log.warn("消息转发地址为空，取消注册「消息转发」插件");
+            return;
+        }
+
         // 使用 ByteBuddy 动态生成实现了指定MsgListener接口的插件实现类
         Class<?> dynamicType = new ByteBuddy()
                 .subclass(BaseForwardMsgPlugin.class) // 继承插件抽象类
@@ -172,7 +179,9 @@ public abstract class BaseForwardMsgPlugin extends BasePlugin
 
     @Override
     public <LiveCharClient extends IBaseLiveChatClient<?, MsgListener>, MsgListener extends IBaseMsgListener<?, ?>> void unregister(LiveCharClient liveChatClient, Class<MsgListener> msgListenerClass) {
-        // TODO 销毁该插件
-        System.out.println("TODO 销毁该插件");
+        log.debug("插件销毁中：消息转发");
+        // 销毁该插件
+        destroyForwardClient();
+        log.debug("插件销毁完成：消息转发");
     }
 }
