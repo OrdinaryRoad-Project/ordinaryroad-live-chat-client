@@ -32,6 +32,7 @@ import tech.ordinaryroad.live.chat.client.commons.client.IBaseLiveChatClient;
  *
  * @author mjz
  * @date 2025/2/11
+ * @since 1.5.0
  */
 public interface IPlugin {
 

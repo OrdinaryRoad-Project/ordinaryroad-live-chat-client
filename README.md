@@ -24,7 +24,7 @@
 - Feature 4: 支持短直播间id
 - Feature 5*: 支持弹幕发送、为主播点赞
 - Feature 6*: 内置收到弹幕、收到礼物、收到醒目留言、用户入房、收到点赞、状态变化、统计信息、社交消息回调
-- Feature 7: 支持消息转发
+- Feature 7: 内置插件：消息转发
 - Feature 8: 支持单独引入编解码模块
 - Feature 9: 支持网络代理
 - Feature 10*: 解析直播间信息
@@ -342,6 +342,10 @@ public class ClientModeExample {
   - `BaseLiveChatClientConfig getConfig()`
 - 获取房间信息
   - `IRoomInitResult getRoomInitResult()`
+- 添加插件
+  - `void addPlugin(IPlugin... plugins);`
+- 移除插件
+  - `void removePlugin(IPlugin... plugins);`
 
 #### 2.1.2 房间信息 IRoomInitResult 相关 API
 
@@ -385,6 +389,12 @@ B站示例，其他平台只需修改`bilibili`即可
 身份认证（暂未测试）
 
 - `socks5ProxyUsername("username")`, `socks5ProxyPassword("password")`
+
+### 2.5 插件
+
+目前内置插件有
+
+- 消息转发 [https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/tree/main/live-chat-client-plugins/live-chat-client-plugin-forward](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/tree/main/live-chat-client-plugins/live-chat-client-plugin-forward)
 
 ## 交流讨论
 

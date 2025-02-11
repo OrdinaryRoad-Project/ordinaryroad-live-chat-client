@@ -162,11 +162,15 @@ public interface IBaseLiveChatClient<
 
     /**
      * 添加插件
+     *
+     * @since 1.5.0
      */
     void addPlugin(IPlugin... plugins);
 
     /**
      * 移除插件
+     *
+     * @since 1.5.0
      */
     void removePlugin(IPlugin... plugins);
 }
