@@ -25,7 +25,7 @@
 package tech.ordinaryroad.live.chat.client.commons.client.plugin;
 
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener;
-import tech.ordinaryroad.live.chat.client.commons.client.IBaseLiveChatClient;
+import tech.ordinaryroad.live.chat.client.commons.client.BaseLiveChatClient;
 
 /**
  * 插件接口
@@ -36,11 +36,11 @@ import tech.ordinaryroad.live.chat.client.commons.client.IBaseLiveChatClient;
  */
 public interface IPlugin {
 
-    <LiveChatClient extends IBaseLiveChatClient<?, MsgListener>, MsgListener extends IBaseMsgListener<?, ?>> void register(
+    <LiveChatClient extends BaseLiveChatClient<?, ?, MsgListener>, MsgListener extends IBaseMsgListener<?, ?>> void register(
             LiveChatClient liveChatClient, Class<MsgListener> msgListenerClass
     );
 
-    <LiveChatClient extends IBaseLiveChatClient<?, MsgListener>, MsgListener extends IBaseMsgListener<?, ?>> void unregister(
+    <LiveChatClient extends BaseLiveChatClient<?, ?, MsgListener>, MsgListener extends IBaseMsgListener<?, ?>> void unregister(
             LiveChatClient liveChatClient, Class<MsgListener> msgListenerClass
     );
 }

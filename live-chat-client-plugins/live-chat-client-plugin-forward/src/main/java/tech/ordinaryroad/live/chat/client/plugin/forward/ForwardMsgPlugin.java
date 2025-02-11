@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.ByteBuddy;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener;
-import tech.ordinaryroad.live.chat.client.commons.client.IBaseLiveChatClient;
+import tech.ordinaryroad.live.chat.client.commons.client.BaseLiveChatClient;
 import tech.ordinaryroad.live.chat.client.commons.client.plugin.IPlugin;
 import tech.ordinaryroad.live.chat.client.plugin.forward.base.AbstractForwardMsgListener;
 import tech.ordinaryroad.live.chat.client.plugin.forward.base.IForwardMsgHandler;
@@ -55,7 +55,7 @@ public class ForwardMsgPlugin implements IPlugin {
     }
 
     @Override
-    public <LiveCharClient extends IBaseLiveChatClient<?, MsgListener>, MsgListener extends IBaseMsgListener<?, ?>> void register(LiveCharClient liveChatClient, Class<MsgListener> msgListenerClass) {
+    public <LiveChatClient extends BaseLiveChatClient<?, ?, MsgListener>, MsgListener extends IBaseMsgListener<?, ?>> void register(LiveChatClient liveChatClient, Class<MsgListener> msgListenerClass) {
         log.debug("插件注册中：消息转发");
 
         if (StrUtil.isBlank(this.forwardWebSocketUri)) {
@@ -87,7 +87,7 @@ public class ForwardMsgPlugin implements IPlugin {
     }
 
     @Override
-    public <LiveCharClient extends IBaseLiveChatClient<?, MsgListener>, MsgListener extends IBaseMsgListener<?, ?>> void unregister(LiveCharClient liveChatClient, Class<MsgListener> msgListenerClass) {
+    public <LiveChatClient extends BaseLiveChatClient<?, ?, MsgListener>, MsgListener extends IBaseMsgListener<?, ?>> void unregister(LiveChatClient liveChatClient, Class<MsgListener> msgListenerClass) {
         log.debug("插件销毁中：消息转发");
 
         if (forwardMsgListenerProxy != null) {

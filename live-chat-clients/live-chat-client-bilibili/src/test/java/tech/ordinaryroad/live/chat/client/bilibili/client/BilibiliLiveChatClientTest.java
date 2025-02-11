@@ -43,7 +43,7 @@ import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.*;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
-import tech.ordinaryroad.live.chat.client.commons.client.IBaseLiveChatClient;
+import tech.ordinaryroad.live.chat.client.commons.client.BaseLiveChatClient;
 import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
 import tech.ordinaryroad.live.chat.client.commons.client.plugin.IPlugin;
 import tech.ordinaryroad.live.chat.client.plugin.forward.ForwardMsgPlugin;
@@ -241,7 +241,7 @@ class BilibiliLiveChatClientTest {
             };
 
             @Override
-            public <LiveChatClient extends IBaseLiveChatClient<?, MsgListener>, MsgListener extends IBaseMsgListener<?, ?>> void register(LiveChatClient liveChatClient, Class<MsgListener> msgListenerClass) {
+            public <LiveChatClient extends BaseLiveChatClient<?, ?, MsgListener>, MsgListener extends IBaseMsgListener<?, ?>> void register(LiveChatClient liveChatClient, Class<MsgListener> msgListenerClass) {
                 webSocketLiveChatClient = new WebSocketLiveChatClient(WebSocketLiveChatClientConfig
                         .builder()
                         .websocketUri("ws://localhost:8080/websocket")
@@ -257,7 +257,7 @@ class BilibiliLiveChatClientTest {
             }
 
             @Override
-            public <LiveChatClient extends IBaseLiveChatClient<?, MsgListener>, MsgListener extends IBaseMsgListener<?, ?>> void unregister(LiveChatClient liveChatClient, Class<MsgListener> msgListenerClass) {
+            public <LiveChatClient extends BaseLiveChatClient<?, ?, MsgListener>, MsgListener extends IBaseMsgListener<?, ?>> void unregister(LiveChatClient liveChatClient, Class<MsgListener> msgListenerClass) {
                 webSocketLiveChatClient.destroy();
                 liveChatClient.removeMsgListener((MsgListener) msgListener);
             }
