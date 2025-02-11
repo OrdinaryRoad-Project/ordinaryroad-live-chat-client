@@ -24,6 +24,7 @@
 
 package tech.ordinaryroad.live.chat.client.commons.client;
 
+import cn.hutool.core.util.ArrayUtil;
 import lombok.Getter;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener;
 import tech.ordinaryroad.live.chat.client.commons.base.room.IRoomInitResult;
@@ -54,6 +55,7 @@ public abstract class BaseLiveChatClient<
     private final Config config;
     @Getter
     private final List<MsgListener> msgListeners = Collections.synchronizedList(new ArrayList<>());
+    @Getter
     private final List<IPlugin> plugins = Collections.synchronizedList(new ArrayList<>());
     protected Class<MsgListener> msgListenerClass;
     @Getter
@@ -254,6 +256,9 @@ public abstract class BaseLiveChatClient<
 
     @Override
     public void addPlugin(IPlugin... plugins) {
+        if (ArrayUtil.isEmpty(plugins)) {
+            return;
+        }
         for (IPlugin plugin : plugins) {
             plugin.register(this, msgListenerClass);
             this.plugins.add(plugin);
@@ -262,6 +267,9 @@ public abstract class BaseLiveChatClient<
 
     @Override
     public void removePlugin(IPlugin... plugins) {
+        if (ArrayUtil.isEmpty(plugins)) {
+            return;
+        }
         for (IPlugin plugin : plugins) {
             plugin.unregister(this, msgListenerClass);
             this.plugins.remove(plugin);
