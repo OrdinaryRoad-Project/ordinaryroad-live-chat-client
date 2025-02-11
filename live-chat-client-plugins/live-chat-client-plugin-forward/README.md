@@ -25,6 +25,7 @@ IPlugin plugin = new ForwardMsgPlugin(forwardWebsocketUri, forwardMsgHandler);
 ```
 
 #### 添加插件
+
 ```java
 client.addPlugin(plugin);
 ```
