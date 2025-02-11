@@ -27,6 +27,8 @@ package tech.ordinaryroad.live.chat.client.plugin.forward.base;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
+import lombok.SneakyThrows;
+import net.bytebuddy.ByteBuddy;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.*;
 import tech.ordinaryroad.live.chat.client.commons.client.IBaseLiveChatClient;
 import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
@@ -42,9 +44,9 @@ import java.nio.charset.StandardCharsets;
  * @date 2025/2/10
  */
 public abstract class BaseForwardMsgListener<
-        BinaryFrameHandler,
-        CmdEnum extends Enum<CmdEnum>,
-        DanmuMsg, GiftMsg, SuperChatMsg, EnterRoomMsg, LikeMsg, LiveStatusChangeMsg, RoomStatsMsg, SocialMsg> implements IClientStatusChangeListener,
+        BinaryFrameHandler, CmdEnum extends Enum<CmdEnum>,
+        DanmuMsg, GiftMsg, SuperChatMsg, EnterRoomMsg, LikeMsg, LiveStatusChangeMsg, RoomStatsMsg, SocialMsg
+        > implements IClientStatusChangeListener,
         IBaseMsgListener<BinaryFrameHandler, CmdEnum>,
         IDanmuMsgListener<BinaryFrameHandler, DanmuMsg>,
         IGiftMsgListener<BinaryFrameHandler, GiftMsg>,
@@ -63,7 +65,29 @@ public abstract class BaseForwardMsgListener<
         this.client = client;
         this.webSocketUri = webSocketUri;
 
+        this.initForwardClient(webSocketUri);
         client.addStatusChangeListener(this);
+    }
+
+    @SneakyThrows
+    public static <MsgListener extends IBaseMsgListener<?, ?>> void addForwardMsgListener(
+            IBaseLiveChatClient<?, MsgListener> liveChatClient,
+            Class<MsgListener> clazz,
+            String webSocketUri
+    ) {
+        // 使用 ByteBuddy 动态生成类
+        Class<?> dynamicType = new ByteBuddy()
+                .subclass(BaseForwardMsgListener.class) // 继承抽象类
+                .implement(clazz)   // 实现接口
+                .make()
+                .load(BaseForwardMsgListener.class.getClassLoader())
+                .getLoaded();
+
+        // 创建转发消息监听器，继承自抽象类，实现了对应平台的接口
+        MsgListener msgListener = (MsgListener) dynamicType.getDeclaredConstructor(IBaseLiveChatClient.class, String.class)
+                .newInstance(liveChatClient, webSocketUri);
+
+        liveChatClient.addMsgListener(msgListener);
     }
 
     @Override
@@ -136,9 +160,6 @@ public abstract class BaseForwardMsgListener<
     @Override
     public void onStatusChange(PropertyChangeEvent evt, ClientStatusEnums oldStatus, ClientStatusEnums newStatus) {
         switch (newStatus) {
-            case CONNECTED:
-                this.initForwardClient(webSocketUri);
-                break;
             case DESTROYED:
                 this.destroyForwardClient();
                 break;
