@@ -28,6 +28,7 @@ import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener
 import tech.ordinaryroad.live.chat.client.commons.base.room.IRoomInitResult;
 import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
 import tech.ordinaryroad.live.chat.client.commons.client.listener.IClientStatusChangeListener;
+import tech.ordinaryroad.live.chat.client.commons.client.plugin.IPlugin;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -158,4 +159,14 @@ public interface IBaseLiveChatClient<
      * 移除状态变化监听器
      */
     void removeStatusChangeListener(IClientStatusChangeListener listener);
+
+    /**
+     * 添加插件
+     */
+    void addPlugin(IPlugin... plugins);
+
+    /**
+     * 移除插件
+     */
+    void removePlugin(IPlugin... plugins);
 }
