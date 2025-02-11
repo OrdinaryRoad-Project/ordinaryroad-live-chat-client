@@ -24,14 +24,76 @@
 
 package tech.ordinaryroad.live.chat.client.plugin.forward;
 
-import tech.ordinaryroad.live.chat.client.plugin.forward.base.BaseForwardMsgPlugin;
+import cn.hutool.core.util.StrUtil;
+import lombok.extern.slf4j.Slf4j;
+import net.bytebuddy.ByteBuddy;
+import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
+import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseMsgListener;
+import tech.ordinaryroad.live.chat.client.commons.client.IBaseLiveChatClient;
+import tech.ordinaryroad.live.chat.client.commons.client.plugin.IPlugin;
+import tech.ordinaryroad.live.chat.client.plugin.forward.base.AbstractForwardMsgListener;
+import tech.ordinaryroad.live.chat.client.plugin.forward.base.IForwardMsgHandler;
 
 /**
  * @author mjz
  * @date 2025/2/11
  */
-public class ForwardMsgPlugin extends BaseForwardMsgPlugin {
-    public ForwardMsgPlugin(String webSocketUri) {
-        super(webSocketUri);
+@Slf4j
+public class ForwardMsgPlugin implements IPlugin {
+    private final String forwardWebSocketUri;
+    private final IForwardMsgHandler forwardMsgHandler;
+    private AbstractForwardMsgListener forwardMsgPluginProxy;
+
+    public ForwardMsgPlugin(String forwardWebSocketUri) {
+        this(forwardWebSocketUri, new DefaultForwardMsgHandler());
+    }
+
+    public ForwardMsgPlugin(String forwardWebSocketUri, IForwardMsgHandler forwardMsgHandler) {
+        this.forwardWebSocketUri = forwardWebSocketUri;
+        this.forwardMsgHandler = forwardMsgHandler;
+    }
+
+    @Override
+    public <LiveCharClient extends IBaseLiveChatClient<?, MsgListener>, MsgListener extends IBaseMsgListener<?, ?>> void register(LiveCharClient liveChatClient, Class<MsgListener> msgListenerClass) {
+        log.debug("插件注册中：消息转发");
+
+        if (StrUtil.isBlank(this.forwardWebSocketUri)) {
+            log.warn("消息转发地址为空，取消注册「消息转发」插件");
+            return;
+        }
+
+        // 使用 ByteBuddy 动态生成实现了指定MsgListener接口的插件实现类
+        Class<?> dynamicType = new ByteBuddy()
+                .subclass(AbstractForwardMsgListener.class) // 继承插件抽象类
+                .implement(msgListenerClass)   // 实现MsgListener接口
+                .make()
+                .load(msgListenerClass.getClassLoader())
+                .getLoaded();
+        try {
+            // 创建转发消息监听器，继承自抽象类，实现了对应平台的接口
+            forwardMsgPluginProxy = (AbstractForwardMsgListener) dynamicType.getDeclaredConstructor(String.class, IForwardMsgHandler.class).newInstance(this.forwardWebSocketUri, this.forwardMsgHandler);
+
+            // 添加消息监听器
+            liveChatClient.addMsgListener((MsgListener) forwardMsgPluginProxy);
+
+            if (log.isDebugEnabled()) {
+                log.debug("插件注册成功：消息转发，转发地址: {}", this.forwardMsgPluginProxy);
+            }
+        } catch (Exception e) {
+            log.error("插件注册失败：消息转发", e);
+            throw new BaseException(e);
+        }
+    }
+
+    @Override
+    public <LiveCharClient extends IBaseLiveChatClient<?, MsgListener>, MsgListener extends IBaseMsgListener<?, ?>> void unregister(LiveCharClient liveChatClient, Class<MsgListener> msgListenerClass) {
+        log.debug("插件销毁中：消息转发");
+
+        // 销毁用于转发消息的WebSocket LiveChatClient
+        forwardMsgPluginProxy.destroyForwardClient();
+        // 移除消息监听器
+        liveChatClient.removeMsgListener((MsgListener) this.forwardMsgPluginProxy);
+
+        log.debug("插件销毁完成：消息转发");
     }
 }
