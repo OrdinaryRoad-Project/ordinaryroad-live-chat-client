@@ -69,7 +69,9 @@ public abstract class AbstractForwardMsgListener implements
 
     @Override
     public void onGiftMsg(IGiftMsg msg) {
-        this.forwardMsgHandler.doForward(webSocketLiveChatClient, msg);
+        if (msg.getGiftCount() > 0) {
+            this.forwardMsgHandler.doForward(webSocketLiveChatClient, msg);
+        }
     }
 
     @Override
