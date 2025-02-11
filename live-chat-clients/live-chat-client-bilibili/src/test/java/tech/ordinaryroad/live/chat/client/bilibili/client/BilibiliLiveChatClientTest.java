@@ -38,6 +38,7 @@ import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.*;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
+import tech.ordinaryroad.live.chat.client.plugin.forward.ForwardMsgPlugin;
 
 import java.io.IOException;
 
@@ -198,4 +199,20 @@ class BilibiliLiveChatClientTest {
         }
     }
 
+    @Test
+    void forwardMsgTest() throws Exception {
+        String forwardWebsocketUri = "ws://localhost:8080/websocket";
+        BilibiliLiveChatClient liveChatClient = new BilibiliLiveChatClient(BilibiliLiveChatClientConfig.builder()
+                .forwardWebsocketUri(forwardWebsocketUri)
+                .roomId(7777)
+                .build());
+
+        liveChatClient.addPlugin(new ForwardMsgPlugin(forwardWebsocketUri));
+
+        liveChatClient.connect();
+
+        while (true) {
+            System.in.read();
+        }
+    }
 }
