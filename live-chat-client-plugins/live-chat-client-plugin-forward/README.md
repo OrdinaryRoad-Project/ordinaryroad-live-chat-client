@@ -2,6 +2,17 @@
 
 > 更多代码可参考B站LiveChatClient测试样例中的`BilibiliLiveChatClientTest#forwardMsgTest`
 
+#### 引入插件
+
+```xml
+<dependency>
+    <groupId>tech.ordinaryroad</groupId>
+    <artifactId>live-chat-client-plugin-forward</artifactId>
+    <!-- 参考github release版本，不需要前缀`v` -->
+    <version>${ordinaryroad-live-chat-client.version}</version>
+</dependency>
+```
+
 #### 创建插件
 
 1. 基础用法
