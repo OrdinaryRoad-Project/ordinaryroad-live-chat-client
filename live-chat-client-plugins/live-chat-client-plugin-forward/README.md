@@ -52,7 +52,7 @@ IPlugin plugin = new IPlugin() {
             };
 
             @Override
-            public <LiveChatClient extends IBaseLiveChatClient<?, MsgListener>, MsgListener extends IBaseMsgListener<?, ?>>
+            public <LiveChatClient extends BaseLiveChatClient<?, ?, MsgListener>, MsgListener extends IBaseMsgListener<?, ?>>
             void register(LiveChatClient liveChatClient, Class<MsgListener> msgListenerClass) {
                 webSocketLiveChatClient = new WebSocketLiveChatClient(WebSocketLiveChatClientConfig
                         .builder()
@@ -69,7 +69,7 @@ IPlugin plugin = new IPlugin() {
             }
 
             @Override
-            public <LiveChatClient extends IBaseLiveChatClient<?, MsgListener>, MsgListener extends IBaseMsgListener<?, ?>>
+            public <LiveChatClient extends BaseLiveChatClient<?, ?, MsgListener>, MsgListener extends IBaseMsgListener<?, ?>>
             void unregister(LiveChatClient liveChatClient, Class<MsgListener> msgListenerClass) {
                 webSocketLiveChatClient.destroy();
                 liveChatClient.removeMsgListener((MsgListener) msgListener);
