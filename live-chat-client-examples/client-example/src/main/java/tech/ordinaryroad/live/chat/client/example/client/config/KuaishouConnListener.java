@@ -24,25 +24,31 @@
 
 package tech.ordinaryroad.live.chat.client.example.client.config;
 
-import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-import tech.ordinaryroad.live.chat.client.bilibili.config.BilibiliLiveChatClientConfig;
-import tech.ordinaryroad.live.chat.client.douyu.config.DouyuLiveChatClientConfig;
-import tech.ordinaryroad.live.chat.client.kuaishou.config.KuaishouLiveChatClientConfig;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import tech.ordinaryroad.live.chat.client.kuaishou.listener.IKuaishouConnectionListener;
+import tech.ordinaryroad.live.chat.client.kuaishou.netty.handler.KuaishouConnectionHandler;
 
 /**
  * @author mjz
  * @date 2023/8/21
  */
-@Data
-@Configuration
-@ConfigurationProperties(prefix = "tech.ordinaryroad.live.chat.client.example.client.config")
-public class LiveChatClientConfigurations {
+@Slf4j
+@Service
+public class KuaishouConnListener implements IKuaishouConnectionListener {
 
-    private BilibiliLiveChatClientConfig bilibili;
+    @Override
+    public void onConnected(KuaishouConnectionHandler connectionHandler) {
+        log.info("kuaishou1 {} onConnected", connectionHandler.getRoomId());
+    }
 
-    private DouyuLiveChatClientConfig douyu;
-    private KuaishouLiveChatClientConfig kuaishou;
+    @Override
+    public void onConnectFailed(KuaishouConnectionHandler connectionHandler) {
+        log.info("kuaishou1 {} onConnectFailed", connectionHandler.getRoomId());
+    }
 
+    @Override
+    public void onDisconnected(KuaishouConnectionHandler connectionHandler) {
+        log.info("kuaishou1 {} onDisconnected", connectionHandler.getRoomId());
+    }
 }

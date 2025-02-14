@@ -32,6 +32,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.util.StopWatch;
 import tech.ordinaryroad.live.chat.client.bilibili.client.BilibiliLiveChatClient;
 import tech.ordinaryroad.live.chat.client.douyu.client.DouyuLiveChatClient;
+import tech.ordinaryroad.live.chat.client.kuaishou.client.KuaishouLiveChatClient;
 
 @Slf4j
 @SpringBootApplication
@@ -41,7 +42,9 @@ public class LiveChatExampleApplication {
     private BilibiliLiveChatClient bilibiliLiveChatClient;
     @Resource
     private DouyuLiveChatClient douyuLiveChatClient;
-
+    @Resource
+    private KuaishouLiveChatClient kuaishouLiveChatClient;
+    
     public static void main(String[] args) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start("run");
@@ -54,6 +57,7 @@ public class LiveChatExampleApplication {
     public void preDestroy() {
         douyuLiveChatClient.destroy();
         bilibiliLiveChatClient.destroy();
+        kuaishouLiveChatClient.destroy();
     }
 
 }
