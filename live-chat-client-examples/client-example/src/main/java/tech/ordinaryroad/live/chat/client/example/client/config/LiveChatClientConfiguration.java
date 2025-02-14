@@ -32,6 +32,9 @@ import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliMsgListener
 import tech.ordinaryroad.live.chat.client.douyu.client.DouyuLiveChatClient;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuConnectionListener;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuMsgListener;
+import tech.ordinaryroad.live.chat.client.kuaishou.client.KuaishouLiveChatClient;
+import tech.ordinaryroad.live.chat.client.kuaishou.listener.IKuaishouConnectionListener;
+import tech.ordinaryroad.live.chat.client.kuaishou.listener.IKuaishouMsgListener;
 
 /**
  * @author mjz
@@ -46,12 +49,17 @@ public class LiveChatClientConfiguration {
     private final IDouyuMsgListener douyuCmdMsgListener;
     private final IDouyuConnectionListener douyuConnectionListener;
 
-    public LiveChatClientConfiguration(LiveChatClientConfigurations configurations, IBilibiliMsgListener bilibiliSendSmsReplyMsgListener, IBilibiliConnectionListener bilibiliConnectionListener, IDouyuMsgListener douyuCmdMsgListener, IDouyuConnectionListener douyuConnectionListener) {
+    private final IKuaishouMsgListener kuaishouMsgListener;
+    private final IKuaishouConnectionListener kuaishouConnectionListener;
+
+    public LiveChatClientConfiguration(LiveChatClientConfigurations configurations, IBilibiliMsgListener bilibiliSendSmsReplyMsgListener, IBilibiliConnectionListener bilibiliConnectionListener, IDouyuMsgListener douyuCmdMsgListener, IDouyuConnectionListener douyuConnectionListener, IKuaishouMsgListener kuaishouMsgListener, IKuaishouConnectionListener kuaishouConnectionListener) {
         this.configurations = configurations;
         this.bilibiliSendSmsReplyMsgListener = bilibiliSendSmsReplyMsgListener;
         this.bilibiliConnectionListener = bilibiliConnectionListener;
         this.douyuCmdMsgListener = douyuCmdMsgListener;
         this.douyuConnectionListener = douyuConnectionListener;
+        this.kuaishouMsgListener = kuaishouMsgListener;
+        this.kuaishouConnectionListener = kuaishouConnectionListener;
     }
 
     @Bean
@@ -62,6 +70,11 @@ public class LiveChatClientConfiguration {
     @Bean
     public DouyuLiveChatClient douyuLiveChatClient() {
         return new DouyuLiveChatClient(configurations.getDouyu(), douyuCmdMsgListener, douyuConnectionListener);
+    }
+
+    @Bean
+    public KuaishouLiveChatClient kuaishouLiveChatClient() {
+        return new KuaishouLiveChatClient(configurations.getKuaishou(), kuaishouMsgListener, kuaishouConnectionListener);
     }
 
 }

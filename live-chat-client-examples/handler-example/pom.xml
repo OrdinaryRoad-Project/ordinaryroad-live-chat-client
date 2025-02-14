@@ -32,9 +32,22 @@
         </dependency>
 
         <dependency>
+            <groupId>tech.ordinaryroad</groupId>
+            <artifactId>live-chat-client-kuaishou</artifactId>
+            <!-- 参考github release版本，不需要前缀`v` -->
+            <version>1.5.0</version>
+        </dependency>
+        
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>tech.ordinaryroad</groupId>
+            <artifactId>live-chat-client-kuaishou</artifactId>
+            <version>1.5.0</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
