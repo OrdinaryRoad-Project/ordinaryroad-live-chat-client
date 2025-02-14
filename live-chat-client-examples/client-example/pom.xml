@@ -63,7 +63,7 @@
             <groupId>tech.ordinaryroad</groupId>
             <artifactId>live-chat-client-kuaishou</artifactId>
             <!-- 参考github release版本，不需要前缀`v` -->
-            <version>1.4.0-b1</version>
+            <version>1.5.0</version>
         </dependency>
 
         <dependency>
