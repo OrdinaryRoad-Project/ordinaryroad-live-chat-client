@@ -26,5 +26,5 @@ tech:
                   cookie: ${kuaishouCookie:}
 logging:
   level:
-    tech.ordinaryroad: DEBUG
-    io.netty: DEBUG
+    tech.ordinaryroad: INFO
+    io.netty: INFO
