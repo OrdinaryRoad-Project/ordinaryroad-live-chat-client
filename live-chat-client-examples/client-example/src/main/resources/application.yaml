@@ -24,6 +24,7 @@ tech:
                   roomId: KPL704668133
                   # TODO 浏览器Cookie
                   cookie: ${kuaishouCookie:}
+                  roomInfoGetType: NOT_COOKIE
 logging:
   level:
     tech.ordinaryroad: INFO

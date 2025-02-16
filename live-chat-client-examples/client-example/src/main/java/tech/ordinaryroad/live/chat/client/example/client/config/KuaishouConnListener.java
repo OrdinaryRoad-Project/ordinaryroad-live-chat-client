@@ -39,16 +39,16 @@ public class KuaishouConnListener implements IKuaishouConnectionListener {
 
     @Override
     public void onConnected(KuaishouConnectionHandler connectionHandler) {
-        log.info("{} onConnected", connectionHandler.getRoomId());
+        log.info("kuaishou {} onConnected", connectionHandler.getRoomId());
     }
 
     @Override
     public void onConnectFailed(KuaishouConnectionHandler connectionHandler) {
-        log.info("{} onConnectFailed", connectionHandler.getRoomId());
+        log.info("kuaishou {} onConnectFailed", connectionHandler.getRoomId());
     }
 
     @Override
     public void onDisconnected(KuaishouConnectionHandler connectionHandler) {
-        log.info("{} onDisconnected", connectionHandler.getRoomId());
+        log.info("kuaishou {} onDisconnected", connectionHandler.getRoomId());
     }
 }
