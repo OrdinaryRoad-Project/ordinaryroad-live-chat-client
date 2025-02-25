@@ -1,6 +1,6 @@
 # ordinaryroad-live-chat-client
 
-![license](https://img.shields.io/github/license/OrdinaryRoad-Project/ordinaryroad-live-chat-client) ![release](https://img.shields.io/github/v/release/OrdinaryRoad-Project/ordinaryroad-live-chat-client?include_prereleases) ![Maven Central](https://img.shields.io/maven-central/v/tech.ordinaryroad/live-chat-client)
+[![license](https://img.shields.io/github/license/OrdinaryRoad-Project/ordinaryroad-live-chat-client)](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client?tab=MIT-1-ov-file#readme) [![release](https://img.shields.io/github/v/release/OrdinaryRoad-Project/ordinaryroad-live-chat-client?include_prereleases)](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/releases) [![Maven Central](https://img.shields.io/maven-central/v/tech.ordinaryroad/live-chat-client)](https://central.sonatype.com/artifact/tech.ordinaryroad/live-chat-client/versions)
 
 > This project is in progress... 👨‍💻，有问题欢迎[提交issuse](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/issues/new/choose)，
 > 觉得有用的话可以点个小星星⭐️鼓励一下，感谢
