@@ -29,6 +29,7 @@ import org.springframework.stereotype.Component;
 import tech.ordinaryroad.live.chat.client.bilibili.client.BilibiliLiveChatClient;
 import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliConnectionListener;
 import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliMsgListener;
+import tech.ordinaryroad.live.chat.client.douyin.client.DouyinLiveChatClient;
 import tech.ordinaryroad.live.chat.client.douyu.client.DouyuLiveChatClient;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuConnectionListener;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuMsgListener;
@@ -77,4 +78,8 @@ public class LiveChatClientConfiguration {
         return new KuaishouLiveChatClient(configurations.getKuaishou(), kuaishouMsgListener, kuaishouConnectionListener);
     }
 
+    @Bean
+    public DouyinLiveChatClient douyinLiveChatClient(DouyinMsgListener douyinMsgListener, DouyinConnectionListener douyinConnectionListener) {
+        return new DouyinLiveChatClient(configurations.getDouyin(), douyinMsgListener, douyinConnectionListener);
+    }
 }

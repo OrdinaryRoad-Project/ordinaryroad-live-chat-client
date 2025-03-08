@@ -24,7 +24,11 @@
 
 package tech.ordinaryroad.live.chat.client.example.client.controller;
 
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import tech.ordinaryroad.live.chat.client.bilibili.client.BilibiliLiveChatClient;
 import tech.ordinaryroad.live.chat.client.bilibili.config.BilibiliLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliConnectionListener;
@@ -32,6 +36,10 @@ import tech.ordinaryroad.live.chat.client.bilibili.listener.IBilibiliMsgListener
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.constant.RoomInfoGetTypeEnum;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.client.config.BaseLiveChatClientConfig;
+import tech.ordinaryroad.live.chat.client.douyin.client.DouyinLiveChatClient;
+import tech.ordinaryroad.live.chat.client.douyin.config.DouyinLiveChatClientConfig;
+import tech.ordinaryroad.live.chat.client.douyin.listener.IDouyinConnectionListener;
+import tech.ordinaryroad.live.chat.client.douyin.listener.IDouyinMsgListener;
 import tech.ordinaryroad.live.chat.client.douyu.client.DouyuLiveChatClient;
 import tech.ordinaryroad.live.chat.client.douyu.config.DouyuLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.douyu.listener.IDouyuConnectionListener;
@@ -56,14 +64,18 @@ public class MultiplyLiveChatClientController {
     private final IDouyuConnectionListener douyuConnectionListener;
     private final IKuaishouMsgListener kuaishouMsgListener;
     private final IKuaishouConnectionListener kuaishouConnectionListener;
+    private final IDouyinMsgListener douyinMsgListener;
+    private final IDouyinConnectionListener douyinConnectionListener;
 
-    public MultiplyLiveChatClientController(IBilibiliMsgListener bilibiliMsgListener, IBilibiliConnectionListener bilibiliConnectionListener, IDouyuMsgListener douyuMsgListener, IDouyuConnectionListener douyuConnectionListener, IKuaishouMsgListener kuaishouMsgListener, IKuaishouConnectionListener kuaishouConnectionListener) {
+    public MultiplyLiveChatClientController(IBilibiliMsgListener bilibiliMsgListener, IBilibiliConnectionListener bilibiliConnectionListener, IDouyuMsgListener douyuMsgListener, IDouyuConnectionListener douyuConnectionListener, IKuaishouMsgListener kuaishouMsgListener, IKuaishouConnectionListener kuaishouConnectionListener, IDouyinMsgListener douyinMsgListener, IDouyinConnectionListener douyinConnectionListener) {
         this.bilibiliMsgListener = bilibiliMsgListener;
         this.bilibiliConnectionListener = bilibiliConnectionListener;
         this.douyuMsgListener = douyuMsgListener;
         this.douyuConnectionListener = douyuConnectionListener;
         this.kuaishouMsgListener = kuaishouMsgListener;
         this.kuaishouConnectionListener = kuaishouConnectionListener;
+        this.douyinMsgListener = douyinMsgListener;
+        this.douyinConnectionListener = douyinConnectionListener;
     }
 
 
@@ -90,6 +102,12 @@ public class MultiplyLiveChatClientController {
                         .roomInfoGetType(RoomInfoGetTypeEnum.NOT_COOKIE)
                         .build();
                 client = new KuaishouLiveChatClient((KuaishouLiveChatClientConfig) config, kuaishouMsgListener, kuaishouConnectionListener);
+            }
+            case "douyin" -> {
+                config = DouyinLiveChatClientConfig.builder()
+                        .roomId(roomId)
+                        .build();
+                client = new DouyinLiveChatClient((DouyinLiveChatClientConfig) config, douyinMsgListener, douyinConnectionListener);
             }
             default -> throw new BaseException("暂不支持 " + platform);
         }

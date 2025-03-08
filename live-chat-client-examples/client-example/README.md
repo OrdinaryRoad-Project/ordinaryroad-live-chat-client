@@ -24,6 +24,12 @@ tech:
                   roomId: 74751
                   # TODO 浏览器Cookie
                   cookie: ${douyuCookie:}
+                kuaishou:
+                  # TODO 直播间id
+                  roomId: KPL704668133
+                  # TODO 浏览器Cookie
+                  cookie: ${kuaishouCookie:}
+                  roomInfoGetType: NOT_COOKIE
 ```
 
 ## 2 LiveChatClientController

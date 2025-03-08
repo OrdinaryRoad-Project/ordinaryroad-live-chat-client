@@ -49,6 +49,26 @@
             <artifactId>live-chat-client-bilibili</artifactId>
             <!-- 参考github release版本，不需要前缀`v` -->
             <version>1.5.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-lang3</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-text</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.17.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+            <version>1.13.0</version>
         </dependency>
 
         <dependency>
@@ -62,7 +82,12 @@
         <dependency>
             <groupId>tech.ordinaryroad</groupId>
             <artifactId>live-chat-client-kuaishou</artifactId>
-            <!-- 参考github release版本，不需要前缀`v` -->
+            <version>1.5.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>tech.ordinaryroad</groupId>
+            <artifactId>live-chat-client-douyin</artifactId>
             <version>1.5.0</version>
         </dependency>
 
