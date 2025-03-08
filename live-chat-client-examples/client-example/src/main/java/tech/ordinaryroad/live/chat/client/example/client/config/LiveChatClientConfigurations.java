@@ -28,6 +28,7 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import tech.ordinaryroad.live.chat.client.bilibili.config.BilibiliLiveChatClientConfig;
+import tech.ordinaryroad.live.chat.client.douyin.config.DouyinLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.douyu.config.DouyuLiveChatClientConfig;
 import tech.ordinaryroad.live.chat.client.kuaishou.config.KuaishouLiveChatClientConfig;
 
@@ -44,5 +45,6 @@ public class LiveChatClientConfigurations {
 
     private DouyuLiveChatClientConfig douyu;
     private KuaishouLiveChatClientConfig kuaishou;
+    private DouyinLiveChatClientConfig douyin;
 
 }

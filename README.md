@@ -156,7 +156,7 @@ implementation("com.aayushatharva.brotli4j:native-osx-x86_64:$liveChatClientBrot
 </dependency>
 ```
 
-> 注意，如果`StringEscapeUtils.unescapeJson`出现报错，尝试手动引入`"org.apache.commons:commons-lang3:3.14.0"`
+> 注意，如果`StringEscapeUtils.unescapeJson`出现报错，尝试手动引入`"org.apache.commons:commons-lang3:3.17.0"`
 
 ### 快手
 

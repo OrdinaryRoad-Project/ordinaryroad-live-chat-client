@@ -49,7 +49,7 @@ public class LiveChatClientController {
     }
 
     @GetMapping("autoReconnect/{autoReconnect}")
-    public Boolean autoReconnect(@RequestParam String platform, @PathVariable Boolean autoReconnect) {
+    public boolean autoReconnect(@RequestParam String platform, @PathVariable Boolean autoReconnect) {
         getClient(platform).getConfig().setAutoReconnect(autoReconnect);
         return getClient(platform).getConfig().isAutoReconnect();
     }
