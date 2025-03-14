@@ -38,7 +38,7 @@ class KuaishouApisTest {
         String roomId = "KPL704668133";
         KuaishouRoomInitResult roomInitResult = KuaishouApis.roomInit(roomId);
 
-        System.out.println(KuaishouApis.sendComment(System.getenv("cookie"),
+        System.out.println(KuaishouApis.sendComment(System.getenv("cookie"), System.getenv("kww"),
                 roomId,
                 KuaishouApis.SendCommentRequest
                         .builder()

@@ -2,6 +2,7 @@ package tech.ordinaryroad.live.chat.client.kuaishou.client;
 
 import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.StrUtil;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.constant.RoomInfoGetTypeEnum;
@@ -407,6 +408,55 @@ class KuaishouLiveChatClientTest {
         liveChatClient.addPlugin(new ForwardMsgPlugin(forwardWebsocketUri));
 
         liveChatClient.connect();
+
+        while (true) {
+            System.in.read();
+        }
+    }
+
+    @Test
+    @SneakyThrows
+    void kwwTest() {
+        String cookie = System.getenv("cookie");
+        String kww = System.getenv("kww");
+        log.error("cookie:{}", cookie);
+        log.error("kww:{}", kww);
+        KuaishouLiveChatClient kuaishouLiveChatClient = new KuaishouLiveChatClient(KuaishouLiveChatClientConfig.builder()
+                .cookie(cookie).kww(kww)
+                .roomId("KPL704668133").build()
+        );
+
+        kuaishouLiveChatClient.addMsgListener(new IKuaishouMsgListener() {
+            @Override
+            public void onDanmuMsg(KuaishouBinaryFrameHandler binaryFrameHandler, KuaishouDanmuMsg msg) {
+                log.info("{} 收到弹幕 [{}] {}({})：{}", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid(), msg.getContent());
+            }
+
+            @Override
+            public void onLikeMsg(KuaishouBinaryFrameHandler binaryFrameHandler, KuaishouLikeMsg msg) {
+                log.info("{} 收到点赞 [{}] {}({})", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid());
+            }
+        });
+
+        kuaishouLiveChatClient.addStatusChangeListener((evt, oldStatus, newStatus) -> {
+            if (newStatus == ClientStatusEnums.CONNECTED) {
+                log.warn("{} 已连接", kuaishouLiveChatClient.getConfig().getRoomId());
+                log.warn("直播间标题 {}", kuaishouLiveChatClient.getRoomInitResult().getRoomTitle());
+                log.warn("房间直播状态: {}", kuaishouLiveChatClient.getRoomInitResult().getRoomLiveStatus());
+                ThreadUtil.execAsync(() -> {
+                    // 连接成功10秒后发送弹幕
+                    ThreadUtil.sleep(10000);
+                    kuaishouLiveChatClient.sendDanmu("66666A!!!", () -> log.warn("弹幕发送成功"));
+                    ThreadUtil.sleep(1000);
+                    kuaishouLiveChatClient.clickLike(1, () -> log.warn("为主播点赞成功"));
+                });
+            }
+            if (newStatus == ClientStatusEnums.CONNECT_FAILED) {
+                log.error("连接失败, 房间直播状态: {}", kuaishouLiveChatClient.getRoomInitResult().getRoomLiveStatus());
+            }
+        });
+
+        kuaishouLiveChatClient.connect();
 
         while (true) {
             System.in.read();

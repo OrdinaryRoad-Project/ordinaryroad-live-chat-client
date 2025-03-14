@@ -137,7 +137,7 @@ public class KuaishouLiveChatClient extends BaseNettyClient<
 
     @Override
     public KuaishouRoomInitResult initRoom() {
-        return KuaishouApis.roomInit(getConfig().getRoomId(), getConfig().getRoomInfoGetType(), getConfig().getCookie(), roomInitResult);
+        return KuaishouApis.roomInit(getConfig().getRoomId(), getConfig().getRoomInfoGetType(), getConfig().getCookie(), getConfig().getKww(), roomInitResult);
     }
 
     @Override
@@ -154,7 +154,7 @@ public class KuaishouLiveChatClient extends BaseNettyClient<
 
                 boolean sendSuccess = false;
                 try {
-                    KuaishouApis.sendComment(getConfig().getCookie(),
+                    KuaishouApis.sendComment(getConfig().getCookie(), getConfig().getKww(),
                             getConfig().getRoomId(),
                             KuaishouApis.SendCommentRequest.builder()
                                     .liveStreamId(roomInitResult.getLiveStreamId())
@@ -198,7 +198,8 @@ public class KuaishouLiveChatClient extends BaseNettyClient<
 
         boolean successfullyClicked = false;
         try {
-            JsonNode jsonNode = KuaishouApis.clickLike(getConfig().getCookie(), getConfig().getRoomId(), roomInitResult.getLiveStreamId(), count);
+            JsonNode jsonNode = KuaishouApis.clickLike(getConfig().getCookie(), getConfig().getKww(),
+                    getConfig().getRoomId(), roomInitResult.getLiveStreamId(), count);
             if (jsonNode.asBoolean()) {
                 successfullyClicked = true;
             }
