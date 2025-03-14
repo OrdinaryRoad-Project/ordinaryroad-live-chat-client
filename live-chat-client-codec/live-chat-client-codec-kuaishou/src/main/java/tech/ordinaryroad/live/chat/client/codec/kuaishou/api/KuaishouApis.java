@@ -67,7 +67,7 @@ public class KuaishouApis {
      */
     private static final TimedCache<String, WebGiftFeedOuterClass.WebGiftFeed> WEB_GIFT_FEED_CACHE = new TimedCache<>(300 * 1000L, new ConcurrentHashMap<>());
 
-    public static KuaishouRoomInitResult roomInitSetCookie(Object roomId, String cookie, KuaishouRoomInitResult roomInitResult) {
+    public static KuaishouRoomInitResult roomInitSetCookie(Object roomId, String cookie, String kww, KuaishouRoomInitResult roomInitResult) {
         @Cleanup
         HttpResponse response = createGetRequest("https://live.kuaishou.com/u/" + roomId, cookie)
                 .execute();
@@ -92,7 +92,7 @@ public class KuaishouApis {
         String liveStreamId = null;
         if (livedetailJsonNode.has("liveStream") && livedetailJsonNode.get("liveStream").has("id")) {
             liveStreamId = livedetailJsonNode.get("liveStream").get("id").asText();
-            JsonNode websocketinfo = websocketinfo(roomId, liveStreamId, cookie);
+            JsonNode websocketinfo = websocketinfo(roomId, liveStreamId, cookie, kww);
             if (websocketinfo.has("token")) {
                 token = websocketinfo.get("token").asText();
             }
@@ -111,10 +111,30 @@ public class KuaishouApis {
         return roomInitResult;
     }
 
-    public static KuaishouRoomInitResult roomInitSetCookie(Object roomId, String cookie) {
-        return roomInitSetCookie(roomId, cookie, null);
+    public static KuaishouRoomInitResult roomInitSetCookie(Object roomId, String cookie, String kww) {
+        return roomInitSetCookie(roomId, cookie, kww, null);
     }
 
+    public static KuaishouRoomInitResult roomInit(Object roomId, RoomInfoGetTypeEnum roomInfoGetType, String cookie, String kww, KuaishouRoomInitResult roomInitResult) {
+        switch (roomInfoGetType) {
+            case COOKIE: {
+                return roomInitSetCookie(roomId, cookie, kww, roomInitResult);
+            }
+            case NOT_COOKIE: {
+                return roomInitGet(roomId, roomInitResult);
+            }
+            default: {
+                throwExceptionWithTip("错误获取类型");
+                return null;
+            }
+        }
+    }
+
+    public static KuaishouRoomInitResult roomInit(Object roomId, RoomInfoGetTypeEnum roomInfoGetType, String cookie, String kww) {
+        return roomInit(roomId, roomInfoGetType, cookie, kww, null);
+    }
+
+    // region KuaishouRoomInitResult NOT_COOKIE
     public static KuaishouRoomInitResult roomInitGet(Object roomId, KuaishouRoomInitResult roomInitResult) {
         @Cleanup
         HttpResponse response = createGetRequest("https://live.kuaishou.com/live_api/liveroom/livedetail?principalId=" + roomId, StrUtil.EMPTY)
@@ -148,40 +168,24 @@ public class KuaishouApis {
         return roomInitGet(roomId, null);
     }
 
-    public static KuaishouRoomInitResult roomInit(Object roomId, RoomInfoGetTypeEnum roomInfoGetType, String cookie, KuaishouRoomInitResult roomInitResult) {
-        switch (roomInfoGetType) {
-            case COOKIE: {
-                return roomInitSetCookie(roomId, cookie, roomInitResult);
-            }
-            case NOT_COOKIE: {
-                return roomInitGet(roomId, roomInitResult);
-            }
-            default: {
-                throwExceptionWithTip("错误获取类型");
-                return null;
-            }
-        }
-    }
-
-    public static KuaishouRoomInitResult roomInit(Object roomId, RoomInfoGetTypeEnum roomInfoGetType, String cookie) {
-        return roomInit(roomId, roomInfoGetType, cookie, null);
-    }
 
     public static KuaishouRoomInitResult roomInit(Object roomId) {
-        return roomInit(roomId, RoomInfoGetTypeEnum.NOT_COOKIE, null);
+        return roomInit(roomId, RoomInfoGetTypeEnum.NOT_COOKIE, null, null);
     }
 
     public static KuaishouRoomInitResult roomInit(Object roomId, KuaishouRoomInitResult roomInitResult) {
-        return roomInit(roomId, RoomInfoGetTypeEnum.NOT_COOKIE, null, roomInitResult);
+        return roomInit(roomId, RoomInfoGetTypeEnum.NOT_COOKIE, null, null, roomInitResult);
     }
+    // endregion
 
-    public static JsonNode websocketinfo(Object roomId, String liveStreamId, String cookie) {
+    public static JsonNode websocketinfo(Object roomId, String liveStreamId, String cookie, String kww) {
         if (StrUtil.isBlank(liveStreamId)) {
             throwExceptionWithTip("主播未开播，liveStreamId为空");
         }
         @Cleanup
         HttpResponse response = createGetRequest("https://live.kuaishou.com/live_api/liveroom/websocketinfo?liveStreamId=" + liveStreamId, cookie)
                 .header(Header.REFERER, "https://live.kuaishou.com/u/" + roomId)
+                .header("Kww", kww)
                 .execute();
         return responseInterceptor(response.body());
     }
@@ -209,18 +213,19 @@ public class KuaishouApis {
     }
 
     @SneakyThrows
-    public static JsonNode sendComment(String cookie, Object roomId, SendCommentRequest request) {
+    public static JsonNode sendComment(String cookie, String kww, Object roomId, SendCommentRequest request) {
         @Cleanup
         HttpResponse response = createPostRequest("https://live.kuaishou.com/live_api/liveroom/sendComment", cookie)
                 .body(OrJacksonUtil.getInstance().writeValueAsString(request), ContentType.JSON.getValue())
-                .header(Header.ORIGIN,"https://live.kuaishou.com")
+                .header(Header.ORIGIN, "https://live.kuaishou.com")
                 .header(Header.REFERER, "https://live.kuaishou.com/u/" + roomId)
+                .header("Kww", kww)
                 .execute();
         return responseInterceptor(response.body());
     }
 
     @SneakyThrows
-    public static JsonNode clickLike(String cookie, Object roomId, String liveStreamId, int count) {
+    public static JsonNode clickLike(String cookie, String kww, Object roomId, String liveStreamId, int count) {
         @Cleanup
         HttpResponse response = createPostRequest("https://live.kuaishou.com/live_api/liveroom/like", cookie)
                 .body(OrJacksonUtil.getInstance().createObjectNode()
@@ -230,6 +235,7 @@ public class KuaishouApis {
                 )
                 .header(Header.ORIGIN, "https://live.kuaishou.com")
                 .header(Header.REFERER, "https://live.kuaishou.com/u/" + roomId)
+                .header("Kww", kww)
                 .execute();
         return responseInterceptor(response.body());
     }
@@ -280,7 +286,7 @@ public class KuaishouApis {
     }
 
     private static void throwExceptionWithTip(String message) {
-        throw new BaseException("『可能已触发滑块验证，建议配置Cookie或打开浏览器进行滑块验证后重试』" + message);
+        throw new BaseException("『可能已触发滑块验证，建议配置Cookie和Kww后或打开浏览器进行滑块验证后重试』" + message);
     }
 
     /**

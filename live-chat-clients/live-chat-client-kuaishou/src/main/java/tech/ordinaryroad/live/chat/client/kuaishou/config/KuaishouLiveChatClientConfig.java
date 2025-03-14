@@ -42,6 +42,11 @@ import tech.ordinaryroad.live.chat.client.servers.netty.client.config.BaseNettyC
 @SuperBuilder(toBuilder = true)
 public class KuaishouLiveChatClientConfig extends BaseNettyClientConfig {
 
+    /**
+     * 来源：快手网站 localstorage 中的 kwfv1 参数，或者请求头中 Kww 参数对应的值
+     */
+    private String kww;
+
     @Builder.Default
     private long heartbeatPeriod = 20;
 
