@@ -76,7 +76,7 @@ public abstract class BaseNettyClient
     @Getter
     private final Bootstrap bootstrap = new Bootstrap();
     protected IBaseConnectionListener<ConnectionHandler> clientConnectionListener = this;
-    private ConnectionHandler connectionHandler;
+    protected ConnectionHandler connectionHandler;
     private IBaseConnectionListener<ConnectionHandler> connectionListener;
     private Channel channel;
     @Getter
