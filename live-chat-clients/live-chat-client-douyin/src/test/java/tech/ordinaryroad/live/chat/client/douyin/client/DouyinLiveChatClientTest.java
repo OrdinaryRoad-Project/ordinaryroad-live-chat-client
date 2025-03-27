@@ -35,6 +35,11 @@ class DouyinLiveChatClientTest {
         String cookie = System.getenv("cookie");
         log.error("cookie: {}", cookie);
         DouyinLiveChatClientConfig config = DouyinLiveChatClientConfig.builder()
+//                .socks5ProxyHost("1.2.3.4")
+//                .socks5ProxyPort(1234)
+
+//                .heartbeatPeriod(Long.MAX_VALUE)
+//                .heartbeatInitialDelay(Long.MAX_VALUE)
 
                 // TODO 浏览器Cookie
 //                .cookie(cookie)
@@ -83,6 +88,8 @@ class DouyinLiveChatClientTest {
                 // 测试连麦
                 .roomId("335835086616")
                 .roomId("723583785905")
+                // 与辉同行
+                .roomId("646454278948")
                 .build();
 
         client = new DouyinLiveChatClient(config, new IDouyinMsgListener() {
