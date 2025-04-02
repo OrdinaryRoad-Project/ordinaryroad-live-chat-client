@@ -22,6 +22,7 @@
  * SOFTWARE.
  */
 package tech.ordinaryroad.live.chat.client.codec.douyu.api.dto;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -98,20 +99,20 @@ public class Room {
     private String yuba_jump_url;
     private int room_label_right_flag;
     private int is_set_fans_badge;
-    private List<String> eticket;
-    private List<String> effectInfo;
+    private List<JsonNode> eticket;
+    private List<JsonNode> effectInfo;
     private JsonNode wab;
     private String category_id;
     private JsonNode giftActivity;
     private int isNzRoom;
-    private List<String> cfmGiftList;
+    private List<JsonNode> cfmGiftList;
     private int isPubgmRoom;
-    private List<String> rankActivity;
+    private List<JsonNode> rankActivity;
     private long nowtime;
     private JsonNode nobleConfig;
     private String second_lvl_name;
     private JsonNode stsign_room;
-    private List<String> emperorPush;
+    private List<JsonNode> emperorPush;
     private JsonNode levelInfo;
     private String is_show_rank_list;
     private int giftTempId;
@@ -130,14 +131,14 @@ public class Room {
     private String owner_avatar;
     private int isDefaultAvatar;
     private JsonNode room_idle;
-    private List<String> wsproxy;
-    private List<String> h5wsproxy;
+    private List<JsonNode> wsproxy;
+    private List<JsonNode> h5wsproxy;
     private String videop;
     private String room_plugin;
     private JsonNode officialAnchor;
     private JsonNode authInfo;
     private String authVersion;
-    private List<String> officialCerts;
+    private List<JsonNode> officialCerts;
     private int isVip;
     private JsonNode room_biz_all;
     private int st;

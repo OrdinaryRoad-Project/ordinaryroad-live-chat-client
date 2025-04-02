@@ -23,7 +23,6 @@
  */
 package tech.ordinaryroad.live.chat.client.codec.douyu.api.response;
 
-import cn.hutool.db.meta.Column;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -43,14 +42,14 @@ public class BetardResponse {
     private JsonNode near_show_time;
     private JsonNode launch_remind;
     private Long cache_time;
-    private List<String> black;
+    private List<JsonNode> black;
     private String can_send_gift;
     private Room room;
     private String page_url;
     private Integer cate_id;
     private String share_swf_url;
     private Boolean qqLotterySwitch;
-    private List<String> home_ad_info;
+    private List<JsonNode> home_ad_info;
     private String VoddUploadUrl;
     private String faceList;
     private String swf_url;
@@ -58,13 +57,13 @@ public class BetardResponse {
     private String defaultRankName;
     private JsonNode seo_info;
     private String isWeekListFristThree;
-    private List<String> hotCate;
-    private List<String> leftNav;
-    private Column column;
+    private List<JsonNode> hotCate;
+    private List<JsonNode> leftNav;
+    private JsonNode column;
     private JsonNode child_cate;
     private JsonNode qqgroup;
     private JsonNode post_list;
-    private List<String> h5_guardJS;
+    private List<JsonNode> h5_guardJS;
     private Integer h5_default;
     private Room_args room_args;
     private String bind_vodCateUrl;
