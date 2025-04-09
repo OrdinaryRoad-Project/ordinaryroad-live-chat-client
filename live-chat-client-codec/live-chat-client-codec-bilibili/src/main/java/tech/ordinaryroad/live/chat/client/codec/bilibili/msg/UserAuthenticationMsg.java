@@ -24,9 +24,7 @@
 
 package tech.ordinaryroad.live.chat.client.codec.bilibili.msg;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.constant.OperationEnum;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.constant.ProtoverEnum;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.base.BaseBilibiliMsg;
@@ -35,9 +33,11 @@ import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.base.BaseBilibiliMs
  * @author mjz
  * @date 2023/1/6
  */
+@Builder
 @Getter
 @Setter
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserAuthenticationMsg extends BaseBilibiliMsg {
 
     /**
@@ -50,14 +50,14 @@ public class UserAuthenticationMsg extends BaseBilibiliMsg {
      * 可以通过将url参数id改为直播地址中的数字来查询房间真实id
      * example: <a href="https://api.live.bilibili.com/room/v1/Room/room_init?id=6">https://api.live.bilibili.com/room/v1/Room/room_init?id=6</a>
      */
-    private final long roomid;
+    private long roomid;
 
     /**
      * 协议版本
      *
      * @see ProtoverEnum#getCode()
      */
-    private final int protover;
+    private int protover;
 
     /**
      * 平台标识
@@ -70,14 +70,14 @@ public class UserAuthenticationMsg extends BaseBilibiliMsg {
      *
      * @since 2023-08-19
      */
-    private final String buvid;
+    private String buvid;
 
     /**
      * 认证秘钥（必须字段）
      *
      * @since @since 2023-08-19
      */
-    private final String key;
+    private String key;
 
     @Override
     public ProtoverEnum getProtoverEnum() {

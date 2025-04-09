@@ -31,6 +31,7 @@ import cn.hutool.core.lang.Pair;
 import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.MD5;
+import cn.hutool.http.Header;
 import cn.hutool.http.HttpResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -81,6 +82,8 @@ public class BilibiliApis {
     // https://api.live.bilibili.com/xlive/web-room/v1/index/getInfoByRoom?room_id=545068&web_location=444.8&w_rid=bf3c3e54df97078fb7b777759d0d1f3f&wts=1735974591
     private static final String API_INFO_BY_ROOM = "https://api.live.bilibili.com/xlive/web-room/v1/index/getInfoByRoom";
     private static final String API_DANMU_INFO = "https://api.live.bilibili.com/xlive/web-room/v1/index/getDanmuInfo";
+    private static final List<Integer> mixinKeyEncTab = CollUtil.newArrayList(46, 47, 18, 2, 53, 8, 23, 32, 15, 50, 10, 31, 58, 3, 45, 35, 27, 43, 5, 49, 33, 9, 42, 19, 29, 28, 14, 39, 12, 38, 41, 13, 37, 48, 7, 16, 24, 55, 40, 61, 26, 17, 0, 1, 60, 51, 30, 4, 22, 25, 54, 21, 56, 59, 6, 63, 57, 62, 11, 36, 20, 34, 44, 52);
+    private static Pair<String, String> wbiKeys = null;
 
     @SneakyThrows
     public static BilibiliRoomInitResult roomInit(long roomId, String cookie, BilibiliRoomInitResult roomInitResult) {
@@ -116,7 +119,7 @@ public class BilibiliApis {
             b_3 = OrLiveChatCookieUtil.getCookieByName(cookie, KEY_BUVID3, () -> {
                 throw new BaseException("cookie中缺少参数" + KEY_BUVID3);
             });
-            // webInterfaceNav(cookie);
+            webInterfaceNav(String.valueOf(roomId), cookie);
         } else {
             uid = "0";
 
@@ -127,7 +130,7 @@ public class BilibiliApis {
                     + "; buvid4=" + b4;
         }
 
-        DanmuinfoResult danmuInfo = getDanmuInfo(realRoomId, cookie);
+        DanmuinfoResult danmuInfo = getDanmuInfo(String.valueOf(roomId), realRoomId, cookie);
 
         roomInitResult = Optional.ofNullable(roomInitResult).orElseGet(() -> BilibiliRoomInitResult.builder().build());
         roomInitResult.setBuvid3(b_3);
@@ -179,13 +182,13 @@ public class BilibiliApis {
         return response.getCookieValue("buvid3");
     }
 
-    private static Pair<String, String> wbiKeys = null;
-    private static final List<Integer> mixinKeyEncTab = CollUtil.newArrayList(46, 47, 18, 2, 53, 8, 23, 32, 15, 50, 10, 31, 58, 3, 45, 35, 27, 43, 5, 49, 33, 9, 42, 19, 29, 28, 14, 39, 12, 38, 41, 13, 37, 48, 7, 16, 24, 55, 40, 61, 26, 17, 0, 1, 60, 51, 30, 4, 22, 25, 54, 21, 56, 59, 6, 63, 57, 62, 11, 36, 20, 34, 44, 52);
-
     @SneakyThrows
-    public static void webInterfaceNav(String cookie) {
+    public static void webInterfaceNav(String roomIdString, String cookie) {
         @Cleanup
         HttpResponse response = OrLiveChatHttpUtil.createGet(API_WEB_INTERFACE_NAV)
+                .header(Header.CACHE_CONTROL, "no-cache")
+                .header(Header.ORIGIN, "https://live.bilibili.com")
+                .header(Header.REFERER, "https://live.bilibili.com/" + roomIdString)
                 .cookie(cookie)
                 .execute();
         JsonNode data = OrJacksonUtil.getInstance().readTree(response.body()).get("data");
@@ -201,16 +204,19 @@ public class BilibiliApis {
      * 对 imgKey 和 subKey 进行字符顺序打乱编码
      */
     public static String getMixinKey(String origin) {
+        int length = origin.length();
         StringBuilder result = new StringBuilder();
         for (int i : mixinKeyEncTab) {
-            result.append(origin.charAt(i));
+            if (i < length) { // 确保索引不超出字符串长度
+                result.append(origin.charAt(i));
+            }
         }
         return result.substring(0, Math.min(result.length(), 32));
     }
 
-    public static Map<String, String> getWbiSign(String url) {
+    public static Map<String, String> getWbiSign(String url, String roomIdString, String cookie) {
         if (wbiKeys == null) {
-            webInterfaceNav(null);
+            webInterfaceNav(roomIdString, cookie);
         }
 
         String mixinKey = getMixinKey(wbiKeys.getKey() + wbiKeys.getValue());
@@ -220,7 +226,7 @@ public class BilibiliApis {
         paramMap.put("wts", currentTime + "");
         paramMap = CollUtil.sort(paramMap, Comparator.naturalOrder());
 
-        Map<String, String> paramMapNew = new HashMap<>();
+        Map<String, String> paramMapNew = new TreeMap<>();
         paramMap.forEach((k, v) -> {
             paramMapNew.put(k, v.chars().mapToObj(ch -> String.valueOf((char) ch))
                     .filter(c -> !"!'()*".contains(c))
@@ -262,17 +268,21 @@ public class BilibiliApis {
      * }</pre>
      */
     @SneakyThrows
-    public static DanmuinfoResult getDanmuInfo(long roomId, int type, String cookie) {
+    public static DanmuinfoResult getDanmuInfo(String roomIdString, long roomId, int type, String cookie) {
+        String url = API_DANMU_INFO + "?id=" + roomId + "&type=" + type;
+        Map<String, String> wbiSign = getWbiSign(url, roomIdString, cookie);
         @Cleanup
-        HttpResponse response = OrLiveChatHttpUtil.createGet(API_DANMU_INFO + "?id=" + roomId + "&type=" + type)
+        HttpResponse response = OrLiveChatHttpUtil.createGet(url + "&w_rid=" + wbiSign.get("w_rid") + "&wts=" + wbiSign.get("wts"))
+                .header(Header.ORIGIN, "https://live.bilibili.com")
+                .header(Header.REFERER, "https://live.bilibili.com/blanc/" + roomId + "?liteVersion=true&live_from=62001")
                 .cookie(cookie)
                 .execute();
         return OrJacksonUtil.getInstance().readValue(responseInterceptor(response.body()).toString(), DanmuinfoResult.class);
     }
 
     @SneakyThrows
-    public static DanmuinfoResult getDanmuInfo(long roomId, String cookie) {
-        return getDanmuInfo(roomId, 0, cookie);
+    public static DanmuinfoResult getDanmuInfo(String roomIdString, long roomId, String cookie) {
+        return getDanmuInfo(roomIdString, roomId, 0, cookie);
     }
 
     @SneakyThrows

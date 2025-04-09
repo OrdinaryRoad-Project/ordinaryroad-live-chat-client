@@ -34,10 +34,7 @@ import io.netty.buffer.Unpooled;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.constant.OperationEnum;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.constant.ProtoverEnum;
-import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.ConnectSuccessMsg;
-import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.HeartbeatMsg;
-import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.HeartbeatReplyMsg;
-import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.MessageMsg;
+import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.*;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.base.BaseBilibiliMsg;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.base.IBilibiliMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
@@ -57,9 +54,8 @@ import java.util.zip.Inflater;
 @Slf4j
 public class BilibiliCodecUtil {
 
-    public static int sequence = 0;
-
     public static final short FRAME_HEADER_LENGTH = 16;
+    public static int sequence = 0;
 
     public static ByteBuf encode(IBilibiliMsg msg, ByteBuf out) {
         String bodyJsonString = StrUtil.EMPTY;
@@ -250,6 +246,22 @@ public class BilibiliCodecUtil {
                     return Optional.ofNullable(BaseBilibiliMsg.OBJECT_MAPPER.readValue(jsonString, HeartbeatReplyMsg.class));
                 } catch (JsonProcessingException e) {
                     throw new BaseException(e);
+                }
+            }
+            case USER_AUTHENTICATION: {
+                try {
+                    return Optional.ofNullable(BaseBilibiliMsg.OBJECT_MAPPER.readValue(jsonString, UserAuthenticationMsg.class));
+                } catch (JsonProcessingException e) {
+                    throw new BaseException(e);
+                }
+            }
+            case HEARTBEAT: {
+                try {
+                    return Optional.ofNullable(BaseBilibiliMsg.OBJECT_MAPPER.readValue(jsonString, HeartbeatMsg.class));
+                } catch (JsonProcessingException e) {
+                    HeartbeatMsg heartbeatMsg = new HeartbeatMsg();
+                    return Optional.of(heartbeatMsg);
+                    // throw new BaseException(e);
                 }
             }
             default: {
