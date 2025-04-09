@@ -418,11 +418,9 @@ class KuaishouLiveChatClientTest {
     @SneakyThrows
     void kwwTest() {
         String cookie = System.getenv("cookie");
-        String kww = System.getenv("kww");
         log.error("cookie:{}", cookie);
-        log.error("kww:{}", kww);
         KuaishouLiveChatClient kuaishouLiveChatClient = new KuaishouLiveChatClient(KuaishouLiveChatClientConfig.builder()
-                .cookie(cookie).kww(kww)
+                .cookie(cookie)
                 .roomId("KPL704668133").build()
         );
 
