@@ -24,12 +24,14 @@
 
 package tech.ordinaryroad.live.chat.client.kuaishou.config;
 
+import cn.hutool.core.util.StrUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.constant.RoomInfoGetTypeEnum;
+import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCookieUtil;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.config.BaseNettyClientConfig;
 
 /**
@@ -44,6 +46,8 @@ public class KuaishouLiveChatClientConfig extends BaseNettyClientConfig {
 
     /**
      * 来源：快手网站 localstorage 中的 kwfv1 参数，或者请求头中 Kww 参数对应的值
+     *
+     * @deprecated 暂不需要显式配置该配置，会从cookie中读取kwfv1字段内容；如果配置了则优先使用配置的内容
      */
     private String kww;
 
@@ -69,5 +73,13 @@ public class KuaishouLiveChatClientConfig extends BaseNettyClientConfig {
         RoomInfoGetTypeEnum oldValue = this.roomInfoGetType;
         this.roomInfoGetType = roomInfoGetType;
         super.propertyChangeSupport.firePropertyChange("roomInfoGetType", oldValue, roomInfoGetType);
+    }
+
+    /**
+     * @deprecated 暂不需要显式配置该配置，会从cookie中读取kwfv1字段内容；如果配置了则优先使用配置的内容
+     */
+    @Deprecated
+    public String getKww() {
+        return StrUtil.blankToDefault(kww, OrLiveChatCookieUtil.getCookieByName(getCookie(), "kwfv1", () -> null));
     }
 }
