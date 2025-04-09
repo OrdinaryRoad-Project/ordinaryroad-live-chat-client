@@ -119,7 +119,7 @@ public class BilibiliApis {
             b_3 = OrLiveChatCookieUtil.getCookieByName(cookie, KEY_BUVID3, () -> {
                 throw new BaseException("cookie中缺少参数" + KEY_BUVID3);
             });
-            webInterfaceNav(cookie);
+            webInterfaceNav(String.valueOf(roomId), cookie);
         } else {
             uid = "0";
 
@@ -183,9 +183,12 @@ public class BilibiliApis {
     }
 
     @SneakyThrows
-    public static void webInterfaceNav(String cookie) {
+    public static void webInterfaceNav(String roomIdString, String cookie) {
         @Cleanup
         HttpResponse response = OrLiveChatHttpUtil.createGet(API_WEB_INTERFACE_NAV)
+                .header(Header.CACHE_CONTROL, "no-cache")
+                .header(Header.ORIGIN, "https://live.bilibili.com")
+                .header(Header.REFERER, "https://live.bilibili.com/" + roomIdString)
                 .cookie(cookie)
                 .execute();
         JsonNode data = OrJacksonUtil.getInstance().readTree(response.body()).get("data");
@@ -211,9 +214,9 @@ public class BilibiliApis {
         return result.substring(0, Math.min(result.length(), 32));
     }
 
-    public static Map<String, String> getWbiSign(String url) {
+    public static Map<String, String> getWbiSign(String url, String roomIdString, String cookie) {
         if (wbiKeys == null) {
-            webInterfaceNav(null);
+            webInterfaceNav(roomIdString, cookie);
         }
 
         String mixinKey = getMixinKey(wbiKeys.getKey() + wbiKeys.getValue());
@@ -267,11 +270,11 @@ public class BilibiliApis {
     @SneakyThrows
     public static DanmuinfoResult getDanmuInfo(String roomIdString, long roomId, int type, String cookie) {
         String url = API_DANMU_INFO + "?id=" + roomId + "&type=" + type;
-        Map<String, String> wbiSign = getWbiSign(url);
+        Map<String, String> wbiSign = getWbiSign(url, roomIdString, cookie);
         @Cleanup
         HttpResponse response = OrLiveChatHttpUtil.createGet(url + "&w_rid=" + wbiSign.get("w_rid") + "&wts=" + wbiSign.get("wts"))
                 .header(Header.ORIGIN, "https://live.bilibili.com")
-                .header(Header.REFERER, "https://live.bilibili.com/" + roomIdString)
+                .header(Header.REFERER, "https://live.bilibili.com/blanc/" + roomId + "?liteVersion=true&live_from=62001")
                 .cookie(cookie)
                 .execute();
         return OrJacksonUtil.getInstance().readValue(responseInterceptor(response.body()).toString(), DanmuinfoResult.class);

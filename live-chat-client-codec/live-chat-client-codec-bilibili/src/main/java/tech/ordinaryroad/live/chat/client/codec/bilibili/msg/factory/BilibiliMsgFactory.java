@@ -70,9 +70,13 @@ public class BilibiliMsgFactory {
         try {
             String buvid3 = roomInitResult.getBuvid3();
             long realRoomId = roomInitResult.getRoomPlayInfoResult().getRoom_id();
-            UserAuthenticationMsg userAuthenticationMsg = new UserAuthenticationMsg(realRoomId, protover.getCode(), buvid3, roomInitResult.getDanmuinfoResult().getToken());
-            userAuthenticationMsg.setUid(NumberUtil.parseLong(roomInitResult.getUid()));
-            return userAuthenticationMsg;
+            return UserAuthenticationMsg.builder()
+                    .roomid(realRoomId)
+                    .protover(protover.getCode())
+                    .buvid(buvid3)
+                    .key(roomInitResult.getDanmuinfoResult().getToken())
+                    .uid(NumberUtil.parseLong(roomInitResult.getUid()))
+                    .build();
         } catch (Exception e) {
             throw new BaseException(String.format("认证包创建失败，请检查房间号是否正确。roomId: %d, msg: %s", roomId, e.getMessage()));
         }
