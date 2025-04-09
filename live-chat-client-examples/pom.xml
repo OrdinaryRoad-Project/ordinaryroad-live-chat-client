@@ -34,7 +34,7 @@
     <description>live-chat-client-examples</description>
 
     <modules>
-        <module>client-example</module>
+<!--        <module>client-example</module>-->
         <module>handler-example</module>
         <module>codec-example</module>
     </modules>

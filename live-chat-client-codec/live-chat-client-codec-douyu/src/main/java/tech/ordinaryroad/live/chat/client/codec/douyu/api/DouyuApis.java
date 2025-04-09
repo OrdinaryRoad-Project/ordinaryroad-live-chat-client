@@ -41,7 +41,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
-import org.openjdk.nashorn.api.scripting.ScriptObjectMirror;
 import tech.ordinaryroad.live.chat.client.codec.douyu.api.response.BetardResponse;
 import tech.ordinaryroad.live.chat.client.codec.douyu.msg.dto.GiftListInfo;
 import tech.ordinaryroad.live.chat.client.codec.douyu.msg.dto.GiftPropSingle;
@@ -250,7 +249,7 @@ public class DouyuApis {
         Map<String, String> paramMap;
         try {
             ScriptEngine scriptEngine = OrJavaScriptUtil.createScriptEngine();
-            ScriptObjectMirror eval = (ScriptObjectMirror) scriptEngine.eval(signJavaScriptsString);
+            Map<String, Object> eval = (Map<String, Object>) scriptEngine.eval(signJavaScriptsString);
 
             String signFunc = eval.get("0").toString();
             while (StrUtil.endWith(signFunc, ";")) {
