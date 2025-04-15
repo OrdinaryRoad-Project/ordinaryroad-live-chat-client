@@ -34,6 +34,8 @@ import org.graalvm.polyglot.HostAccess;
 
 import javax.script.ScriptEngine;
 import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author mjz
@@ -70,6 +72,17 @@ public class OrJavaScriptUtil {
         Method getScriptEngine = scriptEngineFactoryClass.getDeclaredMethod("getScriptEngine", String[].class);
         scriptEngine = (ScriptEngine) getScriptEngine.invoke(factory, (Object) new String[]{"--language=es6"});
         return scriptEngine;
+    }
+
+    public static Object getEvalValueByKey(Object object, String key) {
+        if (object instanceof List) {
+            int index = Integer.parseInt(key);
+            return ((List<?>) object).get(index);
+        } else if (object instanceof Map) {
+            return ((Map<?, ?>) object).get(key);
+        } else {
+            return object;
+        }
     }
 
     public static void addCryptoJs(ScriptEngine scriptEngine) {

@@ -249,13 +249,13 @@ public class DouyuApis {
         Map<String, String> paramMap;
         try {
             ScriptEngine scriptEngine = OrJavaScriptUtil.createScriptEngine();
-            Map<String, Object> eval = (Map<String, Object>) scriptEngine.eval(signJavaScriptsString);
+            Object evalResult = scriptEngine.eval(signJavaScriptsString);
 
-            String signFunc = eval.get("0").toString();
+            String signFunc = OrJavaScriptUtil.getEvalValueByKey(evalResult, "0").toString();
             while (StrUtil.endWith(signFunc, ";")) {
                 signFunc = StrUtil.sub(signFunc, 0, signFunc.length() - 1);
             }
-            String v = eval.get("1").toString();
+            String v = OrJavaScriptUtil.getEvalValueByKey(evalResult, "1").toString();
 
             long timeSeconds = System.currentTimeMillis() / 1000;
             String cb = DigestUtil.md5Hex(roomId + did + timeSeconds + v);
