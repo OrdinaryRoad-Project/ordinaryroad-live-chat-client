@@ -26,7 +26,11 @@ package tech.ordinaryroad.live.chat.client.commons.util;
 
 import cn.hutool.core.io.resource.ResourceUtil;
 import cn.hutool.system.JavaInfo;
+import com.oracle.truffle.js.scriptengine.GraalJSScriptEngine;
 import lombok.SneakyThrows;
+import org.graalvm.polyglot.Context;
+import org.graalvm.polyglot.Engine;
+import org.graalvm.polyglot.HostAccess;
 
 import javax.script.ScriptEngine;
 import java.lang.reflect.Method;
@@ -39,25 +43,33 @@ public class OrJavaScriptUtil {
     @SneakyThrows
     public static ScriptEngine createScriptEngine() {
         JavaInfo javaInfo = new JavaInfo();
-        Class<?> nashornScriptEngineFactoryClass;
+        ScriptEngine scriptEngine;
         if (javaInfo.getVersionFloat() >= 17) {
-            return com.oracle.truffle.js.scriptengine.GraalJSScriptEngine.create(org.graalvm.polyglot.Engine.newBuilder()
+            scriptEngine = GraalJSScriptEngine.create(
+                    Engine.newBuilder()
                             .option("engine.WarnInterpreterOnly", "false")
                             .build(),
-                    org.graalvm.polyglot.Context.newBuilder("js")
-                            .allowHostAccess(org.graalvm.polyglot.HostAccess.ALL)
+                    Context.newBuilder("js")
+                            .allowHostAccess(HostAccess.ALL)
                             .allowHostClassLookup(s -> true)
                             .option("js.ecmascript-version", "2015")
             );
         } else if (javaInfo.getVersionFloat() >= 11) {
-            nashornScriptEngineFactoryClass = Class.forName("org.openjdk.nashorn.api.scripting.NashornScriptEngineFactory");
+            scriptEngine = createScriptEngineLtJava17("org.openjdk.nashorn.api.scripting.NashornScriptEngineFactory");
         } else {
-            nashornScriptEngineFactoryClass = Class.forName("jdk.nashorn.api.scripting.NashornScriptEngineFactory");
+            scriptEngine = createScriptEngineLtJava17("jdk.nashorn.api.scripting.NashornScriptEngineFactory");
         }
-        Object factory = nashornScriptEngineFactoryClass.getConstructor().newInstance();
-        Method getScriptEngine = nashornScriptEngineFactoryClass.getDeclaredMethod("getScriptEngine", String[].class);
-        return (ScriptEngine) getScriptEngine.invoke(factory, (Object) new String[]{"--language=es6"});
+        return scriptEngine;
+    }
 
+    @SneakyThrows
+    private static ScriptEngine createScriptEngineLtJava17(String className) {
+        ScriptEngine scriptEngine;
+        Class<?> scriptEngineFactoryClass = Class.forName(className);
+        Object factory = scriptEngineFactoryClass.getConstructor().newInstance();
+        Method getScriptEngine = scriptEngineFactoryClass.getDeclaredMethod("getScriptEngine", String[].class);
+        scriptEngine = (ScriptEngine) getScriptEngine.invoke(factory, (Object) new String[]{"--language=es6"});
+        return scriptEngine;
     }
 
     public static void addCryptoJs(ScriptEngine scriptEngine) {
