@@ -29,6 +29,7 @@ import cn.hutool.system.JavaInfo;
 import lombok.SneakyThrows;
 
 import javax.script.ScriptEngine;
+import javax.script.ScriptEngineFactory;
 import java.lang.reflect.Method;
 
 /**
@@ -39,14 +40,14 @@ public class OrJavaScriptUtil {
     @SneakyThrows
     public static ScriptEngine createScriptEngine() {
         JavaInfo javaInfo = new JavaInfo();
-        Class<?> nashornScriptEngineFactoryClass;
+        Class<ScriptEngineFactory> scriptEngineFactoryClass;
         if (javaInfo.getVersionFloat() >= 11) {
-            nashornScriptEngineFactoryClass = Class.forName("org.openjdk.nashorn.api.scripting.NashornScriptEngineFactory");
+            scriptEngineFactoryClass = (Class<ScriptEngineFactory>) Class.forName("org.openjdk.nashorn.api.scripting.NashornScriptEngineFactory");
         } else {
-            nashornScriptEngineFactoryClass = Class.forName("jdk.nashorn.api.scripting.NashornScriptEngineFactory");
+            scriptEngineFactoryClass = (Class<ScriptEngineFactory>) Class.forName("jdk.nashorn.api.scripting.NashornScriptEngineFactory");
         }
-        Object factory = nashornScriptEngineFactoryClass.getConstructor().newInstance();
-        Method getScriptEngine = nashornScriptEngineFactoryClass.getDeclaredMethod("getScriptEngine", String[].class);
+        ScriptEngineFactory factory = scriptEngineFactoryClass.getConstructor().newInstance();
+        Method getScriptEngine = scriptEngineFactoryClass.getDeclaredMethod("getScriptEngine", String[].class);
         return (ScriptEngine) getScriptEngine.invoke(factory, (Object) new String[]{"--language=es6"});
     }
 

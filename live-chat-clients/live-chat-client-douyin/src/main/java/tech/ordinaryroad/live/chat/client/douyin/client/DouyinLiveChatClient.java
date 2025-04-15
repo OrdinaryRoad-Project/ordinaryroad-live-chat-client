@@ -210,8 +210,8 @@ public class DouyinLiveChatClient extends BaseNettyClient<DouyinLiveChatClientCo
     @SneakyThrows
     public String getSignature(String userAgent, long roomId, String userUniqueId) {
         String JS_ENV = " document = {};\nwindow = {};\nnavigator = {\nuserAgent: '" + userAgent + "'\n};\n";
-        ScriptEngine engineFactory = OrJavaScriptUtil.createScriptEngine();
-        engineFactory.eval(JS_ENV + JS_SDK);
+        ScriptEngine scriptEngine = OrJavaScriptUtil.createScriptEngine();
+        scriptEngine.eval(JS_ENV + JS_SDK);
         String signPram = ("live_id=1,aid=6383," +
                 "version_code=$version_code$," +
                 "webcast_sdk_version=$webcast_sdk_version$," +
@@ -225,7 +225,7 @@ public class DouyinLiveChatClient extends BaseNettyClient<DouyinLiveChatClientCo
                 .replace("$userId$", userUniqueId);
         String md5Hex = DigestUtil.md5Hex(signPram.getBytes(StandardCharsets.UTF_8));
         try {
-            Object eval = engineFactory.eval("get_sign('" + md5Hex + "')");
+            Object eval = scriptEngine.eval("get_sign('" + md5Hex + "')");
             return eval.toString();
         } catch (Exception e) {
             throw new BaseException("Execution failed: getSignature", e);
