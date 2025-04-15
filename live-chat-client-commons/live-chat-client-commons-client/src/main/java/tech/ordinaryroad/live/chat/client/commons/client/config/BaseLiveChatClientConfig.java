@@ -50,14 +50,28 @@ import java.beans.PropertyChangeSupport;
 @SuperBuilder(toBuilder = true)
 public abstract class BaseLiveChatClientConfig {
 
-    public static final long DEFAULT_HEARTBEAT_INITIAL_DELAY = 15;
-    public static final long DEFAULT_HEARTBEAT_PERIOD = 25;
-    public static final long DEFAULT_MIN_SEND_DANMU_PERIOD = 3000L;
-    public static final long DEFAULT_HANDSHAKE_TIMEOUT_MILLIS = 5 * 1000L;
     /**
-     * 默认WebSocket握手超时时间
+     * 默认心跳包发送延迟时间（秒）
      */
+    public static final long DEFAULT_HEARTBEAT_INITIAL_DELAY = 15;
+    /**
+     * 默认心跳包发送周期（秒）
+     */
+    public static final long DEFAULT_HEARTBEAT_PERIOD = 25;
+    /**
+     * 默认最小发送弹幕时间间隔（毫秒）
+     */
+    public static final long DEFAULT_MIN_SEND_DANMU_PERIOD = 3000L;
+    /**
+     * 默认WebSocket握手超时时间（毫秒）
+     */
+    public static final long DEFAULT_HANDSHAKE_TIMEOUT_MILLIS = 5 * 1000L;
+
     protected final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+
+    /**
+     * WebSocket地址，配置后将直接连接该地址，不会自动添加参数
+     */
     private String websocketUri;
 
     /**
