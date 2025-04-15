@@ -46,6 +46,7 @@
             <artifactId>nashorn-core</artifactId>
         </dependency>
 
+        <!-- region Graaljs -->
         <dependency>
             <groupId>org.graalvm.polyglot</groupId>
             <artifactId>polyglot</artifactId>
@@ -77,5 +78,6 @@
             <type>pom</type>
             <scope>runtime</scope>
         </dependency>
+        <!-- endregion -->
     </dependencies>
 </project>

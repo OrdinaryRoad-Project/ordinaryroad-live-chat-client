@@ -42,7 +42,8 @@
     <scm>
         <url>https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client</url>
         <connection>scm:git:https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client.git</connection>
-        <developerConnection>scm:git:https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client</developerConnection>
+        <developerConnection>scm:git:https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client
+        </developerConnection>
     </scm>
     <developers>
         <developer>
@@ -271,12 +272,7 @@
                 <version>${byte-buddy.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter</artifactId>
-                <version>${junit-jupiter.version}</version>
-                <scope>test</scope>
-            </dependency>
+            <!-- region Graaljs -->
             <dependency>
                 <groupId>org.graalvm.polyglot</groupId>
                 <artifactId>polyglot</artifactId>
@@ -305,6 +301,14 @@
                 <artifactId>inspect-community</artifactId>
                 <version>${graalvm.version}</version>
                 <type>pom</type>
+            </dependency>
+            <!-- endregion -->
+
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter</artifactId>
+                <version>${junit-jupiter.version}</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
