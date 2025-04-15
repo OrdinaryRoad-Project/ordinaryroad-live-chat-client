@@ -40,7 +40,16 @@ public class OrJavaScriptUtil {
     public static ScriptEngine createScriptEngine() {
         JavaInfo javaInfo = new JavaInfo();
         Class<?> nashornScriptEngineFactoryClass;
-        if (javaInfo.getVersionFloat() >= 11) {
+        if (javaInfo.getVersionFloat() >= 17) {
+            return com.oracle.truffle.js.scriptengine.GraalJSScriptEngine.create(org.graalvm.polyglot.Engine.newBuilder()
+                            .option("engine.WarnInterpreterOnly", "false")
+                            .build(),
+                    org.graalvm.polyglot.Context.newBuilder("js")
+                            .allowHostAccess(org.graalvm.polyglot.HostAccess.ALL)
+                            .allowHostClassLookup(s -> true)
+                            .option("js.ecmascript-version", "2015")
+            );
+        } else if (javaInfo.getVersionFloat() >= 11) {
             nashornScriptEngineFactoryClass = Class.forName("org.openjdk.nashorn.api.scripting.NashornScriptEngineFactory");
         } else {
             nashornScriptEngineFactoryClass = Class.forName("jdk.nashorn.api.scripting.NashornScriptEngineFactory");
@@ -48,6 +57,7 @@ public class OrJavaScriptUtil {
         Object factory = nashornScriptEngineFactoryClass.getConstructor().newInstance();
         Method getScriptEngine = nashornScriptEngineFactoryClass.getDeclaredMethod("getScriptEngine", String[].class);
         return (ScriptEngine) getScriptEngine.invoke(factory, (Object) new String[]{"--language=es6"});
+
     }
 
     public static void addCryptoJs(ScriptEngine scriptEngine) {
