@@ -25,12 +25,9 @@
 package tech.ordinaryroad.live.chat.client.commons.util;
 
 import cn.hutool.core.io.resource.ResourceUtil;
+import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.system.JavaInfo;
-import com.oracle.truffle.js.scriptengine.GraalJSScriptEngine;
 import lombok.SneakyThrows;
-import org.graalvm.polyglot.Context;
-import org.graalvm.polyglot.Engine;
-import org.graalvm.polyglot.HostAccess;
 
 import javax.script.ScriptEngine;
 import java.lang.reflect.Method;
@@ -47,14 +44,19 @@ public class OrJavaScriptUtil {
         JavaInfo javaInfo = new JavaInfo();
         ScriptEngine scriptEngine;
         if (javaInfo.getVersionFloat() >= 17) {
-            scriptEngine = GraalJSScriptEngine.create(
-                    Engine.newBuilder()
-                            .option("engine.WarnInterpreterOnly", "false")
-                            .build(),
-                    Context.newBuilder("js")
-                            .allowHostAccess(HostAccess.ALL)
-                            .allowHostClassLookup(s -> true)
-                            .option("js.ecmascript-version", "2015")
+            Class<?> engineClazz = Class.forName("org.graalvm.polyglot.Engine");
+            Object engineNewBuilder = ReflectUtil.invokeStatic(ReflectUtil.getMethod(engineClazz, "newBuilder"));
+            engineNewBuilder = ReflectUtil.invoke(engineNewBuilder, "option", "engine.WarnInterpreterOnly", "false");
+            Object engine = ReflectUtil.invoke(engineNewBuilder, "build");
+
+            Class<?> contextClazz = Class.forName("org.graalvm.polyglot.Context");
+            Object contextNewBuilder = ReflectUtil.invokeStatic(ReflectUtil.getMethod(contextClazz, "newBuilder", String[].class), "js");
+            contextNewBuilder = ReflectUtil.invoke(contextNewBuilder, "allowHostAccess", ReflectUtil.getStaticFieldValue(ReflectUtil.getField(Class.forName("org.graalvm.polyglot.HostAccess"), "ALL")));
+            contextNewBuilder = ReflectUtil.invoke(contextNewBuilder, "option", "js.ecmascript-version", "2015");
+
+            scriptEngine = ReflectUtil.invokeStatic(
+                    ReflectUtil.getMethod(Class.forName("com.oracle.truffle.js.scriptengine.GraalJSScriptEngine"), "create", engineClazz, contextNewBuilder.getClass()),
+                    engine, contextNewBuilder
             );
         } else if (javaInfo.getVersionFloat() >= 11) {
             scriptEngine = createScriptEngineLtJava17("org.openjdk.nashorn.api.scripting.NashornScriptEngineFactory");
