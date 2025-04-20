@@ -59,6 +59,10 @@ public class BilibiliSendMsgRequest {
      */
     private long roomid;
     /**
+     * 被回复用户的UID
+     */
+    private long reply_mid = 0L;
+    /**
      * Cookie中的bili_jct
      */
     private String csrf;
@@ -73,5 +77,10 @@ public class BilibiliSendMsgRequest {
         this.roomid = roomid;
         this.csrf = csrf;
         this.csrf_token = csrf_token;
+    }
+
+    public BilibiliSendMsgRequest(String msg, String rnd, long roomid, long reply_mid, String csrf, String csrf_token) {
+        this(msg, rnd, roomid, csrf, csrf_token);
+        this.reply_mid = reply_mid;
     }
 }

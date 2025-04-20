@@ -148,8 +148,7 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
         return StrUtil.format("wss://{}:{}/sub", hostList.getHost(), hostList.getWss_port());
     }
 
-    @Override
-    public void sendDanmu(Object danmu, Runnable success, Consumer<Throwable> failed) {
+    public void sendDanmu(Object danmu, long reply, Runnable success, Consumer<Throwable> failed) {
         if (!checkCanSendDanmu(false)) {
             return;
         }
@@ -162,7 +161,7 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
 
                 boolean sendSuccess = false;
                 try {
-                    BilibiliApis.sendMsg(msg, roomInitResult.getRoomPlayInfoResult().getRoom_id(), getConfig().getCookie());
+                    BilibiliApis.sendMsg(msg, roomInitResult.getRoomPlayInfoResult().getRoom_id(), reply, getConfig().getCookie());
                     sendSuccess = true;
                 } catch (Exception e) {
                     log.error("bilibili弹幕发送失败", e);
@@ -190,6 +189,11 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
         } else {
             super.sendDanmu(danmu, success, failed);
         }
+    }
+
+    @Override
+    public void sendDanmu(Object danmu, Runnable success, Consumer<Throwable> failed) {
+        sendDanmu(danmu, 0L, success, failed);
     }
 
     @Override
