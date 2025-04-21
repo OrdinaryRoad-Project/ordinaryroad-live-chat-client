@@ -8,8 +8,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import tech.ordinaryroad.live.chat.client.codec.douyin.constant.DouyinCmdEnum;
 import tech.ordinaryroad.live.chat.client.codec.douyin.msg.*;
+import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.ChatMessage;
 import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.GiftMessage;
 import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.Message;
+import tech.ordinaryroad.live.chat.client.codec.douyin.protobuf.User;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.IMsg;
 import tech.ordinaryroad.live.chat.client.commons.client.enums.ClientStatusEnums;
@@ -18,6 +20,7 @@ import tech.ordinaryroad.live.chat.client.douyin.listener.IDouyinMsgListener;
 import tech.ordinaryroad.live.chat.client.douyin.netty.handler.DouyinBinaryFrameHandler;
 import tech.ordinaryroad.live.chat.client.plugin.forward.ForwardMsgPlugin;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -90,6 +93,8 @@ class DouyinLiveChatClientTest {
                 .roomId("723583785905")
                 // 与辉同行
                 .roomId("646454278948")
+                // 匿名
+                .roomId("4053607941")
                 .build();
 
         client = new DouyinLiveChatClient(config, new IDouyinMsgListener() {
@@ -123,6 +128,13 @@ class DouyinLiveChatClientTest {
 
             @Override
             public void onDanmuMsg(DouyinBinaryFrameHandler binaryFrameHandler, DouyinDanmuMsg msg) {
+                ChatMessage chatMessage = msg.getMsg();
+                User user = chatMessage.getUser();
+                UnknownFieldSet.Field field = user.getUnknownFields().getField(73);
+                List<ByteString> lengthDelimitedList = field.getLengthDelimitedList();
+                ByteString bytes = lengthDelimitedList.get(0);
+                String string = bytes.toStringUtf8();
+                System.out.println(string);
                 log.info("{} 收到弹幕 {} {}({})：{}", binaryFrameHandler.getRoomId(), msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid(), msg.getContent());
             }
 
