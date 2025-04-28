@@ -82,6 +82,7 @@ public class BilibiliApis {
     // https://api.live.bilibili.com/xlive/web-room/v1/index/getInfoByRoom?room_id=545068&web_location=444.8&w_rid=bf3c3e54df97078fb7b777759d0d1f3f&wts=1735974591
     private static final String API_INFO_BY_ROOM = "https://api.live.bilibili.com/xlive/web-room/v1/index/getInfoByRoom";
     private static final String API_DANMU_INFO = "https://api.live.bilibili.com/xlive/web-room/v1/index/getDanmuInfo";
+    private static final String API_MSG_SEND = "https://api.live.bilibili.com/msg/send";
     private static final List<Integer> mixinKeyEncTab = CollUtil.newArrayList(46, 47, 18, 2, 53, 8, 23, 32, 15, 50, 10, 31, 58, 3, 45, 35, 27, 43, 5, 49, 33, 9, 42, 19, 29, 28, 14, 39, 12, 38, 41, 13, 37, 48, 7, 16, 24, 55, 40, 61, 26, 17, 0, 1, 60, 51, 30, 4, 22, 25, 54, 21, 56, 59, 6, 63, 57, 62, 11, 36, 20, 34, 44, 52);
     private static Pair<String, String> wbiKeys = null;
 
@@ -222,7 +223,7 @@ public class BilibiliApis {
         String mixinKey = getMixinKey(wbiKeys.getKey() + wbiKeys.getValue());
         long currentTime = System.currentTimeMillis() / 1000;
 
-        Map<String, String> paramMap = OrLiveChatHttpUtil.decodeParamMap(url, StandardCharsets.UTF_8);
+        Map<String, String> paramMap = new HashMap<>(OrLiveChatHttpUtil.decodeParamMap(url, StandardCharsets.UTF_8));
         paramMap.put("wts", currentTime + "");
         paramMap = CollUtil.sort(paramMap, Comparator.naturalOrder());
 
@@ -335,12 +336,26 @@ public class BilibiliApis {
         if (StrUtil.isBlank(cookie)) {
             throw new BaseException("发送弹幕接口cookie不能为空");
         }
+        Map<String, String> wbiSign = getWbiSign("", String.valueOf(request.getRoomid()), cookie);
         Map<String, Object> stringObjectMap = BeanUtil.beanToMap(request);
-        @Cleanup HttpResponse execute = OrLiveChatHttpUtil.createPost("https://api.live.bilibili.com/msg/send")
+        @Cleanup HttpResponse execute = OrLiveChatHttpUtil.createPost(API_MSG_SEND + "?w_rid=" + wbiSign.get("w_rid") + "&wts=" + wbiSign.get("wts"))
                 .cookie(cookie)
+                .header(Header.ORIGIN, "https://live.bilibili.com")
+                .header(Header.REFERER, "https://live.bilibili.com/blanc/" + request.getRoomid() + "?liteVersion=true&live_from=62001")
                 .form(stringObjectMap)
                 .execute();
         responseInterceptor(execute.body());
+    }
+
+    /**
+     * 发送弹幕
+     *
+     * @param msg        内容
+     * @param realRoomId 真实房间id
+     * @param cookie     Cookie
+     */
+    public static void sendMsg(String msg, long realRoomId, String cookie) {
+        sendMsg(msg, realRoomId, 0L, cookie);
     }
 
     /**
