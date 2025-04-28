@@ -47,6 +47,7 @@ import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.base.IBilibiliMsg;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.room.BilibiliRoomInitResult;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 import tech.ordinaryroad.live.chat.client.commons.base.listener.IBaseConnectionListener;
+import tech.ordinaryroad.live.chat.client.commons.client.request.SendDanmuRequest;
 import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatCollUtil;
 import tech.ordinaryroad.live.chat.client.plugin.forward.ForwardMsgPlugin;
 import tech.ordinaryroad.live.chat.client.servers.netty.client.base.BaseNettyClient;
@@ -151,7 +152,7 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
     private void sendDanmuInternal(String msg, long replyUid, Runnable success, Consumer<Throwable> failed) {
         try {
             if (log.isDebugEnabled()) {
-                log.debug("{} bilibili发送弹幕 {}", getConfig().getRoomId(), danmu);
+                log.debug("{} bilibili发送弹幕 {}", getConfig().getRoomId(), msg);
             }
 
             boolean sendSuccess = false;
@@ -169,7 +170,7 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
             }
 
             if (log.isDebugEnabled()) {
-                log.debug("bilibili弹幕发送成功 {}", danmu);
+                log.debug("bilibili弹幕发送成功 {}", msg);
             }
             if (success != null) {
                 success.run();
@@ -194,7 +195,7 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
         } else if (danmu instanceof SendDanmuRequest) {
             SendDanmuRequest sendDanmuRequest = (SendDanmuRequest) danmu;
             String msg = sendDanmuRequest.getMsg();
-            long replyUid = sendDanmuRequest.getReplyUid();
+            long replyUid = Long.parseLong(sendDanmuRequest.getReplyUid());
             sendDanmuInternal(msg, replyUid, success, failed);
         } else {
             super.sendDanmu(danmu, success, failed);
