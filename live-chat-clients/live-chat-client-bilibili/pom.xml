@@ -51,6 +51,11 @@
         </dependency>
 
         <dependency>
+            <groupId>tech.ordinaryroad</groupId>
+            <artifactId>live-chat-client-commons-client</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>${junit-jupiter.version}</version>
