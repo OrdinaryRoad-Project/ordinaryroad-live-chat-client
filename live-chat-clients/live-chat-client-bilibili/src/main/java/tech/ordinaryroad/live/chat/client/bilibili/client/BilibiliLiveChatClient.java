@@ -148,6 +148,41 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
         return StrUtil.format("wss://{}:{}/sub", hostList.getHost(), hostList.getWss_port());
     }
 
+    private void sendDanmuInternal(String msg, long replyUid, Runnable success, Consumer<Throwable> failed) {
+        try {
+            if (log.isDebugEnabled()) {
+                log.debug("{} bilibili发送弹幕 {}", getConfig().getRoomId(), danmu);
+            }
+
+            boolean sendSuccess = false;
+            try {
+                BilibiliApis.sendMsg(msg, roomInitResult.getRoomPlayInfoResult().getRoom_id(), replyUid, getConfig().getCookie());
+                sendSuccess = true;
+            } catch (Exception e) {
+                log.error("bilibili弹幕发送失败", e);
+                if (failed != null) {
+                    failed.accept(e);
+                }
+            }
+            if (!sendSuccess) {
+                return;
+            }
+
+            if (log.isDebugEnabled()) {
+                log.debug("bilibili弹幕发送成功 {}", danmu);
+            }
+            if (success != null) {
+                success.run();
+            }
+            finishSendDanmu();
+        } catch (Exception e) {
+            log.error("bilibili弹幕发送失败", e);
+            if (failed != null) {
+                failed.accept(e);
+            }
+        }
+    }
+
     @Override
     public void sendDanmu(Object danmu, Runnable success, Consumer<Throwable> failed) {
         if (!checkCanSendDanmu(false)) {
@@ -155,38 +190,12 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
         }
         if (danmu instanceof String) {
             String msg = (String) danmu;
-            try {
-                if (log.isDebugEnabled()) {
-                    log.debug("{} bilibili发送弹幕 {}", getConfig().getRoomId(), danmu);
-                }
-
-                boolean sendSuccess = false;
-                try {
-                    BilibiliApis.sendMsg(msg, roomInitResult.getRoomPlayInfoResult().getRoom_id(), getConfig().getCookie());
-                    sendSuccess = true;
-                } catch (Exception e) {
-                    log.error("bilibili弹幕发送失败", e);
-                    if (failed != null) {
-                        failed.accept(e);
-                    }
-                }
-                if (!sendSuccess) {
-                    return;
-                }
-
-                if (log.isDebugEnabled()) {
-                    log.debug("bilibili弹幕发送成功 {}", danmu);
-                }
-                if (success != null) {
-                    success.run();
-                }
-                finishSendDanmu();
-            } catch (Exception e) {
-                log.error("bilibili弹幕发送失败", e);
-                if (failed != null) {
-                    failed.accept(e);
-                }
-            }
+            sendDanmuInternal(msg, 0L, success, failed);
+        } else if (danmu instanceof SendDanmuRequest) {
+            SendDanmuRequest sendDanmuRequest = (SendDanmuRequest) danmu;
+            String msg = sendDanmuRequest.getMsg();
+            long replyUid = sendDanmuRequest.getReplyUid();
+            sendDanmuInternal(msg, replyUid, success, failed);
         } else {
             super.sendDanmu(danmu, success, failed);
         }

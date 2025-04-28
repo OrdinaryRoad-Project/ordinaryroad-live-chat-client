@@ -348,13 +348,14 @@ public class BilibiliApis {
      *
      * @param msg        内容
      * @param realRoomId 真实房间id
+     * @param replyUid   被回复用户的uid
      * @param cookie     Cookie
      */
-    public static void sendMsg(String msg, long realRoomId, String cookie) {
+    public static void sendMsg(String msg, long realRoomId, long replyUid, String cookie) {
         String biliJct = OrLiveChatCookieUtil.getCookieByName(cookie, KEY_COOKIE_CSRF, () -> {
             throw new BaseException("cookie中缺少参数" + KEY_COOKIE_CSRF);
         });
-        BilibiliSendMsgRequest request = new BilibiliSendMsgRequest(msg, StrUtil.toString(ZonedDateTime.now(ZoneId.of("Asia/Shanghai")).toEpochSecond()), realRoomId, biliJct, biliJct);
+        BilibiliSendMsgRequest request = new BilibiliSendMsgRequest(msg, StrUtil.toString(ZonedDateTime.now(ZoneId.of("Asia/Shanghai")).toEpochSecond()), realRoomId, replyUid, biliJct, biliJct);
         sendMsg(request, cookie);
     }
 
