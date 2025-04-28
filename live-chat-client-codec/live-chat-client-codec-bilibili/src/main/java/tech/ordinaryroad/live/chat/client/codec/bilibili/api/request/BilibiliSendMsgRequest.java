@@ -45,7 +45,16 @@ public class BilibiliSendMsgRequest {
     private String color = "16777215";
     private String mode = "1";
     private String room_type = "0";
-    private String jumpfrom = "0";
+    private String jumpfrom = "62001";
+    /**
+     * 被回复用户的UID
+     */
+    private long reply_mid = 0L;
+    private long reply_attr = 0L;
+    private String replay_dmid = "";
+    private String statistics = "{\"appId\":100,\"platform\":5}";
+    private Integer reply_type = 0;
+    private String reply_uname = "";
     /**
      * 字体大小
      */
@@ -58,10 +67,6 @@ public class BilibiliSendMsgRequest {
      * 房间真实ID
      */
     private long roomid;
-    /**
-     * 被回复用户的UID
-     */
-    private long reply_mid;
     /**
      * Cookie中的bili_jct
      */
