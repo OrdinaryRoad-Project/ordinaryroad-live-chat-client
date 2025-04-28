@@ -23,6 +23,13 @@ class BilibiliApisTest {
     }
 
     @Test
+    void sendMsgWithReply() {
+        String cookie = System.getenv("cookie");
+        long replyUid = 0L;
+        BilibiliApis.sendMsg("666666A", 545068, replyUid, cookie);
+    }
+
+    @Test
     void getRoomPlayInfo() {
         assertEquals(545068, BilibiliApis.getRoomPlayInfo(7777, null).getRoom_id());
         assertEquals(7734200, BilibiliApis.getRoomPlayInfo(6, null).getRoom_id());
