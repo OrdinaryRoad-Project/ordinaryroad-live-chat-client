@@ -87,6 +87,7 @@
         <commons-text.version>1.13.0</commons-text.version>
         <byte-buddy.version>1.16.1</byte-buddy.version>
         <graalvm.version>24.1.0</graalvm.version>
+        <jvppeteer.version>3.3.9.c</jvppeteer.version>
     </properties>
 
     <dependencyManagement>
@@ -118,6 +119,12 @@
             <dependency>
                 <groupId>tech.ordinaryroad</groupId>
                 <artifactId>live-chat-client-servers-netty-client</artifactId>
+                <version>1.6.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>tech.ordinaryroad</groupId>
+                <artifactId>live-chat-client-servers-browser</artifactId>
                 <version>1.6.0</version>
             </dependency>
 
@@ -191,6 +198,12 @@
                 <groupId>tech.ordinaryroad</groupId>
                 <artifactId>live-chat-client-plugin-forward</artifactId>
                 <version>1.6.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.github.fanyong920</groupId>
+                <artifactId>jvppeteer</artifactId>
+                <version>${jvppeteer.version}</version>
             </dependency>
 
             <dependency>

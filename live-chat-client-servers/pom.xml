@@ -42,5 +42,6 @@
     <modules>
         <module>live-chat-client-servers-netty</module>
         <module>live-chat-client-servers-netty-client</module>
+        <module>live-chat-client-servers-browser</module>
     </modules>
 </project>
