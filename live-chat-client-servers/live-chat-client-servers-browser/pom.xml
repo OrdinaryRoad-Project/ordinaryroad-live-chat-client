@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>tech.ordinaryroad</groupId>
+        <artifactId>live-chat-client-servers</artifactId>
+        <version>1.5.4-beta</version>
+    </parent>
+
+    <artifactId>live-chat-client-servers-browser</artifactId>
+    <name>live-chat-client-servers-browser</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>tech.ordinaryroad</groupId>
+            <artifactId>live-chat-client-commons-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.fanyong920</groupId>
+            <artifactId>jvppeteer</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>
