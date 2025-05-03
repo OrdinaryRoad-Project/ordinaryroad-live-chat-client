@@ -155,8 +155,6 @@ public abstract class BaseLiveChatClient<
 
     protected abstract void tryReconnect();
 
-    protected abstract String getWebSocketUriString();
-
     /**
      * 判断是否处于某个状态，或者处于后续状态
      *

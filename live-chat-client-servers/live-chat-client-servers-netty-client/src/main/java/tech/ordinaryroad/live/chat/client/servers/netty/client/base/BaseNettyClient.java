@@ -311,7 +311,6 @@ public abstract class BaseNettyClient
         });
     }
 
-    @Override
     protected String getWebSocketUriString() {
         return getConfig().getWebsocketUri();
     }
