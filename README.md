@@ -28,6 +28,7 @@
 - Feature 8: 支持单独引入编解码模块
 - Feature 9: 支持网络代理
 - Feature 10*: 解析直播间信息
+- Feature 11*: 浏览器模式（监听浏览器直播间页面）
 
 > *存在平台差异
 > - ✅: 平台支持且已完成
@@ -36,14 +37,17 @@
 
 ## 平台适配情况表
 
-| 平台          | LiveChatClient | Cookie | 短直播间id | 发送弹幕 | 为主播点赞 |
-|-------------|----------------|--------|--------|------|-------|
-| Bilibili B站 | ✅              | ✅      | ✅      | ✅    | ✅     |
-| Douyu 斗鱼    | ✅              | ✅      | ✅      | ✅    | ❌     |
-| Huya 虎牙     | ✅              | ✅      | ✅      | ✅    | ❌     |
-| Douyin 抖音*  | ✅              | ☑️️    | ✅      | ☑️   | ☑️️   |
-| Kuaishou 快手 | ✅              | ✅      | ✅      | ✅    | ✅     |
-| Tiktok*     | ✅              | ✅      | ✅      | ☑️   | ☑️    |
+| 平台                | LiveChatClient | Cookie | 短直播间id | 发送弹幕 | 为主播点赞 |
+|-------------------|----------------|--------|--------|------|-------|
+| Bilibili B站       | ✅              | ✅      | ✅      | ✅    | ✅     |
+| Douyu 斗鱼          | ✅              | ✅      | ✅      | ✅    | ❌     |
+| Huya 虎牙           | ✅              | ✅      | ✅      | ✅    | ❌     |
+| Douyin 抖音*        | ✅              | ☑️️    | ✅      | ☑️   | ☑️️   |
+| Douyin 抖音(浏览器模式)* | ✅              | ☑️️    | ✅      | ☑️   | ☑️️   |
+| Kuaishou 快手       | ✅              | ✅      | ✅      | ✅    | ✅     |
+| Tiktok*           | ✅              | ✅      | ✅      | ☑️   | ☑️    |
+| Tiktok(浏览器模式)*    | ✅              |        |        | ️    | ️     |
+| Twitch*           | ✅              |        |        | ️    |       |
 
 > *暂未完全支持（Tiktok、Twitch在测试中）
 
@@ -78,6 +82,8 @@
 ## 0 原理
 
 抓取浏览器的WebSocket二进制流，然后分析模拟浏览器的行为；这种方式的优点是不需要开发者认证，缺点是没有官方文档，分析过程比较费时费力，并且需要适配不同平台的流程变化（不会经常变化）
+
+> 新增浏览器模式，直接监听直播间弹幕流，无需模拟浏览器
 
 以后可能会考虑支持平台的开放协议
 
@@ -303,61 +309,61 @@ public class ClientModeExample {
 #### 2.1.1 Client相关API
 
 - 连接
-  - `void connect(Runnable success, Consumer<Throwable> failed)`
-  - `void connect(Runnable success)`
-  - `void connect()`
+    - `void connect(Runnable success, Consumer<Throwable> failed)`
+    - `void connect(Runnable success)`
+    - `void connect()`
 - 断开连接
-  - `void disconnect(boolean cancelReconnect)`
-  - `void disconnect()`
+    - `void disconnect(boolean cancelReconnect)`
+    - `void disconnect()`
 - 销毁
-  - `void destroy()`
+    - `void destroy()`
 - 发送消息
-  - `void send(Object msg, Runnable success, Consumer<Throwable> failed)`
-  - `void send(Object msg, Runnable success)`
-  - `void send(Object msg, Consumer<Throwable> failed)`
-  - `void send(Object msg)`
+    - `void send(Object msg, Runnable success, Consumer<Throwable> failed)`
+    - `void send(Object msg, Runnable success)`
+    - `void send(Object msg, Consumer<Throwable> failed)`
+    - `void send(Object msg)`
 - 发送弹幕
-  - `void sendDanmu(Object danmu, Runnable success, Consumer<Throwable> failed)`
-  - `void sendDanmu(Object danmu, Runnable success)`
-  - `void sendDanmu(Object danmu, Consumer<Throwable> failed)`
-  - `void sendDanmu(Object danmu)`
+    - `void sendDanmu(Object danmu, Runnable success, Consumer<Throwable> failed)`
+    - `void sendDanmu(Object danmu, Runnable success)`
+    - `void sendDanmu(Object danmu, Consumer<Throwable> failed)`
+    - `void sendDanmu(Object danmu)`
 - 为主播点赞
-  - `void clickLike(int count, Runnable success, Consumer<Throwable> failed)`
-  - `void clickLike(int count, Runnable success)`
-  - `void clickLike(int count, Consumer<Throwable> failed)`
-  - `void clickLike(int count)`
+    - `void clickLike(int count, Runnable success, Consumer<Throwable> failed)`
+    - `void clickLike(int count, Runnable success)`
+    - `void clickLike(int count, Consumer<Throwable> failed)`
+    - `void clickLike(int count)`
 - 添加消息监听器
-  - `boolean addMsgListener(MsgListener msgListener)`
-  - `boolean addMsgListeners(List<MsgListener> msgListeners)`
+    - `boolean addMsgListener(MsgListener msgListener)`
+    - `boolean addMsgListeners(List<MsgListener> msgListeners)`
 - 移除消息监听器
-  - `boolean removeMsgListener(MsgListener msgListener)`
-  - `boolean removeMsgListeners(List<MsgListener> msgListeners)`
+    - `boolean removeMsgListener(MsgListener msgListener)`
+    - `boolean removeMsgListeners(List<MsgListener> msgListeners)`
 - 获取当前状态
-  - `ClientStatusEnums getStatus()`
+    - `ClientStatusEnums getStatus()`
 - 添加状态变化监听器
-  - `void addStatusChangeListener(IClientStatusChangeListener listener)`
+    - `void addStatusChangeListener(IClientStatusChangeListener listener)`
 - 移除状态变化监听器
-  - `void removeStatusChangeListener(IClientStatusChangeListener listener)`
+    - `void removeStatusChangeListener(IClientStatusChangeListener listener)`
 - 获取 Client 配置信息
-  - `BaseLiveChatClientConfig getConfig()`
+    - `BaseLiveChatClientConfig getConfig()`
 - 获取房间信息
-  - `IRoomInitResult getRoomInitResult()`
+    - `IRoomInitResult getRoomInitResult()`
 - 添加插件
-  - `void addPlugin(IPlugin... plugins);`
+    - `void addPlugin(IPlugin... plugins);`
 - 移除插件
-  - `void removePlugin(IPlugin... plugins);`
+    - `void removePlugin(IPlugin... plugins);`
 
 #### 2.1.2 房间信息 IRoomInitResult 相关 API
 
 - 获取房间标题
-  - `String getTitle()`
+    - `String getTitle()`
 - 获取房间描述
-  - `String getDescription()`
+    - `String getDescription()`
 - 获取房间直播状态
-  - `RoomLiveStatusEnum getRoomLiveStatus()`
+    - `RoomLiveStatusEnum getRoomLiveStatus()`
 - 获取房间直播流地址
-  - `List<IRoomLiveStreamInfo> getRoomLiveStreamUrls(RoomLiveStreamQualityEnum... qualities)`
-  - `Map<RoomLiveStreamQualityEnum, List<String>> getRoomLiveStreamUrlMap(RoomLiveStreamQualityEnum... qualities)`
+    - `List<IRoomLiveStreamInfo> getRoomLiveStreamUrls(RoomLiveStreamQualityEnum... qualities)`
+    - `Map<RoomLiveStreamQualityEnum, List<String>> getRoomLiveStreamUrlMap(RoomLiveStreamQualityEnum... qualities)`
 
 ### 2.2 高级模式
 
@@ -395,6 +401,37 @@ B站示例，其他平台只需修改`bilibili`即可
 目前内置插件有
 
 - 消息转发 [https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/tree/main/live-chat-client-plugins/live-chat-client-plugin-forward](https://github.com/OrdinaryRoad-Project/ordinaryroad-live-chat-client/tree/main/live-chat-client-plugins/live-chat-client-plugin-forward)
+
+### 2.6 浏览器模式
+
+默认使用Chrome浏览器，下载地址如下
+
+| 平台     | 系统        | 下载地址                                                                                                  |
+|--------|-----------|-------------------------------------------------------------------------------------------------------|
+| chrome | linux64   | https://storage.googleapis.com/chrome-for-testing-public/136.0.7103.49/linux64/chrome-linux64.zip     
+| chrome | mac-arm64 | https://storage.googleapis.com/chrome-for-testing-public/136.0.7103.49/mac-arm64/chrome-mac-arm64.zip 
+| chrome | mac-x64   | https://storage.googleapis.com/chrome-for-testing-public/136.0.7103.49/mac-x64/chrome-mac-x64.zip     
+| chrome | win32     | https://storage.googleapis.com/chrome-for-testing-public/136.0.7103.49/win32/chrome-win32.zip         
+| chrome | win64     | https://storage.googleapis.com/chrome-for-testing-public/136.0.7103.49/win64/chrome-win64.zip         
+
+
+> 参考`tech.ordinaryroad.live.chat.client.douyin.browser.DouyinBrowserLiveChatClientTest`
+
+
+```java
+// 1. 创建Config
+DouyinBrowserLiveChatClientConfig config = DouyinBrowserLiveChatClientConfig.builder()
+        .cookie(cookie)
+        // 与辉同行
+        .roomId("646454278948")
+        .build();
+
+// 2. 创建Client并传入配置、添加消息回调
+DouyinBrowserLiveChatClient client = new DouyinBrowserLiveChatClient(config);
+
+// 3. 连接，将自动打开Chrome浏览器
+client.connect();
+```
 
 ## 交流讨论
 
