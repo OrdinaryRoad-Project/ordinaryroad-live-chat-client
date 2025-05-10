@@ -435,6 +435,8 @@ client.connect();
 
 ## 交流讨论
 
+觉得有用的话可以点个小星星⭐️鼓励一下，感谢
+
 扫描二维码加入QQ/微信频道，或点击链接加入QQ频道【OrdinaryRoad】：https://pd.qq.com/s/3id0n7fvs
 
 <img src="assets/QQ频道.jpg" width="200px">
