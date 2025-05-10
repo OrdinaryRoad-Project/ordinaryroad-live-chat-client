@@ -31,15 +31,6 @@ class DouyinBrowserLiveChatClientTest {
     @Test
     @SneakyThrows
     void example() {
-//        FetcherOptions options = new FetcherOptions();
-//        options.setCacheDir("/Users/ordinaryroad/Downloads/puppeteer-cache");
-//
-//        BrowserFetcher browserFetcher = new BrowserFetcher(options);
-//        browserFetcher.setDownloadsFolder("/Users/ordinaryroad/Downloads/puppeteer");
-//        RevisionInfo revisionInfo = browserFetcher.downloadBrowser();
-//        String executablePath = revisionInfo.getExecutablePath();
-//        log.warn("executablePath: {}", executablePath);
-
         String cookie = System.getenv("cookie");
         log.error("cookie: {}", cookie);
         DouyinBrowserLiveChatClientConfig config = DouyinBrowserLiveChatClientConfig.builder()
