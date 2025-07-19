@@ -30,6 +30,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import tech.ordinaryroad.live.chat.client.bilibili.config.BilibiliLiveChatClientConfig;
@@ -281,6 +282,34 @@ class BilibiliLiveChatClientTest {
         System.out.println("msgListeners.size(): " + liveChatClient.getMsgListeners().size());
 
         liveChatClient.connect();
+
+        while (true) {
+            System.in.read();
+        }
+    }
+
+    @SneakyThrows
+    @Test
+    void roomStatusTest() {
+        BilibiliLiveChatClient client = new BilibiliLiveChatClient(
+                BilibiliLiveChatClientConfig.builder()
+                        .roomId("6")
+                        .build()
+        );
+
+        client.addMsgListener(new IBilibiliMsgListener() {
+            @Override
+            public void onRoomStatsMsg(BilibiliRoomStatsMsg msg) {
+                log.info("统计信息 累计点赞数: {}, 当前观看人数: {}, 累计观看人数: {}", msg.getLikedCount(), msg.getWatchingCount(), msg.getWatchedCount());
+            }
+
+            @Override
+            public void onLikeMsg(LikeInfoV3ClickMsg msg) {
+                log.info("收到点赞 [{}] {}({})x{}", msg.getBadgeLevel() != 0 ? msg.getBadgeLevel() + msg.getBadgeName() : "", msg.getUsername(), msg.getUid(), msg.getClickCount());
+            }
+        });
+
+        client.connect();
 
         while (true) {
             System.in.read();
