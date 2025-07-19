@@ -96,23 +96,39 @@ public abstract class BaseWup extends BaseHuyaMsg {
         TarsOutputStream wupTarsOutputStream = new TarsOutputStream();
         this.writeTo(wupTarsOutputStream);
 
-        ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer();
-        buffer.writeInt(4 + wupTarsOutputStream.getByteBuffer().position());
-        buffer.writeBytes(wupTarsOutputStream.toByteArray());
+        ByteBuf buffer = null;
+        try {
+            buffer = ByteBufAllocator.DEFAULT.buffer();
+            buffer.writeInt(4 + wupTarsOutputStream.getByteBuffer().position());
+            buffer.writeBytes(wupTarsOutputStream.toByteArray());
 
-        return ByteBufUtil.getBytes(buffer);
+            return ByteBufUtil.getBytes(buffer);
+        } finally {
+            // 确保ByteBuf被正确释放
+            if (buffer != null && buffer.refCnt() > 0) {
+                buffer.release();
+            }
+        }
     }
 
     public void decode(byte[] bytes) {
-        ByteBuf byteBuf = ByteBufAllocator.DEFAULT.buffer().writeBytes(bytes);
-        int size = byteBuf.readInt();
-        if (size < 4) {
-            return;
-        }
+        ByteBuf byteBuf = null;
+        try {
+            byteBuf = ByteBufAllocator.DEFAULT.buffer().writeBytes(bytes);
+            int size = byteBuf.readInt();
+            if (size < 4) {
+                return;
+            }
 
-        bytes = new byte[byteBuf.readableBytes()];
-        byteBuf.readBytes(bytes);
-        this.readFrom(HuyaCodecUtil.newUtf8TarsInputStream(bytes));
+            bytes = new byte[byteBuf.readableBytes()];
+            byteBuf.readBytes(bytes);
+            this.readFrom(HuyaCodecUtil.newUtf8TarsInputStream(bytes));
+        } finally {
+            // 确保ByteBuf被正确释放
+            if (byteBuf != null && byteBuf.refCnt() > 0) {
+                byteBuf.release();
+            }
+        }
     }
 
     @Override
