@@ -1,0 +1,12 @@
+syntax = "proto3";
+import "TextStyle.proto";
+
+option java_package = "tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf";
+
+message CommentIconSegment {
+  string res_pack_id = 1;
+  string icon_name = 2;
+  string text = 3;
+  TextStyle text_style = 4;
+
+}

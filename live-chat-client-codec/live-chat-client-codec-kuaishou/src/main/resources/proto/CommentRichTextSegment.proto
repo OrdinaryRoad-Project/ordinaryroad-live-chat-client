@@ -1,0 +1,15 @@
+syntax = "proto3";
+import "CommentTextSegment.proto";
+import "CommentIconSegment.proto";
+import "CommentGiftSegment.proto";
+import "CommentImageSegment.proto";
+
+option java_package = "tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf";
+
+message CommentRichTextSegment {
+  CommentTextSegment text_segment = 1;
+  CommentIconSegment icon_segment = 2;
+  CommentGiftSegment gift_segment = 3;
+  CommentImageSegment image_segment = 4;
+
+}

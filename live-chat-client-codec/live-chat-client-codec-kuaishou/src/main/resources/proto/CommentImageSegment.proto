@@ -1,0 +1,11 @@
+syntax = "proto3";
+import "PicUrl.proto";
+
+option java_package = "tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf";
+
+message CommentImageSegment {
+  repeated PicUrl url = 1;
+  unit32 width = 2;
+  unit32 height = 3;
+
+}

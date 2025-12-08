@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+
+option java_package = "tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf";
+
+message SCLiveMultiPkStatistic {
+  string pk_id = 1;
+  uint64 time = 2;
+  uint64 statistic_version = 7;
+
+}

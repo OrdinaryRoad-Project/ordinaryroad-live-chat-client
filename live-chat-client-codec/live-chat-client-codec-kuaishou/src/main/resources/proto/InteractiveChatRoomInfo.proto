@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+
+option java_package = "tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf";
+
+message InteractiveChatRoomInfo {
+  uint64 bizIdentity = 1;
+  uint64 version = 4;
+
+}

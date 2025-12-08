@@ -1,0 +1,13 @@
+syntax = "proto3";
+import "CommentRichTextSegment.proto";
+
+option java_package = "tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf";
+
+message CommentRichTextMessage {
+  string id = 1;
+  uint64 user_id = 2;
+  uint64 server_timestamp = 3;
+  string device_hash = 4;
+  repeated CommentRichTextSegment segment = 7;
+
+}

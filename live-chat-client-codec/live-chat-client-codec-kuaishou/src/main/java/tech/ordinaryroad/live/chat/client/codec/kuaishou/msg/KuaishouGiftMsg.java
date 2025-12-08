@@ -93,7 +93,7 @@ public class KuaishouGiftMsg extends BaseKuaishouMsg implements IGiftMsg {
 
     @Override
     public String getGiftId() {
-        return Integer.toString(msg.getIntGiftId());
+        return Integer.toString(msg.getGiftId());
     }
 
     @Override

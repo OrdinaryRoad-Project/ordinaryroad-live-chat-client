@@ -14,5 +14,6 @@ message WebCommentFeed {
   string color = 6;
   WebCommentFeedShowType showType = 7;
   LiveAudienceState senderState = 8;
+  uint64 time = 9;
 
 }

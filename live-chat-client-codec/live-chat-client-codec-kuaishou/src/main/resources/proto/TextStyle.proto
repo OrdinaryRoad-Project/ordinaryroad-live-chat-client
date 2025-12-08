@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+
+option java_package = "tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf";
+
+message TextStyle {
+  uint32 color = 1;
+
+}

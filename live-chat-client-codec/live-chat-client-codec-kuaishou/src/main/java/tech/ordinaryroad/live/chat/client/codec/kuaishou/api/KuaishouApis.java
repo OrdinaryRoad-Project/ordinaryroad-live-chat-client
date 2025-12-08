@@ -31,6 +31,7 @@ import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
 import cn.hutool.http.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -68,6 +69,12 @@ public class KuaishouApis {
     private static final TimedCache<String, WebGiftFeedOuterClass.WebGiftFeed> WEB_GIFT_FEED_CACHE = new TimedCache<>(300 * 1000L, new ConcurrentHashMap<>());
 
     public static KuaishouRoomInitResult roomInitSetCookie(Object roomId, String cookie, String kww, KuaishouRoomInitResult roomInitResult) {
+        // KuaishouUserInfoResponse kuaishouUserInfoResponse = userInfo(cookie, kww);
+
+        // String kuaishouUserId = kuaishouUserInfoResponse.getOwnerInfo().getId();
+
+//        @Cleanup
+//        HttpResponse response = createGetRequest("https://live.kuaishou.com/u/" + kuaishouUserId, cookie).execute();
         @Cleanup
         HttpResponse response = createGetRequest("https://live.kuaishou.com/u/" + roomId, cookie)
                 .execute();
@@ -92,6 +99,7 @@ public class KuaishouApis {
         String liveStreamId = null;
         if (livedetailJsonNode.has("liveStream") && livedetailJsonNode.get("liveStream").has("id")) {
             liveStreamId = livedetailJsonNode.get("liveStream").get("id").asText();
+//            JsonNode websocketinfo = websocketinfo(kuaishouUserId, liveStreamId, cookie, kww);
             JsonNode websocketinfo = websocketinfo(roomId, liveStreamId, cookie, kww);
             if (websocketinfo.has("token")) {
                 token = websocketinfo.get("token").asText();
@@ -108,6 +116,7 @@ public class KuaishouApis {
         roomInitResult.setWebsocketUrls(websocketUrlList);
         roomInitResult.setLiveStreamId(liveStreamId);
         roomInitResult.setLivedetailJsonNode(livedetailJsonNode);
+        // roomInitResult.setKuaishouUserInfo(kuaishouUserInfoResponse);
         return roomInitResult;
     }
 
@@ -183,7 +192,7 @@ public class KuaishouApis {
             throwExceptionWithTip("主播未开播，liveStreamId为空");
         }
         @Cleanup
-        HttpResponse response = createGetRequest("https://live.kuaishou.com/live_api/liveroom/websocketinfo?liveStreamId=" + liveStreamId, cookie)
+        HttpResponse response = createGetRequest("https://live.kuaishou.com/live_api/liveroom/websocketinfo?caver=2&liveStreamId=" + liveStreamId, cookie)
                 .header(Header.REFERER, "https://live.kuaishou.com/u/" + roomId)
                 .header("Kww", kww)
                 .execute();
@@ -255,12 +264,12 @@ public class KuaishouApis {
     }
 
     private static JsonNode responseInterceptor(String responseString) {
-        List<Integer> notLivingCode = CollUtil.newArrayList(671, 677);
         try {
             JsonNode jsonNode = OrJacksonUtil.getInstance().readTree(responseString);
             JsonNode data = jsonNode.required("data");
             if (data.has("result")) {
                 int result = data.get("result").asInt();
+                List<Integer> notLivingCode = CollUtil.newArrayList(671, 677);
                 if (result != 1 && !CollUtil.contains(notLivingCode, result)) {
                     String message = "";
                     switch (result) {
@@ -354,6 +363,19 @@ public class KuaishouApis {
         return badgeLevel;
     }
 
+    @SneakyThrows
+    public static KuaishouUserInfoResponse userInfo(String cookie, String kww) {
+        @Cleanup
+        HttpResponse response = createPostRequest("https://live.kuaishou.com/live_api/baseuser/userinfo", cookie)
+                .body(OrJacksonUtil.getInstance().createObjectNode().toString(), ContentType.JSON.getValue())
+                .header(Header.ORIGIN, "https://live.kuaishou.com")
+                .header(Header.REFERER, "https://live.kuaishou.com/")
+                .header("Kww", kww)
+                .execute();
+        JsonNode jsonNode = responseInterceptor(response.body());
+        return OrJacksonUtil.getInstance().readValue(jsonNode.toString(), KuaishouUserInfoResponse.class);
+    }
+
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
@@ -370,5 +392,71 @@ public class KuaishouApis {
     public static class GiftInfo {
         private String giftName;
         private String giftUrl;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class KuaishouUserInfoResponse {
+        private OwnerInfo ownerInfo;
+        private KshellBalance kshellBalance;
+    }
+
+    @Data
+    public static class OwnerInfo {
+        private String id;
+        private String name;
+        private String description;
+        private String avatar;
+        private String sex;
+        private String constellation;
+        private String cityName;
+        private Long originUserId;
+        private Boolean privacy;
+        private Boolean isNew;
+        private Long timestamp;
+        private VerifiedStatus verifiedStatus;
+        private BannedStatus bannedStatus;
+        private Counts counts;
+        private Boolean isAdult;
+    }
+
+    @Data
+    public static class VerifiedStatus {
+        private Boolean verified;
+        private String description;
+        private Integer type;
+        @JsonProperty("new")
+        private Boolean isNew;
+    }
+
+    @Data
+    public static class BannedStatus {
+        private Boolean banned;
+        private Boolean socialBanned;
+        private Boolean isolate;
+        private Boolean defriend;
+    }
+
+    @Data
+    public static class Counts {
+        private String fan; // 注意：JSON中是字符串类型
+        private String follow;
+        private Integer photo;
+        private Integer playback;
+        private Integer liked;
+        @JsonProperty("private")
+        private Integer privateCount;
+        private Integer review;
+        private Integer open;
+    }
+
+    @Data
+    public static class KshellBalance {
+        private Integer result;
+        private Integer kshell;
+
+        @JsonProperty("host-name") // 处理带连字符的字段名
+        private String hostName;
     }
 }

@@ -9,7 +9,7 @@ message WebGiftFeed {
   string id = 1;
   SimpleUserInfo user = 2;
   uint64 time = 3;
-  uint32 intGiftId = 4;
+  uint32 giftId = 4;
   uint64 sortRank = 5;
   string mergeKey = 6;
   uint32 batchSize = 7;

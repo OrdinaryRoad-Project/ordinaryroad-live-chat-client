@@ -1,0 +1,9 @@
+syntax = "proto3";
+import "CommentRichTextMessage.proto";
+
+option java_package = "tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf";
+
+message SCCommentZoneRichText {
+  repeated CommentRichTextMessage message = 1;
+
+}
