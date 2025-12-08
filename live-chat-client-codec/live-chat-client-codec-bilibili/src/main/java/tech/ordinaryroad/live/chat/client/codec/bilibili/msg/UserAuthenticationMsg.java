@@ -79,6 +79,19 @@ public class UserAuthenticationMsg extends BaseBilibiliMsg {
      */
     private String key;
 
+    /**
+     * @since 2025-07-19
+     */
+    private Boolean support_ack;
+    /**
+     * @since 2025-07-19
+     */
+    private String queue_uuid;
+    /**
+     * @since 2025-07-19
+     */
+    private String scene;
+
     @Override
     public ProtoverEnum getProtoverEnum() {
         return ProtoverEnum.getByCode(this.protover);

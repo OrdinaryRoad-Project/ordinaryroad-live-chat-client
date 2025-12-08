@@ -30,6 +30,7 @@ import tech.ordinaryroad.live.chat.client.codec.bilibili.constant.ProtoverEnum;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.HeartbeatMsg;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.msg.UserAuthenticationMsg;
 import tech.ordinaryroad.live.chat.client.codec.bilibili.room.BilibiliRoomInitResult;
+import tech.ordinaryroad.live.chat.client.codec.bilibili.util.BilibiliRandomUtil;
 import tech.ordinaryroad.live.chat.client.commons.base.exception.BaseException;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -72,6 +73,9 @@ public class BilibiliMsgFactory {
             long realRoomId = roomInitResult.getRoomPlayInfoResult().getRoom_id();
             return UserAuthenticationMsg.builder()
                     .roomid(realRoomId)
+                    .queue_uuid(BilibiliRandomUtil.generateQueueUuid())
+                    .support_ack(true)
+                    .scene("room")
                     .protover(protover.getCode())
                     .buvid(buvid3)
                     .key(roomInitResult.getDanmuinfoResult().getToken())
