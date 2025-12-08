@@ -137,6 +137,14 @@ public class KuaishouLiveChatClient extends BaseNettyClient<
 
     @Override
     public KuaishouRoomInitResult initRoom() {
+//        KuaishouRoomInitResult kuaishouRoomInitResult = KuaishouApis.roomInit(getConfig().getRoomId(), getConfig().getRoomInfoGetType(), getConfig().getCookie(), getConfig().getKww(), roomInitResult);
+//        if (getConfig().getRoomInfoGetType() == RoomInfoGetTypeEnum.COOKIE && kuaishouRoomInitResult != null && kuaishouRoomInitResult.getKuaishouUserInfo() != null) {
+//            if (kuaishouRoomInitResult.getKuaishouUserInfo().getOwnerInfo() != null && StrUtil.isNotBlank(kuaishouRoomInitResult.getKuaishouUserInfo().getOwnerInfo().getId())) {
+//                // 更新房间ID
+//                getConfig().setRoomId(kuaishouRoomInitResult.getKuaishouUserInfo().getOwnerInfo().getId());
+//            }
+//        }
+//        return kuaishouRoomInitResult;
         return KuaishouApis.roomInit(getConfig().getRoomId(), getConfig().getRoomInfoGetType(), getConfig().getCookie(), getConfig().getKww(), roomInitResult);
     }
 

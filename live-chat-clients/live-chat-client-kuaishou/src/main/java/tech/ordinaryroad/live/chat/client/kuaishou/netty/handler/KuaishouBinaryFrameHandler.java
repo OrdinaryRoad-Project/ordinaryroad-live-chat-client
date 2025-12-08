@@ -32,6 +32,7 @@ import tech.ordinaryroad.live.chat.client.codec.kuaishou.api.KuaishouApis;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.*;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.msg.base.IKuaishouMsg;
 import tech.ordinaryroad.live.chat.client.codec.kuaishou.protobuf.*;
+import tech.ordinaryroad.live.chat.client.codec.kuaishou.util.KuaishouFormatUtil;
 import tech.ordinaryroad.live.chat.client.commons.base.msg.ICmdMsg;
 import tech.ordinaryroad.live.chat.client.kuaishou.client.KuaishouLiveChatClient;
 import tech.ordinaryroad.live.chat.client.kuaishou.listener.IKuaishouMsgListener;
@@ -100,8 +101,8 @@ public class KuaishouBinaryFrameHandler extends BaseNettyClientBinaryFrameHandle
                 String displayLikeCount = scWebFeedPush.getDisplayLikeCount();
                 String displayWatchingCount = scWebFeedPush.getDisplayWatchingCount();
                 KuaishouRoomStatsMsg kuaishouRoomStatsMsg = new KuaishouRoomStatsMsg();
-                kuaishouRoomStatsMsg.setLikedCount(displayLikeCount);
-                kuaishouRoomStatsMsg.setWatchingCount(displayWatchingCount);
+                kuaishouRoomStatsMsg.setLikedCount(String.valueOf(KuaishouFormatUtil.parseDisplayCount(displayLikeCount)));
+                kuaishouRoomStatsMsg.setWatchingCount(String.valueOf(KuaishouFormatUtil.parseDisplayCount(displayWatchingCount)));
                 iteratorMsgListeners(msgListener -> msgListener.onRoomStatsMsg(KuaishouBinaryFrameHandler.this, kuaishouRoomStatsMsg));
                 break;
             }
