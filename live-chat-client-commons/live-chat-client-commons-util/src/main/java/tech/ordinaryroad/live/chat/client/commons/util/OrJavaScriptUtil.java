@@ -25,55 +25,99 @@
 package tech.ordinaryroad.live.chat.client.commons.util;
 
 import cn.hutool.core.io.resource.ResourceUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.system.JavaInfo;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.SneakyThrows;
 
 import javax.script.ScriptEngine;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * @author mjz
  * @date 2025/1/24
  */
 public class OrJavaScriptUtil {
-    @SneakyThrows
-    public static ScriptEngine createScriptEngine() {
-        JavaInfo javaInfo = new JavaInfo();
-        ScriptEngine scriptEngine;
-        if (javaInfo.getVersionFloat() >= 17) {
-            Class<?> engineClazz = Class.forName("org.graalvm.polyglot.Engine");
-            Object engineNewBuilder = ReflectUtil.invokeStatic(ReflectUtil.getMethod(engineClazz, "newBuilder"));
-            engineNewBuilder = ReflectUtil.invoke(engineNewBuilder, "option", "engine.WarnInterpreterOnly", "false");
-            Object engine = ReflectUtil.invoke(engineNewBuilder, "build");
 
-            Class<?> contextClazz = Class.forName("org.graalvm.polyglot.Context");
-            Object contextNewBuilder = ReflectUtil.invokeStatic(ReflectUtil.getMethod(contextClazz, "newBuilder", String[].class), "js");
-            contextNewBuilder = ReflectUtil.invoke(contextNewBuilder, "allowHostAccess", ReflectUtil.getStaticFieldValue(ReflectUtil.getField(Class.forName("org.graalvm.polyglot.HostAccess"), "ALL")));
-            contextNewBuilder = ReflectUtil.invoke(contextNewBuilder, "option", "js.ecmascript-version", "2015");
-
-            scriptEngine = ReflectUtil.invokeStatic(
-                    ReflectUtil.getMethod(Class.forName("com.oracle.truffle.js.scriptengine.GraalJSScriptEngine"), "create", engineClazz, contextNewBuilder.getClass()),
-                    engine, contextNewBuilder
-            );
-        } else if (javaInfo.getVersionFloat() >= 11) {
-            scriptEngine = createScriptEngineLtJava17("org.openjdk.nashorn.api.scripting.NashornScriptEngineFactory");
-        } else {
-            scriptEngine = createScriptEngineLtJava17("jdk.nashorn.api.scripting.NashornScriptEngineFactory");
+    public static final Supplier<ScriptEngine> DEFAULT_ENGINE_SUPPLIER = () -> {
+        try {
+            JavaInfo javaInfo = new JavaInfo();
+            ScriptEngine scriptEngine;
+            if (javaInfo.getVersionFloat() >= 17) {
+                // 17及以上暂时使用NashornScriptEngineFactory
+                scriptEngine = createScriptEngineLtJava17("org.openjdk.nashorn.api.scripting.NashornScriptEngineFactory");
+            } else if (javaInfo.getVersionFloat() >= 11) {
+                scriptEngine = createScriptEngineLtJava17("org.openjdk.nashorn.api.scripting.NashornScriptEngineFactory");
+            } else {
+                scriptEngine = createScriptEngineLtJava17("jdk.nashorn.api.scripting.NashornScriptEngineFactory");
+            }
+            return scriptEngine;
+        } catch (Exception e) {
+            throw new RuntimeException("脚本引擎获取失败，请根据实际JDK版本自行实现获取脚本引擎方法，并调用OrJavaScriptUtil.setCustomEngineSupplier()", e);
         }
-        return scriptEngine;
+    };
+
+    /**
+     * -- SETTER --
+     * 设置自定义ScriptEngine提供者
+     * -- GETTER --
+     * 获取当前的自定义ScriptEngine提供者
+     */
+    @Getter
+    @Setter
+    private static Supplier<ScriptEngine> customEngineSupplier;
+
+    /**
+     * 清除自定义ScriptEngine提供者
+     */
+    public static void clearCustomEngineSupplier() {
+        customEngineSupplier = null;
+    }
+
+    public static ScriptEngine createScriptEngine() {
+        Supplier<ScriptEngine> supplier = ObjectUtil.defaultIfNull(customEngineSupplier, () -> DEFAULT_ENGINE_SUPPLIER);
+        try {
+            return supplier.get();
+        } catch (Exception e) {
+            throw new RuntimeException("脚本引擎获取失败，请根据实际JDK版本自行实现获取脚本引擎方法，并调用OrJavaScriptUtil.setCustomEngineSupplier()", e);
+        }
     }
 
     @SneakyThrows
-    private static ScriptEngine createScriptEngineLtJava17(String className) {
+    public static ScriptEngine createScriptEngineLtJava17(String className) {
         ScriptEngine scriptEngine;
         Class<?> scriptEngineFactoryClass = Class.forName(className);
         Object factory = scriptEngineFactoryClass.getConstructor().newInstance();
         Method getScriptEngine = scriptEngineFactoryClass.getDeclaredMethod("getScriptEngine", String[].class);
         scriptEngine = (ScriptEngine) getScriptEngine.invoke(factory, (Object) new String[]{"--language=es6"});
         return scriptEngine;
+    }
+
+    /**
+     * 创建GraalVM的ScriptEngine(JDK>=17)
+     *
+     * @return ScriptEngine
+     */
+    @SneakyThrows
+    public static ScriptEngine createScriptEngineGraalVM() {
+        Class<?> engineClazz = Class.forName("org.graalvm.polyglot.Engine");
+        Object engineNewBuilder = ReflectUtil.invokeStatic(ReflectUtil.getMethod(engineClazz, "newBuilder"));
+        engineNewBuilder = ReflectUtil.invoke(engineNewBuilder, "option", "engine.WarnInterpreterOnly", "false");
+        Object engine = ReflectUtil.invoke(engineNewBuilder, "build");
+
+        Class<?> contextClazz = Class.forName("org.graalvm.polyglot.Context");
+        Object contextNewBuilder = ReflectUtil.invokeStatic(ReflectUtil.getMethod(contextClazz, "newBuilder", String[].class), "js");
+        contextNewBuilder = ReflectUtil.invoke(contextNewBuilder, "allowHostAccess", ReflectUtil.getStaticFieldValue(ReflectUtil.getField(Class.forName("org.graalvm.polyglot.HostAccess"), "ALL")));
+        contextNewBuilder = ReflectUtil.invoke(contextNewBuilder, "option", "js.ecmascript-version", "2015");
+        return ReflectUtil.invokeStatic(
+                ReflectUtil.getMethod(Class.forName("com.oracle.truffle.js.scriptengine.GraalJSScriptEngine"), "create", engineClazz, contextNewBuilder.getClass()),
+                engine, contextNewBuilder
+        );
     }
 
     public static Object getEvalValueByKey(Object object, String key) {
