@@ -4,7 +4,7 @@
     <parent>
         <groupId>tech.ordinaryroad</groupId>
         <artifactId>live-chat-client-examples</artifactId>
-        <version>1.5.4-beta</version>
+        <version>1.5.5</version>
     </parent>
     <packaging>jar</packaging>
 
@@ -32,19 +32,19 @@
         <dependency>
             <groupId>tech.ordinaryroad</groupId>
             <artifactId>live-chat-client-websocket</artifactId>
-            <version>1.5.4-beta</version>
+            <version>1.5.5</version>
         </dependency>
 
         <dependency>
             <groupId>tech.ordinaryroad</groupId>
             <artifactId>live-chat-client-codec-bilibili</artifactId>
-            <version>1.5.4-beta</version>
+            <version>1.5.5</version>
         </dependency>
 
         <dependency>
             <groupId>tech.ordinaryroad</groupId>
             <artifactId>live-chat-client-codec-douyin</artifactId>
-            <version>1.5.4-beta</version>
+            <version>1.5.5</version>
         </dependency>
 
         <dependency>
