@@ -94,7 +94,13 @@ public class DouyinBrowserLiveChatClient extends BaseBrowserClient<DouyinBrowser
 
     @Override
     public DouyinRoomInitResult initRoom() {
-        return DouyinApis.roomInit(getConfig().getRoomId(), getConfig().getCookie(), roomInitResult);
+        try {
+            return DouyinApis.roomInit(getConfig().getRoomId(), getConfig().getCookie(), roomInitResult);
+        } catch (Exception e) {
+            log.warn("房间初始化失败，为避免连接失败，将直接返回空值，注意`client.getRoomInitResult()`方法将无法使用", e);
+            // 避免接口提示验证导致连接失败
+            return null;
+        }
     }
 
     @Override
