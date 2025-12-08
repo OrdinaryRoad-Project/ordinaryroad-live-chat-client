@@ -50,6 +50,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 /**
@@ -70,9 +71,9 @@ public class DouyinApis {
     public static final String PATTERN_ROOM_STATUS = "\\\\\"status_str\\\\\":\\\\\"(\\d+)\\\\\"";
     public static final String PATTERN_ROOM_INFO = "\\\\\"roomInfo\\\\\":(\\{.*?\\}),\\\\\"emojiList\\\\\"";
     /**
-     * 礼物连击缓存
+     * 礼物连击缓存，30秒过期
      */
-    private static final TimedCache<String, GiftMessage> DOUYIN_GIFT_MSG_CACHE = new TimedCache<>(300 * 1000L, new ConcurrentHashMap<>());
+    private static final TimedCache<String, GiftMessage> DOUYIN_GIFT_MSG_CACHE = new TimedCache<>(TimeUnit.SECONDS.toMillis(30), new ConcurrentHashMap<>());
 
     @SneakyThrows
     public static DouyinRoomInitResult roomInit(Object roomId, String cookie, DouyinRoomInitResult roomInitResult) {
