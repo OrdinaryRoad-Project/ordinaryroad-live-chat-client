@@ -152,4 +152,17 @@ public abstract class BaseBrowserClient
     public void clickLike(int count, Runnable success, Consumer<Throwable> failed) {
         throw new BaseException("暂未支持该功能");
     }
+
+    @Override
+    public void destroy() {
+        // 销毁时不需要重连
+        this.cancelReconnect = true;
+        try {
+            browser.close();
+        } catch (Exception e) {
+            log.error("浏览器关闭失败", e);
+        } finally {
+            this.setStatus(ClientStatusEnums.DESTROYED);
+        }
+    }
 }
