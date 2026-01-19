@@ -78,7 +78,7 @@ public class DouyuApis {
     public static final TimedCache<String, Map<Long, GiftListInfo>> roomGiftMap = new TimedCache<>(TimeUnit.DAYS.toMillis(1), new HashMap<>());
 
     public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-    public static final String PATTERN_BODY_ROOM_ID = "\\$ROOM\\.room_id\\D+(\\d+)";
+    public static final String PATTERN_BODY_ROOM_ID = "\\\\\"room_id\\\\\"\\D+(\\d+)";
     public static final String KEY_REDIRECT_LOCATION_RID = "rid";
     public static final String KEY_COOKIE_DY_DID = "dy_did";
     public static final String KEY_COOKIE_ACF_UID = "acf_uid";
@@ -290,10 +290,10 @@ public class DouyuApis {
 
         @Cleanup
         HttpResponse execute = OrLiveChatHttpUtil.createGet("https://www.douyu.com/" + roomId, true).cookie(cookie).execute();
-        String liveRoomPageBody = execute.body();
+//        String liveRoomPageBody = execute.body();
         long realRoomId = getRealRoomIdByRoomPageResponse(roomId, execute);
-        String streamUrlRequestVer = getVerFromLiveRoomPageBody(cookie, liveRoomPageBody);
-        String signJavaScriptsString = getSignJavaScriptsFromLiveRoomPageBody(liveRoomPageBody);
+//        String streamUrlRequestVer = getVerFromLiveRoomPageBody(cookie, liveRoomPageBody);
+//        String signJavaScriptsString = getSignJavaScriptsFromLiveRoomPageBody(liveRoomPageBody);
 
         @Cleanup
         HttpResponse response = OrLiveChatHttpUtil.createGet(API_BETARD + realRoomId).cookie(cookie).execute();
@@ -305,8 +305,8 @@ public class DouyuApis {
         roomInitResult.setUid(uid);
         roomInitResult.setDid(did);
         roomInitResult.setCookie(cookie);
-        roomInitResult.setStreamUrlRequestVer(streamUrlRequestVer);
-        roomInitResult.setSignJavaScriptsString(signJavaScriptsString);
+//        roomInitResult.setStreamUrlRequestVer(streamUrlRequestVer);
+//        roomInitResult.setSignJavaScriptsString(signJavaScriptsString);
         roomInitResult.setBetardResponse(betardResponse);
         return roomInitResult;
     }
