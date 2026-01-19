@@ -201,7 +201,7 @@
             </dependency>
 
             <dependency>
-                <groupId>io.github.fanyong920</groupId>
+                <groupId>tech.ordinaryroad</groupId>
                 <artifactId>jvppeteer</artifactId>
                 <version>${jvppeteer.version}</version>
             </dependency>
