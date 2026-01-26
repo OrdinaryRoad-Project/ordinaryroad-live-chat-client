@@ -57,10 +57,10 @@ public class ACEnterBanner extends TarsStructBase {
 
     @Override
     public void readFrom(TarsInputStream is) {
-        is.read(this.iWeekHeartStirRank, 0, false);
-        is.read(this.iWeekHeartBlockRank, 1, false);
-        is.read(this.iMasterRank, 2, false);
-        is.read(this.iACWeekRank, 3, false);
+        this.iWeekHeartStirRank = is.read(this.iWeekHeartStirRank, 0, false);
+        this.iWeekHeartBlockRank = is.read(this.iWeekHeartBlockRank, 1, false);
+        this.iMasterRank = is.read(this.iMasterRank, 2, false);
+        this.iACWeekRank = is.read(this.iACWeekRank, 3, false);
     }
 
     @Override

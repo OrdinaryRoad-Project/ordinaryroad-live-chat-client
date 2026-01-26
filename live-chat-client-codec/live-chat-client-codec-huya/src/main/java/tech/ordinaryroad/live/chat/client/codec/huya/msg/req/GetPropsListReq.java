@@ -68,15 +68,15 @@ public class GetPropsListReq extends TarsStructBase {
 
     @Override
     public void readFrom(TarsInputStream is) {
-        is.read(this.tUserId, 1, false);
-        is.read(this.sMd5, 2, false);
-        is.read(this.iTemplateType, 3, false);
-        is.read(this.sVersion, 4, false);
-        is.read(this.iAppId, 5, false);
-        is.read(this.lPresenterUid, 6, false);
-        is.read(this.lSid, 7, false);
-        is.read(this.lSubSid, 8, false);
-        is.read(this.iGameId, 9, false);
+        this.tUserId = (UserId) is.read(this.tUserId, 1, false);
+        this.sMd5 = is.read(this.sMd5, 2, false);
+        this.iTemplateType = is.read(this.iTemplateType, 3, false);
+        this.sVersion = is.read(this.sVersion, 4, false);
+        this.iAppId = is.read(this.iAppId, 5, false);
+        this.lPresenterUid = is.read(this.lPresenterUid, 6, false);
+        this.lSid = is.read(this.lSid, 7, false);
+        this.lSubSid = is.read(this.lSubSid, 8, false);
+        this.iGameId = is.read(this.iGameId, 9, false);
     }
 
     @Override
