@@ -7,8 +7,11 @@ import tech.ordinaryroad.live.chat.client.codec.huya.msg.LiveLaunchRsp;
 import tech.ordinaryroad.live.chat.client.codec.huya.msg.WebSocketCommand;
 import tech.ordinaryroad.live.chat.client.codec.huya.msg.WupRsp;
 import tech.ordinaryroad.live.chat.client.codec.huya.msg.dto.UserId;
+import tech.ordinaryroad.live.chat.client.codec.huya.msg.factory.HuyaMsgFactory;
 import tech.ordinaryroad.live.chat.client.codec.huya.msg.req.*;
+import tech.ordinaryroad.live.chat.client.codec.huya.room.HuyaRoomInitResult;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -95,5 +98,54 @@ class HuyaCodecUtilTest {
         getLivingInfoReq2 = wupReq2.getUniAttribute().getByClass("tReq", getLivingInfoReq2);
 
         UserId tId = getLivingInfoReq.getTId();
+    }
+
+    @Test
+    void decodeGetPropListReq() {
+        byte[] decode = Base64.decode("AAMdAAB4AAAAeBADLDxAA1YNUHJvcHNVSVNlcnZlcmYMZ2V0UHJvcHNMaXN0fQAASAgAAQYEdFJlcR0AADsKGgIBrCfyFgAmADYad2ViaDUmMjMwOTI3MTE1MiZ3ZWJzb2NrZXRGAFxmAHYACyYAMAFGAFxsfIycC4yYDKgMLDYATFxmAA==");
+        WebSocketCommand webSocketCommand = new WebSocketCommand();
+        webSocketCommand.readFrom(HuyaCodecUtil.newUtf8TarsInputStream(decode));
+
+        byte[] vData = webSocketCommand.getVData();
+        WupReq wupReq = new WupReq();
+        wupReq.decode(vData);
+
+        GetPropsListReq tReq = wupReq.getUniAttribute().getByClass("tReq", new GetPropsListReq());
+        assert tReq.getITemplateType() == 1;
+    }
+
+    @Test
+    void decodeGetPropListReq2() {
+        HuyaRoomInitResult roomInitResult = HuyaRoomInitResult.builder()
+                .lYyid(666L)
+                .lChannelId(777L)
+                .lSubChannelId("778")
+                .build();
+
+        WebSocketCommand giftListReq = HuyaMsgFactory.getInstance(666).createGiftListReq(roomInitResult, "20266666");
+
+        byte[] vData = giftListReq.getVData();
+        System.out.println(Arrays.toString(vData));
+        WupReq wupReq = new WupReq();
+        wupReq.readFrom(HuyaCodecUtil.newUtf8TarsInputStream(vData));
+
+        GetPropsListReq getPropsListReq = new GetPropsListReq();
+        GetPropsListReq tReq = wupReq.getUniAttribute().getByClass("tReq", getPropsListReq);
+    }
+    @Test
+    void decodeRegisterGroupReq2() {
+        HuyaRoomInitResult roomInitResult = HuyaRoomInitResult.builder()
+                .lYyid(666L)
+                .lChannelId(777L)
+                .lSubChannelId("778")
+                .build();
+
+        WebSocketCommand webSocketCommand = HuyaMsgFactory.getInstance(666).createRegisterGroupReq(roomInitResult);
+
+        byte[] vData = webSocketCommand.getVData();
+        System.out.println(Arrays.toString(vData));
+        WSRegisterGroupReq wsRegisterGroupReq = new WSRegisterGroupReq();
+        wsRegisterGroupReq.readFrom(HuyaCodecUtil.newUtf8TarsInputStream(vData));
+        List<String> vGroupId = wsRegisterGroupReq.getVGroupId();
     }
 }
