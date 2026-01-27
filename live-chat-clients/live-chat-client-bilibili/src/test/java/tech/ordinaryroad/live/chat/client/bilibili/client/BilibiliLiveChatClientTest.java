@@ -172,12 +172,18 @@ class BilibiliLiveChatClientTest {
                     // 0 未开播，1 直播中，2 投稿视频
                     log.error("开播状态: {}", client.getRoomInitResult().getRoomPlayInfoResult().getLive_status());
                     log.error("直播间标题: {}", client.getRoomInitResult().getRoomTitle());
-//                ThreadUtil.execAsync(() -> {
-//                    ThreadUtil.sleep(5000);
-//                    client.clickLike(5, () -> {
-//                        log.warn("为主播点赞成功");
+//                    ThreadUtil.execAsync(() -> {
+//                        ThreadUtil.sleep(5000);
+//                        client.sendDanmu("66666", () -> {
+//                            log.warn("弹幕发送成功");
+//                        }, (e) -> {
+//                            log.error("弹幕发送失败", e);
+//                        });
+//                        ThreadUtil.sleep(5000);
+//                        client.clickLike(5, () -> {
+//                            log.warn("为主播点赞成功");
+//                        });
 //                    });
-//                });
                 } else if (oldStatus == ClientStatusEnums.RECONNECTING) {
                     RoomPlayInfoResult roomPlayInfo = BilibiliApis.getRoomPlayInfo(client.getConfig().getRoomId(), client.getConfig().getCookie());
                     BilibiliLiveStatusEnum liveStatus = roomPlayInfo.getLive_status();
