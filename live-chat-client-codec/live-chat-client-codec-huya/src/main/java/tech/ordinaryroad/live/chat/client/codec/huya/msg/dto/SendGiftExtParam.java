@@ -32,43 +32,41 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author mjz
- * @date 2023/10/5
+ * @date 2026/1/27
  */
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MsgStatInfo extends TarsStructBase {
+public class SendGiftExtParam extends TarsStructBase {
 
-    private Map<String, Map<Long, Integer>> mSignalPushUriCount = new HashMap<String, Map<Long, Integer>>() {{
-        put("", new HashMap<Long, Integer>() {{
-            put(0L, 0);
-        }});
+    private List<SendGiftDrawParam> vDrawParam = new ArrayList<SendGiftDrawParam>() {{
+        add(new SendGiftDrawParam());
     }};
-    private Map<String, Map<Long, Integer>> mP2pPushUriCount = new HashMap<String, Map<Long, Integer>>() {{
-        put("", new HashMap<Long, Integer>() {{
-            put(0L, 0);
-        }});
+    private List<SendGiftTextParam> vTextParam = new ArrayList<SendGiftTextParam>() {{
+        add(new SendGiftTextParam());
     }};
-    private int iSupportAckMsgStat;
+    private List<SendGiftMultiParam> vMultiParam = new ArrayList<SendGiftMultiParam>() {{
+        add(new SendGiftMultiParam());
+    }};
 
     @Override
     public void writeTo(TarsOutputStream os) {
-        os.write(this.mSignalPushUriCount, 0);
-        os.write(this.mP2pPushUriCount, 1);
-        os.write(this.iSupportAckMsgStat, 3);
+        os.write(vDrawParam, 0);
+        os.write(vTextParam, 1);
+        os.write(vMultiParam, 2);
     }
 
     @Override
     public void readFrom(TarsInputStream is) {
-        this.mSignalPushUriCount = is.readMap(this.mSignalPushUriCount, 0, false);
-        this.mP2pPushUriCount = is.readMap(this.mP2pPushUriCount, 1, false);
-        this.iSupportAckMsgStat = is.read(this.iSupportAckMsgStat, 3, false);
+        vDrawParam = is.readArray(vDrawParam, 0, false);
+        vTextParam = is.readArray(vTextParam, 1, false);
+        vMultiParam = is.readArray(vMultiParam, 2, false);
     }
 
     @Override

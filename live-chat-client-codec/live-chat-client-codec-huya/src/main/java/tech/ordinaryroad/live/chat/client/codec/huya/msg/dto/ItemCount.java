@@ -32,43 +32,29 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * @author mjz
- * @date 2023/10/5
+ * @date 2026/1/27
  */
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MsgStatInfo extends TarsStructBase {
+public class ItemCount extends TarsStructBase {
 
-    private Map<String, Map<Long, Integer>> mSignalPushUriCount = new HashMap<String, Map<Long, Integer>>() {{
-        put("", new HashMap<Long, Integer>() {{
-            put(0L, 0);
-        }});
-    }};
-    private Map<String, Map<Long, Integer>> mP2pPushUriCount = new HashMap<String, Map<Long, Integer>>() {{
-        put("", new HashMap<Long, Integer>() {{
-            put(0L, 0);
-        }});
-    }};
-    private int iSupportAckMsgStat;
+    private int iItemType;
+    private long lItemCount;
 
     @Override
     public void writeTo(TarsOutputStream os) {
-        os.write(this.mSignalPushUriCount, 0);
-        os.write(this.mP2pPushUriCount, 1);
-        os.write(this.iSupportAckMsgStat, 3);
+        os.write(iItemType, 0);
+        os.write(lItemCount, 1);
     }
 
     @Override
     public void readFrom(TarsInputStream is) {
-        this.mSignalPushUriCount = is.readMap(this.mSignalPushUriCount, 0, false);
-        this.mP2pPushUriCount = is.readMap(this.mP2pPushUriCount, 1, false);
-        this.iSupportAckMsgStat = is.read(this.iSupportAckMsgStat, 3, false);
+        iItemType = is.read(iItemType, 0, false);
+        lItemCount = is.read(lItemCount, 1, false);
     }
 
     @Override

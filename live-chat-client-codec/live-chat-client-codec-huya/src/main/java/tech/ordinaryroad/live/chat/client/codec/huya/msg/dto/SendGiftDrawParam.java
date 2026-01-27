@@ -32,43 +32,39 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author mjz
- * @date 2023/10/5
+ * @date 2026/1/27
  */
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MsgStatInfo extends TarsStructBase {
+public class SendGiftDrawParam extends TarsStructBase {
 
-    private Map<String, Map<Long, Integer>> mSignalPushUriCount = new HashMap<String, Map<Long, Integer>>() {{
-        put("", new HashMap<Long, Integer>() {{
-            put(0L, 0);
-        }});
+    private ItemSize tItemSize = new ItemSize();
+    private List<ItemCount> vItemInfo = new ArrayList<ItemCount>() {{
+        add(new ItemCount());
     }};
-    private Map<String, Map<Long, Integer>> mP2pPushUriCount = new HashMap<String, Map<Long, Integer>>() {{
-        put("", new HashMap<Long, Integer>() {{
-            put(0L, 0);
-        }});
+    private List<ItemRoute> vItemRoute = new ArrayList<ItemRoute>() {{
+        add(new ItemRoute());
     }};
-    private int iSupportAckMsgStat;
 
     @Override
     public void writeTo(TarsOutputStream os) {
-        os.write(this.mSignalPushUriCount, 0);
-        os.write(this.mP2pPushUriCount, 1);
-        os.write(this.iSupportAckMsgStat, 3);
+        os.write(tItemSize, 0);
+        os.write(vItemInfo, 1);
+        os.write(vItemRoute, 2);
     }
 
     @Override
     public void readFrom(TarsInputStream is) {
-        this.mSignalPushUriCount = is.readMap(this.mSignalPushUriCount, 0, false);
-        this.mP2pPushUriCount = is.readMap(this.mP2pPushUriCount, 1, false);
-        this.iSupportAckMsgStat = is.read(this.iSupportAckMsgStat, 3, false);
+        tItemSize = (ItemSize) is.directRead(tItemSize, 0, false);
+        vItemInfo = is.readArray(vItemInfo, 1, false);
+        vItemRoute = is.readArray(vItemRoute, 2, false);
     }
 
     @Override

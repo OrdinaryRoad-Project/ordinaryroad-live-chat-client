@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package tech.ordinaryroad.live.chat.client.codec.huya.msg.dto;
+package tech.ordinaryroad.live.chat.client.codec.huya.msg.req;
 
 import com.qq.tars.protocol.tars.TarsInputStream;
 import com.qq.tars.protocol.tars.TarsOutputStream;
@@ -31,44 +31,60 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import tech.ordinaryroad.live.chat.client.codec.huya.msg.dto.SendGiftExtParam;
+import tech.ordinaryroad.live.chat.client.codec.huya.msg.dto.SendGiftPayPloy;
+import tech.ordinaryroad.live.chat.client.codec.huya.msg.dto.UserId;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * @author mjz
- * @date 2023/10/5
+ * @date 2026/1/27
  */
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MsgStatInfo extends TarsStructBase {
+public class SendGiftReq extends TarsStructBase {
 
-    private Map<String, Map<Long, Integer>> mSignalPushUriCount = new HashMap<String, Map<Long, Integer>>() {{
-        put("", new HashMap<Long, Integer>() {{
-            put(0L, 0);
-        }});
-    }};
-    private Map<String, Map<Long, Integer>> mP2pPushUriCount = new HashMap<String, Map<Long, Integer>>() {{
-        put("", new HashMap<Long, Integer>() {{
-            put(0L, 0);
-        }});
-    }};
-    private int iSupportAckMsgStat;
+    private UserId tId = new UserId();
+    private long lGiftUid;
+    private long lRoomUid;
+    private int iItemType;
+    private int iItemCount;
+    private String sPayId = "";
+    private String sSrcType = "";
+    private SendGiftPayPloy tPayPloy = new SendGiftPayPloy();
+    private SendGiftExtParam tExtParam = new SendGiftExtParam();
+    private Map<String, String> mParam = new HashMap<>();
 
     @Override
     public void writeTo(TarsOutputStream os) {
-        os.write(this.mSignalPushUriCount, 0);
-        os.write(this.mP2pPushUriCount, 1);
-        os.write(this.iSupportAckMsgStat, 3);
+        os.write(tId, 0);
+        os.write(lGiftUid, 1);
+        os.write(lRoomUid, 2);
+        os.write(iItemType, 3);
+        os.write(iItemCount, 4);
+        os.write(sPayId, 5);
+        os.write(sSrcType, 6);
+        os.write(tPayPloy, 7);
+        os.write(tExtParam, 8);
+        os.write(mParam, 9);
     }
 
     @Override
     public void readFrom(TarsInputStream is) {
-        this.mSignalPushUriCount = is.readMap(this.mSignalPushUriCount, 0, false);
-        this.mP2pPushUriCount = is.readMap(this.mP2pPushUriCount, 1, false);
-        this.iSupportAckMsgStat = is.read(this.iSupportAckMsgStat, 3, false);
+        tId = (UserId) is.read(tId, 0, false);
+        lGiftUid = is.read(lGiftUid, 1, false);
+        lRoomUid = is.read(lRoomUid, 2, false);
+        iItemType = is.read(iItemType, 3, false);
+        iItemCount = is.read(iItemCount, 4, false);
+        sPayId = is.read(sPayId, 5, false);
+        sSrcType = is.read(sSrcType, 6, false);
+        tPayPloy = (SendGiftPayPloy) is.read(tPayPloy, 7, false);
+        tExtParam = (SendGiftExtParam) is.read(tExtParam, 8, false);
+        mParam = is.readStringMap(9, false);
     }
 
     @Override

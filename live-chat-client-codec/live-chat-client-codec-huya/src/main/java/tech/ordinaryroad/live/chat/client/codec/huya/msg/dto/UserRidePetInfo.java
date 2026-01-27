@@ -84,7 +84,7 @@ public class UserRidePetInfo extends TarsStructBase {
         this.lEndTs = is.read(this.lEndTs, 7, false);
         this.iSourceType = is.read(this.iSourceType, 8, false);
         this.iPetType = is.read(this.iPetType, 9, false);
-        this.mPetDetail = is.readMap(this.mPetDetail, 10, false);
+        this.mPetDetail = is.readStringMap(10, false);
     }
 
     @Override

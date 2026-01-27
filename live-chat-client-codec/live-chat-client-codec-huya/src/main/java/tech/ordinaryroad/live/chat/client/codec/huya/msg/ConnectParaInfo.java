@@ -45,19 +45,31 @@ import java.util.Map;
 @NoArgsConstructor
 public class ConnectParaInfo extends TarsStructBase {
 
-    private long lUid = 0;
+    private long lUid;
     private String sGuid = "";
     private String sUA = "";
     private String sAppSrc = "";
     private String sMid = "";
     private String sExp = "";
-    private int iTokenType = 0;
+    private int iTokenType;
     private String sToken = "";
     private String sCookie = "";
     private String sTraceId = "";
-    private Map<String, String> mCustomHeaders = new HashMap<String, String>() {{
-        put("", "");
-    }};
+    private Map<String, String> mCustomHeaders = new HashMap<>();
+
+    public static ConnectParaInfo newWSConnectParaInfo(String ver, String sExp, String appSrc) {
+        ConnectParaInfo wsConnectParaInfo = new ConnectParaInfo();
+//        wsConnectParaInfo.sGuid = UUID.fastUUID().toString(true);
+
+        wsConnectParaInfo.sUA = String.format("webh5&%s&websocket", ver);
+        wsConnectParaInfo.sAppSrc = appSrc;
+        wsConnectParaInfo.sExp = sExp;
+        wsConnectParaInfo.mCustomHeaders = new HashMap<String, String>() {{
+            put("HUYA_NET", "0");
+            put("HUYA_VSDKUA", wsConnectParaInfo.sUA);
+        }};
+        return wsConnectParaInfo;
+    }
 
     @Override
     public void writeTo(TarsOutputStream os) {
@@ -86,20 +98,6 @@ public class ConnectParaInfo extends TarsStructBase {
         this.sToken = is.read(this.sToken, 7, false);
         this.sCookie = is.read(this.sCookie, 8, false);
         this.sTraceId = is.read(this.sTraceId, 9, false);
-        this.mCustomHeaders = is.readMap(this.mCustomHeaders, 10, false);
-    }
-
-    public static ConnectParaInfo newWSConnectParaInfo(String ver, String sExp, String appSrc) {
-        ConnectParaInfo wsConnectParaInfo = new ConnectParaInfo();
-//        wsConnectParaInfo.sGuid = UUID.fastUUID().toString(true);
-
-        wsConnectParaInfo.sUA = String.format("webh5&%s&websocket", ver);
-        wsConnectParaInfo.sAppSrc = appSrc;
-        wsConnectParaInfo.sExp = sExp;
-        wsConnectParaInfo.mCustomHeaders = new HashMap<String, String>() {{
-            put("HUYA_NET", "0");
-            put("HUYA_VSDKUA", wsConnectParaInfo.sUA);
-        }};
-        return wsConnectParaInfo;
+        this.mCustomHeaders = is.readStringMap(10, false);
     }
 }
