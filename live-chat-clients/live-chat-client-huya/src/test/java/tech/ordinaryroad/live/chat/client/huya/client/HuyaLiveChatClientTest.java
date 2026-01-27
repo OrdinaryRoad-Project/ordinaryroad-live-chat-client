@@ -61,7 +61,11 @@ class HuyaLiveChatClientTest {
 
     @Test
     void example() throws InterruptedException {
+        String cookie = System.getenv("cookie");
+        log.warn("cookie={}", cookie);
+
         HuyaLiveChatClientConfig config = HuyaLiveChatClientConfig.builder()
+                .cookie(cookie)
 
 //                .forwardWebsocketUri("ws://127.0.0.1:8080/websocket")
 
