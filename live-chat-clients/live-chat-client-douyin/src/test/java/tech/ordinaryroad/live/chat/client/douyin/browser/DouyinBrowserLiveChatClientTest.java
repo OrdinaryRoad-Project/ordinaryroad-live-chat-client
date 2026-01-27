@@ -38,7 +38,7 @@ class DouyinBrowserLiveChatClientTest {
                 // 与辉同行
                 .roomId("646454278948")
                 .build();
-        config.getLaunchOptions().setExecutablePath("Chrome浏览器位置");
+//        config.getLaunchOptions().setExecutablePath("Chrome浏览器位置");
 
         DouyinBrowserLiveChatClient client = new DouyinBrowserLiveChatClient(config, new IDouyinMsgListener() {
             @Override
