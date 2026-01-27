@@ -26,11 +26,12 @@ package tech.ordinaryroad.live.chat.client.codec.douyu.room;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.thread.ThreadUtil;
-import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.RandomUtil;
-import cn.hutool.http.HttpResponse;
 import com.fasterxml.jackson.databind.JsonNode;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import tech.ordinaryroad.live.chat.client.codec.douyu.api.DouyuApis;
 import tech.ordinaryroad.live.chat.client.codec.douyu.api.response.BetardResponse;
@@ -40,11 +41,9 @@ import tech.ordinaryroad.live.chat.client.commons.base.constant.RoomLiveStreamQu
 import tech.ordinaryroad.live.chat.client.commons.base.room.IRoomInitResult;
 import tech.ordinaryroad.live.chat.client.commons.base.room.IRoomLiveStreamInfo;
 import tech.ordinaryroad.live.chat.client.commons.base.room.RoomLiveStreamInfo;
-import tech.ordinaryroad.live.chat.client.commons.util.OrLiveChatHttpUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Data
@@ -60,8 +59,6 @@ public class DouyuRoomInitResult implements IRoomInitResult {
     private String did;
 
     private String cookie;
-    private String streamUrlRequestVer;
-    private String signJavaScriptsString;
 
     @Override
     public String getRoomTitle() {
@@ -105,37 +102,29 @@ public class DouyuRoomInitResult implements IRoomInitResult {
      * @param roomLiveStreamInfos 待更新的直播流地址列表
      */
     private void updateRoomLiveStreamInfosByQuality(RoomLiveStreamQualityEnum quality, List<IRoomLiveStreamInfo> roomLiveStreamInfos) {
-        DouyuQualityEnum douyuQualityEnum = DouyuQualityEnum.fromRoomLiveStreamQualityEnum(quality);
-
-        Map<String, String> streamUrlRequestSignMap = DouyuApis.getStreamUrlRequestSignParams(signJavaScriptsString, realRoomId, did);
-        streamUrlRequestSignMap.put("iar", "0");
-        streamUrlRequestSignMap.put("ive", "0");
-        streamUrlRequestSignMap.put("sov", "0");
-        streamUrlRequestSignMap.put("hevc", "1");
-        streamUrlRequestSignMap.put("aid", "web-alone");
-        streamUrlRequestSignMap.put("ver", streamUrlRequestVer);
-        streamUrlRequestSignMap.put("cdn", "");
-        streamUrlRequestSignMap.put("rate", "-1");
-        streamUrlRequestSignMap.put("uid", NumberUtil.toStr(uid));
-
-        @Cleanup
-        HttpResponse liveDataResponse = OrLiveChatHttpUtil.createGet("https://playweb.douyu.com/lapi/live/getH5Play/" + realRoomId)
-                .cookie(cookie).formStr(streamUrlRequestSignMap).execute();
-
         try {
-            JsonNode liveDataJsonNode = DouyuApis.responseInterceptor(liveDataResponse.body());
+            JsonNode liveDataJsonNode = DouyuApis.getH5PlayV1(realRoomId, did, null);
 
-            RoomLiveStreamQualityEnum roomLiveStreamQualityEnum = DouyuQualityEnum.toRoomLiveStreamQualityEnum(douyuQualityEnum);
-            String url = liveDataJsonNode.get("rtmp_url").asText() + "/" + liveDataJsonNode.get("rtmp_live").asText();
+            RoomLiveStreamQualityEnum roomLiveStreamQualityEnum = DouyuQualityEnum.toRoomLiveStreamQualityEnum(DouyuQualityEnum.fromRoomLiveStreamQualityEnum(quality));
 
-            IRoomLiveStreamInfo roomLiveStreamInfoByQuality = CollUtil.findOneByField(roomLiveStreamInfos, "quality", roomLiveStreamQualityEnum);
-            if (roomLiveStreamInfoByQuality == null) {
-                roomLiveStreamInfos.add(RoomLiveStreamInfo.builder()
-                        .quality(roomLiveStreamQualityEnum)
-                        .urls(CollUtil.newArrayList(url))
-                        .build());
-            } else {
-                roomLiveStreamInfoByQuality.getUrls().add(url);
+            // 构建流地址URL
+            String url = null;
+            if (liveDataJsonNode.has("rtmp_url") && liveDataJsonNode.has("rtmp_live")) {
+                url = liveDataJsonNode.get("rtmp_url").asText() + "/" + liveDataJsonNode.get("rtmp_live").asText();
+            } else if (liveDataJsonNode.has("player_1")) {
+                url = liveDataJsonNode.get("player_1").asText();
+            }
+
+            if (url != null) {
+                IRoomLiveStreamInfo roomLiveStreamInfoByQuality = CollUtil.findOneByField(roomLiveStreamInfos, "quality", roomLiveStreamQualityEnum);
+                if (roomLiveStreamInfoByQuality == null) {
+                    roomLiveStreamInfos.add(RoomLiveStreamInfo.builder()
+                            .quality(roomLiveStreamQualityEnum)
+                            .urls(CollUtil.newArrayList(url))
+                            .build());
+                } else {
+                    roomLiveStreamInfoByQuality.getUrls().add(url);
+                }
             }
         } catch (Exception e) {
             log.error("获取直播流地址失败", e);
