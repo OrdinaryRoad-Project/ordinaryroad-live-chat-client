@@ -27,7 +27,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>tech.ordinaryroad</groupId>
     <artifactId>live-chat-client</artifactId>
-    <version>1.5.7</version>
+    <version>1.5.8</version>
     <packaging>pom</packaging>
     <name>ordinaryroad-live-chat-client</name>
     <description>Live room WebSocket chat client</description>
@@ -95,109 +95,109 @@
             <dependency>
                 <groupId>tech.ordinaryroad</groupId>
                 <artifactId>live-chat-client-commons-base</artifactId>
-                <version>1.5.7</version>
+                <version>1.5.8</version>
             </dependency>
 
             <dependency>
                 <groupId>tech.ordinaryroad</groupId>
                 <artifactId>live-chat-client-commons-util</artifactId>
-                <version>1.5.7</version>
+                <version>1.5.8</version>
             </dependency>
 
             <dependency>
                 <groupId>tech.ordinaryroad</groupId>
                 <artifactId>live-chat-client-commons-client</artifactId>
-                <version>1.5.7</version>
+                <version>1.5.8</version>
             </dependency>
 
             <dependency>
                 <groupId>tech.ordinaryroad</groupId>
                 <artifactId>live-chat-client-servers-netty</artifactId>
-                <version>1.5.7</version>
+                <version>1.5.8</version>
             </dependency>
 
             <dependency>
                 <groupId>tech.ordinaryroad</groupId>
                 <artifactId>live-chat-client-servers-netty-client</artifactId>
-                <version>1.5.7</version>
+                <version>1.5.8</version>
             </dependency>
 
             <dependency>
                 <groupId>tech.ordinaryroad</groupId>
                 <artifactId>live-chat-client-servers-browser</artifactId>
-                <version>1.5.7</version>
+                <version>1.5.8</version>
             </dependency>
 
             <dependency>
                 <groupId>tech.ordinaryroad</groupId>
                 <artifactId>live-chat-client-websocket</artifactId>
-                <version>1.5.7</version>
+                <version>1.5.8</version>
             </dependency>
 
             <dependency>
                 <groupId>tech.ordinaryroad</groupId>
                 <artifactId>live-chat-client-bilibili</artifactId>
-                <version>1.5.7</version>
+                <version>1.5.8</version>
             </dependency>
 
             <dependency>
                 <groupId>tech.ordinaryroad</groupId>
                 <artifactId>live-chat-client-douyu</artifactId>
-                <version>1.5.7</version>
+                <version>1.5.8</version>
             </dependency>
 
             <dependency>
                 <groupId>tech.ordinaryroad</groupId>
                 <artifactId>live-chat-client-huya</artifactId>
-                <version>1.5.7</version>
+                <version>1.5.8</version>
             </dependency>
 
             <dependency>
                 <groupId>tech.ordinaryroad</groupId>
                 <artifactId>live-chat-client-douyin</artifactId>
-                <version>1.5.7</version>
+                <version>1.5.8</version>
             </dependency>
 
             <dependency>
                 <groupId>tech.ordinaryroad</groupId>
                 <artifactId>live-chat-client-kuaishou</artifactId>
-                <version>1.5.7</version>
+                <version>1.5.8</version>
             </dependency>
 
             <dependency>
                 <groupId>tech.ordinaryroad</groupId>
                 <artifactId>live-chat-client-codec-bilibili</artifactId>
-                <version>1.5.7</version>
+                <version>1.5.8</version>
             </dependency>
 
             <dependency>
                 <groupId>tech.ordinaryroad</groupId>
                 <artifactId>live-chat-client-codec-douyu</artifactId>
-                <version>1.5.7</version>
+                <version>1.5.8</version>
             </dependency>
 
             <dependency>
                 <groupId>tech.ordinaryroad</groupId>
                 <artifactId>live-chat-client-codec-huya</artifactId>
-                <version>1.5.7</version>
+                <version>1.5.8</version>
             </dependency>
 
             <dependency>
                 <groupId>tech.ordinaryroad</groupId>
                 <artifactId>live-chat-client-codec-douyin</artifactId>
-                <version>1.5.7</version>
+                <version>1.5.8</version>
             </dependency>
 
             <dependency>
                 <groupId>tech.ordinaryroad</groupId>
                 <artifactId>live-chat-client-codec-kuaishou</artifactId>
-                <version>1.5.7</version>
+                <version>1.5.8</version>
             </dependency>
 
             <dependency>
                 <groupId>tech.ordinaryroad</groupId>
                 <artifactId>live-chat-client-plugin-forward</artifactId>
-                <version>1.5.7</version>
+                <version>1.5.8</version>
             </dependency>
 
             <dependency>
