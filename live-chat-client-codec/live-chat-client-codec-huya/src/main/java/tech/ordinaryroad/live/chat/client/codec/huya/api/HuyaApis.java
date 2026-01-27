@@ -67,7 +67,7 @@ public class HuyaApis {
     private static final String PATTERN_TT_PROFILE_INFO = "TT_PROFILE_INFO = (\\{.*\\}?);";
     private static final String PATTERN_TT_PLAYER_CFG = "TT_PLAYER_CFG = (\\{.*?\\});";
     private static final String PATTERN_TT_PLAYER_CONF = "TT_PLAYER_CONF = (\\{.*?\\});";
-    private static final String PATTERN_HY_PLAYER_CONFIG_STREAM = "hyPlayerConfig\\s*=\\s*\\{[\\s\\S]*?stream:\\s*(\\{[\\s\\S]*?\\})\\s*\\}";
+    private static final String PATTERN_HY_PLAYER_CONFIG_STREAM = "hyPlayerConfig\\s*=\\s*\\{[\\s\\S]*?stream:\\s*(\\{[\\s\\S]*?\\})\\s*\\};";
 
     public static HuyaRoomInitResult roomInit(Object roomId) {
         return roomInit(roomId, null);
